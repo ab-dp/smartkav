@@ -98,8 +98,6 @@ html.lenis,html.lenis body{height:auto}
 /* route */
 .route{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible}
 .route-line{fill:none;stroke:var(--signal);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
-.rail-dot{fill:var(--paper);stroke:var(--ink);stroke-width:2;transition:fill 300ms var(--ease)}
-.rail-dot.reached{fill:var(--signal)}
 .route-cab{opacity:0;transition:opacity 300ms var(--ease)}
 .route-cab.show{opacity:1}
 .route-cab .cab-car{fill:var(--signal);stroke:var(--ink);stroke-width:1.5}
@@ -344,7 +342,65 @@ html.lenis,html.lenis body{height:auto}
 .pain-out{grid-column:1 / span 8;margin-top:clamp(32px,4vw,48px);font-family:var(--display);font-weight:700;font-size:clamp(22px,2.2vw,30px);line-height:1.3}
 .pain-out mark{padding:0 .08em;background:linear-gradient(transparent 62%,var(--signal) 62%,var(--signal) 92%,transparent 92%);color:inherit}
 
+/* group chat */
+.chat{grid-column:1 / -1;margin-top:40px;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#EFEAE0;box-shadow:0 30px 60px -40px rgba(14,17,22,.35)}
+.chat-top{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--line)}
+.chat-av{display:grid;place-items:center;flex:none;width:38px;height:38px;border-radius:50%;background:var(--ink);color:var(--signal);font-weight:600}
+.chat-t{display:flex;flex-direction:column;flex:1;min-width:0;line-height:1.25}
+.chat-t b{font-size:16px;font-weight:600}
+.chat-t small{font-size:13px;color:var(--muted-ink)}
+.chat-unread{display:grid;place-items:center;min-width:30px;height:24px;padding:0 8px;border-radius:12px;background:var(--signal);font-size:13px;font-weight:600}
+.chat-msgs{display:flex;flex-direction:column;gap:8px;padding:18px 16px 22px;background-image:radial-gradient(rgba(14,17,22,.07) 1px,transparent 1px);background-size:14px 14px}
+.bub{align-self:flex-start;max-width:82%;padding:7px 12px 5px;border-radius:12px;border-start-start-radius:3px;background:var(--surface);font-size:15px;line-height:1.45;box-shadow:0 1px 0 rgba(14,17,22,.08)}
+.bub b{display:block;font-size:13px;font-weight:600;color:var(--c,var(--success))}
+.bub time{display:block;margin-top:1px;font-size:11px;color:var(--muted-ink);text-align:left}
+.bub.out{align-self:flex-end;background:#FFF0C7;border-start-start-radius:12px;border-start-end-radius:3px}
+@media (min-width:768px){
+  .pain{grid-column:1 / span 6;grid-row:2;grid-template-columns:minmax(0,1fr)}
+  .pain li{padding-inline-start:0}
+  .chat{grid-column:8 / -1;grid-row:2;align-self:start;margin-top:clamp(40px,5vw,64px)}
+  .pain-out{grid-row:3}
+}
+
+/* rail stations beside section headings */
+.lp{--gut:64px}
+.h2{position:relative}
+.h2-xl{--lh:1.02}
+.rail-stop{position:absolute;top:calc(var(--lh,1.12) * .5em - 7px);right:calc(var(--gut) / -2 - 7px);width:14px;height:14px;border:2px solid var(--ink);border-radius:50%;background:var(--paper);transition:background-color 300ms var(--ease)}
+.rail-stop.reached{background:var(--signal)}
+
+/* how-it-works stage */
+.steps{position:relative}
+.steps-line{position:absolute;top:6.75px;right:calc(var(--gut) / -2);left:0;z-index:2;height:2.5px;pointer-events:none}
+.steps-line i{position:absolute;inset:0;background:var(--signal);transform:scaleX(0);transform-origin:100% 50%}
+.how:not(.staged) .steps-line{display:none}
+.how.staged .step h3,.how.staged .step p,.how.staged .sv{transition:opacity 450ms var(--ease)}
+.how.staged .step:not(.on) h3,.how.staged .step:not(.on) p,.how.staged .step:not(.on) .sv{opacity:.3}
+.sv{position:relative;height:148px;max-width:22em;margin-top:28px;padding:16px;overflow:hidden;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:14px;line-height:1.4}
+.sv-field{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 12px;border:1px solid #CFCAC0;border-radius:8px;font-weight:500}
+.sv-field small{font-size:12px;color:var(--muted-ink)}
+.sv-btn{display:flex;align-items:center;justify-content:center;height:38px;margin-top:10px;border-radius:8px;background:var(--signal);font-weight:600}
+.sv-ok{position:absolute;right:16px;left:16px;bottom:16px;display:flex;align-items:center;gap:10px;height:38px;padding:0 10px;border-radius:8px;background:var(--surface);box-shadow:0 0 0 1px var(--line);font-size:13px;font-weight:500}
+.sv-grp{display:grid;place-items:center}
+.sv-chip{position:absolute;padding:4px 12px;border:1px solid var(--line);border-radius:2em;background:var(--paper);font-size:13px;font-weight:500}
+.sv-card{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:6px;border-inline-start:3px solid var(--signal);background:var(--ink);color:var(--paper);font-weight:600;white-space:nowrap}
+.sv-card b{font-size:12.5px;font-weight:500;color:rgba(246,244,239,.7)}
+.sv-order{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-weight:600}
+.sv-order small{display:block;font-size:12px;font-weight:500;color:var(--muted-ink)}
+.sv-copy{flex:none;padding:6px 10px;border-radius:6px;background:var(--signal);font-size:12.5px}
+.sv-toast{position:absolute;right:16px;left:16px;bottom:16px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500}
+.pinmode .how,.pinmode .smart{--sec:clamp(56px,9vh,104px)}
+.pinmode .smart .ba{margin-top:clamp(32px,4.5vh,56px)}
+.pinmode .smart .crit{margin-top:clamp(24px,3.5vh,40px)}
+
 /* smart grouping */
+.rides li{transition:opacity 350ms var(--ease),border-color 350ms var(--ease)}
+.ba-col:first-child{position:relative;z-index:2}
+.ba-done{position:absolute;inset:56px 0 0;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:clamp(18px,1.6vw,22px);color:var(--signal);opacity:0;transform:translateY(8px);transition:opacity 400ms var(--ease),transform 400ms var(--ease);pointer-events:none}
+.ba.all .ba-done{opacity:1;transform:none}
+.rides li.empty{opacity:.35;border-inline-start-color:rgba(246,244,239,.25)}
+.rides li.landed{animation:land 500ms var(--ease)}
+@keyframes land{40%{background:#2A303A}}
 .ba{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:stretch;gap:24px;margin-top:clamp(48px,6vw,80px)}
 .ba-col{padding:22px 24px 24px;border:1px solid rgba(246,244,239,.12);border-radius:6px;background:rgba(0,0,0,.3)}
 .ba-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(246,244,239,.08);font-size:15px;font-weight:600}
@@ -452,7 +508,12 @@ html.lenis,html.lenis body{height:auto}
   .rides li{font-size:14px}
   .trust{font-size:14px}
   .route-cab .cab-badge{display:none}
-  .rail-dot{r:5.5px}
+  .lp{--gut:20px}
+  .rail-stop{width:12px;height:12px;top:calc(var(--lh,1.12) * .5em - 6px);right:calc(var(--gut) / -2 - 6px)}
+  .sv{max-width:none}
+  .chat{order:-1;margin-top:32px}
+  .pain-sec .head{order:-2}
+  .bub{font-size:14.5px}
   .scen li{grid-template-columns:minmax(0,1fr)}
   .scen h3,.scen p{grid-column:1}
   .scen p{margin-top:10px;font-size:17px}
@@ -484,7 +545,7 @@ html.lenis,html.lenis body{height:auto}
   </div>
 </header>
 
-<svg class="route" aria-hidden="true" focusable="false"><polyline class="route-line route-main" points="0,0 0,0"></polyline><polyline class="route-line route-branch" points="0,0 0,0"></polyline><g class="rail-dots"></g><g class="route-cab"><g class="cab-body"><rect class="cab-car" x="-14" y="-8.5" width="28" height="17" rx="5"></rect><rect class="cab-win" x="3" y="-5.5" width="6.5" height="11" rx="2"></rect></g><g class="cab-badge"><circle cx="0" cy="-23" r="10.5"></circle><text x="0" y="-19" text-anchor="middle">0</text></g></g></svg>
+<svg class="route" aria-hidden="true" focusable="false"><polyline class="route-line route-main" points="0,0 0,0"></polyline><g class="route-cab"><g class="cab-body"><rect class="cab-car" x="-14" y="-8.5" width="28" height="17" rx="5"></rect><rect class="cab-win" x="3" y="-5.5" width="6.5" height="11" rx="2"></rect></g><g class="cab-badge"><circle cx="0" cy="-23" r="10.5"></circle><text x="0" y="-19" text-anchor="middle">0</text></g></g></svg>
 
 <main>
 
@@ -530,6 +591,19 @@ html.lenis,html.lenis body{height:auto}
       <li><h3>״הוזמנה לי מונית?״ בשתיים בלילה</h3><p>העובד לא רואה שום סטטוס, אז הוא שולח הודעה. ואחרי עשר דקות עוד אחת.</p></li>
       <li><h3>״אני גם!!״</h3><p>הרשמות כפולות, תיקונים ו״בעצם רק חזור״, קבורים בתוך שרשור של 60 הודעות.</p></li>
     </ul>
+    <div class="chat" aria-hidden="true">
+      <div class="chat-top"><span class="chat-av">ה</span><span class="chat-t"><b>הסעות מוקד</b><small>46 משתתפים</small></span><span class="chat-unread">38</span></div>
+      <ol class="chat-msgs">
+        <li class="bub" style="--c:#0F6B5E"><b>מיכל</b>מי מזמין לי מונית ל-16:00 מחר?<time>22:31</time></li>
+        <li class="bub" style="--c:#B4461E"><b>אבי</b>גם אני 16:00, רמת גן<time>22:32</time></li>
+        <li class="bub" style="--c:#3B5BA9"><b>דנה</b>אני גם!!<time>22:32</time></li>
+        <li class="bub" style="--c:#7A4FA0"><b>יוסי</b>מה עם חזור? אני מסיים ב-01:00<time>22:34</time></li>
+        <li class="bub out">רגע, מסדר טבלה<time>22:35</time></li>
+        <li class="bub" style="--c:#9A6A00"><b>נועה</b>בעצם אני רק חזור, סליחה<time>22:37</time></li>
+        <li class="bub" style="--c:#3B5BA9"><b>דנה</b>נרשמתי פעמיים? 😅<time>22:38</time></li>
+        <li class="bub" style="--c:#0F6B5E"><b>עומר</b>הזמנתם לי? 🙏<time>22:40</time></li>
+      </ol>
+    </div>
     <p class="pain-out"><bdi dir="ltr">SmartKav</bdi> מחליפה את הקבוצה, את הטבלה <mark>ואת הטלפונים בלילה.</mark></p>
   </div>
 </section>
@@ -540,9 +614,26 @@ html.lenis,html.lenis body{height:auto}
       <h2 class="h2" id="how-title">איך זה עובד</h2>
     </div>
     <ol class="steps">
-      <li class="step"><span class="station" aria-hidden="true"></span><h3>העובד נרשם</h3><p>נכנס מהנייד, בוחר משמרת וכיוון ושולח. הכתובת כבר שמורה, אז זה לוקח כמה שניות.</p></li>
-      <li class="step"><span class="station" aria-hidden="true"></span><h3>המערכת מקבצת</h3><p>בקשות לאותה שעה, לאותו כיוון ולאותה עיר נכנסות לנסיעה אחת, בלי שאף אחד נוגע בהן.</p></li>
-      <li class="step"><span class="station" aria-hidden="true"></span><h3>אתם שולחים</h3><p>מעתיקים את ההזמנה לחברת ההסעות, והעובד רואה ״מונית הוזמנה״ בטלפון שלו.</p></li>
+      <li class="steps-line" aria-hidden="true"><i></i></li>
+      <li class="step"><span class="station" aria-hidden="true"></span><h3>העובד נרשם</h3><p>נכנס מהנייד, בוחר משמרת וכיוון ושולח. הכתובת כבר שמורה, אז זה לוקח כמה שניות.</p>
+        <div class="sv sv-reg" aria-hidden="true">
+          <div class="sv-field"><span>שישי · משמרת 16:00</span><small>הלוך וחזור</small></div>
+          <div class="sv-btn">שליחת הרשמה</div>
+          <div class="sv-ok"><span class="tag tag-s">נקלטה</span><span>הבקשה שלך התקבלה</span></div>
+        </div>
+      </li>
+      <li class="step"><span class="station" aria-hidden="true"></span><h3>המערכת מקבצת</h3><p>בקשות לאותה שעה, לאותו כיוון ולאותה עיר נכנסות לנסיעה אחת, בלי שאף אחד נוגע בהן.</p>
+        <div class="sv sv-grp" aria-hidden="true">
+          <span class="sv-chip" style="top:14px;right:16px">דנה</span><span class="sv-chip" style="top:14px;left:16px">אבי</span><span class="sv-chip" style="bottom:14px;right:16px">נועה</span><span class="sv-chip" style="bottom:14px;left:16px">רון</span>
+          <div class="sv-card">רמת גן · 16:00<b>4 נוסעים</b></div>
+        </div>
+      </li>
+      <li class="step"><span class="station" aria-hidden="true"></span><h3>אתם שולחים</h3><p>מעתיקים את ההזמנה לחברת ההסעות, והעובד רואה ״מונית הוזמנה״ בטלפון שלו.</p>
+        <div class="sv sv-send" aria-hidden="true">
+          <div class="sv-order"><span>הלוך · 16:00 · רמת גן<small>4 נוסעים</small></span><span class="sv-copy">העתק הזמנה</span></div>
+          <div class="sv-toast"><span class="tag tag-s">מונית הוזמנה</span><span>4 עובדים קיבלו עדכון</span></div>
+        </div>
+      </li>
     </ol>
   </div>
 </section>
@@ -555,17 +646,18 @@ html.lenis,html.lenis body{height:auto}
     <p class="lede">בלי טבלה ובלי לחשוב מי גר ליד מי. המערכת רואה מי יכול לנסוע יחד ומשבצת אותם באותה מונית, ואתם רק עוברים ומאשרים.</p>
     <div class="ba" role="img" aria-label="דוגמה: 14 בקשות נסיעה נפרדות מקובצות אוטומטית ל-4 נסיעות משותפות">
       <div class="ba-col" aria-hidden="true">
-        <div class="ba-h">לפני<span>14 בקשות נפרדות</span></div>
+        <div class="ba-h">לפני<span><span class="ba-open">14</span> בקשות נפרדות</span></div>
         <ul class="reqs">
-          <li>דנה · רמת גן · 16:00</li><li>מיכל · חולון · 16:00</li><li>יוסי · תל אביב · 01:00</li><li>אבי · רמת גן · 16:00</li>
-          <li>שירן · בת ים · 01:00</li><li>עומר · חולון · 16:00</li><li>נועה · רמת גן · 16:00</li><li>ליאור · תל אביב · 01:00</li>
-          <li>תמר · בת ים · 01:00</li><li>רון · רמת גן · 16:00</li><li>גל · חולון · 16:00</li><li>עדי · תל אביב · 01:00</li>
-          <li>מאיה · בת ים · 01:00</li><li>איתי · תל אביב · 01:00</li>
+          <li data-r="0">דנה · רמת גן · 16:00</li><li data-r="1">מיכל · חולון · 16:00</li><li data-r="2">יוסי · תל אביב · 01:00</li><li data-r="0">אבי · רמת גן · 16:00</li>
+          <li data-r="3">שירן · בת ים · 01:00</li><li data-r="1">עומר · חולון · 16:00</li><li data-r="0">נועה · רמת גן · 16:00</li><li data-r="2">ליאור · תל אביב · 01:00</li>
+          <li data-r="3">תמר · בת ים · 01:00</li><li data-r="0">רון · רמת גן · 16:00</li><li data-r="1">גל · חולון · 16:00</li><li data-r="2">עדי · תל אביב · 01:00</li>
+          <li data-r="3">מאיה · בת ים · 01:00</li><li data-r="2">איתי · תל אביב · 01:00</li>
         </ul>
+        <p class="ba-done">כל הבקשות שובצו ✓</p>
       </div>
       <svg class="ba-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>
       <div class="ba-col" aria-hidden="true">
-        <div class="ba-h">אחרי<span>4 נסיעות משותפות</span></div>
+        <div class="ba-h">אחרי<span><span class="ba-rides">4</span> נסיעות משותפות</span></div>
         <ul class="rides">
           <li><b>הלוך · 16:00 · רמת גן</b><span>4 נוסעים</span></li>
           <li><b>הלוך · 16:00 · חולון</b><span>3 נוסעים</span></li>
@@ -1075,12 +1167,14 @@ function initLanding(page, opts){
 
   /* ---- route line ----
      One line runs down the whole page like a bus route. It leaves the hero map under the workplace hub, follows the
-     start-side gutter and stops at a station beside every section heading. On wide screens a branch crosses the
-     how-it-works stations. The drawn length follows the scroll, and a taxi rides the tip, picking up one passenger
-     at every station it passes. */
-  var main = $('.route-main'), branch = $('.route-branch'), dotsG = $('.rail-dots'), cab = $('.route-cab');
+     start-side gutter and stops at a station beside every section heading. The stations live inside the headings
+     (not in the line's SVG) so they stay put when a section is pinned. The drawn length follows the scroll, and a
+     taxi rides the tip, picking up one passenger at every station it passes. When the how-it-works steps sit in a
+     row, the how-it-works stage lights their stations instead of the line. */
+  var main = $('.route-main'), cab = $('.route-cab');
   var cabBody = cab && cab.querySelector('.cab-body'), cabNum = cab && cab.querySelector('.cab-badge text');
-  var stations = $$('.station'), heads = $$('main > section:not(.hero):not(.how) .h2'), R = null;
+  var stations = $$('.station'), heads = $$('main > section:not(.hero):not(.how) .h2'), R = null, howStaged = false;
+  var railStops = heads.map(function(h){ var s = doc.createElement('span'); s.className = 'rail-stop'; s.setAttribute('aria-hidden', 'true'); h.appendChild(s); return s; });
   function pos(el){ var x = 0, y = 0, e = el; while(e && e !== page){ x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; } return { x: x, y: y, w: el.offsetWidth, h: el.offsetHeight }; }
   function segments(pts){
     var segs = [], total = 0;
@@ -1118,27 +1212,25 @@ function initLanding(page, opts){
     var hx = body.x + L.hub[0] * s, by = board.y + board.h, y0 = by + (hero.y + hero.h - by) * 0.5;
     var st = stations.map(function(e){ var p = pos(e); return { x: p.x + p.w / 2, y: p.y + p.h / 2 }; });
     var wEl = $('.how .wrap'), w = pos(wEl), cs = win.getComputedStyle(wEl);
-    var padR = parseFloat(cs.paddingRight) || 0, padL = parseFloat(cs.paddingLeft) || 0;
+    var padR = parseFloat(cs.paddingRight) || 0;
     var flat = Math.abs(st[0].y - st[2].y) < 4, xr = flat ? w.x + w.w - padR / 2 : st[0].x;
     var stops = heads.map(function(h){
       var p = pos(h), lh = parseFloat(win.getComputedStyle(h).lineHeight) || p.h;
       return { x: xr, y: p.y + Math.min(lh, p.h) / 2 };
     });
     var M = segments([[hx, by], [hx, y0], [xr, y0], [xr, stops.length ? stops[stops.length - 1].y : st[2].y]]);
-    var B = flat ? segments([[xr, st[0].y], [w.x + padL, st[0].y]]) : null;
     draw(main, M);
-    if(B) draw(branch, B);
-    branch.style.display = B ? '' : 'none';
-    dotsG.innerHTML = stops.map(function(p){ return '<circle class="rail-dot" cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="7"></circle>'; }).join('');
+    /* Steps in a row belong to the how-it-works stage; without it (no GSAP, or reduced motion) they show as reached. */
+    if(flat && !howStaged) stations.forEach(function(e){ e.classList.add('reached'); });
     R = {
-      M: M, B: B, jy: st[0].y, dots: Array.prototype.slice.call(dotsG.children),
+      M: M, flat: flat,
       stopCums: stops.map(function(p){ return along(M, p.x, p.y); }),
-      stCums: st.map(function(p){ return along(B || M, p.x, p.y); })
+      stCums: st.map(function(p){ return along(M, p.x, p.y); })
     };
   }
   function updateRoute(){
     if(!R) return;
-    var M = R.M, dm = M.total, db = R.B ? R.B.total : 0, n = 0;
+    var M = R.M, dm = M.total, n = 0;
     if(!reduce){
       /* The tip follows a point 62% down the viewport. A horizontal run is drawn over a short stretch of scroll,
          and everything after it trails by that stretch so the turn reads as a deliberate move. */
@@ -1154,12 +1246,13 @@ function initLanding(page, opts){
           dm += d; if(d < g.len) break;
         }
       }
-      if(R.B) db = R.B.total * clamp((target - lag - R.jy) / (R.B.total * 0.45), 0, 1);
     }
     main.style.strokeDashoffset = (M.total - dm).toFixed(1);
-    if(R.B) branch.style.strokeDashoffset = (R.B.total - db).toFixed(1);
-    stations.forEach(function(e, i){ var on = (R.B ? db : dm) >= R.stCums[i] - 1; e.classList.toggle('reached', on); if(on) n++; });
-    R.dots.forEach(function(e, i){ var on = dm >= R.stopCums[i] - 1; e.classList.toggle('reached', on); if(on) n++; });
+    stations.forEach(function(e, i){
+      if(!R.flat) e.classList.toggle('reached', dm >= R.stCums[i] - 1);
+      if(e.classList.contains('reached')) n++;
+    });
+    railStops.forEach(function(e, i){ var on = dm >= R.stopCums[i] - 1; e.classList.toggle('reached', on); if(on) n++; });
     if(cab){
       var show = !reduce && dm > 4, p = pointOn(M, dm);
       cab.classList.toggle('show', show);
@@ -1227,6 +1320,119 @@ function initLanding(page, opts){
       lenis.scrollTo(t, { offset: -(parseFloat(win.getComputedStyle(t).scrollMarginTop) || 0), duration: 1.4 });
     });
     off.push(function(){ lenis.destroy(); });
+  }
+
+  /* ---- story sections: the group chat, the how-it-works stage and the grouping moment ----
+     Sections pin only on large screens and only when they fit the viewport; otherwise the same animations
+     follow the scroll without pinning. */
+  function center(el){
+    var r = el.getBoundingClientRect();
+    return { x: r.left + r.width / 2 - (G.getProperty(el, 'x') || 0), y: r.top + r.height / 2 - (G.getProperty(el, 'y') || 0) };
+  }
+  function canPin(sec){ return page.classList.contains('pinmode') && sec.offsetHeight <= win.innerHeight; }
+  if(G && ST && !reduce){
+    if(win.innerWidth >= 1024 && win.innerHeight >= 700) page.classList.add('pinmode');
+
+    /* Group chat: messages pile in, keep fidgeting, and drift apart as the section scrolls away. */
+    var bubs = $$('.bub'), unread = $('.chat-unread');
+    if(bubs.length){
+      G.set(bubs, { autoAlpha: 0, y: 18, scale: 0.96 });
+      ST.create({ trigger: '.chat', start: 'top 78%', once: true, onEnter: function(){
+        G.to(bubs, { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, ease: 'back.out(1.6)', stagger: 0.16, onComplete: function(){
+          bubs.forEach(function(b, i){ G.to(b, { y: (i % 2 ? 1 : -1) * G.utils.random(2, 4), duration: G.utils.random(1.8, 3), ease: 'sine.inOut', yoyo: true, repeat: -1 }); });
+        } });
+      } });
+      bubs.forEach(function(b){
+        G.to(b, { x: G.utils.random(-22, 22), rotation: G.utils.random(-2.5, 2.5), ease: 'none', scrollTrigger: { trigger: '.chat', start: 'center 55%', end: 'bottom top', scrub: true } });
+      });
+      var u = { n: 38 };
+      G.to(u, { n: 52, ease: 'none', onUpdate: function(){ unread.textContent = Math.round(u.n); }, scrollTrigger: { trigger: '.pain-sec', start: 'top 60%', end: 'bottom 40%', scrub: true } });
+    }
+
+    /* How it works: a short animation per step, played when its station lights up. */
+    var how = $('.how'), steps = $$('.step'), lineI = $('.steps-line i'), sv = [], curStep = -2, stFr = [];
+    var reg = $('.sv-reg'), grp = $('.sv-grp'), send = $('.sv-send');
+    if(how && reg && grp && send){
+      var card = grp.querySelector('.sv-card');
+      sv[0] = G.timeline({ paused: true })
+        .fromTo(reg.querySelector('.sv-btn'), { scale: 1 }, { scale: 0.94, duration: 0.12, yoyo: true, repeat: 1, ease: 'power1.inOut' }, 0.35)
+        .fromTo(reg.querySelector('.sv-ok'), { y: 46, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: 'expo.out' }, 0.7);
+      sv[1] = G.timeline({ paused: true })
+        .fromTo(grp.querySelectorAll('.sv-chip'), { x: 0, y: 0, scale: 1, autoAlpha: 1 }, {
+          x: function(i, c){ return center(card).x - center(c).x; }, y: function(i, c){ return center(card).y - center(c).y; },
+          scale: 0.6, autoAlpha: 0, duration: 0.7, ease: 'power3.inOut', stagger: 0.08 }, 0.2)
+        .fromTo(card, { scale: 0.7, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, ease: 'back.out(1.7)' }, 0.75);
+      sv[2] = G.timeline({ paused: true })
+        .fromTo(send.querySelector('.sv-copy'), { scale: 1 }, { scale: 0.92, duration: 0.12, yoyo: true, repeat: 1, ease: 'power1.inOut' }, 0.35)
+        .fromTo(send.querySelector('.sv-toast'), { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: 'expo.out' }, 0.7);
+      var setStep = function(a){
+        if(a === curStep) return;
+        steps.forEach(function(s, i){
+          s.classList.toggle('on', i === a);
+          if(i < a) sv[i].progress(1).pause();
+          else if(i > a) sv[i].pause().progress(0);
+          else sv[i].invalidate().restart();
+        });
+        curStep = a;
+      };
+      if(steps.length === 3 && Math.abs(steps[0].offsetTop - steps[2].offsetTop) < 4){
+        /* Steps in a row: the line runs across them and the stage advances station by station. */
+        howStaged = true; how.classList.add('staged');
+        var measureHow = function(){
+          var L = lineI.parentNode.getBoundingClientRect();
+          stFr = stations.map(function(e){ var r = e.getBoundingClientRect(); return (L.right - (r.left + r.width / 2)) / L.width; });
+        };
+        var setHow = function(p){
+          G.set(lineI, { scaleX: p });
+          var a = -1;
+          stations.forEach(function(e, i){ var on = p >= stFr[i] - 0.001; e.classList.toggle('reached', on); if(on) a = i; });
+          setStep(a); req();
+        };
+        var pinHow = canPin(how);
+        measureHow();
+        ST.create({ trigger: how, start: pinHow ? 'center center' : 'top 65%', end: pinHow ? '+=170%' : 'bottom 45%', pin: pinHow, scrub: true,
+          onUpdate: function(s){ setHow(s.progress); }, onRefresh: function(s){ measureHow(); setHow(s.progress); } });
+        setHow(0);
+      } else {
+        steps.forEach(function(s, i){ ST.create({ trigger: s, start: 'top 70%', once: true, onEnter: function(){ sv[i].invalidate().restart(); } }); });
+      }
+    }
+
+    /* Grouping: each request flies into its shared ride, and the counters follow. */
+    var reqs = $$('.reqs li'), rides = $$('.rides li'), smart = $('.smart'), ba = $('.ba');
+    if(reqs.length && rides.length && smart){
+      var rideNum = rides.map(function(r){ return r.querySelector('span'); }), openEl = $('.ba-open'), ridesEl = $('.ba-rides');
+      var landAt = [], landed = -1, gtl = G.timeline({ paused: true });
+      reqs.forEach(function(c, i){
+        var k = +c.getAttribute('data-r'), r = rides[k], t0 = i * 0.28;
+        landAt.push({ t: t0 + 0.8, k: k });
+        gtl.to(c, { x: function(){ return center(r).x - center(c).x; }, y: function(){ return center(r).y - center(c).y; },
+          scale: 0.45, autoAlpha: 0, duration: 1, ease: 'power2.inOut' }, t0);
+      });
+      gtl.to({}, { duration: 0.6 });
+      var people = function(n){ return n === 0 ? 'ממתינה' : n === 1 ? 'נוסע אחד' : n + ' נוסעים'; };
+      var syncRides = function(){
+        var t = gtl.time(), cnt = rides.map(function(){ return 0; }), done = 0;
+        landAt.forEach(function(l){ if(t >= l.t){ cnt[l.k]++; done++; } });
+        if(done === landed) return;
+        rides.forEach(function(r, i){
+          var was = +(r.getAttribute('data-n') || 0);
+          r.classList.toggle('empty', !cnt[i]);
+          rideNum[i].textContent = people(cnt[i]);
+          if(cnt[i] > was){ r.classList.remove('landed'); void r.offsetWidth; r.classList.add('landed'); }
+          r.setAttribute('data-n', cnt[i]);
+        });
+        openEl.textContent = reqs.length - done;
+        ridesEl.textContent = cnt.filter(Boolean).length;
+        ba.classList.toggle('all', done === reqs.length);
+        landed = done;
+      };
+      gtl.eventCallback('onUpdate', syncRides);
+      syncRides();
+      var pinSmart = canPin(smart);
+      ST.create({ trigger: pinSmart ? smart : '.ba', start: pinSmart ? 'center center' : 'top 70%', end: pinSmart ? '+=150%' : 'bottom 40%',
+        pin: pinSmart, scrub: 0.6, animation: gtl, invalidateOnRefresh: true });
+    }
   }
 
   /* ---- parallax, reveals, nav, sticky bar ---- */
