@@ -19,12 +19,28 @@
 <meta name="twitter:image" content="https://ab-dp.github.io/smartkav/og.png">
 <meta name="theme-color" content="#0E1116">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E1116'/%3E%3Cpath d='M10 32H24' stroke='%23FFB000' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='38' cy='32' r='12' fill='%23FFB000' stroke='%23F6F4EF' stroke-width='5'/%3E%3C/svg%3E">
+<script>
+if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+  document.documentElement.classList.add('js-intro');
+  if (!location.hash && 'scrollRestoration' in history) history.scrollRestoration = 'manual';
+  setTimeout(function(){ document.documentElement.classList.remove('js-intro'); }, 3000);
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@600;700;800&family=IBM+Plex+Sans+Hebrew:wght@400;500;600&display=swap">
 <style>
 html,body{margin:0;background:#0E1116}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
+
+/* hero intro: hidden until the script splits and plays it (the head script adds .js-intro only when motion is allowed) */
+.js-intro .hero h1,.js-intro .hero-row,.js-intro .trust,.js-intro .hero-board{visibility:hidden}
+.hero h1 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
+.hero h1 .wi{display:inline-block;will-change:transform}
 
 .lp{--ink:#0E1116;--ink-2:#1A1F27;--paper:#F6F4EF;--surface:#FFFFFF;--line:#E4E0D8;--muted-ink:#575D68;--body:#3B4048;--field:#8B8780;--sk:#E3E1DC;--signal:#FFB000;--signal-deep:#E39C00;--success:#0F6B5E;--error:#C2341F;--ease:cubic-bezier(.2,.8,.2,1);--sec:clamp(88px,10vw,150px);--display:"Rubik",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;--sans:"IBM Plex Sans Hebrew",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;--dim:rgba(246,244,239,.72);--hair-d:rgba(246,244,239,.14);
   position:relative;overflow-x:clip;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.7;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
@@ -48,6 +64,9 @@ html,body{margin:0;background:#0E1116}
 .wm b{font-weight:600}
 .head{grid-column:1 / span 8}
 .h2{font-family:var(--display);font-weight:700;font-size:clamp(32px,4vw,58px);line-height:1.12;letter-spacing:-.02em;text-wrap:balance}
+.h2-xl{font-size:clamp(42px,6.2vw,96px);line-height:1.02;letter-spacing:-.03em}
+.kicker{display:flex;align-items:center;gap:10px;margin-bottom:18px;font-size:15px;font-weight:600;line-height:1.4;color:var(--muted-ink)}
+.kicker::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 2px var(--ink)}
 .lede{grid-column:1 / span 7;margin-top:22px;font-size:clamp(18px,1.5vw,21px);line-height:1.65;color:var(--body);text-wrap:pretty}
 .dark .lede{color:var(--dim)}
 
@@ -78,7 +97,15 @@ html,body{margin:0;background:#0E1116}
 
 /* route */
 .route{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible}
-.route-line{fill:none;stroke:var(--signal);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.route-line{fill:none;stroke:var(--signal);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.rail-dot{fill:var(--paper);stroke:var(--ink);stroke-width:2;transition:fill 300ms var(--ease)}
+.rail-dot.reached{fill:var(--signal)}
+.route-cab{opacity:0;transition:opacity 300ms var(--ease)}
+.route-cab.show{opacity:1}
+.route-cab .cab-car{fill:var(--signal);stroke:var(--ink);stroke-width:1.5}
+.route-cab .cab-win{fill:var(--ink-2)}
+.route-cab .cab-badge circle{fill:var(--ink);stroke:var(--signal);stroke-width:1.5}
+.route-cab .cab-badge text{font-family:var(--sans);font-size:11px;font-weight:600;fill:var(--paper)}
 
 /* hero */
 .hero{position:relative;overflow:hidden;padding-top:clamp(140px,12vw,180px);padding-bottom:clamp(72px,8vw,120px)}
@@ -315,7 +342,7 @@ html,body{margin:0;background:#0E1116}
 .pain h3{margin-bottom:8px;font-family:var(--display);font-weight:700;font-size:clamp(22px,2vw,28px);line-height:1.2}
 .pain p{max-width:26em;color:var(--body);text-wrap:pretty}
 .pain-out{grid-column:1 / span 8;margin-top:clamp(32px,4vw,48px);font-family:var(--display);font-weight:700;font-size:clamp(22px,2.2vw,30px);line-height:1.3}
-.pain-out b{color:var(--signal-deep)}
+.pain-out mark{padding:0 .08em;background:linear-gradient(transparent 62%,var(--signal) 62%,var(--signal) 92%,transparent 92%);color:inherit}
 
 /* smart grouping */
 .ba{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:stretch;gap:24px;margin-top:clamp(48px,6vw,80px)}
@@ -424,6 +451,8 @@ html,body{margin:0;background:#0E1116}
   .reqs li{font-size:12.5px;padding:5px 10px}
   .rides li{font-size:14px}
   .trust{font-size:14px}
+  .route-cab .cab-badge{display:none}
+  .rail-dot{r:5.5px}
   .scen li{grid-template-columns:minmax(0,1fr)}
   .scen h3,.scen p{grid-column:1}
   .scen p{margin-top:10px;font-size:17px}
@@ -455,7 +484,7 @@ html,body{margin:0;background:#0E1116}
   </div>
 </header>
 
-<svg class="route" aria-hidden="true" focusable="false"><polyline class="route-line" points="0,0 0,0"></polyline></svg>
+<svg class="route" aria-hidden="true" focusable="false"><polyline class="route-line route-main" points="0,0 0,0"></polyline><polyline class="route-line route-branch" points="0,0 0,0"></polyline><g class="rail-dots"></g><g class="route-cab"><g class="cab-body"><rect class="cab-car" x="-14" y="-8.5" width="28" height="17" rx="5"></rect><rect class="cab-win" x="3" y="-5.5" width="6.5" height="11" rx="2"></rect></g><g class="cab-badge"><circle cx="0" cy="-23" r="10.5"></circle><text x="0" y="-19" text-anchor="middle">0</text></g></g></svg>
 
 <main>
 
@@ -465,7 +494,7 @@ html,body{margin:0;background:#0E1116}
     <div class="hero-text">
       <h1 id="hero-title"><span class="hl">נרשמים לנסיעות בקליק.</span><span class="h1-2"><bdi dir="ltr">SmartKav</bdi> עושה את כל השאר.</span></h1>
       <div class="hero-row">
-        <p class="hero-sub">העובדים נרשמים מהנייד, המערכת מקבצת את הבקשות אוטומטית לנסיעות משותפות לפי תאריך, שעה, כיוון ועיר, והמנהל מקבל הזמנות מוכנות להעברה לחברת ההסעות או המוניות. פחות שעות על אקסל ווואטסאפ, פחות מוניות חצי ריקות.</p>
+        <p class="hero-sub">העובדים נרשמים מהנייד. <bdi dir="ltr">SmartKav</bdi> מקבצת את הבקשות לנסיעות משותפות לפי שעה, כיוון ועיר, ואתם מקבלים הזמנה מוכנה לשלוח לחברת ההסעות. בלי טבלה, ובלי קבוצת וואטסאפ שמתפוצצת בעשר בלילה.</p>
         <div class="hero-actions">
           <a class="btn hero-cta" href="#contact"><span>לתיאום הדגמה</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></a>
           <a class="tlink" href="#how">איך זה עובד</a>
@@ -492,15 +521,16 @@ html,body{margin:0;background:#0E1116}
 <section class="sec pain-sec" aria-labelledby="pain-title">
   <div class="wrap grid reveal">
     <div class="head">
-      <h2 class="h2" id="pain-title">ככה זה נראה היום ברוב הארגונים</h2>
+      <p class="kicker">חמישי, 22:40 · 38 הודעות חדשות בקבוצת ״הסעות מוקד״</p>
+      <h2 class="h2" id="pain-title">מכירים את קבוצת ההסעות?</h2>
     </div>
     <ul class="pain">
-      <li><h3>רשימות באקסל ובוואטסאפ</h3><p>עובדים שולחים הודעות בקבוצה, מישהו מעתיק לטבלה, ותמיד יש מישהו שנשכח.</p></li>
-      <li><h3>שעות של סידור ידני</h3><p>המנהל מחלק עובדים לנסיעות לפי שעה, כיוון ועיר, בראש, כל יום מחדש.</p></li>
-      <li><h3>מוניות חצי ריקות</h3><p>בלי תמונה מרוכזת מזמינים יותר נסיעות ממה שצריך, והחשבונית בסוף החודש מראה את זה.</p></li>
-      <li><h3>טלפונים באמצע הלילה</h3><p>העובד לא יודע אם הוזמנה לו מונית, אז הוא מתקשר למנהל. ושוב.</p></li>
+      <li><h3>ערב שלם מול אקסל</h3><p>מעתיקים הודעות מהקבוצה לטבלה, ממיינים לפי שעה ועיר, בודקים פעמיים. ומישהו בכל זאת נשכח.</p></li>
+      <li><h3>שתי מוניות לאותו רחוב</h3><p>דנה ואבי גרים חמש דקות זה מזה ויוצאים באותה שעה, אבל נוסעים במוניות נפרדות. בסוף החודש רואים את זה בחשבונית.</p></li>
+      <li><h3>״הוזמנה לי מונית?״ בשתיים בלילה</h3><p>העובד לא רואה שום סטטוס, אז הוא שולח הודעה. ואחרי עשר דקות עוד אחת.</p></li>
+      <li><h3>״אני גם!!״</h3><p>הרשמות כפולות, תיקונים ו״בעצם רק חזור״, קבורים בתוך שרשור של 60 הודעות.</p></li>
     </ul>
-    <p class="pain-out"><bdi dir="ltr">SmartKav</bdi> מחליפה את כל זה <b>בתהליך אחד, מסודר ושקוף.</b></p>
+    <p class="pain-out"><bdi dir="ltr">SmartKav</bdi> מחליפה את הקבוצה, את הטבלה <mark>ואת הטלפונים בלילה.</mark></p>
   </div>
 </section>
 
@@ -510,9 +540,9 @@ html,body{margin:0;background:#0E1116}
       <h2 class="h2" id="how-title">איך זה עובד</h2>
     </div>
     <ol class="steps">
-      <li class="step"><span class="station" aria-hidden="true"></span><h3>הרשמה עצמאית</h3><p>העובד נכנס מהנייד, בוחר משמרת וכיוון ושולח. הפרטים והכתובת כבר שמורים.</p></li>
-      <li class="step"><span class="station" aria-hidden="true"></span><h3>קיבוץ אוטומטי</h3><p>בקשות לאותה משמרת, לאותו כיוון ולאותה עיר משובצות יחד לנסיעה אחת.</p></li>
-      <li class="step"><span class="station" aria-hidden="true"></span><h3>הזמנה מרוכזת</h3><p>המנהל מעביר את ההזמנה המוכנה לחברת המוניות או ההסעות, והסטטוס מתעדכן אצל העובד.</p></li>
+      <li class="step"><span class="station" aria-hidden="true"></span><h3>העובד נרשם</h3><p>נכנס מהנייד, בוחר משמרת וכיוון ושולח. הכתובת כבר שמורה, אז זה לוקח כמה שניות.</p></li>
+      <li class="step"><span class="station" aria-hidden="true"></span><h3>המערכת מקבצת</h3><p>בקשות לאותה שעה, לאותו כיוון ולאותה עיר נכנסות לנסיעה אחת, בלי שאף אחד נוגע בהן.</p></li>
+      <li class="step"><span class="station" aria-hidden="true"></span><h3>אתם שולחים</h3><p>מעתיקים את ההזמנה לחברת ההסעות, והעובד רואה ״מונית הוזמנה״ בטלפון שלו.</p></li>
     </ol>
   </div>
 </section>
@@ -520,9 +550,9 @@ html,body{margin:0;background:#0E1116}
 <section class="sec smart dark" aria-labelledby="smart-title">
   <div class="wrap grid reveal">
     <div class="head">
-      <h2 class="h2" id="smart-title">הקיבוץ החכם: מעשרות בקשות לכמה נסיעות</h2>
+      <h2 class="h2 h2-xl" id="smart-title">14 בקשות. 4 נסיעות.</h2>
     </div>
-    <p class="lede">המערכת מזהה לבד אילו בקשות יכולות לנסוע יחד ומשבצת אותן לנסיעה משותפת. המנהל לא מסדר כלום ידנית, הוא רק מאשר ושולח.</p>
+    <p class="lede">בלי טבלה ובלי לחשוב מי גר ליד מי. המערכת רואה מי יכול לנסוע יחד ומשבצת אותם באותה מונית, ואתם רק עוברים ומאשרים.</p>
     <div class="ba" role="img" aria-label="דוגמה: 14 בקשות נסיעה נפרדות מקובצות אוטומטית ל-4 נסיעות משותפות">
       <div class="ba-col" aria-hidden="true">
         <div class="ba-h">לפני<span>14 בקשות נפרדות</span></div>
@@ -545,10 +575,10 @@ html,body{margin:0;background:#0E1116}
       </div>
     </div>
     <ul class="crit">
-      <li><h3>תאריך</h3><p>כולל משמרות שחוצות חצות, ששויכות ליום הנכון.</p></li>
-      <li><h3>שעה</h3><p>לפי שעת תחילת המשמרת או שעת הסיום שלה.</p></li>
-      <li><h3>כיוון</h3><p>הלוך וחזור הם שתי נסיעות נפרדות.</p></li>
-      <li><h3>עיר</h3><p>עובדים מאותה עיר נוסעים יחד.</p></li>
+      <li><h3>תאריך</h3><p>משמרת שמסתיימת ב-01:00 נשארת ביום שבו היא התחילה.</p></li>
+      <li><h3>שעה</h3><p>לפי תחילת המשמרת בהלוך, ולפי הסיום שלה בחזור.</p></li>
+      <li><h3>כיוון</h3><p>הלוך וחזור נספרים כשתי נסיעות נפרדות.</p></li>
+      <li><h3>עיר</h3><p>מי שגר באותה עיר עולה לאותה מונית.</p></li>
     </ul>
   </div>
 </section>
@@ -556,7 +586,7 @@ html,body{margin:0;background:#0E1116}
 <section class="sec sol" aria-labelledby="sol-title">
   <div class="wrap grid reveal">
     <div class="head">
-      <h2 class="h2" id="sol-title">ממשק לעובדים, מסך שליטה למנהלים</h2>
+      <h2 class="h2" id="sol-title">לעובד יש טלפון. לכם יש את כל התמונה.</h2>
     </div>
     <figure class="showcase">
       <div class="sc-stage" aria-hidden="true">
@@ -646,7 +676,7 @@ html,body{margin:0;background:#0E1116}
       <div class="part">
         <h3>לארגון</h3>
         <ul class="feat">
-          <li>פחות נסיעות ופחות מוניות ריקות, כלומר חיסכון ישיר</li>
+          <li>פחות מוניות ריקות, וזה מורגש בחשבונית</li>
           <li>תמונה מלאה של כל הנסיעות לפי תאריך, משמרת ועיר</li>
           <li>כל עובד משויך לארגון שלו, וההרשמה פתוחה רק לעובדי הארגון</li>
         </ul>
@@ -658,7 +688,7 @@ html,body{margin:0;background:#0E1116}
 <section class="sec ben-sec" aria-labelledby="ben-title">
   <div class="wrap grid reveal">
     <div class="head">
-      <h2 class="h2" id="ben-title">מה הארגון מרוויח</h2>
+      <h2 class="h2" id="ben-title">מה השתנה אצל הלקוח הראשון</h2>
     </div>
     <div class="stats">
       <div class="stat">
@@ -679,7 +709,7 @@ html,body{margin:0;background:#0E1116}
     </div>
     <p class="ben-note">הנתונים מבוססים על הפיילוט במוקד שירות ומכירות עם 45 עובדי משמרות. החיסכון בפועל תלוי בגודל הארגון ובפיזור העובדים.</p>
     <div class="mid-cta">
-      <p>רוצים לבדוק כמה זה יחסוך אצלכם?</p>
+      <p>בואו נבדוק כמה זה יחסוך אצלכם.</p>
       <a class="btn" href="#contact"><span>לתיאום הדגמה</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></a>
     </div>
   </div>
@@ -688,7 +718,7 @@ html,body{margin:0;background:#0E1116}
 <section class="sec fit dark" aria-labelledby="fit-title">
   <div class="wrap grid reveal">
     <div class="head">
-      <h2 class="h2" id="fit-title">בנוי למציאות של עבודה במשמרות</h2>
+      <h2 class="h2 h2-xl" id="fit-title">משמרת שנגמרת ב-01:00 היא לא באג</h2>
     </div>
     <p class="lede">לכל ארגון שמסיע עובדים במשמרות: מוקדי שירות, מפעלים, מרכזים לוגיסטיים, בתי חולים וחברות אבטחה.</p>
     <ul class="scen">
@@ -702,7 +732,7 @@ html,body{margin:0;background:#0E1116}
 <section class="sec pilot-sec" aria-labelledby="pilot-title">
   <div class="wrap grid reveal">
     <div class="head">
-      <h2 class="h2" id="pilot-title">כבר עובד בשטח</h2>
+      <h2 class="h2" id="pilot-title">כבר בשטח</h2>
     </div>
     <figure class="pilot">
       <blockquote>״סידור ההסעות לקח לי יותר משעתיים בשבוע, בין אקסל לוואטסאפ. היום ההרשמות מגיעות מסודרות לפי נסיעות, ואני רק מאשר ושולח. חמש דקות וזהו.״</blockquote>
@@ -731,7 +761,7 @@ html,body{margin:0;background:#0E1116}
   <div class="wrap grid reveal">
     <div class="c-intro">
       <h2 class="h2" id="contact-title">רוצים לראות איך זה ייראה אצלכם?</h2>
-      <p class="c-text">השאירו פרטים ואחזור אליכם לתיאום. בהדגמה קצרה נעבור על ממשק העובד ומסך המנהל, ונבדוק כמה נסיעות וכמה זמן המערכת יכולה לחסוך בתהליך ההסעות שלכם.</p>
+      <p class="c-text">השאירו פרטים ואחזור אליכם בעצמי. בהדגמה קצרה נעבור על הטלפון של העובד ועל המסך שלכם, ונבדוק יחד כמה נסיעות וכמה ערבים מול אקסל אפשר לחסוך אצלכם.</p>
       <div class="sig">
         <p class="sig-name ltr">Alon Berger</p>
         <p class="sig-role ltr">AI Solutions Architect</p>
@@ -811,6 +841,9 @@ html,body{margin:0;background:#0E1116}
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
 <script>
 /* ---- Settings ---- */
 var WEBHOOK_URL = 'https://hook.eu1.make.com/8u6w3infcaliarrt0dmcg9oje3rzown9';
@@ -1027,6 +1060,7 @@ function initLanding(page, opts){
       });
     } else cycle();
     layoutTags();
+    layoutRoute(); req();
   }
   if(map){
     startMap();
@@ -1039,58 +1073,160 @@ function initLanding(page, opts){
     off.push(halt);
   }
 
-  /* ---- route line ---- */
-  var line = $('.route-line'), stations = $$('.station'), R = null;
+  /* ---- route line ----
+     One line runs down the whole page like a bus route. It leaves the hero map under the workplace hub, follows the
+     start-side gutter and stops at a station beside every section heading. On wide screens a branch crosses the
+     how-it-works stations. The drawn length follows the scroll, and a taxi rides the tip, picking up one passenger
+     at every station it passes. */
+  var main = $('.route-main'), branch = $('.route-branch'), dotsG = $('.rail-dots'), cab = $('.route-cab');
+  var cabBody = cab && cab.querySelector('.cab-body'), cabNum = cab && cab.querySelector('.cab-badge text');
+  var stations = $$('.station'), heads = $$('main > section:not(.hero):not(.how) .h2'), R = null;
   function pos(el){ var x = 0, y = 0, e = el; while(e && e !== page){ x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; } return { x: x, y: y, w: el.offsetWidth, h: el.offsetHeight }; }
-  function layoutRoute(){
-    if(!line || stations.length < 3) return;
-    var st = stations.map(function(s){ var p = pos(s); return { x: p.x + p.w / 2, y: p.y + p.h / 2 }; });
-    var hero = pos($('.hero')), how = pos($('.how')), wEl = $('.how .wrap'), w = pos(wEl);
-    var cs = win.getComputedStyle(wEl), padR = parseFloat(cs.paddingRight) || 0, padL = parseFloat(cs.paddingLeft) || 0;
-    var y0 = hero.y + hero.h - Math.min(64, hero.h * 0.08), pts;
-    if(Math.abs(st[0].y - st[2].y) < 4){
-      var xg = w.x + w.w - padR / 2, xl = w.x + padL;
-      pts = [[xg, y0], [xg, st[0].y], [xl, st[0].y]];
-    } else {
-      pts = [[st[0].x, y0], [st[0].x, how.y + how.h - 24]];
-    }
+  function segments(pts){
     var segs = [], total = 0;
     for(var i = 1; i < pts.length; i++){
       var a = pts[i - 1], b = pts[i], len = Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]);
       segs.push({ x1: a[0], y1: a[1], x2: b[0], y2: b[1], len: len, h: a[1] === b[1], start: total });
       total += len;
     }
-    var cums = st.map(function(s){
-      for(var j = 0; j < segs.length; j++){
-        var g = segs[j];
-        if(g.h && Math.abs(s.y - g.y1) < 3 && s.x <= Math.max(g.x1, g.x2) + 1 && s.x >= Math.min(g.x1, g.x2) - 1) return g.start + Math.abs(s.x - g.x1);
-        if(!g.h && Math.abs(s.x - g.x1) < 3 && s.y >= g.y1 - 1 && s.y <= g.y2 + 1) return g.start + (s.y - g.y1);
+    return { pts: pts, segs: segs, total: total };
+  }
+  function along(P, x, y){
+    for(var j = 0; j < P.segs.length; j++){
+      var g = P.segs[j];
+      if(g.h && Math.abs(y - g.y1) < 3 && x <= Math.max(g.x1, g.x2) + 1 && x >= Math.min(g.x1, g.x2) - 1) return g.start + Math.abs(x - g.x1);
+      if(!g.h && Math.abs(x - g.x1) < 3 && y >= g.y1 - 1 && y <= g.y2 + 1) return g.start + (y - g.y1);
+    }
+    return P.total;
+  }
+  function pointOn(P, d){
+    for(var j = 0; j < P.segs.length; j++){
+      var g = P.segs[j];
+      if(d <= g.start + g.len || j === P.segs.length - 1){
+        var k = g.len ? clamp((d - g.start) / g.len, 0, 1) : 0;
+        return { x: g.x1 + (g.x2 - g.x1) * k, y: g.y1 + (g.y2 - g.y1) * k, ang: Math.atan2(g.y2 - g.y1, g.x2 - g.x1) * 180 / Math.PI };
       }
-      return total;
+    }
+  }
+  function draw(el, P){
+    el.setAttribute('points', P.pts.map(function(p){ return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' '));
+    el.style.strokeDasharray = P.total + ' ' + P.total;
+  }
+  function layoutRoute(){
+    if(!main || !map || stations.length < 3) return;
+    var L = LAYOUTS[cur], body = pos(map.parentNode), s = map.clientWidth / L.w, board = pos($('.board')), hero = pos($('.hero'));
+    var hx = body.x + L.hub[0] * s, by = board.y + board.h, y0 = by + (hero.y + hero.h - by) * 0.5;
+    var st = stations.map(function(e){ var p = pos(e); return { x: p.x + p.w / 2, y: p.y + p.h / 2 }; });
+    var wEl = $('.how .wrap'), w = pos(wEl), cs = win.getComputedStyle(wEl);
+    var padR = parseFloat(cs.paddingRight) || 0, padL = parseFloat(cs.paddingLeft) || 0;
+    var flat = Math.abs(st[0].y - st[2].y) < 4, xr = flat ? w.x + w.w - padR / 2 : st[0].x;
+    var stops = heads.map(function(h){
+      var p = pos(h), lh = parseFloat(win.getComputedStyle(h).lineHeight) || p.h;
+      return { x: xr, y: p.y + Math.min(lh, p.h) / 2 };
     });
-    line.setAttribute('points', pts.map(function(p){ return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' '));
-    line.style.strokeDasharray = total + ' ' + total;
-    R = { segs: segs, total: total, cums: cums };
+    var M = segments([[hx, by], [hx, y0], [xr, y0], [xr, stops.length ? stops[stops.length - 1].y : st[2].y]]);
+    var B = flat ? segments([[xr, st[0].y], [w.x + padL, st[0].y]]) : null;
+    draw(main, M);
+    if(B) draw(branch, B);
+    branch.style.display = B ? '' : 'none';
+    dotsG.innerHTML = stops.map(function(p){ return '<circle class="rail-dot" cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="7"></circle>'; }).join('');
+    R = {
+      M: M, B: B, jy: st[0].y, dots: Array.prototype.slice.call(dotsG.children),
+      stopCums: stops.map(function(p){ return along(M, p.x, p.y); }),
+      stCums: st.map(function(p){ return along(B || M, p.x, p.y); })
+    };
   }
   function updateRoute(){
     if(!R) return;
-    var drawn = R.total;
+    var M = R.M, dm = M.total, db = R.B ? R.B.total : 0, n = 0;
     if(!reduce){
-      var target = win.innerHeight * 0.62 - page.getBoundingClientRect().top, extra = 0;
-      drawn = 0;
-      for(var i = 0; i < R.segs.length; i++){
-        var g = R.segs[i];
+      /* The tip follows a point 62% down the viewport. A horizontal run is drawn over a short stretch of scroll,
+         and everything after it trails by that stretch so the turn reads as a deliberate move. */
+      var target = win.innerHeight * 0.62 - page.getBoundingClientRect().top, lag = 0;
+      dm = 0;
+      for(var i = 0; i < M.segs.length; i++){
+        var g = M.segs[i];
         if(g.h){
-          var span = g.len * 0.5, t = clamp((target - extra - g.y1) / span, 0, 1);
-          drawn += t * g.len; if(t < 1) break; extra += span;
+          var span = Math.min(g.len * 0.4, 160), t = clamp((target - lag - g.y1) / span, 0, 1);
+          dm += t * g.len; if(t < 1) break; lag += span;
         } else {
-          var d = clamp(target - extra - g.y1, 0, g.len);
-          drawn += d; if(d < g.len) break;
+          var d = clamp(target - lag - g.y1, 0, g.len);
+          dm += d; if(d < g.len) break;
         }
       }
+      if(R.B) db = R.B.total * clamp((target - lag - R.jy) / (R.B.total * 0.45), 0, 1);
     }
-    line.style.strokeDashoffset = (R.total - drawn).toFixed(1);
-    stations.forEach(function(s, i){ s.classList.toggle('reached', drawn >= R.cums[i] - 1); });
+    main.style.strokeDashoffset = (M.total - dm).toFixed(1);
+    if(R.B) branch.style.strokeDashoffset = (R.B.total - db).toFixed(1);
+    stations.forEach(function(e, i){ var on = (R.B ? db : dm) >= R.stCums[i] - 1; e.classList.toggle('reached', on); if(on) n++; });
+    R.dots.forEach(function(e, i){ var on = dm >= R.stopCums[i] - 1; e.classList.toggle('reached', on); if(on) n++; });
+    if(cab){
+      var show = !reduce && dm > 4, p = pointOn(M, dm);
+      cab.classList.toggle('show', show);
+      cab.setAttribute('transform', 'translate(' + p.x.toFixed(1) + ',' + p.y.toFixed(1) + ')');
+      cabBody.setAttribute('transform', 'rotate(' + p.ang.toFixed(1) + ')');
+      if(cabNum.textContent !== String(n)) cabNum.textContent = n;
+    }
+  }
+
+  /* ---- hero intro and exit ---- */
+  var G = win.gsap, ST = win.ScrollTrigger, root = doc.documentElement;
+  function wordSpan(child){
+    var w = doc.createElement('span'), wi = doc.createElement('span');
+    w.className = 'w'; wi.className = 'wi';
+    wi.appendChild(child); w.appendChild(wi);
+    return w;
+  }
+  if(G && !reduce){
+    if(ST) G.registerPlugin(ST);
+    /* Split the headline into words (never letters: Hebrew joins and final forms read better whole) and raise each from a mask. */
+    var words = [];
+    $$('.hero h1 > span').forEach(function(sp){
+      Array.prototype.slice.call(sp.childNodes).forEach(function(n){
+        if(n.nodeType !== 3){ var slot = doc.createTextNode(''); sp.replaceChild(slot, n); sp.replaceChild(wordSpan(n), slot); return; }
+        var frag = doc.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(function(t){
+          if(!t) return;
+          frag.appendChild(/^\s+$/.test(t) ? doc.createTextNode(t) : wordSpan(doc.createTextNode(t)));
+        });
+        sp.replaceChild(frag, n);
+      });
+    });
+    words = $$('.hero h1 .wi');
+    G.set(words, { yPercent: 115 });
+    root.classList.remove('js-intro');
+    G.timeline({ defaults: { ease: 'expo.out' } })
+      .to(words, { yPercent: 0, duration: 1.15, stagger: 0.06 }, 0.1)
+      .from('.hero-row', { y: 24, autoAlpha: 0, duration: 0.9 }, 0.55)
+      .from('.trust li', { y: 12, autoAlpha: 0, duration: 0.7, stagger: 0.08 }, 0.75)
+      .from('.hero-board', { y: 48, autoAlpha: 0, duration: 1.2 }, 0.6);
+    if(ST && win.innerWidth >= 768){
+      G.to('.hero-text', { y: -80, autoAlpha: 0.35, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom 30%', scrub: true } });
+      G.to('.board', { scale: 0.965, transformOrigin: '50% 100%', ease: 'none', scrollTrigger: { trigger: '.hero-board', start: 'top 20%', end: 'bottom top', scrub: true } });
+    }
+  } else root.classList.remove('js-intro');
+
+  /* ---- smooth scrolling (mouse and trackpad only; touch keeps native scrolling) ---- */
+  var lenis = null;
+  if(!reduce && win.Lenis && win.matchMedia && win.matchMedia('(pointer: fine)').matches){
+    lenis = new win.Lenis({ lerp: 0.1 });
+    if(G){
+      if(ST) lenis.on('scroll', ST.update);
+      var lraf = function(t){ lenis.raf(t * 1000); };
+      G.ticker.add(lraf); G.ticker.lagSmoothing(0);
+      off.push(function(){ G.ticker.remove(lraf); });
+    } else {
+      var lid = 0, lloop = function(t){ lenis.raf(t); lid = requestAnimationFrame(lloop); };
+      lid = requestAnimationFrame(lloop);
+      off.push(function(){ cancelAnimationFrame(lid); });
+    }
+    on(doc, 'click', function(e){
+      var a = e.target.closest && e.target.closest('a[href^="#"]'), t = a && a.getAttribute('href').length > 1 && doc.querySelector(a.getAttribute('href'));
+      if(!t) return;
+      e.preventDefault();
+      lenis.scrollTo(t, { offset: -(parseFloat(win.getComputedStyle(t).scrollMarginTop) || 0), duration: 1.4 });
+    });
+    off.push(function(){ lenis.destroy(); });
   }
 
   /* ---- parallax, reveals, nav, sticky bar ---- */
@@ -1120,7 +1256,7 @@ function initLanding(page, opts){
   on(win, 'scroll', req, { passive: true });
   on(win, 'resize', relayout);
   if(win.ResizeObserver){ var ro = new ResizeObserver(relayout); ro.observe(page); off.push(function(){ ro.disconnect(); }); }
-  if(doc.fonts && doc.fonts.ready) doc.fonts.ready.then(relayout);
+  if(doc.fonts && doc.fonts.ready) doc.fonts.ready.then(function(){ relayout(); if(ST) ST.refresh(); });
   layoutRoute(); frame();
 
   /* ---- form ---- */
