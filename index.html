@@ -1384,7 +1384,8 @@ function initLanding(page, opts){
   /* ---- smooth scrolling (mouse and trackpad only; touch keeps native scrolling) ---- */
   var lenis = null;
   if(!reduce && win.Lenis && win.matchMedia && win.matchMedia('(pointer: fine)').matches){
-    lenis = new win.Lenis({ lerp: 0.1 });
+    /* The chat widget scrolls its own message list, so wheel events inside it are left alone. */
+    lenis = new win.Lenis({ lerp: 0.1, prevent: function(node){ return !!(node && node.closest && node.closest('.bpChatContainer')); } });
     if(G){
       if(ST) lenis.on('scroll', ST.update);
       var lraf = function(t){ lenis.raf(t * 1000); };
@@ -1648,8 +1649,12 @@ function initLanding(page, opts){
     var vh = win.innerHeight, hr = heroEl.getBoundingClientRect();
     nav.classList.toggle('scrolled', hr.top < -24);
     reveals.forEach(function(el){ if(!el.classList.contains('in') && el.getBoundingClientRect().top < vh * 0.88) el.classList.add('in'); });
-    bar.classList.toggle('show', hr.bottom < 0 && contact.getBoundingClientRect().top > vh);
+    var barOn = hr.bottom < 0 && contact.getBoundingClientRect().top > vh;
+    bar.classList.toggle('show', barOn);
+    var fab = barOn && win.innerWidth < 768 ? (bar.offsetHeight + 12) + 'px' : '24px';
+    if(fab !== lastFab){ doc.documentElement.style.setProperty('--sk-fab-bottom', fab); lastFab = fab; }
   }
+  var lastFab = '';
   var ticking = false;
   function frame(){ ticking = false; updateFlags(); updateRoute(); updatePar(); }
   function req(){ if(!ticking){ ticking = true; win.requestAnimationFrame(frame); } }
@@ -1747,6 +1752,28 @@ initLanding(document.querySelector('.lp'), {
   },
   onSuccess: function(){ if (window.gtag) window.gtag('event', 'generate_lead'); }
 });
+</script>
+
+<!-- Botpress webchat: Kobi, the SmartKav assistant -->
+<script src="https://cdn.botpress.cloud/webchat/v5.0/inject.js"></script>
+<script src="https://files.bpcontent.cloud/2026/10/21/21/20261021210632-WAPRBUU7.js" defer></script>
+<script>
+/* Kobi sits bottom-left, away from the route line on the right, and rises above the mobile demo bar while it shows.
+   The widget renders inside an open shadow root, so the rules are added there once it appears. --sk-fab-bottom is
+   set by the page (see updateFlags) and inherits into the shadow root. */
+(function(){
+  var css = ''
+    + '.bpFabWrapper{left:24px!important;right:auto!important;bottom:var(--sk-fab-bottom,24px)!important;transition:bottom 320ms cubic-bezier(.2,.8,.2,1)}'
+    + '.bpFABMessagePreview{left:24px!important;right:auto!important;bottom:calc(var(--sk-fab-bottom,24px) + 80px)!important;transition:bottom 320ms cubic-bezier(.2,.8,.2,1)}'
+    + '@media (min-width:768px){.bpFABWebchat{left:24px!important;right:auto!important;transform-origin:0% 100%!important}}';
+  var tries = 0, timer = setInterval(function(){
+    var host = document.querySelector('.bpChatContainer #fab-root'), sr = host && host.shadowRoot;
+    if(sr && !sr.querySelector('style[data-sk]')){
+      var s = document.createElement('style'); s.setAttribute('data-sk', ''); s.textContent = css; sr.appendChild(s);
+    }
+    if((sr && sr.querySelector('style[data-sk]')) || ++tries > 80) clearInterval(timer);
+  }, 250);
+})();
 </script>
 </body>
 </html>
