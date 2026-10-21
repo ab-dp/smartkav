@@ -345,16 +345,24 @@ html.lenis,html.lenis body{height:auto}
 /* group chat */
 .chat{grid-column:1 / -1;margin-top:40px;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#EFEAE0;box-shadow:0 30px 60px -40px rgba(14,17,22,.35)}
 .chat-top{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--line)}
-.chat-av{display:grid;place-items:center;flex:none;width:38px;height:38px;border-radius:50%;background:var(--ink);color:var(--signal);font-weight:600}
 .chat-t{display:flex;flex-direction:column;flex:1;min-width:0;line-height:1.25}
-.chat-t b{font-size:16px;font-weight:600}
+.chat-t b{font-family:var(--display);font-size:20px;font-weight:700}
 .chat-t small{font-size:13px;color:var(--muted-ink)}
 .chat-unread{display:grid;place-items:center;min-width:30px;height:24px;padding:0 8px;border-radius:12px;background:var(--signal);font-size:13px;font-weight:600}
-.chat-msgs{display:flex;flex-direction:column;gap:8px;padding:18px 16px 22px;background-image:radial-gradient(rgba(14,17,22,.07) 1px,transparent 1px);background-size:14px 14px}
-.bub{align-self:flex-start;max-width:82%;padding:7px 12px 5px;border-radius:12px;border-start-start-radius:3px;background:var(--surface);font-size:15px;line-height:1.45;box-shadow:0 1px 0 rgba(14,17,22,.08)}
-.bub b{display:block;font-size:13px;font-weight:600;color:var(--c,var(--success))}
-.bub time{display:block;margin-top:1px;font-size:11px;color:var(--muted-ink);text-align:left}
-.bub.out{align-self:flex-end;background:#FFF0C7;border-start-start-radius:12px;border-start-end-radius:3px}
+.inbox{display:flex;flex-direction:column;padding:6px 0;background:var(--surface)}
+.ib{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--surface)}
+.ib + .ib .ib-b,.ib + .ib .ib-s{box-shadow:0 -1px 0 var(--line)}
+.ib-av{display:grid;place-items:center;flex:none;width:42px;height:42px;border-radius:50%;background:var(--c,var(--ink));color:#fff;font-weight:600;font-size:16px}
+.ib-av.ib-grp{background:var(--ink);color:var(--signal)}
+.ib-av.ib-taxi{background:#FFF0C7;font-size:20px}
+.ib-b{display:flex;flex-direction:column;flex:1;min-width:0;padding-block:2px;line-height:1.35}
+.ib-b b{display:flex;align-items:baseline;gap:8px;font-size:15px;font-weight:600}
+.ib-b em{font-style:normal;font-size:11.5px;font-weight:500;color:var(--muted-ink)}
+.ib-m{overflow:hidden;font-size:14px;color:var(--body);white-space:nowrap;text-overflow:ellipsis}
+.ib-m.ib-miss{color:var(--error)}
+.ib-s{display:flex;flex-direction:column;align-items:flex-end;gap:4px;align-self:stretch;justify-content:center;padding-block:2px}
+.ib-s time{font-size:11.5px;font-weight:600;color:#1A7F5A}
+.ib-n{display:grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:#1A7F5A;color:#fff;font-size:11.5px;font-weight:600}
 @media (min-width:768px){
   .pain{grid-column:1 / span 6;grid-row:2;grid-template-columns:minmax(0,1fr)}
   .pain li{padding-inline-start:0}
@@ -513,7 +521,8 @@ html.lenis,html.lenis body{height:auto}
   .sv{max-width:none}
   .chat{order:-1;margin-top:32px}
   .pain-sec .head{order:-2}
-  .bub{font-size:14.5px}
+  .ib{padding:9px 12px;gap:10px}
+  .ib-av{width:38px;height:38px}
   .scen li{grid-template-columns:minmax(0,1fr)}
   .scen h3,.scen p{grid-column:1}
   .scen p{margin-top:10px;font-size:17px}
@@ -555,7 +564,7 @@ html.lenis,html.lenis body{height:auto}
     <div class="hero-text">
       <h1 id="hero-title"><span class="hl">נרשמים לנסיעות בקליק.</span><span class="h1-2"><bdi dir="ltr">SmartKav</bdi> עושה את כל השאר.</span></h1>
       <div class="hero-row">
-        <p class="hero-sub">העובדים נרשמים מהנייד. <bdi dir="ltr">SmartKav</bdi> מקבצת את הבקשות לנסיעות משותפות לפי שעה, כיוון ועיר, ואתם מקבלים הזמנה מוכנה לשלוח לחברת ההסעות. בלי טבלה, ובלי קבוצת וואטסאפ שמתפוצצת בעשר בלילה.</p>
+        <p class="hero-sub">העובדים נרשמים מהנייד. <bdi dir="ltr">SmartKav</bdi> מקבצת את הבקשות לנסיעות משותפות לפי שעה, כיוון ועיר, ואתם מקבלים הזמנה מוכנה לשלוח לחברת ההסעות. בלי טבלה, ובלי עשרות הודעות וואטסאפ בעשר בלילה.</p>
         <div class="hero-actions">
           <a class="btn hero-cta" href="#contact"><span>לתיאום הדגמה</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></a>
           <a class="tlink" href="#how">איך זה עובד</a>
@@ -582,29 +591,28 @@ html.lenis,html.lenis body{height:auto}
 <section class="sec pain-sec" aria-labelledby="pain-title">
   <div class="wrap grid reveal">
     <div class="head">
-      <p class="kicker">חמישי, 22:40 · 38 הודעות חדשות בקבוצת ״הסעות מוקד״</p>
-      <h2 class="h2" id="pain-title">מכירים את קבוצת ההסעות?</h2>
+      <p class="kicker">חמישי, 22:40 · 38 הודעות שלא נקראו</p>
+      <h2 class="h2" id="pain-title">כל ערב, אותו בלגן בוואטסאפ</h2>
     </div>
     <ul class="pain">
-      <li><h3>ערב שלם מול אקסל</h3><p>מעתיקים הודעות מהקבוצה לטבלה, ממיינים לפי שעה ועיר, בודקים פעמיים. ומישהו בכל זאת נשכח.</p></li>
+      <li><h3>ערב שלם מול אקסל</h3><p>אוספים בקשות מהקבוצה, מהודעות פרטיות ומשיחות שלא נענו, מעתיקים לטבלה וממיינים לפי שעה ועיר. ומישהו בכל זאת נשכח.</p></li>
       <li><h3>שתי מוניות לאותו רחוב</h3><p>דנה ואבי גרים חמש דקות זה מזה ויוצאים באותה שעה, אבל נוסעים במוניות נפרדות. בסוף החודש רואים את זה בחשבונית.</p></li>
       <li><h3>״הוזמנה לי מונית?״ בשתיים בלילה</h3><p>העובד לא רואה שום סטטוס, אז הוא שולח הודעה. ואחרי עשר דקות עוד אחת.</p></li>
-      <li><h3>״אני גם!!״</h3><p>הרשמות כפולות, תיקונים ו״בעצם רק חזור״, קבורים בתוך שרשור של 60 הודעות.</p></li>
+      <li><h3>״בעצם רק חזור״</h3><p>הרשמות כפולות ותיקונים של הרגע האחרון, מפוזרים בין הקבוצה, הצ׳אטים הפרטיים ותחנת המוניות שמחכה לתשובה עד 23:00.</p></li>
     </ul>
     <div class="chat" aria-hidden="true">
-      <div class="chat-top"><span class="chat-av">ה</span><span class="chat-t"><b>הסעות מוקד</b><small>46 משתתפים</small></span><span class="chat-unread">38</span></div>
-      <ol class="chat-msgs">
-        <li class="bub" style="--c:#0F6B5E"><b>מיכל</b>מי מזמין לי מונית ל-16:00 מחר?<time>22:31</time></li>
-        <li class="bub" style="--c:#B4461E"><b>אבי</b>גם אני 16:00, רמת גן<time>22:32</time></li>
-        <li class="bub" style="--c:#3B5BA9"><b>דנה</b>אני גם!!<time>22:32</time></li>
-        <li class="bub" style="--c:#7A4FA0"><b>יוסי</b>מה עם חזור? אני מסיים ב-01:00<time>22:34</time></li>
-        <li class="bub out">רגע, מסדר טבלה<time>22:35</time></li>
-        <li class="bub" style="--c:#9A6A00"><b>נועה</b>בעצם אני רק חזור, סליחה<time>22:37</time></li>
-        <li class="bub" style="--c:#3B5BA9"><b>דנה</b>נרשמתי פעמיים? 😅<time>22:38</time></li>
-        <li class="bub" style="--c:#0F6B5E"><b>עומר</b>הזמנתם לי? 🙏<time>22:40</time></li>
+      <div class="chat-top"><span class="chat-t"><b>צ׳אטים</b><small>חמישי, 22:40</small></span><span class="chat-unread">38</span></div>
+      <ol class="inbox">
+        <li class="ib"><span class="ib-av" style="--c:#0F6B5E">ע</span><span class="ib-b"><b>עומר</b><span class="ib-m">הזמנתם לי? אין לי שום אישור</span></span><span class="ib-s"><time>22:40</time><span class="ib-n">3</span></span></li>
+        <li class="ib"><span class="ib-av" style="--c:#3B5BA9">ד</span><span class="ib-b"><b>דנה</b><span class="ib-m">כתבתי בקבוצה, לא בטוחה שראית 🙏</span></span><span class="ib-s"><time>22:39</time><span class="ib-n">2</span></span></li>
+        <li class="ib"><span class="ib-av" style="--c:#7A4FA0">י</span><span class="ib-b"><b>יוסי</b><span class="ib-m ib-miss">📞 שיחה שלא נענתה</span></span><span class="ib-s"><time>22:38</time><span class="ib-n">2</span></span></li>
+        <li class="ib"><span class="ib-av" style="--c:#9A6A00">נ</span><span class="ib-b"><b>נועה</b><span class="ib-m">היי, מחר אני צריכה רק חזור, מסיימת ב-01:00</span></span><span class="ib-s"><time>22:36</time><span class="ib-n">1</span></span></li>
+        <li class="ib"><span class="ib-av ib-taxi">🚕</span><span class="ib-b"><b>תחנת המוניות<em>ספק</em></b><span class="ib-m">כמה נוסעים מחר ב-16:00? צריך לדעת עד 23:00</span></span><span class="ib-s"><time>22:35</time><span class="ib-n">2</span></span></li>
+        <li class="ib"><span class="ib-av" style="--c:#B4461E">א</span><span class="ib-b"><b>אבי</b><span class="ib-m">היי, אני צריך הסעה למשמרת של מחר בערב, 18:00</span></span><span class="ib-s"><time>22:33</time><span class="ib-n">1</span></span></li>
+        <li class="ib"><span class="ib-av ib-grp">ה</span><span class="ib-b"><b>הסעות מוקד<em>קבוצה · 46</em></b><span class="ib-m">מיכל: מי מזמין לי מונית ל-16:00 מחר?</span></span><span class="ib-s"><time>22:31</time><span class="ib-n">27</span></span></li>
       </ol>
     </div>
-    <p class="pain-out"><bdi dir="ltr">SmartKav</bdi> מחליפה את הקבוצה, את הטבלה <mark>ואת הטלפונים בלילה.</mark></p>
+    <p class="pain-out"><bdi dir="ltr">SmartKav</bdi> מחליפה את הקבוצה, את ההודעות הפרטיות, את הטבלה <mark>ואת הטלפונים בלילה.</mark></p>
   </div>
 </section>
 
@@ -1333,20 +1341,24 @@ function initLanding(page, opts){
   if(G && ST && !reduce){
     if(win.innerWidth >= 1024 && win.innerHeight >= 700) page.classList.add('pinmode');
 
-    /* Group chat: messages pile in, keep fidgeting, and drift apart as the section scrolls away. */
-    var bubs = $$('.bub'), unread = $('.chat-unread');
-    if(bubs.length){
-      G.set(bubs, { autoAlpha: 0, y: 18, scale: 0.96 });
+    /* Chat inbox: the group, private messages, the taxi company and a missed call land one after another
+       (oldest first, newest on top), keep fidgeting, and drift apart as the section scrolls away. */
+    var rows = $$('.ib'), unread = $('.chat-unread');
+    if(rows.length){
+      var u = { n: 0, extra: 0 }, tot = 0, showUnread = function(){ unread.textContent = Math.round(u.n + u.extra); };
+      G.set(rows, { autoAlpha: 0, y: -14 });
+      showUnread();
       ST.create({ trigger: '.chat', start: 'top 78%', once: true, onEnter: function(){
-        G.to(bubs, { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, ease: 'back.out(1.6)', stagger: 0.16, onComplete: function(){
-          bubs.forEach(function(b, i){ G.to(b, { y: (i % 2 ? 1 : -1) * G.utils.random(2, 4), duration: G.utils.random(1.8, 3), ease: 'sine.inOut', yoyo: true, repeat: -1 }); });
-        } });
+        rows.slice().reverse().forEach(function(r, i){
+          var n = +(r.querySelector('.ib-n') || {}).textContent || 0;
+          G.to(r, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'back.out(1.6)', delay: i * 0.22, onStart: function(){ tot += n; G.to(u, { n: tot, duration: 0.3, overwrite: 'auto', onUpdate: showUnread }); },
+            onComplete: function(){ G.to(r, { y: (i % 2 ? 1 : -1) * G.utils.random(1.5, 3), duration: G.utils.random(1.8, 3), ease: 'sine.inOut', yoyo: true, repeat: -1 }); } });
+        });
       } });
-      bubs.forEach(function(b){
-        G.to(b, { x: G.utils.random(-22, 22), rotation: G.utils.random(-2.5, 2.5), ease: 'none', scrollTrigger: { trigger: '.chat', start: 'center 55%', end: 'bottom top', scrub: true } });
+      rows.forEach(function(r){
+        G.to(r, { x: G.utils.random(-14, 14), rotation: G.utils.random(-1.6, 1.6), ease: 'none', scrollTrigger: { trigger: '.chat', start: 'center 55%', end: 'bottom top', scrub: true } });
       });
-      var u = { n: 38 };
-      G.to(u, { n: 52, ease: 'none', onUpdate: function(){ unread.textContent = Math.round(u.n); }, scrollTrigger: { trigger: '.pain-sec', start: 'top 60%', end: 'bottom 40%', scrub: true } });
+      G.to(u, { extra: 14, ease: 'none', onUpdate: showUnread, scrollTrigger: { trigger: '.pain-sec', start: 'top 40%', end: 'bottom 40%', scrub: true } });
     }
 
     /* How it works: a short animation per step, played when its station lights up. */
