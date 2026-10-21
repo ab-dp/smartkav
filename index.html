@@ -39,8 +39,8 @@ html.lenis,html.lenis body{height:auto}
 
 /* hero intro: hidden until the script splits and plays it (the head script adds .js-intro only when motion is allowed) */
 .js-intro .hero h1,.js-intro .hero-row,.js-intro .trust,.js-intro .hero-board{visibility:hidden}
-.hero h1 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
-.hero h1 .wi{display:inline-block;will-change:transform}
+.lp .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
+.lp .wi{display:inline-block;will-change:transform}
 
 .lp{--ink:#0E1116;--ink-2:#1A1F27;--paper:#F6F4EF;--surface:#FFFFFF;--line:#E4E0D8;--muted-ink:#575D68;--body:#3B4048;--field:#8B8780;--sk:#E3E1DC;--signal:#FFB000;--signal-deep:#E39C00;--success:#0F6B5E;--error:#C2341F;--ease:cubic-bezier(.2,.8,.2,1);--sec:clamp(88px,10vw,150px);--display:"Rubik",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;--sans:"IBM Plex Sans Hebrew",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;--dim:rgba(246,244,239,.72);--hair-d:rgba(246,244,239,.14);
   position:relative;overflow-x:clip;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.7;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
@@ -316,6 +316,12 @@ html.lenis,html.lenis body{height:auto}
 .success.play .ck path{animation:draw 450ms var(--ease) 500ms forwards}
 .lp:not(.motion) .ck circle,.lp:not(.motion) .ck path{stroke-dashoffset:0}
 @keyframes draw{to{stroke-dashoffset:0}}
+.s-road{position:relative;display:flex;align-items:center;width:100%;max-width:24em;height:64px;overflow:hidden}
+.s-taxi{position:absolute;top:50%;right:78px;width:40px;height:25px;margin-top:-12.5px;opacity:0}
+.s-taxi .cab-car{fill:var(--signal);stroke:var(--ink);stroke-width:1.5}
+.s-taxi .cab-win{fill:var(--ink-2)}
+.success.play .s-taxi{animation:drive 2.6s cubic-bezier(.45,0,.7,.2) .9s forwards}
+@keyframes drive{0%{opacity:0;transform:translateX(12px)}15%{opacity:1;transform:none}85%{opacity:1}100%{opacity:0;transform:translateX(-320px)}}
 .s-text{font-family:var(--display);font-weight:700;font-size:clamp(26px,2.6vw,36px);line-height:1.25}
 .s-text:focus{outline:none}
 
@@ -473,8 +479,17 @@ html.lenis,html.lenis body{height:auto}
 .pilot cite{display:block;margin-top:14px;font-style:normal;font-size:15px;font-weight:500;color:var(--muted-ink)}
 .faq a{text-decoration:underline;text-underline-offset:4px}
 
+/* founder */
+.why-sec{background:var(--paper)}
+.why-text{grid-column:1 / span 9;margin-top:clamp(28px,3.5vw,44px);font-family:var(--display);font-weight:600;font-size:clamp(24px,2.5vw,36px);line-height:1.45;letter-spacing:-.01em;text-wrap:pretty}
+.why-sig{grid-column:1 / span 9;display:flex;align-items:center;gap:14px;margin-top:clamp(28px,3vw,40px)}
+.why-av{display:grid;place-items:center;flex:none;width:52px;height:52px;border-radius:50%;background:var(--ink);color:var(--signal);font-family:var(--display);font-weight:700;font-size:22px}
+.why-sig b{display:block;font-size:17px;font-weight:600;line-height:1.3}
+.why-sig small{display:block;font-size:14px;color:var(--muted-ink)}
+
 /* faq */
-.faq-sec{background:var(--paper)}
+.faq-sec{background:var(--surface)}
+.faq details p{overflow:hidden}
 .faq{grid-column:1 / span 9;margin-top:clamp(40px,5vw,64px);border-top:1px solid var(--line)}
 .faq details{border-bottom:1px solid var(--line)}
 .faq summary{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:44px;padding-block:20px;font-family:var(--display);font-weight:700;font-size:clamp(19px,1.7vw,23px);line-height:1.3;cursor:pointer;list-style:none}
@@ -506,7 +521,7 @@ html.lenis,html.lenis body{height:auto}
   .ba-arrow{transform:rotate(-90deg)}
   .crit{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:28px}
   .parts{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .pain-out,.pilot,.faq{grid-column:1 / -1}
+  .pain-out,.pilot,.faq,.why-text,.why-sig{grid-column:1 / -1}
   .nclock{grid-column:1 / -1;grid-row:auto;justify-self:start;align-self:start;margin-top:32px;text-align:right}
   .nc-l{align-items:flex-start}
 }
@@ -882,6 +897,19 @@ html.lenis,html.lenis body{height:auto}
   </div>
 </section>
 
+<section class="sec why-sec" aria-labelledby="why-title">
+  <div class="wrap grid reveal">
+    <div class="head">
+      <h2 class="h2" id="why-title">למה בניתי את זה</h2>
+    </div>
+    <p class="why-text">ניהלתי מוקד שעבד גם בסופי שבוע ובחגים, וחלק מהעבודה שלי היה לסדר לעובדים מוניות והסעות. כל שבוע מחדש: הודעות בוואטסאפ, טבלאות אקסל, ובדיקה אחרונה בעשר בלילה לפני ששולחים לתחנה. זה אכל לי שעות שלא היו לי. חיפשתי מערכת שתעשה את זה במקומי ולא מצאתי, אז בניתי אחת.</p>
+    <div class="why-sig">
+      <span class="why-av" aria-hidden="true">א</span>
+      <span><b>אלון ברגר</b><small>מייסד <bdi dir="ltr">SmartKav</bdi></small></span>
+    </div>
+  </div>
+</section>
+
 <section class="sec faq-sec" aria-labelledby="faq-title">
   <div class="wrap grid reveal">
     <div class="head">
@@ -901,6 +929,7 @@ html.lenis,html.lenis body{height:auto}
 <section class="sec contact" id="contact" aria-labelledby="contact-title">
   <div class="wrap grid reveal">
     <div class="c-intro">
+      <p class="kicker">התחנה האחרונה</p>
       <h2 class="h2" id="contact-title">רוצים לראות איך זה ייראה אצלכם?</h2>
       <p class="c-text">השאירו פרטים ואחזור אליכם בעצמי. בהדגמה קצרה נעבור על הטלפון של העובד ועל המסך שלכם, ונבדוק יחד כמה נסיעות וכמה ערבים מול אקסל אפשר לחסוך אצלכם.</p>
       <div class="sig">
@@ -961,7 +990,7 @@ html.lenis,html.lenis body{height:auto}
           <button class="btn submit" type="submit"><span class="btn-label">לתיאום הדגמה</span></button>
         </form>
         <div class="success" hidden>
-          <svg class="ck" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="29.5"></circle><path d="M20 33l8.5 8.5L45 24"></path></svg>
+          <div class="s-road" aria-hidden="true"><svg class="ck" viewBox="0 0 64 64" focusable="false"><circle cx="32" cy="32" r="29.5"></circle><path d="M20 33l8.5 8.5L45 24"></path></svg><svg class="s-taxi" viewBox="-16 -10 32 20" focusable="false"><rect class="cab-car" x="-14" y="-8.5" width="28" height="17" rx="5"></rect><rect class="cab-win" x="-9.5" y="-5.5" width="6.5" height="11" rx="2"></rect></svg></div>
           <p class="s-text" tabindex="-1">תודה, הפרטים התקבלו. אחזור אליכם בהקדם לתיאום מועד ההדגמה.</p>
         </div>
       </div>
@@ -1547,6 +1576,52 @@ function initLanding(page, opts){
         .to(ncB, { yPercent: 0, duration: 1, ease: 'power2.inOut' }, 0.5)
         .to(ncNote, { autoAlpha: 1, y: 0, duration: 0.5 }, 1.3);
     }
+
+    /* Pilot quote rises word by word; the founder's note lights up word by word as it is read. */
+    var splitWords = function(el){
+      Array.prototype.slice.call(el.childNodes).forEach(function(n){
+        if(n.nodeType !== 3) return;
+        var frag = doc.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(function(t){
+          if(!t) return;
+          frag.appendChild(/^\s+$/.test(t) ? doc.createTextNode(t) : wordSpan(doc.createTextNode(t)));
+        });
+        el.replaceChild(frag, n);
+      });
+      return Array.prototype.slice.call(el.querySelectorAll('.wi'));
+    };
+    var quote = $('.pilot blockquote');
+    if(quote){
+      var qWords = splitWords(quote);
+      G.set(qWords, { yPercent: 110 });
+      ST.create({ trigger: quote, start: 'top 80%', once: true, onEnter: function(){
+        G.to(qWords, { yPercent: 0, duration: 0.9, ease: 'expo.out', stagger: 0.025 });
+        G.from('.pilot figcaption', { autoAlpha: 0, y: 10, duration: 0.6, delay: 0.6 });
+      } });
+    }
+    var why = $('.why-text');
+    if(why){
+      var wWords = splitWords(why);
+      G.fromTo(wWords, { opacity: 0.16 }, { opacity: 1, stagger: 0.05, ease: 'none', scrollTrigger: { trigger: why, start: 'top 78%', end: 'bottom 45%', scrub: true } });
+    }
+  }
+
+  /* ---- FAQ: answers slide open and closed instead of jumping ---- */
+  if(G && !reduce){
+    $$('.faq details').forEach(function(d){
+      var s = d.querySelector('summary'), a = d.querySelector('p');
+      if(!s || !a) return;
+      on(s, 'click', function(e){
+        e.preventDefault();
+        if(d.open){
+          G.to(a, { height: 0, paddingBottom: 0, opacity: 0, duration: 0.35, ease: 'power2.inOut', overwrite: true,
+            onComplete: function(){ d.open = false; G.set(a, { clearProps: 'height,paddingBottom,opacity' }); } });
+        } else {
+          d.open = true;
+          G.fromTo(a, { height: 0, paddingBottom: 0, opacity: 0 }, { height: 'auto', paddingBottom: 22, opacity: 1, duration: 0.45, ease: 'power2.out', overwrite: true, clearProps: 'height,paddingBottom,opacity' });
+        }
+      });
+    });
   }
 
   /* ---- parallax, reveals, nav, sticky bar ---- */
