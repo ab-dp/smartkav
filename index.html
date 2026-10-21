@@ -175,7 +175,7 @@ html,body{margin:0;background:#0E1116}
 .phone-wrap{justify-self:start;z-index:2;width:var(--pw);margin-bottom:clamp(20px,3vw,40px)}
 .motion .par{will-change:transform}
 .sc-cap{margin-top:14px;font-size:14px;color:var(--muted-ink)}
-.parts{grid-column:1 / -1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px;row-gap:48px;margin-top:clamp(40px,5vw,64px)}
+.parts{grid-column:1 / -1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px;row-gap:48px;margin-top:clamp(40px,5vw,64px)}
 .part h3{margin-bottom:16px;font-family:var(--display);font-weight:700;font-size:clamp(24px,2.2vw,32px);line-height:1.15}
 .feat{border-top:1px solid var(--line)}
 .feat li{display:flex;align-items:baseline;gap:14px;padding-block:14px;border-bottom:1px solid var(--line);font-size:18px;line-height:1.5}
@@ -303,6 +303,70 @@ html,body{margin:0;background:#0E1116}
 .foot-links a{text-decoration:none}
 .foot-links a:hover{color:var(--paper);text-decoration:underline;text-underline-offset:4px}
 
+/* trust line */
+.trust{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:22px;font-size:15px;color:rgba(246,244,239,.62)}
+.trust li{display:flex;align-items:center;gap:10px}
+.trust li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--signal)}
+
+/* problem */
+.pain-sec{background:var(--surface)}
+.pain{grid-column:1 / -1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px;margin-top:clamp(40px,5vw,64px);border-top:1px solid var(--line)}
+.pain li{padding:clamp(22px,2.6vw,32px) 0 clamp(22px,2.6vw,32px) clamp(16px,3vw,48px);border-bottom:1px solid var(--line)}
+.pain h3{margin-bottom:8px;font-family:var(--display);font-weight:700;font-size:clamp(22px,2vw,28px);line-height:1.2}
+.pain p{max-width:26em;color:var(--body);text-wrap:pretty}
+.pain-out{grid-column:1 / span 8;margin-top:clamp(32px,4vw,48px);font-family:var(--display);font-weight:700;font-size:clamp(22px,2.2vw,30px);line-height:1.3}
+.pain-out b{color:var(--signal-deep)}
+
+/* smart grouping */
+.ba{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:stretch;gap:24px;margin-top:clamp(48px,6vw,80px)}
+.ba-col{padding:22px 24px 24px;border:1px solid rgba(246,244,239,.12);border-radius:6px;background:rgba(0,0,0,.3)}
+.ba-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(246,244,239,.08);font-size:15px;font-weight:600}
+.ba-h span{font-weight:500;color:rgba(246,244,239,.6)}
+.reqs{display:flex;flex-wrap:wrap;gap:8px}
+.reqs li{padding:6px 12px;border:1px solid rgba(246,244,239,.18);border-radius:2em;font-size:13.5px;color:rgba(246,244,239,.8);white-space:nowrap}
+.ba-arrow{align-self:center;width:44px;height:44px;color:var(--signal)}
+.ba-arrow path{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.rides{display:flex;flex-direction:column;gap:10px}
+.rides li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:4px;background:var(--ink-2);border-inline-start:3px solid var(--signal);font-size:15px}
+.rides b{font-weight:600}
+.rides span{flex:none;font-size:13.5px;color:rgba(246,244,239,.65)}
+.crit{grid-column:1 / -1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:24px;margin-top:clamp(40px,5vw,56px)}
+.crit li{padding-top:16px;border-top:1px solid var(--hair-d)}
+.crit h3{font-family:var(--display);font-weight:700;font-size:clamp(20px,1.8vw,24px);line-height:1.2;color:var(--paper)}
+.crit p{margin-top:6px;font-size:16px;line-height:1.6;color:var(--dim)}
+
+/* benefits */
+.ben-sec{background:var(--paper)}
+.stats{grid-column:1 / -1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px;margin-top:clamp(48px,6vw,80px)}
+.stat{padding-top:20px;border-top:2px solid var(--ink)}
+.stat-n{font-family:var(--display);font-weight:800;font-size:clamp(40px,4.6vw,68px);line-height:1;letter-spacing:-.02em}
+.stat-l{margin-top:12px;font-weight:600;font-size:19px;line-height:1.35}
+.stat p{margin-top:8px;max-width:22em;font-size:16px;line-height:1.6;color:var(--body)}
+.ben-note{grid-column:1 / -1;margin-top:20px;font-size:14px;color:var(--muted-ink)}
+.mid-cta{grid-column:1 / -1;display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px;margin-top:clamp(40px,5vw,64px)}
+.mid-cta p{font-size:18px;font-weight:500}
+
+/* pilot */
+.pilot-sec{background:var(--surface)}
+.pilot{grid-column:1 / span 9;margin-top:clamp(32px,4vw,48px);padding-inline-start:clamp(20px,3vw,40px);border-inline-start:3px solid var(--signal)}
+.pilot blockquote{margin:0;font-family:var(--display);font-weight:600;font-size:clamp(22px,2.2vw,30px);line-height:1.4}
+.pilot cite{display:block;margin-top:14px;font-style:normal;font-size:15px;font-weight:500;color:var(--muted-ink)}
+.faq a{text-decoration:underline;text-underline-offset:4px}
+
+/* faq */
+.faq-sec{background:var(--paper)}
+.faq{grid-column:1 / span 9;margin-top:clamp(40px,5vw,64px);border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:44px;padding-block:20px;font-family:var(--display);font-weight:700;font-size:clamp(19px,1.7vw,23px);line-height:1.3;cursor:pointer;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";flex:none;font-weight:400;font-size:1.3em;line-height:1;transition:transform 220ms var(--ease)}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{max-width:40em;padding-bottom:22px;color:var(--body);text-wrap:pretty}
+
+.field select{width:100%;height:54px;padding:0 16px;border:1px solid var(--field);border-radius:3px;background:var(--surface);color:var(--ink);font:inherit;font-size:17px;transition:border-color 160ms var(--ease)}
+.field select:hover{border-color:var(--ink)}
+.lp select:focus-visible{outline:3px solid var(--signal);outline-offset:2px;box-shadow:0 0 0 2px var(--ink)}
+
 .mbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:45;padding:12px 20px calc(12px + env(safe-area-inset-bottom));background:var(--paper);box-shadow:0 -1px 0 var(--line);transform:translateY(110%);visibility:hidden;transition:transform 320ms var(--ease),visibility 0s linear 320ms}
 .mbar.show{transform:none;visibility:visible;transition:transform 320ms var(--ease)}
 .mbar .btn{width:100%}
@@ -318,6 +382,11 @@ html,body{margin:0;background:#0E1116}
   .head,.lede{grid-column:1 / span 11}
   .c-intro,.c-form{grid-column:1 / -1}
   .c-form{max-width:640px;margin-top:56px}
+  .ba{grid-template-columns:minmax(0,1fr)}
+  .ba-arrow{transform:rotate(-90deg)}
+  .crit{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:28px}
+  .parts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pain-out,.pilot,.faq{grid-column:1 / -1}
 }
 @media (max-width:767px){
   .lp .wrap{padding-inline:20px}
@@ -348,6 +417,13 @@ html,body{margin:0;background:#0E1116}
   .station{top:12px;right:-16px;width:12px;height:12px}
   .sc-stage{padding:32px 16px 0}
   .parts{grid-template-columns:minmax(0,1fr)}
+  .pain{grid-template-columns:minmax(0,1fr)}
+  .pain li{padding-inline-end:0}
+  .crit,.stats{grid-template-columns:minmax(0,1fr);row-gap:32px}
+  .ba-col{padding:16px 16px 18px}
+  .reqs li{font-size:12.5px;padding:5px 10px}
+  .rides li{font-size:14px}
+  .trust{font-size:14px}
   .scen li{grid-template-columns:minmax(0,1fr)}
   .scen h3,.scen p{grid-column:1}
   .scen p{margin-top:10px;font-size:17px}
@@ -389,15 +465,20 @@ html,body{margin:0;background:#0E1116}
     <div class="hero-text">
       <h1 id="hero-title"><span class="hl">נרשמים לנסיעות בקליק.</span><span class="h1-2"><bdi dir="ltr">SmartKav</bdi> עושה את כל השאר.</span></h1>
       <div class="hero-row">
-        <p class="hero-sub">העובדים נרשמים בקלות מהנייד, והמערכת מרכזת את בקשות הנסיעה, מקבצת אותן אוטומטית לפי תאריך, שעה, כיוון ועיר, והופכת אותן להזמנות מוכנות להעברה לחברת ההסעות או המוניות.</p>
+        <p class="hero-sub">העובדים נרשמים מהנייד, המערכת מקבצת את הבקשות אוטומטית לנסיעות משותפות לפי תאריך, שעה, כיוון ועיר, והמנהל מקבל הזמנות מוכנות להעברה לחברת ההסעות או המוניות. פחות שעות על אקסל ווואטסאפ, פחות מוניות חצי ריקות.</p>
         <div class="hero-actions">
           <a class="btn hero-cta" href="#contact"><span>לתיאום הדגמה</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></a>
           <a class="tlink" href="#how">איך זה עובד</a>
         </div>
       </div>
+      <ul class="trust">
+        <li>עובד עם חברת ההסעות הקיימת שלכם</li>
+        <li>הטמעה תוך 24 שעות</li>
+        <li>כבר פועל במוקד עם 45 עובדי משמרות</li>
+      </ul>
     </div>
     <div class="hero-board">
-      <div class="board" role="img" aria-label="המחשה: עובדים נרשמים מהנייד, המערכת מקבצת אותם לנסיעה ומחשבת סדר איסוף, ההזמנה נשלחת לחברת ההסעות והסטטוס מתעדכן עד שהנסיעה הושלמה">
+      <div class="board" role="img" aria-label="המחשה: עובדים נרשמים מהנייד, המערכת מקבצת אותם לנסיעה משותפת לפי שעה, כיוון ועיר, ההזמנה נשלחת לחברת ההסעות והסטטוס מתעדכן עד שהנסיעה הושלמה">
         <div class="board-top" aria-hidden="true"><span>נסיעות פעילות</span><span class="live"><i></i>מתעדכן אוטומטית</span></div>
         <div class="routes-body" aria-hidden="true">
           <svg class="map" viewBox="0 0 960 360" focusable="false"></svg>
@@ -405,6 +486,21 @@ html,body{margin:0;background:#0E1116}
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="sec pain-sec" aria-labelledby="pain-title">
+  <div class="wrap grid reveal">
+    <div class="head">
+      <h2 class="h2" id="pain-title">ככה זה נראה היום ברוב הארגונים</h2>
+    </div>
+    <ul class="pain">
+      <li><h3>רשימות באקסל ובוואטסאפ</h3><p>עובדים שולחים הודעות בקבוצה, מישהו מעתיק לטבלה, ותמיד יש מישהו שנשכח.</p></li>
+      <li><h3>שעות של סידור ידני</h3><p>המנהל מחלק עובדים לנסיעות לפי שעה, כיוון ועיר, בראש, כל יום מחדש.</p></li>
+      <li><h3>מוניות חצי ריקות</h3><p>בלי תמונה מרוכזת מזמינים יותר נסיעות ממה שצריך, והחשבונית בסוף החודש מראה את זה.</p></li>
+      <li><h3>טלפונים באמצע הלילה</h3><p>העובד לא יודע אם הוזמנה לו מונית, אז הוא מתקשר למנהל. ושוב.</p></li>
+    </ul>
+    <p class="pain-out"><bdi dir="ltr">SmartKav</bdi> מחליפה את כל זה <b>בתהליך אחד, מסודר ושקוף.</b></p>
   </div>
 </section>
 
@@ -418,6 +514,42 @@ html,body{margin:0;background:#0E1116}
       <li class="step"><span class="station" aria-hidden="true"></span><h3>קיבוץ אוטומטי</h3><p>בקשות לאותה משמרת, לאותו כיוון ולאותה עיר משובצות יחד לנסיעה אחת.</p></li>
       <li class="step"><span class="station" aria-hidden="true"></span><h3>הזמנה מרוכזת</h3><p>המנהל מעביר את ההזמנה המוכנה לחברת המוניות או ההסעות, והסטטוס מתעדכן אצל העובד.</p></li>
     </ol>
+  </div>
+</section>
+
+<section class="sec smart dark" aria-labelledby="smart-title">
+  <div class="wrap grid reveal">
+    <div class="head">
+      <h2 class="h2" id="smart-title">הקיבוץ החכם: מעשרות בקשות לכמה נסיעות</h2>
+    </div>
+    <p class="lede">המערכת מזהה לבד אילו בקשות יכולות לנסוע יחד ומשבצת אותן לנסיעה משותפת. המנהל לא מסדר כלום ידנית, הוא רק מאשר ושולח.</p>
+    <div class="ba" role="img" aria-label="דוגמה: 14 בקשות נסיעה נפרדות מקובצות אוטומטית ל-4 נסיעות משותפות">
+      <div class="ba-col" aria-hidden="true">
+        <div class="ba-h">לפני<span>14 בקשות נפרדות</span></div>
+        <ul class="reqs">
+          <li>דנה · רמת גן · 16:00</li><li>מיכל · חולון · 16:00</li><li>יוסי · תל אביב · 01:00</li><li>אבי · רמת גן · 16:00</li>
+          <li>שירן · בת ים · 01:00</li><li>עומר · חולון · 16:00</li><li>נועה · רמת גן · 16:00</li><li>ליאור · תל אביב · 01:00</li>
+          <li>תמר · בת ים · 01:00</li><li>רון · רמת גן · 16:00</li><li>גל · חולון · 16:00</li><li>עדי · תל אביב · 01:00</li>
+          <li>מאיה · בת ים · 01:00</li><li>איתי · תל אביב · 01:00</li>
+        </ul>
+      </div>
+      <svg class="ba-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>
+      <div class="ba-col" aria-hidden="true">
+        <div class="ba-h">אחרי<span>4 נסיעות משותפות</span></div>
+        <ul class="rides">
+          <li><b>הלוך · 16:00 · רמת גן</b><span>4 נוסעים</span></li>
+          <li><b>הלוך · 16:00 · חולון</b><span>3 נוסעים</span></li>
+          <li><b>חזור · 01:00 · תל אביב</b><span>4 נוסעים</span></li>
+          <li><b>חזור · 01:00 · בת ים</b><span>3 נוסעים</span></li>
+        </ul>
+      </div>
+    </div>
+    <ul class="crit">
+      <li><h3>תאריך</h3><p>כולל משמרות שחוצות חצות, ששויכות ליום הנכון.</p></li>
+      <li><h3>שעה</h3><p>לפי שעת תחילת המשמרת או שעת הסיום שלה.</p></li>
+      <li><h3>כיוון</h3><p>הלוך וחזור הם שתי נסיעות נפרדות.</p></li>
+      <li><h3>עיר</h3><p>עובדים מאותה עיר נוסעים יחד.</p></li>
+    </ul>
   </div>
 </section>
 
@@ -496,17 +628,59 @@ html,body{margin:0;background:#0E1116}
       <div class="part">
         <h3>לעובדים</h3>
         <ul class="feat">
-          <li>מעקב אחר סטטוס הבקשה בזמן אמת</li>
+          <li>הרשמה מהנייד בכמה שניות, עם כתובת ופרטים שמורים</li>
+          <li>מעקב אחר סטטוס הבקשה בזמן אמת: נקלטה, אושרה, הוזמנה</li>
           <li>עדכון במייל כשהנסיעה הוזמנה</li>
+          <li>כל הנסיעות שלי במקום אחד</li>
         </ul>
       </div>
       <div class="part">
         <h3>למנהלים</h3>
         <ul class="feat">
+          <li>ההרשמות מגיעות כבר מקובצות לנסיעות</li>
           <li>רק הבקשות שדורשות טיפול, במסך אחד</li>
+          <li>התראה על בקשות מאוחרות, וחסימה של הרשמות כפולות</li>
           <li>העתקת הזמנה וסימון קבוצה כטופלה, בשתי לחיצות</li>
         </ul>
       </div>
+      <div class="part">
+        <h3>לארגון</h3>
+        <ul class="feat">
+          <li>פחות נסיעות ופחות מוניות ריקות, כלומר חיסכון ישיר</li>
+          <li>תמונה מלאה של כל הנסיעות לפי תאריך, משמרת ועיר</li>
+          <li>כל עובד משויך לארגון שלו, וההרשמה פתוחה רק לעובדי הארגון</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec ben-sec" aria-labelledby="ben-title">
+  <div class="wrap grid reveal">
+    <div class="head">
+      <h2 class="h2" id="ben-title">מה הארגון מרוויח</h2>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-n">5 דק׳</div>
+        <div class="stat-l">במקום שעתיים ויותר בשבוע</div>
+        <p>זה הזמן שהמנהל משקיע בסידור ההסעות כשהכול מגיע מוכן.</p>
+      </div>
+      <div class="stat">
+        <div class="stat-n">פחות</div>
+        <div class="stat-l">נסיעות ומוניות חצי ריקות</div>
+        <p>בקשות שהיו יוצאות כמוניות נפרדות מקובצות לנסיעות משותפות.</p>
+      </div>
+      <div class="stat">
+        <div class="stat-n">0</div>
+        <div class="stat-l">הרשמות כפולות</div>
+        <p>הרשמה כפולה לאותה משמרת ולאותו כיוון נחסמת אוטומטית.</p>
+      </div>
+    </div>
+    <p class="ben-note">הנתונים מבוססים על הפיילוט במוקד שירות ומכירות עם 45 עובדי משמרות. החיסכון בפועל תלוי בגודל הארגון ובפיזור העובדים.</p>
+    <div class="mid-cta">
+      <p>רוצים לבדוק כמה זה יחסוך אצלכם?</p>
+      <a class="btn" href="#contact"><span>לתיאום הדגמה</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></a>
     </div>
   </div>
 </section>
@@ -525,11 +699,39 @@ html,body{margin:0;background:#0E1116}
   </div>
 </section>
 
+<section class="sec pilot-sec" aria-labelledby="pilot-title">
+  <div class="wrap grid reveal">
+    <div class="head">
+      <h2 class="h2" id="pilot-title">כבר עובד בשטח</h2>
+    </div>
+    <figure class="pilot">
+      <blockquote>״סידור ההסעות לקח לי יותר משעתיים בשבוע, בין אקסל לוואטסאפ. היום ההרשמות מגיעות מסודרות לפי נסיעות, ואני רק מאשר ושולח. חמש דקות וזהו.״</blockquote>
+      <figcaption><cite>מנהל מוקד, מוקד שירות ומכירות עם 45 עובדי משמרות</cite></figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="sec faq-sec" aria-labelledby="faq-title">
+  <div class="wrap grid reveal">
+    <div class="head">
+      <h2 class="h2" id="faq-title">שאלות נפוצות</h2>
+    </div>
+    <div class="faq">
+      <details><summary>צריך להחליף את חברת ההסעות או המוניות?</summary><p>לא. <bdi dir="ltr">SmartKav</bdi> מכינה את ההזמנה המקובצת, ואתם מעבירים אותה לחברה שאתם כבר עובדים איתה.</p></details>
+      <details><summary>איך העובדים נרשמים?</summary><p>מהנייד, תחת הארגון שבו הם עובדים. הם בוחרים משמרת וכיוון ושולחים. הכתובת והפרטים נשמרים, כך שכל הרשמה הבאה לוקחת כמה שניות.</p></details>
+      <details><summary>איך המערכת מחליטה מי נוסע עם מי?</summary><p>היא מקבצת בקשות לאותו תאריך, לאותה שעת משמרת, לאותו כיוון ולאותה עיר לנסיעה משותפת אחת. המנהל רואה את הקבוצות ומאשר לפני שההזמנה יוצאת.</p></details>
+      <details><summary>מה קורה עם בקשה שמגיעה ברגע האחרון?</summary><p>היא נקלטת ומסומנת כמאוחרת, והמנהל מקבל התראה. העובד רואה שהבקשה עדיין לא אושרה, כך שאין הפתעות.</p></details>
+      <details><summary>כמה זמן לוקחת ההטמעה?</summary><p>עד 24 שעות. מגדירים את הארגון, המשמרות ומועדי ההזמנה, ושולחים לעובדים קישור להרשמה.</p></details>
+      <details><summary>כמה זה עולה?</summary><p>המחיר מותאם לכל ארגון. <a href="#contact">השאירו פרטים</a> ונחזור אליכם עם כל המידע.</p></details>
+    </div>
+  </div>
+</section>
+
 <section class="sec contact" id="contact" aria-labelledby="contact-title">
   <div class="wrap grid reveal">
     <div class="c-intro">
-      <h2 class="h2" id="contact-title">הדגמה מותאמת לארגון שלכם</h2>
-      <p class="c-text">השאירו פרטים ואחזור אליכם לתיאום. בהדגמה נעבור על ממשק העובד ומסך המנהל, ונבדוק איך המערכת מתאימה לתהליך ההסעות שלכם.</p>
+      <h2 class="h2" id="contact-title">רוצים לראות איך זה ייראה אצלכם?</h2>
+      <p class="c-text">השאירו פרטים ואחזור אליכם לתיאום. בהדגמה קצרה נעבור על ממשק העובד ומסך המנהל, ונבדוק כמה נסיעות וכמה זמן המערכת יכולה לחסוך בתהליך ההסעות שלכם.</p>
       <div class="sig">
         <p class="sig-name ltr">Alon Berger</p>
         <p class="sig-role ltr">AI Solutions Architect</p>
@@ -555,6 +757,16 @@ html,body{margin:0;background:#0E1116}
             <label for="f-org">שם הארגון</label>
             <input id="f-org" name="organization" type="text" autocomplete="organization" aria-required="true" aria-describedby="err-organization">
             <p class="err" id="err-organization" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="f-size">כמה עובדי משמרות נוסעים בהסעות? <span class="opt">(רשות)</span></label>
+            <select id="f-size" name="employees">
+              <option value="">בחרו</option>
+              <option value="עד 50">עד 50</option>
+              <option value="50-200">50–200</option>
+              <option value="200-500">200–500</option>
+              <option value="500+">יותר מ-500</option>
+            </select>
           </div>
           <div class="field">
             <label for="f-email">דוא״ל <span class="opt">(רשות)</span></label>
@@ -657,7 +869,7 @@ function initLanding(page, opts){
 
   /* ---- routes illustration ----
      Each ride runs its own cycle: employees register from their phones (נקלט), the system groups them and
-     computes the pickup order (מוכן), the booking is sent (הוזמן), the taxi drives the route (בדרך) and finishes (הושלם).
+     groups them into one shared ride (מוכן), the booking is sent (הוזמן), the taxi drives the route (בדרך) and finishes (הושלם).
      Rides overlap in time; a short activity feed under the map narrates each step. */
   var ROUTES = opts.routes, LAYOUTS = opts.layouts, timers = [], rafs = [];
   var map = $('.map'), feed = $('.feed'), lines = [], taxis = [], geo = [], cur = null, feedItems = [];
@@ -724,7 +936,7 @@ function initLanding(page, opts){
   }
   function msg(R, key, n){
     if(key === 'reg') return n === 1 ? 'עובד אחד נרשם מהנייד' : n + ' עובדים נרשמו מהנייד';
-    if(key === 'ready') return 'נסיעה קובצה, ' + (R.dir === 'out' ? 'סדר האיסוף חושב' : 'סדר הפיזור חושב');
+    if(key === 'ready') return 'הבקשות קובצו לנסיעה משותפת';
     if(key === 'booked') return 'ההזמנה נשלחה לחברת ההסעות';
     if(key === 'go') return R.dir === 'out' ? 'המונית בדרך לאיסוף' : 'המונית יצאה לפיזור';
     return 'הנסיעה הושלמה';
@@ -974,6 +1186,7 @@ function initLanding(page, opts){
       phone: digits(F.phone.value.trim()),
       email: F.email.value.trim(),
       organization: F.organization.value.trim(),
+      employees: $('#f-size').value,
       notes: $('#f-notes').value.trim(),
       consent: true,
       website: hp
