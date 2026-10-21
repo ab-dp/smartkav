@@ -26,6 +26,7 @@ if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matche
   setTimeout(function(){ document.documentElement.classList.remove('js-intro'); }, 3000);
 }
 </script>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -96,6 +97,10 @@ html.lenis,html.lenis body{height:auto}
 .nav-name .mark{width:10px;height:10px}
 .nav-cta{flex:none}
 .nav.scrolled{background:var(--paper);color:var(--ink);box-shadow:0 1px 0 var(--line)}
+/* Once the page scrolls, the header CTA turns solid so the way to book a demo stays obvious. */
+.nav-cta{transition:color 220ms var(--ease),background-color 300ms var(--ease),box-shadow 300ms var(--ease)}
+.nav.scrolled .nav-cta{background:var(--signal);color:var(--ink);box-shadow:none}
+.nav.scrolled .nav-cta::before{background:var(--signal-deep)}
 
 /* route */
 .route{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible}
