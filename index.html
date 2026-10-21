@@ -509,9 +509,6 @@ html.lenis,html.lenis body{height:auto}
 .field select:hover{border-color:var(--ink)}
 .lp select:focus-visible{outline:3px solid var(--signal);outline-offset:2px;box-shadow:0 0 0 2px var(--ink)}
 
-.mbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:45;padding:12px 20px calc(12px + env(safe-area-inset-bottom));background:var(--paper);box-shadow:0 -1px 0 var(--line);transform:translateY(110%);visibility:hidden;transition:transform 320ms var(--ease),visibility 0s linear 320ms}
-.mbar.show{transform:none;visibility:visible;transition:transform 320ms var(--ease)}
-.mbar .btn{width:100%}
 
 .motion .reveal{opacity:0;transform:translateY(16px);transition:opacity 500ms cubic-bezier(.2,.8,.2,1),transform 500ms cubic-bezier(.2,.8,.2,1)}
 .motion .reveal.in{opacity:1;transform:none}
@@ -583,7 +580,6 @@ html.lenis,html.lenis body{height:auto}
   .c-form{margin-top:48px}
   .foot .wrap{flex-direction:column;align-items:flex-start}
   .foot{padding-bottom:calc(112px + env(safe-area-inset-bottom))}
-  .mbar{display:block}
 }
 @media (prefers-reduced-motion:reduce){
   .lp *,.lp *::before,.lp *::after{animation:none!important;transition:none!important}
@@ -1014,7 +1010,6 @@ html.lenis,html.lenis body{height:auto}
   </div>
 </footer>
 
-<div class="mbar"><a class="btn" href="#contact">תיאום הדגמה</a></div>
 
 </div>
 
@@ -1636,8 +1631,8 @@ function initLanding(page, opts){
     });
   }
 
-  /* ---- parallax, reveals, nav, sticky bar ---- */
-  var pars = $$('.par'), reveals = $$('.reveal'), nav = $('.nav'), bar = $('.mbar'), heroEl = $('.hero'), contact = $('#contact');
+  /* ---- parallax, reveals, nav ---- */
+  var pars = $$('.par'), reveals = $$('.reveal'), nav = $('.nav'), heroEl = $('.hero');
   if(win.IntersectionObserver){
     var io = new IntersectionObserver(function(e){ heroEl.style.setProperty('--ps', e[0].isIntersecting ? 'running' : 'paused'); });
     io.observe(heroEl); off.push(function(){ io.disconnect(); });
@@ -1654,12 +1649,7 @@ function initLanding(page, opts){
     var vh = win.innerHeight, hr = heroEl.getBoundingClientRect();
     nav.classList.toggle('scrolled', hr.top < -24);
     reveals.forEach(function(el){ if(!el.classList.contains('in') && el.getBoundingClientRect().top < vh * 0.88) el.classList.add('in'); });
-    var barOn = hr.bottom < 0 && contact.getBoundingClientRect().top > vh;
-    bar.classList.toggle('show', barOn);
-    var fab = barOn && win.innerWidth < 768 ? (bar.offsetHeight + 12) + 'px' : '24px';
-    if(fab !== lastFab){ doc.documentElement.style.setProperty('--sk-fab-bottom', fab); lastFab = fab; }
   }
-  var lastFab = '';
   var ticking = false;
   function frame(){ ticking = false; updateFlags(); updateRoute(); updatePar(); }
   function req(){ if(!ticking){ ticking = true; win.requestAnimationFrame(frame); } }
@@ -1763,13 +1753,12 @@ initLanding(document.querySelector('.lp'), {
 <script src="https://cdn.botpress.cloud/webchat/v5.0/inject.js"></script>
 <script src="https://files.bpcontent.cloud/2026/10/21/21/20261021210632-WAPRBUU7.js" defer></script>
 <script>
-/* Kobi sits bottom-left, away from the route line on the right, and rises above the mobile demo bar while it shows.
-   The widget renders inside an open shadow root, so the rules are added there once it appears. --sk-fab-bottom is
-   set by the page (see updateFlags) and inherits into the shadow root. */
+/* Kobi sits bottom-left, away from the route line on the right. The widget renders inside an open shadow root,
+   so the rules are added there once it appears. */
 (function(){
   var css = ''
-    + '.bpFabWrapper{left:24px!important;right:auto!important;bottom:var(--sk-fab-bottom,24px)!important;transition:bottom 320ms cubic-bezier(.2,.8,.2,1)}'
-    + '.bpFABMessagePreview{left:24px!important;right:auto!important;bottom:calc(var(--sk-fab-bottom,24px) + 80px)!important;transition:bottom 320ms cubic-bezier(.2,.8,.2,1)}'
+    + '.bpFabWrapper{left:24px!important;right:auto!important}'
+    + '.bpFABMessagePreview{left:24px!important;right:auto!important}'
     + '@media (min-width:768px){.bpFABWebchat{left:24px!important;right:auto!important;transform-origin:0% 100%!important}}';
   var tries = 0, timer = setInterval(function(){
     var host = document.querySelector('.bpChatContainer #fab-root'), sr = host && host.shadowRoot;
