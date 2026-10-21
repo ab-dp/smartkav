@@ -401,6 +401,35 @@ html.lenis,html.lenis body{height:auto}
 .pinmode .smart .ba{margin-top:clamp(32px,4.5vh,56px)}
 .pinmode .smart .crit{margin-top:clamp(24px,3.5vh,40px)}
 
+/* synced product demo */
+.lt-frame{position:relative}
+.ph-btn,.lt-b{position:relative}
+.tap{position:absolute;top:50%;left:50%;width:2.6em;height:2.6em;margin:-1.3em 0 0 -1.3em;border-radius:50%;background:rgba(14,17,22,.22);opacity:0;pointer-events:none}
+.lt-toast{position:absolute;left:50%;bottom:1.4em;display:flex;align-items:center;gap:.8em;padding:.7em 1.1em;border-radius:.5em;background:var(--ink);color:var(--paper);font-size:.95em;font-weight:500;white-space:nowrap;opacity:0;transform:translateX(-50%)}
+.d-row{overflow:hidden}
+.d-row.fresh{background:#FFF7DD}
+
+/* benefits */
+.cd-bar{position:relative;height:4px;max-width:22em;margin-top:14px;border-radius:2px;background:var(--line);overflow:hidden}
+.cd-bar i{position:absolute;inset:0;background:var(--ink);transform:scaleX(.042);transform-origin:100% 50%}
+.dup{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:14px}
+.dup span{padding:4px 12px;border:1px solid var(--line);border-radius:2em;background:var(--surface);font-size:13.5px;font-weight:500}
+.dup-x{position:relative;display:inline-flex;align-items:center;gap:10px;color:var(--muted-ink);text-decoration:line-through;text-decoration-color:var(--error);text-decoration-thickness:2px;opacity:.55}
+.dup-x em{font-style:normal;font-size:12px;font-weight:600;color:var(--error);text-decoration:none;transition:opacity 400ms var(--ease) 300ms}
+.dup-x{transition:opacity 500ms var(--ease) 300ms,color 500ms var(--ease) 300ms,text-decoration-color 300ms var(--ease)}
+.dup-x.pending{opacity:1;color:var(--ink);text-decoration-color:transparent}
+.dup-x.pending em{opacity:0}
+
+/* night */
+.dusk{position:relative;height:clamp(140px,26vh,300px);background:linear-gradient(to bottom,var(--paper),#D9CFC1 30%,#5A5F6B 68%,var(--ink))}
+.dusk i{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--paper);opacity:.7}
+.nclock{grid-column:9 / -1;grid-row:1 / span 2;align-self:end;justify-self:end;text-align:left}
+.nc-face{position:relative;height:1em;overflow:hidden;font-family:var(--display);font-weight:800;font-size:clamp(56px,6vw,92px);line-height:1;letter-spacing:-.02em;color:var(--signal);direction:ltr}
+.nc-t{display:block}
+.nc-a{position:absolute;inset:0;transform:translateY(-100%)}
+.nc-l{display:flex;flex-direction:column;align-items:flex-end;gap:2px;margin-top:12px;font-size:15px;color:var(--dim)}
+.nc-note{font-weight:600;color:var(--paper)}
+
 /* smart grouping */
 .rides li{transition:opacity 350ms var(--ease),border-color 350ms var(--ease)}
 .ba-col:first-child{position:relative;z-index:2}
@@ -478,6 +507,8 @@ html.lenis,html.lenis body{height:auto}
   .crit{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:28px}
   .parts{grid-template-columns:repeat(2,minmax(0,1fr))}
   .pain-out,.pilot,.faq{grid-column:1 / -1}
+  .nclock{grid-column:1 / -1;grid-row:auto;justify-self:start;align-self:start;margin-top:32px;text-align:right}
+  .nc-l{align-items:flex-start}
 }
 @media (max-width:767px){
   .lp .wrap{padding-inline:20px}
@@ -697,15 +728,15 @@ html.lenis,html.lenis body{height:auto}
               <div class="app-bar"><span class="app-brand" dir="ltr"><svg class="lm" viewBox="0 0 92 40" aria-hidden="true"><line x1="6" y1="20" x2="62" y2="20"></line><circle cx="74" cy="20" r="12"></circle></svg><span class="wm"><span class="lt">Smart</span><b>Kav</b></span></span><span class="app-user">מנהל משמרת<i>מ</i></span></div>
               <div class="app">
                 <div class="app-head">
-                  <div><div class="app-title">נסיעות פעילות</div><div class="app-sub">10 בקשות ממתינות לטיפול</div></div>
+                  <div><div class="app-title">נסיעות פעילות</div><div class="app-sub"><span class="d-pend">10</span> בקשות ממתינות לטיפול</div></div>
                   <span class="chip">שבוע נוכחי</span>
                 </div>
-                <div class="grp">
+                <div class="grp d-grp">
                   <div class="grp-h">
-                    <span class="grp-t">שישי 25.09 │ הלוך │ הגעה עד 16:00<span class="chip">רמת גן · 4 נוסעים</span></span>
-                    <span class="grp-a"><span class="lt-b pri">העתק הזמנה</span><span class="lt-b sec">סמן קבוצה כטופלה</span></span>
+                    <span class="grp-t">שישי 25.09 │ הלוך │ הגעה עד 16:00<span class="chip">רמת גן · <span class="d-count">4</span> נוסעים</span></span>
+                    <span class="grp-a"><span class="lt-b pri d-copy">העתק הזמנה<i class="tap"></i></span><span class="lt-b sec d-done">סמן קבוצה כטופלה<i class="tap"></i></span></span>
                   </div>
-                  <div class="r"><span class="nm">דנה כ.</span><span class="ph-n ltr">050-•••-4127</span><span>רמת גן</span><span class="tag tag-y">דורש בדיקה</span></div>
+                  <div class="r d-row"><span class="nm">דנה כ.</span><span class="ph-n ltr">050-•••-4127</span><span>רמת גן</span><span class="tag tag-g">ממתין לטיפול</span></div>
                   <div class="r"><span class="nm">אבי מ.</span><span class="ph-n ltr">052-•••-8830</span><span>רמת גן</span><span class="tag tag-y">דורש בדיקה</span></div>
                   <div class="r"><span class="nm">נועה ש.</span><span class="ph-n ltr">054-•••-2915</span><span>רמת גן</span><span class="tag tag-g">ממתין לטיפול</span></div>
                   <div class="r"><span class="nm">רון ב.<span class="late">מאוחרת</span></span><span class="ph-n ltr">053-•••-6072</span><span>רמת גן</span><span class="tag tag-g">ממתין לטיפול</span></div>
@@ -725,6 +756,7 @@ html.lenis,html.lenis body{height:auto}
                   </div>
                 </div>
               </div>
+              <div class="lt-toast d-toast"><span class="tag tag-s">הועתק</span>ההזמנה מוכנה להדבקה אצל חברת ההסעות</div>
             </div>
             <div class="lt-base"></div>
           </div>
@@ -742,9 +774,10 @@ html.lenis,html.lenis body{height:auto}
               </div>
               <div class="ph-field"><span class="ph-label">כיוון נסיעה</span><div class="ph-seg"><span class="on">הלוך וחזור</span><span>רק הלוך</span><span>רק חזור</span></div></div>
               <div class="ph-field"><span class="ph-label">כתובת</span><span class="ph-box">רמת גן<small>כתובת שמורה</small></span></div>
-              <div class="ph-btn">שליחת הרשמה</div>
+              <div class="ph-btn d-send">שליחת הרשמה<i class="tap"></i></div>
               <div class="ph-sect">הנסיעות שלי</div>
               <div class="ph-list">
+                <div class="ph-item d-mine"><span>שישי 25.09 · הלוך 16:00</span><span class="tag tag-s">מונית הוזמנה</span></div>
                 <div class="ph-item"><span>חמישי 24.09 · הלוך 08:00</span><span class="tag tag-s">מונית הוזמנה</span></div>
                 <div class="ph-item"><span>חמישי 24.09 · חזור 17:00</span><span class="tag tag-g">נקלטה</span></div>
               </div>
@@ -792,8 +825,9 @@ html.lenis,html.lenis body{height:auto}
     </div>
     <div class="stats">
       <div class="stat">
-        <div class="stat-n">5 דק׳</div>
+        <div class="stat-n"><span class="cd-n">5</span> דק׳</div>
         <div class="stat-l">במקום שעתיים ויותר בשבוע</div>
+        <div class="cd-bar" aria-hidden="true"><i></i></div>
         <p>זה הזמן שהמנהל משקיע בסידור ההסעות כשהכול מגיע מוכן.</p>
       </div>
       <div class="stat">
@@ -804,6 +838,7 @@ html.lenis,html.lenis body{height:auto}
       <div class="stat">
         <div class="stat-n">0</div>
         <div class="stat-l">הרשמות כפולות</div>
+        <div class="dup" aria-hidden="true"><span>דנה · שישי 16:00 · הלוך</span><span class="dup-x">דנה · שישי 16:00 · הלוך<em>נחסמה</em></span></div>
         <p>הרשמה כפולה לאותה משמרת ולאותו כיוון נחסמת אוטומטית.</p>
       </div>
     </div>
@@ -815,12 +850,18 @@ html.lenis,html.lenis body{height:auto}
   </div>
 </section>
 
+<div class="dusk" aria-hidden="true"><i style="right:12%;top:58%"></i><i style="right:31%;top:74%"></i><i style="right:47%;top:63%"></i><i style="right:64%;top:81%"></i><i style="right:78%;top:67%"></i><i style="right:90%;top:86%"></i><i style="right:22%;top:90%"></i><i style="right:56%;top:92%"></i></div>
+
 <section class="sec fit dark" aria-labelledby="fit-title">
   <div class="wrap grid reveal">
     <div class="head">
       <h2 class="h2 h2-xl" id="fit-title">משמרת שנגמרת ב-01:00 היא לא באג</h2>
     </div>
     <p class="lede">לכל ארגון שמסיע עובדים במשמרות: מוקדי שירות, מפעלים, מרכזים לוגיסטיים, בתי חולים וחברות אבטחה.</p>
+    <div class="nclock" aria-hidden="true">
+      <div class="nc-face"><span class="nc-t nc-a">23:59</span><span class="nc-t nc-b">00:00</span></div>
+      <div class="nc-l"><span>משמרת של יום שישי</span><span class="nc-note">נשארת ביום שישי ✓</span></div>
+    </div>
     <ul class="scen">
       <li><h3><span class="mark" aria-hidden="true"></span>משמרות לילה</h3><p>משמרת שחוצה חצות משויכת ליום הנכון, והלוך וחזור הופכים לשתי נסיעות נפרדות.</p></li>
       <li><h3><span class="mark" aria-hidden="true"></span>בקשות ברגע האחרון</h3><p>בקשה שמגיעה אחרי מועד ההזמנה שולחת למנהל התראה, והעובד רואה שהיא עדיין לא אושרה.</p></li>
@@ -1444,6 +1485,67 @@ function initLanding(page, opts){
       var pinSmart = canPin(smart);
       ST.create({ trigger: pinSmart ? smart : '.ba', start: pinSmart ? 'center center' : 'top 70%', end: pinSmart ? '+=150%' : 'bottom 40%',
         pin: pinSmart, scrub: 0.6, animation: gtl, invalidateOnRefresh: true });
+    }
+
+    /* Product demo: Dana registers on her phone, her row lands in the manager's ride, the manager copies the order and
+       marks the group done, and her phone shows the taxi as booked. It loops while the stage is on screen. */
+    var stage = $('.sc-stage'), dRow = $('.d-row');
+    if(stage && dRow){
+      var dSend = $('.d-send'), dMine = $('.d-mine'), dMineTag = dMine.querySelector('.tag'), dCount = $('.d-count'), dPend = $('.d-pend');
+      var dCopy = $('.d-copy'), dDone = $('.d-done'), dToast = $('.d-toast'), grpTags = $$('.d-grp .tag');
+      var tagsWas = grpTags.map(function(t){ return [t.className, t.textContent]; });
+      var paintTag = function(t, cls, txt){ t.className = 'tag ' + cls; t.textContent = txt; };
+      var resetDemo = function(){
+        grpTags.forEach(function(t, i){ t.className = tagsWas[i][0]; t.textContent = tagsWas[i][1]; });
+        paintTag(dMineTag, 'tag-g', 'נקלטה');
+        dRow.classList.remove('fresh'); dCount.textContent = '3'; dPend.textContent = '9';
+      };
+      var tapAt = function(tl, el, at){
+        tl.fromTo(el.querySelector('.tap'), { scale: 0.2, opacity: 0.9 }, { scale: 1.6, opacity: 0, duration: 0.6, ease: 'power2.out' }, at)
+          .to(el, { scale: 0.95, duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.inOut' }, at);
+      };
+      var demo = G.timeline({ paused: true, repeat: -1, repeatDelay: 2.4 });
+      demo.call(resetDemo, null, 0);
+      tapAt(demo, dSend, 0.5);
+      demo.fromTo(dMine, { height: 0, paddingTop: 0, paddingBottom: 0, autoAlpha: 0 }, { height: 'auto', paddingTop: 9, paddingBottom: 9, autoAlpha: 1, duration: 0.45, ease: 'power2.out' }, 0.85)
+        .fromTo(dRow, { height: 0, paddingTop: 0, paddingBottom: 0, autoAlpha: 0 }, { height: 'auto', paddingTop: '0.75em', paddingBottom: '0.75em', autoAlpha: 1, duration: 0.5, ease: 'power2.out' }, 1.5)
+        .call(function(){ dRow.classList.add('fresh'); dCount.textContent = '4'; dPend.textContent = '10'; }, null, 1.6);
+      tapAt(demo, dCopy, 2.7);
+      demo.fromTo(dToast, { xPercent: -50, x: 0, y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: 'power2.out' }, 2.85)
+        .to(dToast, { y: 8, autoAlpha: 0, duration: 0.3 }, 4.2);
+      tapAt(demo, dDone, 3.6);
+      grpTags.forEach(function(t, i){ demo.call(function(){ paintTag(t, 'tag-s', 'הוזמן'); }, null, 3.8 + i * 0.12); });
+      demo.call(function(){ dRow.classList.remove('fresh'); }, null, 3.9)
+        .call(function(){ paintTag(dMineTag, 'tag-s', 'מונית הוזמנה'); }, null, 4.6)
+        .fromTo(dMineTag, { scale: 1 }, { scale: 1.12, duration: 0.18, yoyo: true, repeat: 1 }, 4.6)
+        .to({}, { duration: 0.6 }, 5);
+      resetDemo();
+      ST.create({ trigger: stage, start: 'top 75%', end: 'bottom 15%', onToggle: function(s){ if(s.isActive) demo.play(); else demo.pause(); } });
+    }
+
+    /* Benefits: the weekly time counts down from two hours to five minutes, and the duplicate gets blocked. */
+    var cdN = $('.cd-n'), cdBar = $('.cd-bar i'), dupX = $('.dup-x');
+    if(cdN && cdBar){
+      var cd = { m: 120 }, showCd = function(){ cdN.textContent = Math.round(cd.m); G.set(cdBar, { scaleX: cd.m / 120 }); };
+      showCd();
+      G.to(cd, { m: 5, ease: 'power2.out', onUpdate: showCd, scrollTrigger: { trigger: '.stats', start: 'top 80%', end: 'top 35%', scrub: 0.4 } });
+    }
+    if(dupX){
+      dupX.classList.add('pending');
+      ST.create({ trigger: '.dup', start: 'top 75%', once: true, onEnter: function(){ setTimeout(function(){ dupX.classList.remove('pending'); }, 500); } });
+    }
+
+    /* Night: stars come out over the dusk band, and the clock rolls past midnight while the shift keeps its day. */
+    var stars = $$('.dusk i'), ncA = $('.nc-a'), ncB = $('.nc-b'), ncNote = $('.nc-note');
+    if(stars.length){
+      G.fromTo(stars, { autoAlpha: 0 }, { autoAlpha: 0.8, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: '.dusk', start: 'top 70%', end: 'bottom 40%', scrub: true } });
+    }
+    if(ncA && ncB && ncNote){
+      G.set(ncA, { y: 0, yPercent: 0 }); G.set(ncB, { yPercent: 100 }); G.set(ncNote, { autoAlpha: 0, y: 6 });
+      G.timeline({ scrollTrigger: { trigger: '.nclock', start: 'top 80%', end: 'top 40%', scrub: 0.5 } })
+        .to(ncA, { yPercent: -100, duration: 1, ease: 'power2.inOut' }, 0.5)
+        .to(ncB, { yPercent: 0, duration: 1, ease: 'power2.inOut' }, 0.5)
+        .to(ncNote, { autoAlpha: 1, y: 0, duration: 0.5 }, 1.3);
     }
   }
 
