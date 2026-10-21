@@ -26,6 +26,8 @@ if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matche
   setTimeout(function(){ document.documentElement.classList.remove('js-intro'); }, 3000);
 }
 </script>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@600;700;800&family=IBM+Plex+Sans+Hebrew:wght@400;500;600&display=swap">
@@ -40,7 +42,7 @@ html.lenis,html.lenis body{height:auto}
 /* hero intro: hidden until the script splits and plays it (the head script adds .js-intro only when motion is allowed) */
 .js-intro .hero h1,.js-intro .hero-row,.js-intro .trust,.js-intro .hero-board{visibility:hidden}
 .lp .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
-.lp .wi{display:inline-block;will-change:transform}
+.lp .wi{display:inline-block}
 
 .lp{--ink:#0E1116;--ink-2:#1A1F27;--paper:#F6F4EF;--surface:#FFFFFF;--line:#E4E0D8;--muted-ink:#575D68;--body:#3B4048;--field:#8B8780;--sk:#E3E1DC;--signal:#FFB000;--signal-deep:#E39C00;--success:#0F6B5E;--error:#C2341F;--ease:cubic-bezier(.2,.8,.2,1);--sec:clamp(88px,10vw,150px);--display:"Rubik",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;--sans:"IBM Plex Sans Hebrew",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;--dim:rgba(246,244,239,.72);--hair-d:rgba(246,244,239,.14);
   position:relative;overflow-x:clip;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.7;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
@@ -1348,8 +1350,10 @@ function initLanding(page, opts){
     wi.appendChild(child); w.appendChild(wi);
     return w;
   }
-  if(G && !reduce){
-    if(ST) G.registerPlugin(ST);
+  if(G && ST) G.registerPlugin(ST);
+  /* The intro plays only while the head script is still hiding the hero; if the libraries arrived late and the
+     hero is already showing, it stays put instead of vanishing and replaying. */
+  if(G && !reduce && root.classList.contains('js-intro')){
     /* Split the headline into words (never letters: Hebrew joins and final forms read better whole) and raise each from a mask. */
     var words = [];
     $$('.hero h1 > span').forEach(function(sp){
@@ -1371,11 +1375,11 @@ function initLanding(page, opts){
       .from('.hero-row', { y: 24, autoAlpha: 0, duration: 0.9 }, 0.55)
       .from('.trust li', { y: 12, autoAlpha: 0, duration: 0.7, stagger: 0.08 }, 0.75)
       .from('.hero-board', { y: 48, autoAlpha: 0, duration: 1.2 }, 0.6);
-    if(ST && win.innerWidth >= 768){
-      G.to('.hero-text', { y: -80, autoAlpha: 0.35, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom 30%', scrub: true } });
-      G.to('.board', { scale: 0.965, transformOrigin: '50% 100%', ease: 'none', scrollTrigger: { trigger: '.hero-board', start: 'top 20%', end: 'bottom top', scrub: true } });
-    }
   } else root.classList.remove('js-intro');
+  if(G && ST && !reduce && win.innerWidth >= 768){
+    G.to('.hero-text', { y: -80, autoAlpha: 0.35, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom 30%', scrub: true } });
+    G.to('.board', { scale: 0.965, transformOrigin: '50% 100%', ease: 'none', scrollTrigger: { trigger: '.hero-board', start: 'top 20%', end: 'bottom top', scrub: true } });
+  }
 
   /* ---- smooth scrolling (mouse and trackpad only; touch keeps native scrolling) ---- */
   var lenis = null;
@@ -1415,16 +1419,18 @@ function initLanding(page, opts){
        (oldest first, newest on top), keep fidgeting, and drift apart as the section scrolls away. */
     var rows = $$('.ib'), unread = $('.chat-unread');
     if(rows.length){
-      var u = { n: 0, extra: 0 }, tot = 0, showUnread = function(){ unread.textContent = Math.round(u.n + u.extra); };
+      var u = { n: 0, extra: 0 }, tot = 0, idle = [], showUnread = function(){ unread.textContent = Math.round(u.n + u.extra); };
       G.set(rows, { autoAlpha: 0, y: -14 });
       showUnread();
       ST.create({ trigger: '.chat', start: 'top 78%', once: true, onEnter: function(){
         rows.slice().reverse().forEach(function(r, i){
           var n = +(r.querySelector('.ib-n') || {}).textContent || 0;
           G.to(r, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'back.out(1.6)', delay: i * 0.22, onStart: function(){ tot += n; G.to(u, { n: tot, duration: 0.3, overwrite: 'auto', onUpdate: showUnread }); },
-            onComplete: function(){ G.to(r, { y: (i % 2 ? 1 : -1) * G.utils.random(1.5, 3), duration: G.utils.random(1.8, 3), ease: 'sine.inOut', yoyo: true, repeat: -1 }); } });
+            onComplete: function(){ idle.push(G.to(r, { y: (i % 2 ? 1 : -1) * G.utils.random(1.5, 3), duration: G.utils.random(1.8, 3), ease: 'sine.inOut', yoyo: true, repeat: -1 })); } });
         });
       } });
+      /* The fidgeting stops while the inbox is off screen. */
+      ST.create({ trigger: '.chat', start: 'top bottom', end: 'bottom top', onToggle: function(s){ idle.forEach(function(t){ s.isActive ? t.resume() : t.pause(); }); } });
       rows.forEach(function(r){
         G.to(r, { x: G.utils.random(-14, 14), rotation: G.utils.random(-1.6, 1.6), ease: 'none', scrollTrigger: { trigger: '.chat', start: 'center 55%', end: 'bottom top', scrub: true } });
       });
