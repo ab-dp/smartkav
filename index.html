@@ -328,7 +328,7 @@ html.lenis,html.lenis body{height:auto}
 .s-text:focus{outline:none}
 
 /* footer */
-.foot{padding-block:44px;font-size:15px;color:var(--dim)}
+.foot{padding-block:44px 112px;font-size:15px;color:var(--dim)}
 .foot .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px}
 .foot-brand{display:flex;align-items:center;gap:10px;color:var(--paper);font-size:18px}
 .foot-brand .mark{width:10px;height:10px}
@@ -577,7 +577,7 @@ html.lenis,html.lenis body{height:auto}
   .f-row{grid-template-columns:minmax(0,1fr)}
   .c-form{margin-top:48px}
   .foot .wrap{flex-direction:column;align-items:flex-start}
-  .foot{padding-bottom:calc(44px + env(safe-area-inset-bottom))}
+  .foot{padding-bottom:calc(112px + env(safe-area-inset-bottom))}
   .mbar{display:block}
 }
 @media (prefers-reduced-motion:reduce){
@@ -612,7 +612,7 @@ html.lenis,html.lenis body{height:auto}
     <div class="hero-text">
       <h1 id="hero-title"><span class="hl">נרשמים לנסיעות בקליק.</span><span class="h1-2"><bdi dir="ltr">SmartKav</bdi> עושה את כל השאר.</span></h1>
       <div class="hero-row">
-        <p class="hero-sub">העובדים נרשמים מהנייד. <bdi dir="ltr">SmartKav</bdi> מקבצת את הבקשות לנסיעות משותפות לפי שעה, כיוון ועיר, ואתם מקבלים הזמנה מוכנה לשלוח לחברת ההסעות. בלי טבלה, ובלי עשרות הודעות וואטסאפ בעשר בלילה.</p>
+        <p class="hero-sub">העובדים נרשמים מהנייד. <bdi dir="ltr">SmartKav</bdi> מקבצת את הבקשות לנסיעות משותפות לפי שעה, כיוון ועיר, ואתם מקבלים הזמנה מוכנה לשליחה לחברת ההסעות. בלי טבלה, ובלי עשרות הודעות וואטסאפ בעשר בלילה.</p>
         <div class="hero-actions">
           <a class="btn hero-cta" href="#contact"><span>לתיאום הדגמה</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></a>
           <a class="tlink" href="#how">איך זה עובד</a>
@@ -880,9 +880,9 @@ html.lenis,html.lenis body{height:auto}
       <div class="nc-l"><span>משמרת של יום שישי</span><span class="nc-note">נשארת ביום שישי ✓</span></div>
     </div>
     <ul class="scen">
-      <li><h3><span class="mark" aria-hidden="true"></span>משמרות לילה</h3><p>משמרת שחוצה חצות משויכת ליום הנכון, והלוך וחזור הופכים לשתי נסיעות נפרדות.</p></li>
+      <li><h3><span class="mark" aria-hidden="true"></span>משמרות לילה</h3><p>משמרת שחוצה חצות נשארת משויכת ליום שבו התחילה, כך שאף בקשה לא נופלת בין התאריכים.</p></li>
       <li><h3><span class="mark" aria-hidden="true"></span>בקשות ברגע האחרון</h3><p>בקשה שמגיעה אחרי מועד ההזמנה שולחת למנהל התראה, והעובד רואה שהיא עדיין לא אושרה.</p></li>
-      <li><h3><span class="mark" aria-hidden="true"></span>הרשמות כפולות</h3><p>הרשמה כפולה לאותה משמרת ולאותו כיוון נחסמת אוטומטית.</p></li>
+      <li><h3><span class="mark" aria-hidden="true"></span>הלוך וחזור בשעות שונות</h3><p>עובד שמגיע ב-16:00 וחוזר ב-01:00 מקבל שתי נסיעות נפרדות, וכל אחת מהן משובצת עם מי שנוסע באותה שעה.</p></li>
     </ul>
   </div>
 </section>
@@ -902,9 +902,9 @@ html.lenis,html.lenis body{height:auto}
 <section class="sec why-sec" aria-labelledby="why-title">
   <div class="wrap grid reveal">
     <div class="head">
-      <h2 class="h2" id="why-title">למה בניתי את זה</h2>
+      <h2 class="h2" id="why-title">איך הרעיון נוצר</h2>
     </div>
-    <p class="why-text">ניהלתי מוקד שעבד גם בסופי שבוע ובחגים, וחלק מהעבודה שלי היה לסדר לעובדים מוניות והסעות. כל שבוע מחדש: הודעות בוואטסאפ, טבלאות אקסל, ובדיקה אחרונה בעשר בלילה לפני ששולחים לתחנה. זה אכל לי שעות שלא היו לי. חיפשתי מערכת שתעשה את זה במקומי ולא מצאתי, אז בניתי אחת.</p>
+    <p class="why-text">ניהלתי מוקד שפעל גם בסופי שבוע ובחגים, ובין היתר הייתי אחראי על סידור המוניות וההסעות לעובדים. כל שבוע מחדש: הודעות בוואטסאפ, טבלאות אקסל ובדיקה אחרונה בעשר בלילה לפני השליחה לתחנה. זה גזל שעות רבות בכל שבוע. חיפשתי מערכת שתעשה זאת, ומשלא מצאתי, החלטתי לבנות אחת.</p>
     <div class="why-sig">
       <span class="why-av" aria-hidden="true">א</span>
       <span><b>אלון ברגר</b><small>מייסד <bdi dir="ltr">SmartKav</bdi></small></span>
@@ -933,12 +933,12 @@ html.lenis,html.lenis body{height:auto}
     <div class="c-intro">
       <p class="kicker">התחנה האחרונה</p>
       <h2 class="h2" id="contact-title">רוצים לראות איך זה ייראה אצלכם?</h2>
-      <p class="c-text">השאירו פרטים ואחזור אליכם בעצמי. בהדגמה קצרה נעבור על הטלפון של העובד ועל המסך שלכם, ונבדוק יחד כמה נסיעות וכמה ערבים מול אקסל אפשר לחסוך אצלכם.</p>
+      <p class="c-text">השאירו פרטים ונציג מטעמנו יחזור אליכם בהקדם. בהדגמה קצרה נעבור על ממשק העובד ועל מסך המנהל, ונבדוק יחד כמה נסיעות וכמה שעות עבודה אפשר לחסוך אצלכם.</p>
       <div class="sig">
-        <p class="sig-name ltr">Alon Berger</p>
-        <p class="sig-role ltr">AI Solutions Architect</p>
+        <p class="sig-name">אלון ברגר</p>
+        <p class="sig-role">מייסד <bdi dir="ltr">SmartKav</bdi></p>
       </div>
-      <a class="wa" id="wa-link" href="#contact" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 19.5l1.2-3.6A8 8 0 1 1 8.6 18.6z"></path><path d="M9 10.5h6M9 13.5h4"></path></svg><span>מעדיפים WhatsApp? כתבו לי ישירות</span></a>
+      <a class="wa" id="wa-link" href="#contact" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 19.5l1.2-3.6A8 8 0 1 1 8.6 18.6z"></path><path d="M9 10.5h6M9 13.5h4"></path></svg><span>מעדיפים WhatsApp? כתבו לנו ישירות</span></a>
     </div>
     <div class="c-form">
       <div class="form-shell">
@@ -993,7 +993,7 @@ html.lenis,html.lenis body{height:auto}
         </form>
         <div class="success" hidden>
           <div class="s-road" aria-hidden="true"><svg class="ck" viewBox="0 0 64 64" focusable="false"><circle cx="32" cy="32" r="29.5"></circle><path d="M20 33l8.5 8.5L45 24"></path></svg><svg class="s-taxi" viewBox="-16 -10 32 20" focusable="false"><rect class="cab-car" x="-14" y="-8.5" width="28" height="17" rx="5"></rect><rect class="cab-win" x="-9.5" y="-5.5" width="6.5" height="11" rx="2"></rect></svg></div>
-          <p class="s-text" tabindex="-1">תודה, הפרטים התקבלו. אחזור אליכם בהקדם לתיאום מועד ההדגמה.</p>
+          <p class="s-text" tabindex="-1">תודה, הפרטים התקבלו. נציג מטעמנו יחזור אליכם בהקדם לתיאום מועד ההדגמה.</p>
         </div>
       </div>
     </div>
@@ -1005,7 +1005,7 @@ html.lenis,html.lenis body{height:auto}
 <footer class="foot dark">
   <div class="wrap">
     <span class="foot-brand" dir="ltr"><svg class="lm" viewBox="0 0 92 40" aria-hidden="true"><line x1="6" y1="20" x2="62" y2="20"></line><circle cx="74" cy="20" r="12"></circle></svg><span class="wm"><span class="lt">Smart</span><b>Kav</b></span></span>
-    <span class="ltr">Alon Berger · AI Solutions Architect</span>
+    <span>© <bdi dir="ltr">SmartKav</bdi> · אלון ברגר</span>
   </div>
 </footer>
 
@@ -1021,7 +1021,7 @@ html.lenis,html.lenis body{height:auto}
 var WEBHOOK_URL = 'https://hook.eu1.make.com/8u6w3infcaliarrt0dmcg9oje3rzown9';
 var GA_MEASUREMENT_ID = ''; // Google Analytics 4, e.g. 'G-XXXXXXXXXX'. Leave empty to disable.
 var WHATSAPP_NUMBER = '972522427546'; // International format without + or leading 0, e.g. '972501234567'. Leave empty to hide the link.
-var WHATSAPP_TEXT = 'היי אלון, אשמח לשמוע על SmartKav';
+var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
 
 (function(){
   var a = document.getElementById('wa-link');
@@ -1479,7 +1479,7 @@ function initLanding(page, opts){
         };
         var pinHow = canPin(how);
         measureHow();
-        ST.create({ trigger: how, start: pinHow ? 'center center' : 'top 65%', end: pinHow ? '+=170%' : 'bottom 45%', pin: pinHow, scrub: true,
+        ST.create({ trigger: how, start: pinHow ? 'center center' : 'top 65%', end: pinHow ? '+=140%' : 'bottom 45%', pin: pinHow, scrub: true,
           onUpdate: function(s){ setHow(s.progress); }, onRefresh: function(s){ measureHow(); setHow(s.progress); } });
         setHow(0);
       } else {
@@ -1519,7 +1519,7 @@ function initLanding(page, opts){
       gtl.eventCallback('onUpdate', syncRides);
       syncRides();
       var pinSmart = canPin(smart);
-      ST.create({ trigger: pinSmart ? smart : '.ba', start: pinSmart ? 'center center' : 'top 70%', end: pinSmart ? '+=150%' : 'bottom 40%',
+      ST.create({ trigger: pinSmart ? smart : '.ba', start: pinSmart ? 'center center' : 'top 70%', end: pinSmart ? '+=125%' : 'bottom 40%',
         pin: pinSmart, scrub: 0.6, animation: gtl, invalidateOnRefresh: true });
     }
 
@@ -1564,7 +1564,7 @@ function initLanding(page, opts){
     if(cdN && cdBar){
       var cd = { m: 120 }, showCd = function(){ cdN.textContent = Math.round(cd.m); G.set(cdBar, { scaleX: cd.m / 120 }); };
       showCd();
-      G.to(cd, { m: 5, ease: 'power2.out', onUpdate: showCd, scrollTrigger: { trigger: '.stats', start: 'top 80%', end: 'top 35%', scrub: 0.4 } });
+      G.to(cd, { m: 5, ease: 'power2.out', onUpdate: showCd, scrollTrigger: { trigger: '.stats', start: 'top 85%', end: 'top 30%', scrub: 0.4 } });
     }
     if(dupX){
       dupX.classList.add('pending');
