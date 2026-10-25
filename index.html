@@ -476,6 +476,8 @@ html.lenis,html.lenis body{height:auto}
 .stat-l{margin-top:12px;font-weight:600;font-size:19px;line-height:1.35}
 .stat p{margin-top:8px;max-width:22em;font-size:16px;line-height:1.6;color:var(--body)}
 .ben-note{grid-column:1 / -1;margin-top:20px;font-size:14px;color:var(--muted-ink)}
+.ben-sec .pilot{margin-top:clamp(40px,5vw,64px)}
+.c-story{max-width:28em;margin-top:28px;padding-inline-start:18px;border-inline-start:3px solid var(--signal);font-size:17px;line-height:1.65;color:var(--body);text-wrap:pretty}
 .mid-cta{grid-column:1 / -1;display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px;margin-top:clamp(40px,5vw,64px)}
 .mid-cta p{font-size:18px;font-weight:500}
 
@@ -650,10 +652,9 @@ html.lenis,html.lenis body{height:auto}
       <h2 class="h2" id="pain-title">כל ערב, אותו בלגן בוואטסאפ</h2>
     </div>
     <ul class="pain">
-      <li><h3>ערב שלם מול אקסל</h3><p>אוספים בקשות מהקבוצה, מהודעות פרטיות ומשיחות שלא נענו, מעתיקים לטבלה וממיינים לפי שעה ועיר. ומישהו בכל זאת נשכח.</p></li>
+      <li><h3>ערב שלם מול אקסל</h3><p>אוספים בקשות מהקבוצה, מהודעות פרטיות ומשיחות שלא נענו, מעתיקים לטבלה וממיינים לפי שעה ועיר. ואז מגיעים תיקונים של הרגע האחרון והרשמות כפולות, ומישהו בכל זאת נשכח.</p></li>
       <li><h3>שתי מוניות לאותו רחוב</h3><p>דנה ואבי גרים חמש דקות זה מזה ויוצאים באותה שעה, אבל נוסעים במוניות נפרדות. בסוף החודש רואים את זה בחשבונית.</p></li>
       <li><h3>״הוזמנה לי מונית?״ בשתיים בלילה</h3><p>העובד לא רואה שום סטטוס, אז הוא שולח הודעה. ואחרי עשר דקות עוד אחת.</p></li>
-      <li><h3>״בעצם רק חזור״</h3><p>הרשמות כפולות ותיקונים של הרגע האחרון, מפוזרים בין הקבוצה, הצ׳אטים הפרטיים ותחנת המוניות שמחכה לתשובה עד 23:00.</p></li>
     </ul>
     <div class="chat" aria-hidden="true">
       <div class="chat-top"><span class="chat-t"><b>צ׳אטים</b><small>חמישי, 22:40</small></span><span class="chat-unread">38</span></div>
@@ -676,6 +677,7 @@ html.lenis,html.lenis body{height:auto}
     <div class="head">
       <h2 class="h2" id="how-title">איך זה עובד</h2>
     </div>
+    <p class="lede">לכל ארגון שמסיע עובדים במשמרות: מוקדי שירות, מפעלים, מרכזים לוגיסטיים, בתי חולים וחברות אבטחה.</p>
     <ol class="steps">
       <li class="steps-line" aria-hidden="true"><i></i></li>
       <li class="step"><span class="station" aria-hidden="true"></span><h3>העובד נרשם</h3><p>נכנס לאפליקציה בנייד, בוחר משמרת וכיוון ושולח. הכתובת כבר שמורה, אז זה לוקח כמה שניות.</p>
@@ -729,12 +731,6 @@ html.lenis,html.lenis body{height:auto}
         </ul>
       </div>
     </div>
-    <ul class="crit">
-      <li><h3>תאריך</h3><p>משמרת שמסתיימת ב-01:00 נשארת ביום שבו היא התחילה.</p></li>
-      <li><h3>שעה</h3><p>לפי תחילת המשמרת בהלוך, ולפי הסיום שלה בחזור.</p></li>
-      <li><h3>כיוון</h3><p>הלוך וחזור נספרים כשתי נסיעות נפרדות.</p></li>
-      <li><h3>עיר</h3><p>מי שגר באותה עיר עולה לאותה מונית.</p></li>
-    </ul>
   </div>
 </section>
 
@@ -818,7 +814,6 @@ html.lenis,html.lenis body{height:auto}
           <li>אפליקציה ייעודית להרשמה מהנייד, עם כתובת ופרטים שמורים</li>
           <li>מעקב אחר סטטוס הבקשה בזמן אמת: נקלטה, אושרה, הוזמנה</li>
           <li>עדכון במייל כשהנסיעה הוזמנה</li>
-          <li>כל הנסיעות שלי במקום אחד</li>
         </ul>
       </div>
       <div class="part">
@@ -826,7 +821,7 @@ html.lenis,html.lenis body{height:auto}
         <ul class="feat">
           <li>ההרשמות מגיעות כבר מקובצות לנסיעות</li>
           <li>רק הבקשות שדורשות טיפול, במסך אחד</li>
-          <li>התראה על בקשות מאוחרות, וחסימה של הרשמות כפולות</li>
+          <li>חסימה אוטומטית של הרשמות כפולות</li>
           <li>העתקת הזמנה וסימון קבוצה כטופלה, בשתי לחיצות</li>
         </ul>
       </div>
@@ -834,7 +829,6 @@ html.lenis,html.lenis body{height:auto}
         <h3>לארגון</h3>
         <ul class="feat">
           <li>פחות מוניות ריקות, וזה מורגש בחשבונית</li>
-          <li>תמונה מלאה של כל הנסיעות לפי תאריך, משמרת ועיר</li>
           <li>כל עובד משויך לארגון שלו, וההרשמה פתוחה רק לעובדי הארגון</li>
         </ul>
       </div>
@@ -856,8 +850,8 @@ html.lenis,html.lenis body{height:auto}
       </div>
       <div class="stat">
         <div class="stat-n">פחות</div>
-        <div class="stat-l">נסיעות ומוניות חצי ריקות</div>
-        <p>בקשות שהיו יוצאות כמוניות נפרדות מקובצות לנסיעות משותפות.</p>
+        <div class="stat-l">מוניות חצי ריקות</div>
+        <p>בקשות שהיו יוצאות כמוניות נפרדות נוסעות יחד.</p>
       </div>
       <div class="stat">
         <div class="stat-n">0</div>
@@ -866,55 +860,14 @@ html.lenis,html.lenis body{height:auto}
         <p>הרשמה כפולה לאותה משמרת ולאותו כיוון נחסמת אוטומטית.</p>
       </div>
     </div>
-    <p class="ben-note">הנתונים מבוססים על הפיילוט במוקד שירות ומכירות עם 45 עובדי משמרות. החיסכון בפועל תלוי בגודל הארגון ובפיזור העובדים.</p>
-    <div class="mid-cta">
-      <p>בואו נבדוק כמה זה יחסוך אצלכם.</p>
-      <a class="btn" href="#contact"><span>לתיאום הדגמה</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></a>
-    </div>
-  </div>
-</section>
-
-<div class="dusk" aria-hidden="true"><i style="right:12%;top:58%"></i><i style="right:31%;top:74%"></i><i style="right:47%;top:63%"></i><i style="right:64%;top:81%"></i><i style="right:78%;top:67%"></i><i style="right:90%;top:86%"></i><i style="right:22%;top:90%"></i><i style="right:56%;top:92%"></i></div>
-
-<section class="sec fit dark" aria-labelledby="fit-title">
-  <div class="wrap grid reveal">
-    <div class="head">
-      <h2 class="h2 h2-xl" id="fit-title">נבנה למשמרות. גם לאלה שנגמרות אחרי חצות.</h2>
-    </div>
-    <p class="lede">לכל ארגון שמסיע עובדים במשמרות: מוקדי שירות, מפעלים, מרכזים לוגיסטיים, בתי חולים וחברות אבטחה.</p>
-    <div class="nclock" aria-hidden="true">
-      <div class="nc-face"><span class="nc-t nc-a">23:59</span><span class="nc-t nc-b">00:00</span></div>
-      <div class="nc-l"><span>משמרת של יום שישי</span><span class="nc-note">נשארת ביום שישי ✓</span></div>
-    </div>
-    <ul class="scen">
-      <li><h3><span class="mark" aria-hidden="true"></span>משמרות לילה</h3><p>משמרת שחוצה חצות נשארת משויכת ליום שבו התחילה, כך שאף בקשה לא נופלת בין התאריכים.</p></li>
-      <li><h3><span class="mark" aria-hidden="true"></span>בקשות ברגע האחרון</h3><p>בקשה שמגיעה אחרי מועד ההזמנה שולחת למנהל התראה, והעובד רואה שהיא עדיין לא אושרה.</p></li>
-      <li><h3><span class="mark" aria-hidden="true"></span>הלוך וחזור בשעות שונות</h3><p>עובד שמגיע ב-16:00 וחוזר ב-01:00 מקבל שתי נסיעות נפרדות, וכל אחת מהן משובצת עם מי שנוסע באותה שעה.</p></li>
-    </ul>
-  </div>
-</section>
-
-<section class="sec pilot-sec" aria-labelledby="pilot-title">
-  <div class="wrap grid reveal">
-    <div class="head">
-      <h2 class="h2" id="pilot-title">כבר בשטח</h2>
-    </div>
     <figure class="pilot">
       <blockquote>״סידור ההסעות לקח לי יותר משעתיים בשבוע, בין אקסל לוואטסאפ. היום ההרשמות מגיעות מסודרות לפי נסיעות, ואני רק מאשר ושולח. חמש דקות וזהו.״</blockquote>
       <figcaption><cite>מנהל מוקד, מוקד שירות ומכירות עם 45 עובדי משמרות</cite></figcaption>
     </figure>
-  </div>
-</section>
-
-<section class="sec why-sec" aria-labelledby="why-title">
-  <div class="wrap grid reveal">
-    <div class="head">
-      <h2 class="h2" id="why-title">איך הרעיון נוצר</h2>
-    </div>
-    <p class="why-text">ניהלתי מוקד שפעל גם בסופי שבוע ובחגים, ובין היתר הייתי אחראי על סידור המוניות וההסעות לעובדים. כל שבוע מחדש: הודעות בוואטסאפ, טבלאות אקסל ובדיקה אחרונה בעשר בלילה לפני השליחה לתחנה. זה גזל שעות רבות בכל שבוע. חיפשתי מערכת שתעשה זאת, ומשלא מצאתי, החלטתי לבנות אחת.</p>
-    <div class="why-sig">
-      <span class="why-av" aria-hidden="true">א</span>
-      <span><b>אלון ברגר</b><small>מייסד <bdi dir="ltr">SmartKav</bdi></small></span>
+    <p class="ben-note">החיסכון בפועל תלוי בגודל הארגון ובפיזור העובדים.</p>
+    <div class="mid-cta">
+      <p>בואו נבדוק כמה זה יחסוך אצלכם.</p>
+      <a class="btn" href="#contact"><span>לתיאום הדגמה</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></a>
     </div>
   </div>
 </section>
@@ -926,8 +879,9 @@ html.lenis,html.lenis body{height:auto}
     </div>
     <div class="faq">
       <details><summary>צריך להחליף את חברת ההסעות או המוניות?</summary><p>לא. <bdi dir="ltr">SmartKav</bdi> מכינה את ההזמנה המקובצת, ואתם מעבירים אותה לחברה שאתם כבר עובדים איתה.</p></details>
-      <details><summary>איך העובדים נרשמים?</summary><p>באפליקציה בנייד, תחת הארגון שבו הם עובדים. הם בוחרים משמרת וכיוון ושולחים. הכתובת והפרטים נשמרים, כך שכל הרשמה הבאה לוקחת כמה שניות.</p></details>
+      <details><summary>איך העובדים נרשמים?</summary><p>באפליקציה בנייד, תחת הארגון שבו הם עובדים. הם בוחרים משמרת וכיוון ושולחים.</p></details>
       <details><summary>איך המערכת מחליטה מי נוסע עם מי?</summary><p>היא מקבצת בקשות לאותו תאריך, לאותה שעת משמרת, לאותו כיוון ולאותה עיר לנסיעה משותפת אחת. המנהל רואה את הקבוצות ומאשר לפני שההזמנה יוצאת.</p></details>
+      <details><summary>מה עם משמרת שמסתיימת אחרי חצות?</summary><p>היא נשארת משויכת ליום שבו התחילה, והחזור משובץ עם מי שמסיים באותה שעה.</p></details>
       <details><summary>מה קורה עם בקשה שמגיעה ברגע האחרון?</summary><p>היא נקלטת ומסומנת כמאוחרת, והמנהל מקבל התראה. העובד רואה שהבקשה עדיין לא אושרה, כך שאין הפתעות.</p></details>
       <details><summary>כמה זמן לוקחת ההטמעה?</summary><p>עד 24 שעות. מגדירים את הארגון, המשמרות ומועדי ההזמנה, ושולחים לעובדים קישור להרשמה.</p></details>
       <details><summary>כמה זה עולה?</summary><p>המחיר מותאם לכל ארגון. <a href="#contact">השאירו פרטים</a> ונחזור אליכם עם כל המידע.</p></details>
@@ -941,6 +895,7 @@ html.lenis,html.lenis body{height:auto}
       <p class="kicker">התחנה האחרונה</p>
       <h2 class="h2" id="contact-title">רוצים לראות איך זה ייראה אצלכם?</h2>
       <p class="c-text">השאירו פרטים ונציג מטעמנו יחזור אליכם בהקדם. בהדגמה קצרה נעבור על ממשק העובד ועל מסך המנהל, ונבדוק יחד כמה נסיעות וכמה שעות עבודה אפשר לחסוך אצלכם.</p>
+      <p class="c-story">ניהלתי מוקד שפעל גם בסופי שבוע ובחגים, ובין היתר הייתי אחראי על סידור המוניות וההסעות לעובדים. כל שבוע מחדש: הודעות בוואטסאפ, טבלאות אקסל ובדיקה אחרונה בעשר בלילה לפני השליחה לתחנה. זה גזל שעות רבות בכל שבוע. חיפשתי מערכת שתעשה זאת, ומשלא מצאתי, החלטתי לבנות אחת.</p>
       <div class="sig">
         <p class="sig-name">אלון ברגר</p>
         <p class="sig-role">מייסד <bdi dir="ltr">SmartKav</bdi></p>
