@@ -73,7 +73,7 @@ html.lenis,html.lenis body{height:auto}
 .lede{grid-column:1 / span 7;margin-top:22px;font-size:clamp(18px,1.5vw,21px);line-height:1.65;color:var(--body);text-wrap:pretty}
 .dark .lede{color:var(--dim)}
 
-.lp a:focus-visible,.lp button:focus-visible,.lp input:focus-visible,.lp textarea:focus-visible{outline:3px solid var(--signal);outline-offset:2px;box-shadow:0 0 0 2px var(--ink)}
+.lp a:focus-visible,.lp button:focus-visible,.lp input:focus-visible,.lp textarea:focus-visible,.lp summary:focus-visible{outline:3px solid var(--signal);outline-offset:2px;box-shadow:0 0 0 2px var(--ink)}
 .lp .check input:focus-visible{box-shadow:none}
 
 .btn{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:58px;padding:0 30px;border:0;border-radius:2px;background:var(--signal);color:var(--ink);font:inherit;font-size:17px;font-weight:600;line-height:1.2;text-decoration:none;cursor:pointer}
@@ -591,9 +591,15 @@ html.lenis,html.lenis body{height:auto}
   .r .ph-n{display:none}
 }
 .live i,.hub-ring{animation-play-state:var(--ps,running)}
+/* accessibility: skip link, footer links */
+.skip{position:fixed;top:12px;right:12px;z-index:1000;padding:12px 18px;border-radius:10px;background:#FFB000;color:#0E1116;font:600 16px/1.2 "IBM Plex Sans Hebrew",system-ui,Arial,sans-serif;text-decoration:none;transform:translateY(-200%)}
+.skip:focus,.skip:focus-visible{transform:none;outline:3px solid #0E1116;outline-offset:2px}
+#main:focus{outline:none}
+.foot-links a{color:var(--paper);text-decoration:underline!important;text-underline-offset:4px}
 </style>
 </head>
 <body>
+<a class="skip" href="#main">דלג לתוכן הראשי</a>
 <div class="lp">
 
 <header class="nav">
@@ -605,7 +611,7 @@ html.lenis,html.lenis body{height:auto}
 
 <svg class="route" aria-hidden="true" focusable="false"><polyline class="route-line route-main" points="0,0 0,0"></polyline><g class="route-cab"><g class="cab-body"><rect class="cab-car" x="-14" y="-8.5" width="28" height="17" rx="5"></rect><rect class="cab-win" x="3" y="-5.5" width="6.5" height="11" rx="2"></rect></g><g class="cab-badge"><circle cx="0" cy="-23" r="10.5"></circle><text x="0" y="-19" text-anchor="middle">0</text></g></g></svg>
 
-<main>
+<main id="main" tabindex="-1">
 
 <section class="hero dark" aria-labelledby="hero-title">
   <svg class="grain" aria-hidden="true" focusable="false"><filter id="grain-f"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#grain-f)"></rect></svg>
@@ -984,9 +990,9 @@ html.lenis,html.lenis body{height:auto}
             <label for="f-website">website</label>
             <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
           </div>
-          <p class="c-legal">הפרטים ישמשו רק ליצירת קשר בנוגע למערכת. אפשר לבקש את מחיקתם בכל עת.</p>
+          <p class="c-legal" id="privacy-note">הפרטים שתשאירו מגיעים ישירות לאלון ברגר, מייסד <bdi dir="ltr">SmartKav</bdi>, וישמשו רק ליצירת קשר בנוגע למערכת. אפשר לבקש את מחיקתם בכל עת.</p>
           <div class="field">
-            <label class="check" for="f-consent"><input id="f-consent" name="consent" type="checkbox" aria-required="true" aria-describedby="err-consent"><span>אני מאשר/ת פנייה אליי בטלפון או בדוא״ל בנוגע למערכת.</span></label>
+            <label class="check" for="f-consent"><input id="f-consent" name="consent" type="checkbox" aria-required="true" aria-describedby="err-consent privacy-note"><span>אני מאשר/ת פנייה אליי בטלפון או בדוא״ל בנוגע למערכת.</span></label>
             <p class="err" id="err-consent" aria-live="polite"></p>
           </div>
           <div class="fail" role="alert" hidden></div>
@@ -1006,6 +1012,7 @@ html.lenis,html.lenis body{height:auto}
 <footer class="foot dark">
   <div class="wrap">
     <span class="foot-brand" dir="ltr"><svg class="lm" viewBox="0 0 92 40" aria-hidden="true"><line x1="6" y1="20" x2="62" y2="20"></line><circle cx="74" cy="20" r="12"></circle></svg><span class="wm"><span class="lt">Smart</span><b>Kav</b></span></span>
+    <nav class="foot-links" aria-label="קישורים בתחתית הדף"><a href="accessibility.html">הצהרת נגישות</a></nav>
     <span>© <bdi dir="ltr">SmartKav</bdi> · אלון ברגר</span>
   </div>
 </footer>
