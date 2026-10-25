@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SmartKav · הרשמה וניהול הסעות לעובדים במשמרות</title>
-<meta name="description" content="העובדים נרשמים באפליקציה בנייד, המערכת מקבצת את הבקשות לנסיעות משותפות, ואתם מקבלים הזמנה מוכנה לחברת ההסעות. הטמעה תוך 24 שעות.">
+<meta name="description" content="העובדים נרשמים מהנייד, המערכת מקבצת לנסיעות משותפות, ואתם מקבלים הזמנה מוכנה. הטמעה תוך 24 שעות.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="he_IL">
 <meta property="og:site_name" content="SmartKav">
@@ -20,7 +20,17 @@
 <meta name="theme-color" content="#0E1116">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E1116'/%3E%3Cpath d='M10 32H24' stroke='%23FFB000' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='38' cy='32' r='12' fill='%23FFB000' stroke='%23F6F4EF' stroke-width='5'/%3E%3C/svg%3E">
 <script>
-if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+(function(){
+  var a = null, r = null, h = document.documentElement;
+  try { a = JSON.parse(localStorage.getItem('sk-a11y') || 'null'); } catch(e) {}
+  try { r = JSON.parse(sessionStorage.getItem('sk-a11y-restore') || 'null'); } catch(e) {}
+  window.__skA11y = (a && typeof a === 'object') ? { z: Math.max(0, Math.min(3, a.z | 0)), m: a.m || {} } : { z: 0, m: {} };
+  window.__skRestore = r;
+  window.__skStill = !!window.__skA11y.m.still;
+  for (var k in window.__skA11y.m) if (window.__skA11y.m[k]) h.classList.add('a11y-' + k);
+  if (r && 'scrollRestoration' in history) history.scrollRestoration = 'manual';
+})();
+if (!window.__skStill && !window.__skRestore && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
   document.documentElement.classList.add('js-intro');
   if (!location.hash && 'scrollRestoration' in history) history.scrollRestoration = 'manual';
   setTimeout(function(){ document.documentElement.classList.remove('js-intro'); }, 3000);
@@ -598,6 +608,43 @@ html.lenis,html.lenis body{height:auto}
 .skip:focus,.skip:focus-visible{transform:none;outline:3px solid #0E1116;outline-offset:2px}
 #main:focus{outline:none}
 .foot-links a{color:var(--paper);text-decoration:underline!important;text-underline-offset:4px}
+
+/* Accessibility widget */
+.a11y{position:fixed;right:24px;bottom:24px;z-index:2147483000;font:500 16px/1.4 "IBM Plex Sans Hebrew",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;direction:rtl;color:#0E1116}
+.a11y-fab{display:grid;place-items:center;width:52px;height:52px;padding:0;border:2px solid #FFB000;border-radius:50%;background:#0E1116;color:#FFB000;cursor:pointer;box-shadow:0 6px 20px rgba(14,17,22,.28);transition:transform 160ms ease}
+.a11y-fab:hover{transform:scale(1.06)}
+.a11y-fab:focus-visible,.a11y-panel button:focus-visible,.a11y-panel a:focus-visible{outline:3px solid #FFB000;outline-offset:3px}
+.a11y-fab svg{width:30px;height:30px}
+.a11y-panel{position:absolute;right:0;bottom:64px;width:min(320px,calc(100vw - 32px));max-height:calc(100vh - 200px);overflow:auto;padding:18px;border:1px solid #BDB7AC;border-radius:16px;background:#FFFFFF;box-shadow:0 18px 48px rgba(14,17,22,.22)}
+.a11y-panel[hidden]{display:none}
+.a11y-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.a11y-head h2{margin:0;font-size:19px;font-weight:700}
+.a11y-x{display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;background:#F6F4EF;color:#0E1116;font-size:22px;line-height:1;cursor:pointer}
+.a11y-size{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;padding:10px 12px;border:1px solid #E4E0D8;border-radius:12px}
+.a11y-size span{font-weight:600}
+.a11y-size div{display:flex;align-items:center;gap:6px}
+.a11y-size output{min-width:44px;text-align:center;font-variant-numeric:tabular-nums}
+.a11y-size button{width:36px;height:36px;border:1px solid #0E1116;border-radius:50%;background:#FFFFFF;color:#0E1116;font:700 20px/1 Arial,sans-serif;cursor:pointer}
+.a11y-size button:disabled{opacity:.35;cursor:default}
+.a11y-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.a11y-opt{min-height:64px;padding:10px 8px;border:1px solid #E4E0D8;border-radius:12px;background:#FFFFFF;color:#0E1116;font:600 14px/1.3 inherit;cursor:pointer;text-align:center}
+.a11y-opt[aria-pressed="true"]{border-color:#0E1116;background:#0E1116;color:#FFB000}
+.a11y-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;font-size:14px}
+.a11y-reset{padding:8px 12px;border:1px solid #0E1116;border-radius:10px;background:#FFFFFF;color:#0E1116;font:600 14px/1 inherit;cursor:pointer}
+.a11y-foot a{color:#0E1116;text-decoration:underline;text-underline-offset:3px}
+@media (max-width:767px){.a11y{right:16px;bottom:16px}.a11y-fab{width:48px;height:48px}}
+/* Modes */
+/* Contrast and grayscale run through a fixed overlay's backdrop-filter: a filter on the page itself would turn it
+   into the containing block for the fixed header and the pinned sections. */
+.a11y-veil{display:none;position:fixed;inset:0;z-index:2147482999;pointer-events:none}
+html.a11y-contrast .a11y-veil,html.a11y-gray .a11y-veil{display:block}
+html.a11y-contrast .a11y-veil{-webkit-backdrop-filter:contrast(1.45);backdrop-filter:contrast(1.45)}
+html.a11y-gray .a11y-veil{-webkit-backdrop-filter:grayscale(1);backdrop-filter:grayscale(1)}
+html.a11y-contrast.a11y-gray .a11y-veil{-webkit-backdrop-filter:contrast(1.45) grayscale(1);backdrop-filter:contrast(1.45) grayscale(1)}
+html.a11y-links .lp a{text-decoration:underline!important;text-underline-offset:4px;outline:2px solid #FFB000;outline-offset:2px}
+html.a11y-font .lp,html.a11y-font .lp *{font-family:Arial,"Helvetica Neue",sans-serif!important;letter-spacing:.01em!important}
+html.a11y-still *,html.a11y-still *::before,html.a11y-still *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24'%3E%3Cpath d='M4 2l16 10-7 1.5L9.5 21z' fill='%230E1116' stroke='%23FFFFFF' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 4 2,auto!important}
 </style>
 </head>
 <body>
@@ -621,7 +668,7 @@ html.lenis,html.lenis body{height:auto}
     <div class="hero-text">
       <h1 id="hero-title"><span class="hl">נרשמים לנסיעות בקליק.</span><span class="h1-2"><bdi dir="ltr">SmartKav</bdi> עושה את כל השאר.</span></h1>
       <div class="hero-row">
-        <p class="hero-sub">העובדים נרשמים באפליקציה, המערכת מקבצת אותם לנסיעות משותפות, ואתם מקבלים הזמנה מוכנה לחברת ההסעות. בלי אקסל ובלי וואטסאפ.</p>
+        <p class="hero-sub">העובדים נרשמים מהנייד, המערכת מקבצת לנסיעות משותפות, ואתם מקבלים הזמנה מוכנה. בלי אקסל ובלי וואטסאפ.</p>
         <div class="hero-actions">
           <a class="btn hero-cta" href="#contact"><span>לתיאום הדגמה</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></a>
           <a class="tlink" href="#how">איך זה עובד</a>
@@ -649,12 +696,12 @@ html.lenis,html.lenis body{height:auto}
   <div class="wrap grid reveal">
     <div class="head">
       <p class="kicker">חמישי, 22:40 · 38 הודעות שלא נקראו</p>
-      <h2 class="h2" id="pain-title">כל ערב, אותו בלגן בוואטסאפ</h2>
+      <h2 class="h2" id="pain-title">כל ערב, אותו בלגן</h2>
     </div>
     <ul class="pain">
-      <li><h3>ערב שלם מול אקסל</h3><p>אוספים בקשות מהקבוצה, מהודעות פרטיות ומשיחות שלא נענו, מעתיקים לטבלה וממיינים לפי שעה ועיר. ואז מגיעים תיקונים של הרגע האחרון והרשמות כפולות, ומישהו בכל זאת נשכח.</p></li>
-      <li><h3>שתי מוניות לאותו רחוב</h3><p>דנה ואבי גרים חמש דקות זה מזה ויוצאים באותה שעה, אבל נוסעים במוניות נפרדות. בסוף החודש רואים את זה בחשבונית.</p></li>
-      <li><h3>״הוזמנה לי מונית?״ בשתיים בלילה</h3><p>העובד לא רואה שום סטטוס, אז הוא שולח הודעה. ואחרי עשר דקות עוד אחת.</p></li>
+      <li><h3>ערב שלם מול אקסל</h3><p>אוספים בקשות מהקבוצה, מהפרטי ומהטלפון, ממיינים בטבלה, ומישהו בכל זאת נשכח.</p></li>
+      <li><h3>שתי מוניות לאותו רחוב</h3><p>דנה ואבי גרים קרוב ויוצאים באותה שעה, אבל נוסעים בנפרד. בסוף החודש זה מופיע בחשבונית.</p></li>
+      <li><h3>״הוזמנה לי מונית?״ בשתיים בלילה</h3><p>אין לעובד סטטוס, אז הוא שולח הודעה. ועוד אחת.</p></li>
     </ul>
     <div class="chat" aria-hidden="true">
       <div class="chat-top"><span class="chat-t"><b>צ׳אטים</b><small>חמישי, 22:40</small></span><span class="chat-unread">38</span></div>
@@ -668,7 +715,7 @@ html.lenis,html.lenis body{height:auto}
         <li class="ib"><span class="ib-av ib-grp">ה</span><span class="ib-b"><b>הסעות מוקד<em>קבוצה · 46</em></b><span class="ib-m">מיכל: מי מזמין לי מונית ל-16:00 מחר?</span></span><span class="ib-s"><time>22:31</time><span class="ib-n">27</span></span></li>
       </ol>
     </div>
-    <p class="pain-out"><bdi dir="ltr">SmartKav</bdi> מחליפה את הקבוצה, את ההודעות הפרטיות, את הטבלה <mark>ואת הטלפונים בלילה.</mark></p>
+    <p class="pain-out"><bdi dir="ltr">SmartKav</bdi> מחליפה את הקבוצה, הטבלה <mark>והטלפונים בלילה.</mark></p>
   </div>
 </section>
 
@@ -677,23 +724,23 @@ html.lenis,html.lenis body{height:auto}
     <div class="head">
       <h2 class="h2" id="how-title">איך זה עובד</h2>
     </div>
-    <p class="lede">לכל ארגון שמסיע עובדים במשמרות: מוקדי שירות, מפעלים, מרכזים לוגיסטיים, בתי חולים וחברות אבטחה.</p>
+    <p class="lede">למוקדים, מפעלים, בתי חולים וכל ארגון עם עובדי משמרות.</p>
     <ol class="steps">
       <li class="steps-line" aria-hidden="true"><i></i></li>
-      <li class="step"><span class="station" aria-hidden="true"></span><h3>העובד נרשם</h3><p>נכנס לאפליקציה בנייד, בוחר משמרת וכיוון ושולח. הכתובת כבר שמורה, אז זה לוקח כמה שניות.</p>
+      <li class="step"><span class="station" aria-hidden="true"></span><h3>העובד נרשם</h3><p>בוחר משמרת וכיוון ושולח. הכתובת שמורה, אז זה לוקח כמה שניות.</p>
         <div class="sv sv-reg" aria-hidden="true">
           <div class="sv-field"><span>שישי · משמרת 16:00</span><small>הלוך וחזור</small></div>
           <div class="sv-btn">שליחת הרשמה</div>
           <div class="sv-ok"><span class="tag tag-s">נקלטה</span><span>הבקשה שלך התקבלה</span></div>
         </div>
       </li>
-      <li class="step"><span class="station" aria-hidden="true"></span><h3>המערכת מקבצת</h3><p>בקשות לאותה שעה, לאותו כיוון ולאותה עיר נכנסות לנסיעה אחת, בלי שאף אחד נוגע בהן.</p>
+      <li class="step"><span class="station" aria-hidden="true"></span><h3>המערכת מקבצת</h3><p>בקשות לאותה שעה, כיוון ועיר מתאחדות לנסיעה אחת, אוטומטית.</p>
         <div class="sv sv-grp" aria-hidden="true">
           <span class="sv-chip" style="top:14px;right:16px">דנה</span><span class="sv-chip" style="top:14px;left:16px">אבי</span><span class="sv-chip" style="bottom:14px;right:16px">נועה</span><span class="sv-chip" style="bottom:14px;left:16px">רון</span>
           <div class="sv-card">רמת גן · 16:00<b>4 נוסעים</b></div>
         </div>
       </li>
-      <li class="step"><span class="station" aria-hidden="true"></span><h3>אתם שולחים</h3><p>מעתיקים את ההזמנה לחברת ההסעות, והעובד רואה ״מונית הוזמנה״ בטלפון שלו.</p>
+      <li class="step"><span class="station" aria-hidden="true"></span><h3>אתם שולחים</h3><p>מעתיקים את ההזמנה לחברת ההסעות, והעובד רואה ״מונית הוזמנה״.</p>
         <div class="sv sv-send" aria-hidden="true">
           <div class="sv-order"><span>הלוך · 16:00 · רמת גן<small>4 נוסעים</small></span><span class="sv-copy">העתק הזמנה</span></div>
           <div class="sv-toast"><span class="tag tag-s">מונית הוזמנה</span><span>4 עובדים קיבלו עדכון</span></div>
@@ -708,7 +755,7 @@ html.lenis,html.lenis body{height:auto}
     <div class="head">
       <h2 class="h2 h2-xl" id="smart-title">14 בקשות. 4 נסיעות.</h2>
     </div>
-    <p class="lede">בלי טבלה ובלי לחשוב מי גר ליד מי. המערכת רואה מי יכול לנסוע יחד ומשבצת אותם באותה מונית, ואתם רק עוברים ומאשרים.</p>
+    <p class="lede">בלי טבלה ובלי לחשוב מי גר ליד מי. אתם רק מאשרים.</p>
     <div class="ba" role="img" aria-label="דוגמה: 14 בקשות נסיעה נפרדות מקובצות אוטומטית ל-4 נסיעות משותפות">
       <div class="ba-col" aria-hidden="true">
         <div class="ba-h">לפני<span><span class="ba-open">14</span> בקשות נפרדות</span></div>
@@ -811,25 +858,23 @@ html.lenis,html.lenis body{height:auto}
       <div class="part">
         <h3>לעובדים</h3>
         <ul class="feat">
-          <li>אפליקציה ייעודית להרשמה מהנייד, עם כתובת ופרטים שמורים</li>
-          <li>מעקב אחר סטטוס הבקשה בזמן אמת: נקלטה, אושרה, הוזמנה</li>
-          <li>עדכון במייל כשהנסיעה הוזמנה</li>
+          <li>הרשמה מהנייד, עם כתובת שמורה</li>
+          <li>סטטוס בזמן אמת: נקלטה, אושרה, הוזמנה</li>
+          <li>עדכון במייל כשהמונית הוזמנה</li>
         </ul>
       </div>
       <div class="part">
         <h3>למנהלים</h3>
         <ul class="feat">
-          <li>ההרשמות מגיעות כבר מקובצות לנסיעות</li>
-          <li>רק הבקשות שדורשות טיפול, במסך אחד</li>
-          <li>חסימה אוטומטית של הרשמות כפולות</li>
-          <li>העתקת הזמנה וסימון קבוצה כטופלה, בשתי לחיצות</li>
+          <li>מסך אחד, רק מה שדורש טיפול</li>
+          <li>הזמנה לחברת ההסעות בשתי לחיצות</li>
         </ul>
       </div>
       <div class="part">
         <h3>לארגון</h3>
         <ul class="feat">
-          <li>פחות מוניות ריקות, וזה מורגש בחשבונית</li>
-          <li>כל עובד משויך לארגון שלו, וההרשמה פתוחה רק לעובדי הארגון</li>
+          <li>פחות מוניות ריקות</li>
+          <li>ההרשמה פתוחה רק לעובדי הארגון</li>
         </ul>
       </div>
     </div>
@@ -844,29 +889,28 @@ html.lenis,html.lenis body{height:auto}
     <div class="stats">
       <div class="stat">
         <div class="stat-n"><span class="cd-n">5</span> דק׳</div>
-        <div class="stat-l">במקום שעתיים ויותר בשבוע</div>
+        <div class="stat-l">במקום שעתיים בשבוע</div>
         <div class="cd-bar" aria-hidden="true"><i></i></div>
-        <p>זה הזמן שהמנהל משקיע בסידור ההסעות כשהכול מגיע מוכן.</p>
+        <p>הזמן שלוקח לסדר את ההסעות.</p>
       </div>
       <div class="stat">
         <div class="stat-n">פחות</div>
         <div class="stat-l">מוניות חצי ריקות</div>
-        <p>בקשות שהיו יוצאות כמוניות נפרדות נוסעות יחד.</p>
+        <p>מי שנסע בנפרד נוסע עכשיו יחד.</p>
       </div>
       <div class="stat">
         <div class="stat-n">0</div>
         <div class="stat-l">הרשמות כפולות</div>
         <div class="dup" aria-hidden="true"><span>דנה · שישי 16:00 · הלוך</span><span class="dup-x">דנה · שישי 16:00 · הלוך<em>נחסמה</em></span></div>
-        <p>הרשמה כפולה לאותה משמרת ולאותו כיוון נחסמת אוטומטית.</p>
+        <p>כפילויות נחסמות אוטומטית.</p>
       </div>
     </div>
     <figure class="pilot">
-      <blockquote>״סידור ההסעות לקח לי יותר משעתיים בשבוע, בין אקסל לוואטסאפ. היום ההרשמות מגיעות מסודרות לפי נסיעות, ואני רק מאשר ושולח. חמש דקות וזהו.״</blockquote>
+      <blockquote>״זה לקח לי יותר משעתיים בשבוע, בין אקסל לוואטסאפ. היום אני רק מאשר ושולח. חמש דקות וזהו.״</blockquote>
       <figcaption><cite>מנהל מוקד, מוקד שירות ומכירות עם 45 עובדי משמרות</cite></figcaption>
     </figure>
-    <p class="ben-note">החיסכון בפועל תלוי בגודל הארגון ובפיזור העובדים.</p>
     <div class="mid-cta">
-      <p>בואו נבדוק כמה זה יחסוך אצלכם.</p>
+      <p>החיסכון משתנה לפי הארגון. בואו נבדוק כמה תחסכו אצלכם.</p>
       <a class="btn" href="#contact"><span>לתיאום הדגמה</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></a>
     </div>
   </div>
@@ -878,13 +922,12 @@ html.lenis,html.lenis body{height:auto}
       <h2 class="h2" id="faq-title">שאלות נפוצות</h2>
     </div>
     <div class="faq">
-      <details><summary>צריך להחליף את חברת ההסעות או המוניות?</summary><p>לא. <bdi dir="ltr">SmartKav</bdi> מכינה את ההזמנה המקובצת, ואתם מעבירים אותה לחברה שאתם כבר עובדים איתה.</p></details>
-      <details><summary>איך העובדים נרשמים?</summary><p>באפליקציה בנייד, תחת הארגון שבו הם עובדים. הם בוחרים משמרת וכיוון ושולחים.</p></details>
-      <details><summary>איך המערכת מחליטה מי נוסע עם מי?</summary><p>היא מקבצת בקשות לאותו תאריך, לאותה שעת משמרת, לאותו כיוון ולאותה עיר לנסיעה משותפת אחת. המנהל רואה את הקבוצות ומאשר לפני שההזמנה יוצאת.</p></details>
-      <details><summary>מה עם משמרת שמסתיימת אחרי חצות?</summary><p>היא נשארת משויכת ליום שבו התחילה, והחזור משובץ עם מי שמסיים באותה שעה.</p></details>
-      <details><summary>מה קורה עם בקשה שמגיעה ברגע האחרון?</summary><p>היא נקלטת ומסומנת כמאוחרת, והמנהל מקבל התראה. העובד רואה שהבקשה עדיין לא אושרה, כך שאין הפתעות.</p></details>
-      <details><summary>כמה זמן לוקחת ההטמעה?</summary><p>עד 24 שעות. מגדירים את הארגון, המשמרות ומועדי ההזמנה, ושולחים לעובדים קישור להרשמה.</p></details>
-      <details><summary>כמה זה עולה?</summary><p>המחיר מותאם לכל ארגון. <a href="#contact">השאירו פרטים</a> ונחזור אליכם עם כל המידע.</p></details>
+      <details><summary>צריך להחליף את חברת ההסעות או המוניות?</summary><p>לא. <bdi dir="ltr">SmartKav</bdi> מכינה את ההזמנה, ואתם שולחים אותה לחברה הקיימת.</p></details>
+      <details><summary>איך המערכת מחליטה מי נוסע עם מי?</summary><p>לפי תאריך, שעה, כיוון ועיר. המנהל מאשר לפני שההזמנה יוצאת.</p></details>
+      <details><summary>מה עם משמרת שמסתיימת אחרי חצות?</summary><p>היא נשארת משויכת ליום שבו התחילה.</p></details>
+      <details><summary>מה קורה עם בקשה שמגיעה ברגע האחרון?</summary><p>היא נקלטת ומסומנת כמאוחרת, והמנהל מקבל התראה.</p></details>
+      <details><summary>כמה זמן לוקחת ההטמעה?</summary><p>עד 24 שעות: מגדירים ארגון ומשמרות ושולחים לעובדים קישור.</p></details>
+      <details><summary>כמה זה עולה?</summary><p>המחיר מותאם לכל ארגון. <a href="#contact">השאירו פרטים</a> ונחזור אליכם.</p></details>
     </div>
   </div>
 </section>
@@ -894,8 +937,8 @@ html.lenis,html.lenis body{height:auto}
     <div class="c-intro">
       <p class="kicker">התחנה האחרונה</p>
       <h2 class="h2" id="contact-title">רוצים לראות איך זה ייראה אצלכם?</h2>
-      <p class="c-text">השאירו פרטים ונציג מטעמנו יחזור אליכם בהקדם. בהדגמה קצרה נעבור על ממשק העובד ועל מסך המנהל, ונבדוק יחד כמה נסיעות וכמה שעות עבודה אפשר לחסוך אצלכם.</p>
-      <p class="c-story">ניהלתי מוקד שפעל גם בסופי שבוע ובחגים, ובין היתר הייתי אחראי על סידור המוניות וההסעות לעובדים. כל שבוע מחדש: הודעות בוואטסאפ, טבלאות אקסל ובדיקה אחרונה בעשר בלילה לפני השליחה לתחנה. זה גזל שעות רבות בכל שבוע. חיפשתי מערכת שתעשה זאת, ומשלא מצאתי, החלטתי לבנות אחת.</p>
+      <p class="c-text">השאירו פרטים, ובהדגמה קצרה נראה לכם את המערכת ונבדוק כמה תחסכו.</p>
+      <p class="c-story">ניהלתי מוקד שעבד גם בסופ״ש ובחגים, וסידור ההסעות היה עליי: וואטסאפ, אקסל ובדיקה אחרונה בעשר בלילה. חיפשתי מערכת שתעשה את זה ולא מצאתי, אז בניתי.</p>
       <div class="sig">
         <p class="sig-name">אלון ברגר</p>
         <p class="sig-role">מייסד <bdi dir="ltr">SmartKav</bdi></p>
@@ -945,7 +988,7 @@ html.lenis,html.lenis body{height:auto}
             <label for="f-website">website</label>
             <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
           </div>
-          <p class="c-legal" id="privacy-note">הפרטים שתשאירו מגיעים ישירות לאלון ברגר, מייסד <bdi dir="ltr">SmartKav</bdi>, וישמשו רק ליצירת קשר בנוגע למערכת. אפשר לבקש את מחיקתם בכל עת.</p>
+          <p class="c-legal" id="privacy-note">הפרטים מגיעים ישירות לאלון ברגר וישמשו רק ליצירת קשר. אפשר לבקש את מחיקתם בכל עת.</p>
           <div class="field">
             <label class="check" for="f-consent"><input id="f-consent" name="consent" type="checkbox" aria-required="true" aria-describedby="err-consent privacy-note"><span>אני מאשר/ת פנייה אליי בטלפון או בדוא״ל בנוגע למערכת.</span></label>
             <p class="err" id="err-consent" aria-live="polite"></p>
@@ -955,7 +998,7 @@ html.lenis,html.lenis body{height:auto}
         </form>
         <div class="success" hidden>
           <div class="s-road" aria-hidden="true"><svg class="ck" viewBox="0 0 64 64" focusable="false"><circle cx="32" cy="32" r="29.5"></circle><path d="M20 33l8.5 8.5L45 24"></path></svg><svg class="s-taxi" viewBox="-16 -10 32 20" focusable="false"><rect class="cab-car" x="-14" y="-8.5" width="28" height="17" rx="5"></rect><rect class="cab-win" x="-9.5" y="-5.5" width="6.5" height="11" rx="2"></rect></svg></div>
-          <p class="s-text" tabindex="-1">תודה, הפרטים התקבלו. נציג מטעמנו יחזור אליכם בהקדם לתיאום מועד ההדגמה.</p>
+          <p class="s-text" tabindex="-1">תודה! נחזור אליכם בהקדם לתיאום הדגמה.</p>
         </div>
       </div>
     </div>
@@ -974,6 +1017,26 @@ html.lenis,html.lenis body{height:auto}
 
 
 </div>
+
+<script>
+/* Accessibility text size: scales reading text (not the product mockups or the big headings) before the page
+   scripts measure the layout. It re-runs on resize because the original sizes use clamp(). */
+(function(){
+  var f = [1, 1.1, 1.2, 1.3][(window.__skA11y || {}).z || 0];
+  if (f === 1) return;
+  var SKIP = '.board,.chat,.sv,.ba,.sc-stage,.dup,.nav,.a11y';
+  var SEL = 'p,li,h3,summary,label,cite,blockquote,figcaption,.btn,.tlink,.stat-l,input,select,textarea';
+  function run(){
+    var els = Array.prototype.filter.call(document.querySelectorAll('.lp ' + SEL.split(',').join(',.lp ')), function(e){ return !e.closest(SKIP); });
+    els.forEach(function(e){ e.style.fontSize = ''; });
+    var sizes = els.map(function(e){ return parseFloat(getComputedStyle(e).fontSize); });
+    els.forEach(function(e, i){ if (sizes[i]) e.style.fontSize = (sizes[i] * f).toFixed(2) + 'px'; });
+  }
+  run();
+  var t = null, w = window.innerWidth;
+  window.addEventListener('resize', function(){ if (window.innerWidth === w) return; w = window.innerWidth; run(); });
+})();
+</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
@@ -1027,7 +1090,7 @@ var MAP_LAYOUTS = {
 
 function initLanding(page, opts){
   var win = window, doc = document, off = [];
-  var reduce = !!(win.matchMedia && win.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var reduce = !!win.__skStill || !!(win.matchMedia && win.matchMedia('(prefers-reduced-motion: reduce)').matches);
   function on(t, e, f, o){ t.addEventListener(e, f, o); off.push(function(){ t.removeEventListener(e, f, o); }); }
   function $(s){ return page.querySelector(s); }
   function $$(s){ return Array.prototype.slice.call(page.querySelectorAll(s)); }
@@ -1729,6 +1792,89 @@ initLanding(document.querySelector('.lp'), {
     }
     if((sr && sr.querySelector('style[data-sk]')) || ++tries > 80) clearInterval(timer);
   }, 250);
+})();
+</script>
+
+<!-- Accessibility widget -->
+<div class="a11y-veil" aria-hidden="true"></div>
+<div class="a11y" id="a11y">
+  <button class="a11y-fab" type="button" aria-expanded="false" aria-controls="a11y-panel" aria-label="התאמות נגישות">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="4.2" r="2" fill="currentColor"/><path d="M4.5 8.2l7.5 1.6 7.5-1.6M12 9.8v4.6m0 0l-3.4 6.2M12 14.4l3.4 6.2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="a11y-panel" id="a11y-panel" role="dialog" aria-label="התאמות נגישות" hidden>
+    <div class="a11y-head"><h2>התאמות נגישות</h2><button class="a11y-x" type="button" aria-label="סגירה">×</button></div>
+    <div class="a11y-size">
+      <span id="a11y-size-l">גודל טקסט</span>
+      <div role="group" aria-labelledby="a11y-size-l">
+        <button type="button" data-z="-1" aria-label="הקטנת טקסט">−</button>
+        <output aria-live="polite">100%</output>
+        <button type="button" data-z="1" aria-label="הגדלת טקסט">+</button>
+      </div>
+    </div>
+    <div class="a11y-grid">
+      <button class="a11y-opt" type="button" data-m="contrast" aria-pressed="false">ניגודיות גבוהה</button>
+      <button class="a11y-opt" type="button" data-m="gray" aria-pressed="false">גווני אפור</button>
+      <button class="a11y-opt" type="button" data-m="links" aria-pressed="false">הדגשת קישורים</button>
+      <button class="a11y-opt" type="button" data-m="font" aria-pressed="false">גופן קריא</button>
+      <button class="a11y-opt" type="button" data-m="still" aria-pressed="false">עצירת אנימציות</button>
+      <button class="a11y-opt" type="button" data-m="cursor" aria-pressed="false">סמן גדול</button>
+    </div>
+    <div class="a11y-foot"><button class="a11y-reset" type="button">איפוס</button><a href="accessibility.html">הצהרת נגישות</a></div>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY='sk-a11y', RKEY='sk-a11y-restore', root=document.documentElement, box=document.getElementById('a11y');
+  var fab=box.querySelector('.a11y-fab'), panel=box.querySelector('.a11y-panel'), out=box.querySelector('output');
+  var cur=window.__skA11y || {z:0,m:{}};
+  var st={z:cur.z, m:JSON.parse(JSON.stringify(cur.m))};
+  /* Text size, readable font and stopped motion change what the page measures (the route line, pinned sections),
+     so they take effect through a reload that comes back to the same spot with this panel open. */
+  var LAYOUT={font:1, still:1};
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(st)); }catch(e){} }
+  function reload(){
+    save();
+    try{ sessionStorage.setItem(RKEY, JSON.stringify({ y: window.scrollY, open: true })); }catch(e){}
+    location.reload();
+  }
+  function paint(){
+    out.textContent=(100+st.z*10)+'%';
+    box.querySelector('[data-z="-1"]').disabled = st.z<=0;
+    box.querySelector('[data-z="1"]').disabled = st.z>=3;
+    box.querySelectorAll('[data-m]').forEach(function(b){
+      var k=b.getAttribute('data-m'), on=!!st.m[k];
+      if(!LAYOUT[k]) root.classList.toggle('a11y-'+k, on);
+      b.setAttribute('aria-pressed', on?'true':'false');
+    });
+  }
+  function open(v){ panel.hidden=!v; fab.setAttribute('aria-expanded', v?'true':'false'); if(v) panel.querySelector('.a11y-x').focus(); }
+  fab.addEventListener('click', function(){ open(panel.hidden); });
+  box.querySelector('.a11y-x').addEventListener('click', function(){ open(false); fab.focus(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !panel.hidden){ open(false); fab.focus(); } });
+  document.addEventListener('click', function(e){ if(!panel.hidden && !box.contains(e.target)) open(false); });
+  box.querySelectorAll('[data-z]').forEach(function(b){ b.addEventListener('click', function(){
+    var z=Math.max(0, Math.min(3, st.z + (+b.getAttribute('data-z'))));
+    if(z===st.z) return; st.z=z; paint(); reload(); }); });
+  box.querySelectorAll('[data-m]').forEach(function(b){ b.addEventListener('click', function(){
+    var k=b.getAttribute('data-m'); st.m[k]=!st.m[k]; paint();
+    if(LAYOUT[k]) reload(); else save(); }); });
+  box.querySelector('.a11y-reset').addEventListener('click', function(){
+    var needs = st.z>0 || Object.keys(LAYOUT).some(function(k){ return st.m[k]; });
+    st={z:0,m:{}}; paint();
+    if(needs) reload(); else save(); });
+  paint();
+  /* Back from a settings reload: return to the same scroll position and reopen the panel. */
+  var r=window.__skRestore;
+  if(r){
+    try{ sessionStorage.removeItem(RKEY); }catch(e){}
+    var go=function(){
+      window.scrollTo(0, r.y||0);
+      if(window.ScrollTrigger) window.ScrollTrigger.refresh();
+      window.scrollTo(0, r.y||0);
+      if(r.open) open(true);
+    };
+    if(document.readyState==='complete') setTimeout(go, 50); else window.addEventListener('load', function(){ setTimeout(go, 50); });
+  }
 })();
 </script>
 </body>
