@@ -610,12 +610,12 @@ html.lenis,html.lenis body{height:auto}
 .foot-links a{color:var(--paper);text-decoration:underline!important;text-underline-offset:4px}
 
 /* Accessibility widget */
-.a11y{position:fixed;right:24px;bottom:24px;z-index:2147483000;font:500 16px/1.4 "IBM Plex Sans Hebrew",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;direction:rtl;color:#0E1116}
+.a11y{position:fixed;left:24px;bottom:24px;z-index:2147483000;font:500 16px/1.4 "IBM Plex Sans Hebrew",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;direction:rtl;color:#0E1116}
 .a11y-fab{display:grid;place-items:center;width:52px;height:52px;padding:0;border:2px solid #FFB000;border-radius:50%;background:#0E1116;color:#FFB000;cursor:pointer;box-shadow:0 6px 20px rgba(14,17,22,.28);transition:transform 160ms ease}
 .a11y-fab:hover{transform:scale(1.06)}
 .a11y-fab:focus-visible,.a11y-panel button:focus-visible,.a11y-panel a:focus-visible{outline:3px solid #FFB000;outline-offset:3px}
 .a11y-fab svg{width:30px;height:30px}
-.a11y-panel{position:absolute;right:0;bottom:64px;width:min(320px,calc(100vw - 32px));max-height:calc(100vh - 200px);overflow:auto;padding:18px;border:1px solid #BDB7AC;border-radius:16px;background:#FFFFFF;box-shadow:0 18px 48px rgba(14,17,22,.22)}
+.a11y-panel{position:absolute;left:0;bottom:64px;width:min(320px,calc(100vw - 32px));max-height:calc(100vh - 200px);overflow:auto;padding:18px;border:1px solid #BDB7AC;border-radius:16px;background:#FFFFFF;box-shadow:0 18px 48px rgba(14,17,22,.22)}
 .a11y-panel[hidden]{display:none}
 .a11y-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .a11y-head h2{margin:0;font-size:19px;font-weight:700}
@@ -632,7 +632,7 @@ html.lenis,html.lenis body{height:auto}
 .a11y-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;font-size:14px}
 .a11y-reset{padding:8px 12px;border:1px solid #0E1116;border-radius:10px;background:#FFFFFF;color:#0E1116;font:600 14px/1 inherit;cursor:pointer}
 .a11y-foot a{color:#0E1116;text-decoration:underline;text-underline-offset:3px}
-@media (max-width:767px){.a11y{right:16px;bottom:16px}.a11y-fab{width:48px;height:48px}}
+@media (max-width:767px){.a11y{left:16px;bottom:16px}.a11y-fab{width:48px;height:48px}}
 /* Modes */
 /* Contrast and grayscale run through a fixed overlay's backdrop-filter: a filter on the page itself would turn it
    into the containing block for the fixed header and the pinned sections. */
@@ -1778,13 +1778,13 @@ initLanding(document.querySelector('.lp'), {
 <script src="https://cdn.botpress.cloud/webchat/v5.0/inject.js"></script>
 <script src="https://files.bpcontent.cloud/2026/10/21/21/20261021210632-WAPRBUU7.js" defer></script>
 <script>
-/* Kobi sits bottom-left, away from the route line on the right. The widget renders inside an open shadow root,
+/* Kobi sits bottom-right; the accessibility button takes bottom-left. The widget renders inside an open shadow root,
    so the rules are added there once it appears. */
 (function(){
   var css = ''
-    + '.bpFabWrapper{left:24px!important;right:auto!important}'
-    + '.bpFABMessagePreview{left:24px!important;right:auto!important}'
-    + '@media (min-width:768px){.bpFABWebchat{left:24px!important;right:auto!important;transform-origin:0% 100%!important}}';
+    + '.bpFabWrapper{right:24px!important;left:auto!important}'
+    + '.bpFABMessagePreview{right:24px!important;left:auto!important}'
+    + '@media (min-width:768px){.bpFABWebchat{right:24px!important;left:auto!important;transform-origin:100% 100%!important}}';
   var tries = 0, timer = setInterval(function(){
     var host = document.querySelector('.bpChatContainer #fab-root'), sr = host && host.shadowRoot;
     if(sr && !sr.querySelector('style[data-sk]')){
