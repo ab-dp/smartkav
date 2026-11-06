@@ -1,3 +1,5 @@
 # GitHub Pages (Jekyll) build settings: keep project notes out of the live site.
 exclude:
   - CLAUDE.md
+  - tools
+  - drafts

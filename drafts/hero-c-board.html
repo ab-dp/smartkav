@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>כיוון ג · לוח יציאות</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;800;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{--paper:#EAE8E3;--ink:#0B0B0B;--signal:#FFB000;--muted:#55534E;--rule:2px solid var(--ink)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink)}
+body{font-family:"Heebo",system-ui,sans-serif;font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;font-variant-numeric:tabular-nums}
+.wrap{max-width:1360px;margin-inline:auto;padding-inline:40px}
+
+.nav{border-bottom:var(--rule)}
+.nav .wrap{display:grid;grid-template-columns:auto 1fr auto;align-items:stretch;height:64px}
+.brand{display:flex;align-items:center;gap:8px;padding-left:28px;border-left:var(--rule);font-weight:800;font-size:19px;direction:ltr}
+.brand svg{width:34px;height:15px}
+.brand .lt{font-weight:400}
+.nav-mid{display:flex;align-items:center;gap:28px;padding-inline:28px}
+.nav-mid a{text-decoration:none}
+.nav-mid a:hover{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.nav-cta{display:flex;align-items:center;padding-inline:26px;background:var(--ink);color:var(--paper);font-weight:800;font-size:16px;text-decoration:none;transition:background-color .15s,color .15s}
+.nav-cta:hover{background:var(--signal);color:var(--ink)}
+
+.hero{border-bottom:var(--rule)}
+.g{display:grid;grid-template-columns:repeat(12,minmax(0,1fr))}
+.cell{padding:28px 0}
+.hd{grid-column:1 / -1;display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--ink)}
+.hd .lv::before{content:"";display:inline-block;width:8px;height:8px;margin-inline-end:8px;background:var(--signal);animation:blink 1.2s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+
+.title{grid-column:1 / span 8;padding:40px 0 36px;padding-inline-end:32px;border-inline-end:1px solid var(--ink)}
+h1{margin:0;font-weight:900;font-size:clamp(48px,7.4vw,128px);line-height:.9;letter-spacing:-.045em;text-wrap:balance}
+h1 .hl{display:inline-block;padding:0 .08em;background:var(--signal)}
+.big{grid-column:9 / -1;display:flex;flex-direction:column;justify-content:space-between;padding:40px 0 36px;padding-inline-start:32px}
+.nums{display:flex;align-items:baseline;gap:12px;font-weight:900;font-size:clamp(80px,10vw,176px);line-height:.8;letter-spacing:-.06em;direction:ltr;justify-content:flex-end}
+.nums s{text-decoration-thickness:.07em;text-decoration-color:var(--signal);color:var(--muted)}
+.nums .ar{font-size:.4em;font-weight:500}
+.nums-l{margin-top:14px;text-align:left}
+
+.row2{grid-column:1 / -1;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));border-top:var(--rule)}
+.sub{grid-column:1 / span 5;padding:28px 0;padding-inline-end:32px;border-inline-end:1px solid var(--ink);font-size:19px;text-wrap:pretty}
+.acts{display:flex;flex-wrap:wrap;gap:0;margin-top:24px}
+.b{display:inline-flex;align-items:center;gap:12px;min-height:56px;padding:0 24px;border:var(--rule);background:var(--signal);font-weight:800;font-size:17px;text-decoration:none;transition:background-color .15s,color .15s,transform .1s}
+.b:hover{background:var(--ink);color:var(--signal)}
+.b:active{transform:translateY(2px)}
+.b2{background:transparent;border-inline-start:0}
+.b2:hover{background:var(--ink);color:var(--paper)}
+
+/* departures */
+.board{grid-column:6 / -1;padding:28px 0;padding-inline-start:32px}
+table{width:100%;border-collapse:collapse}
+th{padding:0 0 10px;text-align:right;border-bottom:var(--rule)}
+td{padding:12px 0;border-bottom:1px solid rgba(11,11,11,.25);font-weight:500;font-size:17px;white-space:nowrap}
+td.t{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:18px;direction:ltr;text-align:right}
+td.n{font-family:"IBM Plex Mono",monospace}
+.st{display:inline-block;padding:3px 9px;border:1.5px solid var(--ink);font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;letter-spacing:.06em}
+.st.go{background:var(--signal)}
+.st.ok{background:var(--ink);color:var(--paper)}
+.flip{display:inline-block}
+
+.strip{border-bottom:var(--rule);overflow:hidden;background:var(--ink);color:var(--paper)}
+.strip .wrap{display:flex;gap:40px;padding-block:12px;white-space:nowrap}
+.strip b{color:var(--signal);font-weight:600}
+
+/* photograph slot, halftoned */
+.photo{grid-column:1 / -1;position:relative;height:clamp(220px,28vw,380px);border-top:var(--rule);background:#2A2925;overflow:hidden}
+/* PLACEHOLDER: assets/img/van-night.jpg (מיניבוס/מונית ממתינים בכניסה למפעל בלילה, שחור-לבן קונטרסטי). עד שיגיע: גוון + רשת נקודות. */
+.photo::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,#1A1916 0%,#4A4740 55%,#8A8578 100%)}
+.photo::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(234,232,227,.35) 1px,transparent 1.4px);background-size:6px 6px;mix-blend-mode:screen}
+.ph-tag{position:absolute;z-index:2;top:14px;left:14px;padding:5px 10px;border:1.5px dashed var(--signal);background:var(--ink);color:var(--signal);direction:ltr}
+.photo .cap{position:absolute;z-index:2;bottom:16px;right:0;padding:8px 14px;background:var(--signal);color:var(--ink)}
+
+@media (max-width:900px){
+  .wrap{padding-inline:16px}
+  .nav-mid{display:none}
+  .nav .wrap{grid-template-columns:auto 1fr auto}
+  .title,.big,.sub,.board{grid-column:1 / -1;padding-inline:0;border-inline-end:0}
+  .title{padding-top:28px}
+  .big{padding-top:0;flex-direction:row;align-items:flex-end;gap:16px;border-top:1px solid var(--ink);padding-top:20px}
+  .nums{font-size:72px}
+  .sub{border-bottom:1px solid var(--ink)}
+  .acts .b{flex:1;justify-content:center;padding:0 12px;white-space:nowrap}
+  td{font-size:15px}
+  .hide-sm{display:none}
+}
+@media (prefers-reduced-motion:reduce){.hd .lv::before{animation:none}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <span class="brand"><svg viewBox="0 0 92 40" aria-hidden="true"><line x1="6" y1="20" x2="62" y2="20" stroke="#0B0B0B" stroke-width="7" stroke-linecap="round"/><circle cx="74" cy="20" r="12" fill="#FFB000" stroke="#0B0B0B" stroke-width="5"/></svg><span><span class="lt">Smart</span>Kav</span></span>
+    <nav class="nav-mid" aria-label="ניווט"><a href="#how">איך זה עובד</a><a href="#how">תוצאות</a><a href="#how">שאלות</a></nav>
+    <a class="nav-cta" href="#contact">תיאום הדגמה</a>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap g">
+    <div class="hd mono"><span>[ ניהול הסעות לעובדי משמרות ]</span><span class="lv">לוח נסיעות · שישי 25.09</span></div>
+
+    <div class="title">
+      <h1>העובדים נרשמים. הנסיעות מתקבצות. <span class="hl">אתם רק מאשרים.</span></h1>
+    </div>
+    <div class="big">
+      <div class="mono">בקשות ← נסיעות</div>
+      <div>
+        <div class="nums"><s>14</s><span class="ar">→</span><span>4</span></div>
+        <div class="mono nums-l">REQ / RIDE · AUTO</div>
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="sub">
+        <p style="margin:0">העובדים נרשמים באפליקציה, <bdi>SmartKav</bdi> מקבצת לנסיעות משותפות לפי שעה, כיוון ועיר, וההזמנה עוברת לחברת ההסעות שכבר עובדת אתכם.</p>
+        <div class="acts"><a class="b" href="#contact">לתיאום הדגמה ←</a><a class="b b2" href="#how">איך זה עובד</a></div>
+      </div>
+      <div class="board" aria-label="לוח נסיעות לדוגמה">
+        <table>
+          <thead><tr class="mono"><th>שעה</th><th>כיוון</th><th>עיר</th><th class="hide-sm">נוסעים</th><th>סטטוס</th></tr></thead>
+          <tbody>
+            <tr><td class="t">16:00</td><td>הלוך</td><td>רמת גן</td><td class="n hide-sm">4</td><td><span class="st ok flip">הוזמנה</span></td></tr>
+            <tr><td class="t">16:00</td><td>הלוך</td><td>חולון</td><td class="n hide-sm">3</td><td><span class="st ok flip">הוזמנה</span></td></tr>
+            <tr><td class="t">01:00</td><td>חזור</td><td>תל אביב</td><td class="n hide-sm">4</td><td><span class="st go flip">לאישור</span></td></tr>
+            <tr><td class="t">01:00</td><td>חזור</td><td>בת ים</td><td class="n hide-sm">3</td><td><span class="st go flip">לאישור</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="photo" aria-hidden="true"><span class="ph-tag mono">PLACEHOLDER · van-night.jpg</span><span class="cap mono">משעתיים בשבוע ← 5 דקות · פיילוט, 45 עובדי משמרות</span></div>
+  </div>
+</section>
+<div class="strip mono" aria-hidden="true"><div class="wrap"><span><b>●</b> עובד עם חברת ההסעות הקיימת</span><span><b>●</b> הטמעה תוך 24 שעות</span><span><b>●</b> 0 הרשמות כפולות</span><span><b>●</b> אפליקציה לעובדים</span></div></div>
+</main>
+
+<script>
+(function(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  /* split-flap: statuses scramble once, then settle */
+  var chars = 'אבגדהוזחטיכלמנסעפצקרשת';
+  document.querySelectorAll('.flip').forEach(function(el, i){
+    var final = el.textContent, n = 0;
+    setTimeout(function tick(){
+      n++;
+      el.textContent = final.split('').map(function(c, j){ return j < n / 2 ? c : chars[Math.random() * chars.length | 0]; }).join('');
+      if (n / 2 < final.length) setTimeout(tick, 45); else el.textContent = final;
+    }, 300 + i * 220);
+  });
+})();
+</script>
+</body>
+</html>

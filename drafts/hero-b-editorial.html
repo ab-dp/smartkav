@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>כיוון ב · יומן משמרת</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=IBM+Plex+Sans+Hebrew:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{--bg:#F7F6F3;--card:#FFFFFF;--ink:#111111;--body:#2F3437;--muted:#787774;--line:#EAEAEA;--signal:#FFB000;--y-bg:#FBF3DB;--y-tx:#956400;--g-bg:#EDF3EC;--g-tx:#346538;--b-bg:#E1F3FE;--b-tx:#1F6C9F;--ease:cubic-bezier(.16,1,.3,1)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--body)}
+body{font-family:"IBM Plex Sans Hebrew",system-ui,sans-serif;font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1280px;margin-inline:auto;padding-inline:64px}
+
+.nav{position:sticky;top:0;z-index:5;background:rgba(247,246,243,.9);border-bottom:1px solid transparent}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:18px;color:var(--ink);direction:ltr}
+.brand svg{width:34px;height:15px}
+.brand .lt{font-weight:400}
+.nav-r{display:flex;align-items:center;gap:32px;font-size:15px}
+.nav-r nav{display:flex;gap:26px;color:var(--muted)}
+.nav-r nav a{text-decoration:none}
+.nav-r nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 24px;border-radius:5px;background:var(--ink);color:#fff;font:600 16px/1 "IBM Plex Sans Hebrew",sans-serif;text-decoration:none;transition:background-color .2s var(--ease),transform .2s var(--ease)}
+.btn:hover{background:#333}
+.btn:active{transform:scale(.98)}
+.btn.sm{min-height:40px;padding:0 16px;font-size:14px}
+.btn .dot{width:8px;height:8px;margin-inline-start:12px;border-radius:50%;background:var(--signal)}
+
+.hero{padding:72px 0 96px}
+.top{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;align-items:end}
+.meta{display:flex;gap:18px;margin:0 0 28px;font-size:13px;color:var(--muted)}
+.meta span+span::before{content:"·";margin-inline-end:18px}
+h1{margin:0;font-family:"Frank Ruhl Libre",serif;font-weight:500;font-size:clamp(46px,6vw,96px);line-height:1.04;letter-spacing:-.02em;color:var(--ink);text-wrap:balance}
+h1 em{font-style:normal;background:linear-gradient(transparent 70%,var(--signal) 70%,var(--signal) 90%,transparent 90%)}
+.side p{margin:0;font-size:19px;line-height:1.65;text-wrap:pretty}
+.side .acts{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;margin-top:30px}
+.tl{font-size:16px;font-weight:500;text-underline-offset:6px;text-decoration-color:var(--line)}
+.tl:hover{text-decoration-color:var(--ink)}
+
+/* the stage: real product UI + photograph slot */
+.stage{display:grid;grid-template-columns:minmax(0,8fr) minmax(0,4fr);gap:24px;margin-top:64px}
+.win{border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
+.win-bar{display:flex;align-items:center;gap:7px;height:38px;padding:0 14px;border-bottom:1px solid var(--line)}
+.win-bar i{width:10px;height:10px;border-radius:50%;background:#E3E2DE}
+.win-bar span{margin-inline-start:auto;font-size:12px;color:var(--muted)}
+.app{padding:24px 28px 28px}
+.app-h{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px}
+.app-h b{display:block;font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:26px;color:var(--ink);line-height:1.1}
+.app-h small{font-size:14px;color:var(--muted)}
+.rides{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ride{padding:16px 18px;border:1px solid var(--line);border-radius:8px;transition:box-shadow .2s var(--ease)}
+.ride:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.ride-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:15px;font-weight:600;color:var(--ink)}
+.ride-h .mono{font-size:14px;color:var(--muted)}
+.names{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;min-height:30px}
+.nm{padding:4px 10px;border-radius:999px;background:var(--bg);font-size:13px;font-weight:500}
+.ride-f{display:flex;align-items:center;justify-content:space-between;margin-top:14px;font-size:13px;color:var(--muted)}
+.tag{padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:600;letter-spacing:.03em}
+.t-y{background:var(--y-bg);color:var(--y-tx)}.t-g{background:var(--g-bg);color:var(--g-tx)}.t-b{background:var(--b-bg);color:var(--b-tx)}
+
+.photo{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:100%;border-radius:12px;overflow:hidden;background:#D9D4C9}
+/* PLACEHOLDER: assets/img/hero-dawn.jpg (עובדת יוצאת ממשמרת לילה עם שחר, טונים חמים ושקטים). עד שיגיע: שכבת גוון. */
+.photo-fill{position:absolute;inset:0;background:
+  radial-gradient(120% 70% at 80% 10%,#F2D9A6 0%,rgba(242,217,166,0) 60%),
+  linear-gradient(180deg,#CBC3B3 0%,#9E968A 60%,#5E5850 100%)}
+.ph-tag{position:absolute;top:14px;right:14px;padding:5px 10px;border:1px dashed #956400;border-radius:999px;background:rgba(251,243,219,.9);color:#956400;font:500 11.5px/1.3 "IBM Plex Mono",monospace;direction:ltr}
+.stat{position:relative;margin:16px;padding:18px 20px;border-radius:8px;background:var(--card)}
+.stat b{display:block;font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:44px;line-height:1;color:var(--ink)}
+.stat span{display:block;margin-top:8px;font-size:14px;line-height:1.45}
+
+/* quiet motion: rider names join their ride */
+.m .nm{opacity:0;transform:translateY(8px)}
+.m .nm.in{opacity:1;transform:none;transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.m .rise{opacity:0;transform:translateY(12px)}
+.m.go .rise{opacity:1;transform:none;transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.m.go .r2{transition-delay:.1s}.m.go .r3{transition-delay:.2s}
+
+@media (max-width:900px){
+  .wrap{padding-inline:16px}
+  .nav-r nav{display:none}
+  .hero{padding:40px 0 64px}
+  .top,.stage{grid-template-columns:1fr;gap:28px}
+  .stage{margin-top:40px}
+  .rides{grid-template-columns:1fr}
+  .side .btn{width:100%}
+  .photo{min-height:280px}
+  .app{padding:18px}
+}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <span class="brand"><svg viewBox="0 0 92 40" aria-hidden="true"><line x1="6" y1="20" x2="62" y2="20" stroke="#FFB000" stroke-width="7" stroke-linecap="round"/><circle cx="74" cy="20" r="12" fill="#FFB000" stroke="#111" stroke-width="5"/></svg><span><span class="lt">Smart</span>Kav</span></span>
+    <div class="nav-r"><nav aria-label="ניווט"><a href="#how">איך זה עובד</a><a href="#how">תוצאות</a><a href="#how">שאלות</a></nav><a class="btn sm" href="#contact">תיאום הדגמה</a></div>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <p class="meta rise"><span>ניהול הסעות לעובדי משמרות</span><span>מוקדים, מפעלים, לוגיסטיקה, בתי חולים</span></p>
+        <h1 class="rise r2">העובדים נרשמים. הנסיעות מתקבצות. <em>אתם רק מאשרים.</em></h1>
+      </div>
+      <div class="side rise r3">
+        <p>העובדים נרשמים באפליקציה, <bdi>SmartKav</bdi> מקבצת את הבקשות לנסיעות משותפות לפי שעה, כיוון ועיר, וההזמנה עוברת לחברת ההסעות שכבר עובדת אתכם.</p>
+        <div class="acts"><a class="btn" href="#contact">לתיאום הדגמה<span class="dot"></span></a><a class="tl" href="#how">איך זה עובד</a></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="win" aria-label="מסך המנהל: נסיעות משותפות למחר">
+        <div class="win-bar"><i></i><i></i><i></i><span>מסך מנהל · נסיעות פעילות</span></div>
+        <div class="app">
+          <div class="app-h"><div><b>שישי, 25.09</b><small>14 בקשות, 4 נסיעות משותפות</small></div><span class="tag t-y">ממתין לאישור</span></div>
+          <div class="rides">
+            <div class="ride"><div class="ride-h"><span>הלוך · רמת גן</span><span class="mono">16:00</span></div><div class="names"><span class="nm">דנה</span><span class="nm">אבי</span><span class="nm">נועה</span><span class="nm">רון</span></div><div class="ride-f"><span>4 נוסעים</span><span class="tag t-g">מונית הוזמנה</span></div></div>
+            <div class="ride"><div class="ride-h"><span>הלוך · חולון</span><span class="mono">16:00</span></div><div class="names"><span class="nm">מיכל</span><span class="nm">עומר</span><span class="nm">גל</span></div><div class="ride-f"><span>3 נוסעים</span><span class="tag t-g">מונית הוזמנה</span></div></div>
+            <div class="ride"><div class="ride-h"><span>חזור · תל אביב</span><span class="mono">01:00</span></div><div class="names"><span class="nm">יוסי</span><span class="nm">ליאור</span><span class="nm">עדי</span><span class="nm">איתי</span></div><div class="ride-f"><span>4 נוסעים</span><span class="tag t-b">מוכן לשליחה</span></div></div>
+            <div class="ride"><div class="ride-h"><span>חזור · בת ים</span><span class="mono">01:00</span></div><div class="names"><span class="nm">שירן</span><span class="nm">תמר</span><span class="nm">מאיה</span></div><div class="ride-f"><span>3 נוסעים</span><span class="tag t-b">מוכן לשליחה</span></div></div>
+          </div>
+        </div>
+      </div>
+      <figure class="photo" style="margin:0">
+        <div class="photo-fill" aria-hidden="true"></div>
+        <span class="ph-tag">PLACEHOLDER · hero-dawn.jpg</span>
+        <div class="stat"><b class="mono" style="font-family:'Frank Ruhl Libre',serif">5 דק׳</b><span>במקום שעתיים בשבוע. כך זה נראה בפיילוט, במוקד עם 45 עובדי משמרות.</span></div>
+      </figure>
+    </div>
+  </div>
+</section>
+</main>
+
+<script>
+(function(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var b = document.body; b.classList.add('m');
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ b.classList.add('go'); }); });
+  var names = Array.prototype.slice.call(document.querySelectorAll('.nm'));
+  function play(){
+    names.forEach(function(n){ n.classList.remove('in'); });
+    names.forEach(function(n, i){ setTimeout(function(){ n.classList.add('in'); }, 600 + i * 110); });
+  }
+  play(); setInterval(play, 6000);
+})();
+</script>
+</body>
+</html>
