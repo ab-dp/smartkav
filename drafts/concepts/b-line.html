@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>קונספט B · הקו</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karantina:wght@400;700&family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1116;--paper:#F6F4EF;--signal:#FFB000;--mute:#6B7078;--rule:#0E1116;
+  --disp:"Karantina","Heebo",sans-serif;--sans:"Heebo",system-ui,sans-serif;--ease:cubic-bezier(.22,1,.36,1);--gut:clamp(16px,3vw,40px)
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.nav{border-bottom:2px solid var(--rule)}
+.nav .in{display:flex;justify-content:space-between;align-items:stretch;height:64px;padding:0 var(--gut)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--ink);text-decoration:none}
+.brand svg{width:40px;height:18px}.brand line{stroke:var(--ink);stroke-width:6}.brand circle{fill:var(--signal);stroke:var(--ink);stroke-width:5}
+.nav-r{display:flex;align-items:stretch}
+.nav-r .meta{display:flex;align-items:center;padding:0 20px;font-size:13px;font-weight:500;letter-spacing:.06em;border-inline-start:2px solid var(--rule)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:0 28px;min-height:58px;background:var(--signal);color:var(--ink);font:800 17px/1 var(--sans);text-decoration:none;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);transition:transform .15s var(--ease),box-shadow .15s var(--ease)}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4}
+.nav .btn{box-shadow:none;border-width:0 2px 0 0;min-height:auto}
+.nav .btn:hover{transform:none;background:var(--ink);color:var(--signal)}
+a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+
+.hero{min-height:calc(100svh - 66px);display:grid;grid-template-rows:auto 1fr}
+.top{display:grid;grid-template-columns:1fr minmax(300px,420px);border-bottom:2px solid var(--rule)}
+h1{font-family:var(--disp);font-weight:700;font-size:clamp(96px,12.5vw,200px);line-height:.8;letter-spacing:-.005em;margin:0;padding:clamp(24px,3vw,40px) var(--gut) clamp(10px,1.4vw,18px);display:flex;flex-wrap:wrap;gap:0 .22em;align-items:flex-end}
+h1 .n{display:inline-block;min-width:1ch;text-align:center}
+h1 .y{background:var(--signal);padding:0 .08em;margin-inline:-.04em}
+.side{border-inline-start:2px solid var(--rule);padding:clamp(20px,2.4vw,32px) var(--gut);display:flex;flex-direction:column;justify-content:space-between;gap:22px}
+.kick{font-size:13px;font-weight:700;letter-spacing:.14em;margin:0}
+.sub{font-size:clamp(16px,1.2vw,18px);line-height:1.6;margin:0}
+.side .btn{align-self:flex-start}
+.tlink{color:var(--ink);font-weight:700;font-size:15px}
+
+.board{position:relative;display:grid;grid-template-columns:210px 1fr 280px;padding:18px var(--gut) 22px;gap:0}
+.board-h{grid-column:1/-1;display:flex;justify-content:space-between;font-size:12px;font-weight:700;letter-spacing:.14em;margin-bottom:14px;color:var(--mute)}
+.reqs{list-style:none;margin:0;padding:0;display:grid;grid-auto-rows:24px}
+.reqs li{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;white-space:nowrap;cursor:default}
+.reqs li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--paper);border:2px solid var(--ink);flex:none}
+.reqs li small{color:var(--mute);font-size:12px}
+.lines{width:100%;height:336px;overflow:visible}
+.lines path{fill:none;stroke:var(--ink);stroke-width:1.6;transition:opacity .2s,stroke-width .2s}
+.lines .trunk{stroke:var(--signal);stroke-width:12;stroke-linecap:square}
+.lines .trunk-edge{stroke:var(--ink);stroke-width:16;stroke-linecap:square}
+.rides{list-style:none;margin:0;padding:0;position:relative;height:336px}
+.rides li{position:absolute;inset-inline:0;transform:translateY(-50%);border:2px solid var(--ink);background:var(--paper);padding:9px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer;transition:background .15s}
+.rides li:hover,.rides li.hot{background:var(--signal)}
+.rides b{font-size:16px;font-weight:800;display:block}.rides small{font-size:12px;font-weight:500;letter-spacing:.04em}
+.rides .cnt{font-family:var(--disp);font-size:46px;line-height:.8;font-weight:700}
+.board.focus .reqs li:not(.hot){opacity:.25}.board.focus .lines path.req:not(.hot){opacity:.12}.board.focus .lines path.req.hot{stroke-width:2.6}
+.ph-note{position:absolute;bottom:8px;inset-inline-start:var(--gut);font:500 11px/1 ui-monospace,monospace;color:var(--mute)}
+.chips{display:none}
+
+.after{border-top:2px solid var(--rule);min-height:60vh;display:grid;place-items:center;padding:60px var(--gut);text-align:center}
+.after p{font-family:var(--disp);font-size:clamp(48px,7vw,110px);line-height:.9;margin:0}
+
+@media (max-width:1023px){
+  .top{grid-template-columns:1fr}
+  .side{border-inline-start:0;border-top:2px solid var(--rule)}
+  .nav-r .meta{display:none}
+  .board{grid-template-columns:1fr}
+  .reqs,.lines{display:none}
+  .rides{height:auto;display:grid;gap:10px}
+  .rides li{position:relative;transform:none;top:auto!important}
+  .board-h span+span{display:none}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0 0 18px;padding:0}
+  .chips li{border:2px solid var(--ink);padding:6px 10px;font-size:14px;font-weight:500;background:var(--paper)}
+  .side .btn{align-self:stretch}
+}
+@media (max-width:520px){ h1{font-size:clamp(88px,30vw,150px)} .nav .btn{padding:0 16px;font-size:15px} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="in">
+  <a class="brand" href="#" dir="ltr"><svg viewBox="0 0 92 40" aria-hidden="true"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg><span>SmartKav</span></a>
+  <div class="nav-r"><span class="meta">ניהול הסעות לעובדי משמרות</span><a class="btn" href="#contact">תיאום הדגמה</a></div>
+</div></header>
+
+<main>
+<section class="hero" aria-labelledby="h">
+  <div class="top">
+    <h1 id="h"><span><span class="n" id="n1">14</span> בקשות.</span> <span class="y"><span class="n" id="n2">4</span> נסיעות.</span></h1>
+    <div class="side">
+      <p class="kick">ניהול הסעות לעובדי משמרות</p>
+      <p class="sub">העובדים נרשמים באפליקציה. <bdi dir="ltr">SmartKav</bdi> מקבצת לפי תאריך, שעה, כיוון ועיר. אתם מאשרים, וההזמנה יוצאת לחברת ההסעות שכבר עובדת אתכם.</p>
+      <div><a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div>
+    </div>
+  </div>
+
+  <div class="board" role="img" aria-label="דוגמה: 14 בקשות נסיעה של עובדים מתחברות לארבע נסיעות משותפות: רמת גן 16:00 ארבעה נוסעים, חולון 16:00 שלושה, תל אביב 01:00 ארבעה, בת ים 01:00 שלושה">
+    <div class="board-h" aria-hidden="true"><span>בקשות שנכנסו מהאפליקציה · שישי</span><span>מעבירים את העכבר על נסיעה</span></div>
+    <ul class="reqs" aria-hidden="true"></ul>
+    <svg class="lines" aria-hidden="true"></svg>
+    <ul class="chips" aria-hidden="true"></ul>
+    <ol class="rides" aria-hidden="true"></ol>
+    <span class="ph-note" aria-hidden="true">השמות לדוגמה</span>
+  </div>
+</section>
+<section class="after" id="how"><p>הקו ממשיך: כל סעיף הוא תחנה.</p></section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script>
+(function(){
+  var REQ = [['דנה','רמת גן',0],['מיכל','חולון',1],['יוסי','תל אביב',2],['אבי','רמת גן',0],['שירן','בת ים',3],['עומר','חולון',1],['נועה','רמת גן',0],
+             ['ליאור','תל אביב',2],['תמר','בת ים',3],['רון','רמת גן',0],['גל','חולון',1],['עדי','תל אביב',2],['מאיה','בת ים',3],['איתי','תל אביב',2]];
+  var RIDES = [['הלוך · 16:00','רמת גן'],['הלוך · 16:00','חולון'],['חזור · 01:00','תל אביב'],['חזור · 01:00','בת ים']];
+  var ROW = 24, H = REQ.length * ROW, TY = [44, 128, 212, 296];
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, G = window.gsap;
+  var board = document.querySelector('.board'), reqs = board.querySelector('.reqs'), svg = board.querySelector('.lines'),
+      rides = board.querySelector('.rides'), chips = board.querySelector('.chips'), NS = 'http://www.w3.org/2000/svg';
+
+  REQ.forEach(function(r, i){
+    var li = document.createElement('li'); li.dataset.r = r[2]; li.innerHTML = r[0] + ' <small>' + r[1] + '</small>'; reqs.appendChild(li);
+    var c = document.createElement('li'); c.dataset.r = r[2]; c.textContent = r[0] + ' · ' + r[1]; chips.appendChild(c);
+  });
+  RIDES.forEach(function(r, i){
+    var n = REQ.filter(function(q){ return q[2] === i; }).length, li = document.createElement('li');
+    li.dataset.r = i; li.style.top = TY[i] + 'px';
+    li.innerHTML = '<span><b>' + r[1] + '</b><small>' + r[0] + ' · נסיעה משותפת</small></span><span class="cnt">' + n + '</span>';
+    rides.appendChild(li);
+  });
+
+  function draw(){
+    svg.innerHTML = '';
+    var W = svg.getBoundingClientRect().width; if (!W) return;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    var mergeX = W * .42;
+    TY.forEach(function(y, r){
+      ['trunk-edge','trunk'].forEach(function(cls){ var p = document.createElementNS(NS,'path'); p.setAttribute('class', cls); p.dataset.r = r; p.setAttribute('d','M' + mergeX + ' ' + y + ' H 8'); svg.appendChild(p); });
+    });
+    REQ.forEach(function(q, i){
+      var y0 = i * ROW + ROW / 2, y1 = TY[q[2]], dy = Math.abs(y1 - y0), bend = Math.min(W - 16, mergeX + 40 + dy),
+          d = 'M ' + (W - 2) + ' ' + y0 + ' H ' + bend + ' L ' + (bend - dy) + ' ' + y1 + ' H ' + mergeX;
+      var p = document.createElementNS(NS,'path'); p.setAttribute('class','req'); p.dataset.r = q[2]; p.setAttribute('d', d); svg.insertBefore(p, svg.firstChild);
+    });
+  }
+  draw();
+  var rw; addEventListener('resize', function(){ clearTimeout(rw); rw = setTimeout(draw, 120); });
+
+  // hover a ride: its passengers light up
+  function focus(r){ board.classList.toggle('focus', r != null);
+    board.querySelectorAll('[data-r]').forEach(function(el){ el.classList.toggle('hot', r != null && el.dataset.r == r); }); }
+  rides.querySelectorAll('li').forEach(function(li){
+    li.addEventListener('mouseenter', function(){ focus(li.dataset.r); }); li.addEventListener('mouseleave', function(){ focus(null); });
+  });
+
+  if (reduce || !G) return;   // static markup is the final state
+  var desk = matchMedia('(min-width: 1024px)').matches, tl = G.timeline({delay:.25});
+  var n1 = document.getElementById('n1'), cnt = {v:0};
+  tl.from('h1 > span', {yPercent:40, autoAlpha:0, duration:.9, stagger:.12, ease:'power4.out'}, 0)
+    .from('.side > *', {autoAlpha:0, y:16, duration:.7, stagger:.08, ease:'power3.out'}, .2);
+  if (desk){
+    var paths = svg.querySelectorAll('path.req'), trunks = svg.querySelectorAll('.trunk,.trunk-edge');
+    paths.forEach(function(p){ var L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
+    trunks.forEach(function(p){ var L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
+    tl.fromTo('.reqs li', {autoAlpha:0, x:20}, {autoAlpha:1, x:0, duration:.4, stagger:.045, ease:'power2.out'}, .5)
+      .to(paths, {strokeDashoffset:0, duration:.9, stagger:.04, ease:'power2.inOut'}, .8)
+      .to(trunks, {strokeDashoffset:0, duration:.8, ease:'power3.inOut'}, 1.55)
+      .from('.rides li', {autoAlpha:0, x:-24, duration:.5, stagger:.1, ease:'power3.out'}, 1.9)
+      .add(function(){ G.set([paths, trunks], {clearProps:'strokeDasharray,strokeDashoffset'}); });
+  } else {
+    // phone: the 14 names fall into the 4 rides
+    tl.from('.chips li', {autoAlpha:0, scale:.8, duration:.35, stagger:.04, ease:'back.out(2)'}, .4)
+      .from('.rides li', {autoAlpha:0, y:20, duration:.45, stagger:.08, ease:'power3.out'}, 1.4)
+      .add(function(){
+        var cs = chips.querySelectorAll('li');
+        cs.forEach(function(c, i){ var t = rides.querySelector('[data-r="' + c.dataset.r + '"]').getBoundingClientRect(), b = c.getBoundingClientRect();
+          G.to(c, {x:(t.left + t.width/2) - (b.left + b.width/2), y:(t.top + t.height/2) - (b.top + b.height/2), scale:.3, autoAlpha:0, duration:.7, delay:i*.03, ease:'power3.in'}); });
+        G.to(chips, {height:0, marginBottom:0, duration:.5, delay:1.1, ease:'power2.inOut'});
+        G.fromTo('.rides li', {backgroundColor:'#FFB000'}, {backgroundColor:'#F6F4EF', duration:.8, delay:1, stagger:.08});
+      }, 2.6);
+  }
+  tl.fromTo(cnt, {v:1}, {v:14, duration:.9, ease:'power2.out', onUpdate:function(){ n1.textContent = Math.round(cnt.v); }}, .1);
+})();
+</script>
+</body>
+</html>

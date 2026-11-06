@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>קונספט C · 38</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=IBM+Plex+Sans+Hebrew:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1116;--paper:#F6F4EF;--surface:#fff;--signal:#FFB000;--mute:#6B7078;--line:#E3DFD6;
+  --disp:"Rubik",system-ui,sans-serif;--sans:"IBM Plex Sans Hebrew",system-ui,sans-serif;--ease:cubic-bezier(.22,1,.36,1);--gut:clamp(16px,4vw,64px)
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.nav{position:fixed;inset:0 0 auto;z-index:30;padding:14px var(--gut);background:rgba(246,244,239,.95);display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;font:700 18px/1 var(--disp);color:var(--ink);text-decoration:none}
+.brand svg{width:40px;height:18px}.brand line{stroke:var(--ink);stroke-width:5;stroke-linecap:round}.brand circle{fill:none;stroke:var(--signal);stroke-width:5}
+.brand span span{font-weight:500}
+.btn{display:inline-flex;align-items:center;gap:10px;height:54px;padding:0 28px;border-radius:12px;background:var(--ink);color:var(--paper);font:600 16px/1 var(--sans);text-decoration:none;border:0;cursor:pointer;transition:transform .2s var(--ease),background .2s}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(0) scale(.98)}
+.btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn-sm{height:42px;padding:0 18px;font-size:15px;background:var(--signal);color:var(--ink)}
+.tlink{color:var(--ink);font-weight:500;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+
+.hero{position:relative;min-height:100svh;overflow:hidden;display:grid;place-items:center;padding:110px var(--gut) 64px}
+.core{position:relative;z-index:1;max-width:980px;text-align:center;display:grid;justify-items:center}
+.kick{font-size:14px;color:var(--mute);margin:0 0 22px;letter-spacing:.02em}
+h1{font-family:var(--disp);font-weight:800;font-size:clamp(42px,6.4vw,96px);line-height:1.02;letter-spacing:-.02em;margin:0}
+h1 s{text-decoration:none;position:relative;white-space:nowrap}
+h1 s::after{content:"";position:absolute;inset-inline:-.04em;top:54%;height:.09em;background:var(--signal);transform-origin:right;transform:scaleX(var(--strike,1))}
+.sub{font-size:clamp(17px,1.35vw,20px);line-height:1.65;color:#41464E;max-width:36em;margin:26px 0 34px}
+.acts{display:flex;gap:28px;align-items:center;justify-content:center;flex-wrap:wrap}
+.order{margin-top:46px;width:min(100%,560px);background:var(--surface);border-radius:18px;box-shadow:0 1px 0 var(--line),0 24px 60px -30px rgba(14,17,22,.35);padding:18px 20px;display:grid;grid-template-columns:1fr auto;gap:6px 16px;align-items:center;text-align:start}
+.order .lbl{font-size:12px;color:var(--mute);letter-spacing:.04em}
+.order b{font:700 18px/1.3 var(--disp)}
+.order .row{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.order .row span{font-size:13px;padding:5px 10px;border-radius:8px;background:#F2EFE8}
+.order .go{font-size:13px;font-weight:600;padding:8px 12px;border-radius:8px;background:#E8F3EC;color:#1F6B40;white-space:nowrap}
+.fact{margin-top:22px;font-size:14px;color:var(--mute)}
+.fact b{color:var(--ink);font-weight:600}
+
+/* the flood: tonight's messages land on top of the page */
+.flood{position:absolute;inset:0;z-index:5;pointer-events:none}
+.ntf{position:absolute;left:0;top:0;width:300px;background:rgba(255,255,255,.97);border-radius:16px;box-shadow:0 1px 0 rgba(14,17,22,.06),0 14px 34px -14px rgba(14,17,22,.4);padding:11px 14px;display:grid;grid-template-columns:34px 1fr;gap:2px 10px;font-size:13.5px;line-height:1.4;text-align:start}
+.ntf .av{grid-row:span 2;width:34px;height:34px;border-radius:50%;background:var(--c,#3B5BA9);color:#fff;display:grid;place-items:center;font-weight:600;align-self:center}
+.ntf b{font-weight:600;display:flex;justify-content:space-between}.ntf b time{font-weight:400;color:var(--mute);font-size:12px}
+.ntf span{color:#41464E}
+.badge{position:absolute;top:84px;inset-inline-start:var(--gut);z-index:6;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--mute)}
+.badge b{min-width:44px;height:32px;padding:0 10px;border-radius:16px;background:#E5484D;color:#fff;font:700 16px/32px var(--disp);text-align:center;font-variant-numeric:tabular-nums;transition:background .3s}
+.badge.zero b{background:#2C7A4B}
+.mute{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:7;visibility:hidden}
+
+.after{min-height:70vh;display:grid;place-items:center;background:var(--ink);color:var(--paper);padding:80px var(--gut);text-align:center}
+.after p{font:700 clamp(28px,3.4vw,48px)/1.2 var(--disp);margin:0;max-width:20em}
+
+@media (max-width:760px){
+  .hero{padding-top:96px;place-items:start center}
+  .ntf{width:min(82vw,300px)}
+  .acts .btn{flex:1 1 100%;justify-content:center}
+  .badge{top:70px}
+  .order{margin-top:34px}
+  .nav .btn-sm{height:38px;padding:0 14px;font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="#" dir="ltr"><svg viewBox="0 0 92 40" aria-hidden="true"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg><span>Smart<span>Kav</span></span></a>
+  <a class="btn btn-sm" href="#contact">תיאום הדגמה</a>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="h">
+  <div class="core">
+    <p class="kick">ניהול הסעות לעובדי משמרות</p>
+    <h1 id="h">ההסעות של מחר.<br>בלי <s>38 הודעות</s> בערב.</h1>
+    <p class="sub">העובדים נרשמים באפליקציה, <bdi dir="ltr">SmartKav</bdi> מקבצת את הבקשות לנסיעות משותפות, ומה שנשאר לכם זו הזמנה אחת מוכנה לחברת ההסעות.</p>
+    <div class="acts">
+      <a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
+      <a class="tlink" href="#how">איך זה עובד</a>
+    </div>
+    <div class="order" aria-label="הזמנה מרוכזת לדוגמה: שישי, 14 עובדים, 4 נסיעות, מוכנה לשליחה לחברת ההסעות">
+      <span class="lbl" aria-hidden="true">הזמנה מרוכזת · שישי</span><span class="go" aria-hidden="true">מוכנה לשליחה</span>
+      <b aria-hidden="true">14 עובדים · 4 נסיעות</b>
+      <div class="row" aria-hidden="true"><span>רמת גן 16:00 · 4</span><span>חולון 16:00 · 3</span><span>תל אביב 01:00 · 4</span><span>בת ים 01:00 · 3</span></div>
+    </div>
+    <p class="fact">בפיילוט: <b>משעתיים+ בשבוע ל-5 דקות</b>, במוקד עם 45 עובדי משמרות</p>
+  </div>
+  <div class="flood" aria-hidden="true"></div>
+  <div class="badge zero" aria-hidden="true"><b>0</b><span>הודעות שלא נקראו</span></div>
+  <button class="btn btn-sm mute" type="button">השתיקו את הקבוצה</button>
+</section>
+<section class="after" id="how"><p>וכאן הדף ממשיך, בשקט.</p></section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, G = window.gsap, ST = window.ScrollTrigger;
+  if (reduce || !G || !ST) return;   // static markup is the final state: a quiet page with one order
+  G.registerPlugin(ST);
+
+  var MSG = [
+    ['ע','#0F6B5E','עומר','הזמנתם לי? אין לי שום אישור','22:40'],['ה','#5B6470','הסעות מוקד · מיכל','מי מזמין לי מונית ל-16:00 מחר?','22:31'],
+    ['ד','#3B5BA9','דנה','כתבתי בקבוצה, לא בטוחה שראית','22:39'],['🚕','#444','תחנת המוניות','כמה נוסעים מחר ב-16:00? עד 23:00','22:35'],
+    ['נ','#9A6A00','נועה','מחר רק חזור, מסיימת ב-01:00','22:36'],['א','#B4461E','אבי','צריך הסעה למשמרת של מחר, 18:00','22:33'],
+    ['י','#7A4FA0','יוסי','📞 שיחה שלא נענתה','22:38'],['ה','#5B6470','הסעות מוקד · רון','גם אני ל-16:00, רמת גן','22:32'],
+    ['ש','#0F6B5E','שירן','אפשר לבטל את מחר? התחלפתי','22:41'],['ה','#5B6470','הסעות מוקד · גל','חולון 16:00 👍','22:34'],
+    ['ל','#3B5BA9','ליאור','מישהו נוסע מתל אביב ב-1?','22:37'],['ת','#B4461E','תמר','שכחתי להירשם 🙈 עוד אפשר?','22:42'],
+    ['ע','#0F6B5E','עומר','??','22:43'],['ה','#5B6470','הסעות מוקד · מאיה','בת ים חזור, 01:00','22:42'],
+    ['🚕','#444','תחנת המוניות','מחכים לרשימה','22:44'],['ע','#9A6A00','עדי','אני מצטרפת לתל אביב','22:44']
+  ];
+  var hero = document.querySelector('.hero'), flood = hero.querySelector('.flood'), badge = hero.querySelector('.badge'), bn = badge.querySelector('b'),
+      mute = hero.querySelector('.mute'), order = hero.querySelector('.order'), phone = innerWidth < 760;
+  var list = phone ? MSG.slice(0, 11) : MSG, W = hero.clientWidth, H = hero.clientHeight;
+  var nodes = list.map(function(m, i){
+    var d = document.createElement('div'); d.className = 'ntf'; d.style.setProperty('--c', m[1]);
+    d.innerHTML = '<span class="av">' + m[0] + '</span><b>' + m[2] + '<time>' + m[4] + '</time></b><span>' + m[3] + '</span>';
+    flood.appendChild(d);
+    var w = d.offsetWidth, x, y;
+    if (phone){ x = (W - w) / 2 + ((i % 3) - 1) * 18; y = 120 + i * (H * .055); }
+    else { var col = i % 4, row = Math.floor(i / 4); x = 40 + col * ((W - w - 80) / 3) + ((row % 2) ? 40 : -20); y = 110 + row * ((H - 240) / 3.2) + (col % 2) * 34; }
+    G.set(d, {x:x, y:y, autoAlpha:0, scale:.92});
+    return d;
+  });
+
+  var n = {v:0}, TOTAL = 38;
+  function paint(){ var v = Math.round(n.v); bn.textContent = v; badge.classList.toggle('zero', v === 0); }
+  badge.classList.remove('zero'); bn.textContent = 0;
+  G.set('h1 s', {'--strike':0});
+
+  // act one: the flood arrives on its own
+  var flood1 = G.timeline({delay:.6});
+  flood1.from('.core > *', {autoAlpha:0, y:18, duration:.6, stagger:.06, ease:'power3.out'}, 0);
+  nodes.forEach(function(d, i){ flood1.to(d, {autoAlpha:1, scale:1, duration:.32, ease:'back.out(1.8)'}, .5 + i * .13); });
+  flood1.to(n, {v:TOTAL, duration:.13 * nodes.length + .3, ease:'none', onUpdate:paint}, .5)
+        .set(mute, {visibility:'visible'}).from(mute, {autoAlpha:0, y:16, duration:.4, ease:'power3.out'});
+
+  // act two: silence. Every message flies into the one order.
+  function clear(){
+    var o = order.getBoundingClientRect(), tl = G.timeline({paused:true});
+    nodes.forEach(function(d, i){
+      var b = d.getBoundingClientRect();
+      tl.to(d, {x:'+=' + ((o.left + o.width/2) - (b.left + b.width/2)), y:'+=' + ((o.top + o.height/2) - (b.top + b.height/2)), scale:.2, autoAlpha:0, duration:.5, ease:'power3.in'}, i * .025);
+    });
+    tl.to(n, {v:0, duration:.5, ease:'power2.in', onUpdate:paint}, 0)
+      .to(mute, {autoAlpha:0, duration:.2}, 0)
+      .to('h1 s', {'--strike':1, duration:.5, ease:'power3.out'}, .45)
+      .fromTo(order, {scale:1}, {scale:1.04, duration:.18, yoyo:true, repeat:1, ease:'power2.out'}, .5);
+    return tl;
+  }
+  var done = false;
+  function go(){ if (done) return; done = true; flood1.progress(1); clear().play(); }
+  mute.addEventListener('click', go);
+  ST.create({trigger:hero, start:'top top', end:'+=200', onUpdate:function(s){ if (s.progress > .05) go(); }});
+})();
+</script>
+</body>
+</html>
