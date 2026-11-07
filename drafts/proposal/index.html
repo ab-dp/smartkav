@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SmartKav · ניהול הסעות חכם לעובדי משמרות</title>
+<meta name="description" content="העובדים נרשמים באפליקציה, המערכת מקבצת לנסיעות משותפות, ואתם מאשרים ושולחים לחברת ההסעות הקיימת. בפיילוט: משעתיים בשבוע ל-5 דקות.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0E1116">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=IBM+Plex+Sans+Hebrew:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== Design system: one place ===== */
+:root{
+  --ink:#0E1116; --ink-2:#161B23; --ink-3:#20262F; --paper:#F6F4EF; --paper-2:#ECE8DF; --surface:#FFFFFF;
+  --signal:#FFB000; --signal-deep:#8F5E00; --ok:#1F6B40; --ok-bg:#E5F2EA; --alert:#D9443F;
+  --text-dark:#C9CDD2; --text-mute-dark:#8E949C; --text-light:#3D424A; --text-mute-light:#6A6F77;
+  --line-dark:rgba(246,244,239,.12); --line-light:#DDD8CD;
+  --serif:"Frank Ruhl Libre",Georgia,serif; --sans:"IBM Plex Sans Hebrew",system-ui,sans-serif;
+  --gut:clamp(16px,4vw,64px); --wrap:1312px;
+  --s1:8px; --s2:16px; --s3:24px; --s4:40px; --s5:64px; --s6:104px;
+  --r-sm:10px; --r-md:16px; --r-lg:28px;
+  --ease-out:cubic-bezier(.16,1,.3,1); --ease-io:cubic-bezier(.65,0,.35,1);
+  --t-fast:.2s; --t-mid:.45s; --t-slow:.9s;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+html{scrollbar-color:#3a4049 var(--ink);color-scheme:dark}
+[id]{scroll-margin-top:88px}
+a,button,summary,input,select,textarea{touch-action:manipulation;-webkit-tap-highlight-color:rgba(255,176,0,.25)}
+body{background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;caret-color:var(--signal)}
+::selection{background:var(--signal);color:var(--ink)}
+img{max-width:100%;display:block}
+main{overflow-x:clip}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--signal);outline-offset:4px;border-radius:4px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+.skip{position:absolute;top:-60px;right:16px;background:var(--signal);color:var(--ink);padding:10px 16px;border-radius:8px;z-index:100;font-weight:600}
+.skip:focus{top:12px}
+.dark{background:var(--ink);color:var(--paper)}
+.light{background:var(--paper);color:var(--ink);color-scheme:light}
+.num{font-variant-numeric:tabular-nums}
+h1,h2,h3{margin:0;text-wrap:balance}
+h2{font-family:var(--serif);font-weight:700;font-size:clamp(36px,4.6vw,68px);line-height:1.04;letter-spacing:-.012em}
+h2 em{font-style:normal;color:var(--signal)}
+.light h2 em{color:var(--signal-deep)}
+.lede{font-size:clamp(17px,1.3vw,19px);line-height:1.7;max-width:34em;margin:var(--s3) 0 0}
+.dark .lede{color:var(--text-dark)}.light .lede{color:var(--text-light)}
+.stamp{font-family:var(--serif);font-weight:500;font-size:22px;color:var(--signal);display:block;margin-bottom:var(--s2);direction:ltr;text-align:right}
+.light .stamp{color:var(--signal-deep)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 28px;border-radius:999px;background:var(--signal);color:var(--ink);font:600 17px/1 var(--sans);text-decoration:none;border:0;cursor:pointer;transition:transform var(--t-fast) var(--ease-out),background var(--t-fast)}
+.btn:hover{transform:translateY(-2px);background:#FFC23D}.btn:active{transform:translateY(0) scale(.98)}
+.btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform var(--t-fast) var(--ease-out)}
+.btn:hover svg{transform:translateX(-3px)}
+.tlink{font-weight:500;text-decoration:none;background:linear-gradient(currentColor,currentColor) 100% 100%/100% 1px no-repeat;padding-bottom:3px;transition:background-size var(--t-mid) var(--ease-out)}
+.tlink:hover{background-size:0 1px}
+
+/* ===== nav ===== */
+.nav{position:fixed;inset:0 0 auto;z-index:50;transition:background var(--t-mid),border-color var(--t-mid);border-bottom:1px solid transparent}
+.nav.solid{background:rgba(14,17,22,.92);border-color:var(--line-dark)}
+.nav .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:72px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--paper);text-decoration:none;font-weight:600;font-size:19px;justify-self:start}
+.brand svg{width:40px;height:18px}.brand line{stroke:var(--signal);stroke-width:5;stroke-linecap:round}.brand circle{fill:none;stroke:var(--signal);stroke-width:5}
+.brand b{font-weight:700}
+.nclock{font-family:var(--serif);font-size:22px;font-weight:500;color:var(--paper);direction:ltr;opacity:0;transition:opacity var(--t-mid);display:flex;align-items:center;gap:8px}
+.nclock i{width:7px;height:7px;border-radius:50%;background:var(--signal)}
+.nav.solid .nclock{opacity:1}
+.nav-cta{justify-self:end;height:44px;padding:0 20px;font-size:15px;background:transparent;color:var(--paper);box-shadow:inset 0 0 0 1px rgba(246,244,239,.35)}
+.nav-cta:hover{background:rgba(246,244,239,.08)}
+.nav.solid .nav-cta{background:var(--signal);color:var(--ink);box-shadow:none}
+
+/* ===== 1. hero ===== */
+.hero{position:relative;min-height:100svh;overflow:hidden;isolation:isolate;display:flex;flex-direction:column}
+.hero .photo,.gate .photo{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.2s}
+.hero .photo.on,.gate .photo.on{opacity:.55}
+.trails{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(14,17,22,.5) 0,rgba(14,17,22,0) 18%,rgba(14,17,22,0) 38%,rgba(14,17,22,.82) 70%,var(--ink) 100%),linear-gradient(270deg,rgba(14,17,22,.6) 0,rgba(14,17,22,0) 55%)}
+.hero-in{position:relative;z-index:2;flex:1;width:100%;display:grid;grid-template-columns:1.3fr .7fr;align-items:end;gap:var(--s4);padding-top:120px;padding-bottom:clamp(36px,6vh,72px)}
+h1{font-family:var(--serif);font-weight:900;font-size:clamp(50px,7.4vw,112px);line-height:.98;letter-spacing:-.02em}
+h1 span{display:block}
+h1 .gold{color:var(--signal)}
+.hero .lede{margin-top:var(--s3)}
+.acts{display:flex;align-items:center;gap:28px;flex-wrap:wrap;margin-top:var(--s4)}
+.hero-clock{justify-self:end;text-align:left;direction:ltr}
+.hero-clock .big{font-family:var(--serif);font-weight:400;font-size:clamp(80px,10vw,150px);line-height:.8;letter-spacing:-.03em;display:block}
+.hero-clock .big b{font-weight:400;color:var(--signal)}
+.hero-clock small{display:block;direction:rtl;text-align:left;color:var(--text-mute-dark);font-size:14px;margin-top:14px}
+.proof{position:relative;z-index:2;border-top:1px solid var(--line-dark)}
+.proof ul{list-style:none;margin:0;padding:18px 0 26px;display:flex;gap:12px 40px;flex-wrap:wrap;font-size:15px;color:var(--text-dark)}
+.proof b{color:var(--paper);font-weight:600}
+.asset-tag{position:absolute;z-index:3;inset-block-start:88px;inset-inline-start:var(--gut);font:500 11px/1 ui-monospace,Consolas,monospace;color:var(--signal);border:1px dashed rgba(255,176,0,.55);padding:7px 10px;border-radius:6px;direction:ltr}
+.asset-tag[hidden]{display:none}
+
+/* ===== shared scene layout ===== */
+.scene{position:relative;padding:var(--s6) 0;min-height:100svh;display:grid;align-items:center}
+.scene > .wrap,.gate > .wrap{width:100%}
+.split{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(40px,6vw,104px);align-items:center}
+.facts{list-style:none;margin:var(--s4) 0 0;padding:0;display:grid;gap:0;max-width:30em}
+.facts li{padding:14px 0;border-top:1px solid var(--line-light);display:flex;gap:14px;align-items:baseline}
+.dark .facts li{border-color:var(--line-dark)}
+.facts li::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--signal);transform:translateY(-3px)}
+
+/* ===== 2. flood ===== */
+.flood-stage{position:relative;height:600px;width:min(100%,460px);justify-self:center}
+.ntf{position:absolute;left:0;top:0;width:min(380px,88%);background:#1C222B;border:1px solid var(--line-dark);border-radius:18px;padding:12px 14px;display:grid;grid-template-columns:38px 1fr;gap:1px 12px;font-size:14px;line-height:1.45;box-shadow:0 18px 36px -18px rgba(0,0,0,.7)}
+.ntf .av{grid-row:span 2;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:600;color:#fff;background:var(--c,#3B5BA9);align-self:center}
+.ntf .av svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ntf b{font-weight:600;display:flex;justify-content:space-between;gap:8px}.ntf b time{font-weight:400;color:var(--text-mute-dark);font-size:12px}
+.ntf span.m{color:#B9BEC5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.unread{position:absolute;top:-56px;left:0;display:flex;align-items:center;gap:10px;color:var(--text-mute-dark);font-size:14px}
+.unread b{min-width:46px;height:32px;padding:0 10px;border-radius:16px;background:var(--alert);color:#fff;font:600 16px/32px var(--sans);text-align:center;transition:background var(--t-mid)}
+.unread.zero b{background:var(--ok)}
+.calm{position:absolute;left:50%;top:50%;width:min(400px,92%);transform:translate(-50%,-50%);background:var(--paper);color:var(--ink);border-radius:var(--r-md);padding:20px 22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.8)}
+.calm .row1{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text-mute-light)}
+.calm .brandmini{display:flex;align-items:center;gap:6px;font-weight:600;color:var(--ink)}
+.calm .brandmini svg{width:26px;height:12px}.calm .brandmini line{stroke:var(--signal);stroke-width:6}.calm .brandmini circle{fill:none;stroke:var(--signal);stroke-width:6}
+.calm strong{display:block;font:700 22px/1.3 var(--serif);margin:10px 0 4px}
+.calm p{margin:0;font-size:14px;color:var(--text-light)}
+
+/* ===== tags ===== */
+.tag{display:inline-flex;align-items:center;font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:999px;white-space:nowrap;background:#EFEBE3;color:#4A4F57;transition:background var(--t-mid),color var(--t-mid)}
+.tag.ok{background:var(--ok-bg);color:var(--ok)}
+.tag.wait{background:#FFF1CC;color:#7A5300}
+
+/* ===== 3. phone ===== */
+.phone{width:310px;height:640px;border-radius:48px;background:#0B0D11;padding:12px;justify-self:center;box-shadow:0 50px 90px -40px rgba(14,17,22,.55),0 2px 0 #2a2f37 inset;position:relative}
+.phone::before{content:"";position:absolute;top:22px;left:50%;width:92px;height:26px;border-radius:14px;background:#000;transform:translateX(-50%);z-index:2}
+.scr{height:100%;border-radius:37px;background:var(--paper);color:var(--ink);overflow:hidden;padding:58px 18px 18px;display:flex;flex-direction:column;gap:12px;font-size:13.5px}
+.scr .top{display:flex;justify-content:space-between;align-items:center}
+.scr .hi{font:700 22px/1.2 var(--serif)}
+.scr .av{width:32px;height:32px;border-radius:50%;background:#3B5BA9;color:#fff;display:grid;place-items:center;font-weight:600}
+.fld{background:var(--surface);border-radius:12px;padding:10px 12px;border:1px solid var(--line-light)}
+.fld small{display:block;color:var(--text-mute-light);font-size:11.5px;margin-bottom:2px}
+.fld b{font-weight:600}
+.fld .saved{float:left;font-size:11px;color:var(--ok);font-weight:600;margin-top:2px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--paper-2);border-radius:10px;padding:3px;gap:3px;margin-top:4px}
+.seg span{text-align:center;padding:7px 0;border-radius:8px;font-size:12.5px;color:var(--text-light)}
+.seg .on{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(14,17,22,.12)}
+.pbtn{height:48px;border-radius:12px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-weight:600;position:relative;overflow:hidden}
+.status{background:var(--surface);border-radius:14px;padding:12px 14px;border:1px solid var(--line-light);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.status b{display:block;font-weight:600}.status small{color:var(--text-mute-light);font-size:12px}
+.mine{margin-top:auto;display:grid;gap:8px}
+.mine div{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;padding:9px 0;border-top:1px solid var(--line-light)}
+
+/* ===== 4. lines ===== */
+.lines-wrap{position:relative}
+.board{display:grid;grid-template-columns:180px minmax(0,1fr) 270px;margin-top:var(--s5);align-items:start}
+.reqs{list-style:none;margin:0;padding:0;display:grid;grid-auto-rows:26px}
+.reqs li{display:flex;align-items:center;gap:10px;font-size:14px;white-space:nowrap;transition:opacity var(--t-fast)}
+.reqs li small{color:var(--text-mute-dark)}
+.reqs li::before{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid var(--paper);flex:none}
+.lines{width:100%;height:364px;overflow:visible}
+.lines path{fill:none;transition:opacity var(--t-fast)}
+.lines .req{stroke:rgba(246,244,239,.55);stroke-width:1.2}
+.lines .trunk{stroke:var(--signal);stroke-width:4;stroke-linecap:round}
+.rides{list-style:none;margin:0;padding:0;position:relative;height:364px}
+.rides li{position:absolute;inset-inline:0;transform:translateY(-50%);background:var(--ink-2);border:1px solid var(--line-dark);border-radius:var(--r-md);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:default;transition:border-color var(--t-fast),background var(--t-fast)}
+.rides li:hover,.rides li.hot{border-color:var(--signal);background:#1d2128}
+.rides b{display:block;font-weight:600;font-size:16px}.rides small{color:var(--text-mute-dark);font-size:13px}
+.rides .cnt{font:500 40px/.8 var(--serif);color:var(--signal)}
+.board.focus .reqs li:not(.hot){opacity:.25}.board.focus .lines .req:not(.hot){opacity:.1}
+.chips{display:none}
+
+/* ===== 5. dashboard ===== */
+.desk{position:relative}
+.laptop{background:#0B0D11;border-radius:18px 18px 6px 6px;padding:12px 12px 16px;box-shadow:0 50px 90px -40px rgba(14,17,22,.5)}
+.lscr{background:var(--surface);color:var(--ink);border-radius:8px;overflow:hidden;font-size:13px}
+.lbar{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid var(--line-light)}
+.lbar .brandmini{display:flex;gap:6px;align-items:center;font-weight:600;direction:ltr}
+.lbar .brandmini svg{width:26px;height:12px}.lbar line{stroke:var(--signal);stroke-width:6}.lbar circle{fill:none;stroke:var(--signal);stroke-width:6}
+.lbar .who{display:flex;gap:8px;align-items:center;color:var(--text-mute-light)}
+.lbar .who i{width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--paper);font-style:normal;display:grid;place-items:center;font-size:12px}
+.lbody{padding:18px;background:#FAF9F6}
+.lhead{display:flex;justify-content:space-between;align-items:end;margin-bottom:14px}
+.lhead b{font:700 20px/1.2 var(--serif)}.lhead small{display:block;color:var(--text-mute-light)}
+.grp{background:var(--surface);border:1px solid var(--line-light);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.grp-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;flex-wrap:wrap}
+.grp-h .t{font-weight:600}.grp-h .t span{color:var(--text-mute-light);font-weight:400}
+.acts-s{display:flex;gap:8px}
+.lb{height:32px;padding:0 12px;border-radius:8px;display:inline-grid;place-items:center;font-weight:600;font-size:12.5px;border:1px solid var(--line-light);transition:box-shadow var(--t-fast),transform var(--t-fast)}
+.lb.pri{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.lb.press{transform:scale(.95);box-shadow:0 0 0 4px rgba(255,176,0,.45)}
+.r{display:grid;grid-template-columns:1.1fr 1fr .8fr auto;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line-light)}
+.r .ph{direction:ltr;text-align:right;color:var(--text-mute-light)}
+.grp.closed .grp-h{border:0}
+.toast{position:absolute;left:50%;bottom:34px;transform:translate(-50%,0);background:var(--ink);color:var(--paper);border-radius:12px;padding:12px 16px;font-size:13.5px;display:flex;gap:10px;align-items:center;white-space:nowrap;box-shadow:0 20px 40px -20px rgba(0,0,0,.6)}
+.push{position:absolute;inset-inline-end:-28px;top:38%;width:250px;background:rgba(255,255,255,.98);border-radius:16px;padding:12px 14px;box-shadow:0 24px 50px -24px rgba(14,17,22,.5);font-size:13px;color:var(--ink)}
+.push b{display:flex;justify-content:space-between;font-weight:600}.push b small{font-weight:400;color:var(--text-mute-light)}
+.push p{margin:2px 0 0;color:var(--text-light)}
+
+/* ===== 6. quiet ===== */
+.quiet .split{align-items:start}
+.qclock{font-family:var(--serif);font-weight:400;font-size:clamp(110px,15vw,230px);line-height:.8;letter-spacing:-.04em;direction:ltr;text-align:right;margin:0}
+.qclock b{font-weight:400;color:var(--signal-deep)}
+.results{list-style:none;margin:0;padding:0}
+.results li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:var(--s3);padding:22px 0;border-top:1px solid var(--line-light);align-items:baseline}
+.results li:last-child{border-bottom:1px solid var(--line-light)}
+.results b{font:700 clamp(26px,2.6vw,38px)/1.1 var(--serif)}
+.results span{color:var(--text-light)}
+.quote{margin:var(--s5) 0 0;padding:0}
+.quote blockquote{margin:0;font:500 clamp(22px,2vw,30px)/1.45 var(--serif);max-width:28em}
+.quote figcaption{margin-top:14px;color:var(--text-mute-light);font-size:15px}
+
+/* ===== 7. gate ===== */
+.gate{position:relative;min-height:100svh;overflow:hidden;display:grid;align-items:end;isolation:isolate}
+.gate::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,var(--ink) 0,rgba(14,17,22,0) 30%,rgba(14,17,22,.2) 55%,rgba(14,17,22,.92) 100%)}
+.gate .wrap{position:relative;z-index:2;padding-bottom:var(--s6);width:100%}
+.gate h2{font-size:clamp(40px,5.6vw,84px);max-width:13em}
+.gate .acts{margin-top:var(--s4)}
+
+/* ===== 8. faq ===== */
+.faq{max-width:860px}
+.faq details{border-top:1px solid var(--line-light)}
+.faq details:last-child{border-bottom:1px solid var(--line-light)}
+.faq summary{list-style:none;cursor:pointer;padding:22px 0;display:flex;justify-content:space-between;gap:20px;font:600 19px/1.4 var(--sans)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";width:12px;height:12px;flex:none;margin-top:6px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform var(--t-mid) var(--ease-out)}
+.faq details[open] summary::after{transform:rotate(135deg)}
+.faq p{margin:0 0 22px;color:var(--text-light);max-width:40em}
+
+/* ===== 9. contact ===== */
+.contact .split{align-items:start}
+.story{margin-top:var(--s4);padding-top:var(--s3);border-top:1px solid var(--line-light);color:var(--text-light);max-width:32em}
+.sig{margin-top:14px;font:700 20px/1.2 var(--serif)}.sig small{display:block;font:400 14px var(--sans);color:var(--text-mute-light);margin-top:4px}
+.wa{display:inline-flex;gap:10px;align-items:center;margin-top:var(--s3);font-weight:600;text-decoration:none;color:var(--ink)}
+.wa svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8}
+.form{background:var(--surface);border-radius:var(--r-lg);padding:clamp(22px,3vw,40px);box-shadow:0 30px 70px -40px rgba(14,17,22,.35);display:grid;gap:16px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field label{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
+.field .opt{font-weight:400;color:var(--text-mute-light)}
+.field input,.field select,.field textarea{width:100%;font:16px/1.4 var(--sans);color:var(--ink);background:#FAF9F6;border:1px solid var(--line-light);border-radius:12px;padding:13px 14px;transition:border-color var(--t-fast),box-shadow var(--t-fast)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(255,176,0,.35)}
+.field input[aria-invalid="true"]{border-color:var(--alert)}
+.err{margin:6px 0 0;color:#B3261E;font-size:14px;min-height:0}
+.err:empty{display:none}
+.check{display:flex!important;gap:10px;align-items:flex-start;font-weight:400!important}
+.check input{width:20px;height:20px;margin-top:3px;accent-color:var(--ink);flex:none}
+.legal{font-size:13.5px;color:var(--text-mute-light);margin:0}
+.hp{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.submit{width:100%;background:var(--ink);color:var(--paper)}
+.submit:hover{background:#262c35}
+.success{text-align:center;padding:40px 10px}
+.success strong{display:block;font:700 28px/1.2 var(--serif);margin-bottom:8px}
+
+/* ===== footer ===== */
+.foot{padding:40px 0;border-top:1px solid var(--line-dark);font-size:14px;color:var(--text-mute-dark)}
+.foot .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.foot a{color:var(--paper)}
+
+/* ===== responsive ===== */
+@media (max-width:1023px){
+  .split{grid-template-columns:1fr}
+  .hero-in{grid-template-columns:1fr;gap:var(--s3)}
+  .hero-clock{justify-self:start;order:-1}
+  .board{grid-template-columns:1fr}
+  .reqs,.lines{display:none}
+  .rides{height:auto;display:grid;gap:10px}
+  .rides li{position:relative;transform:none;top:auto!important}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0 0 18px;padding:0}
+  .chips li{border:1px solid var(--line-dark);border-radius:999px;padding:6px 12px;font-size:14px;background:var(--ink-2)}
+  .push{inset-inline-end:auto;left:8px;top:auto;bottom:-40px}
+  .scene{min-height:0;padding:88px 0}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .nav .wrap{height:62px;grid-template-columns:auto 1fr auto}
+  .nclock{justify-self:center;font-size:18px}
+  .nav-cta{height:40px;padding:0 14px;font-size:14px}
+  .acts .btn{flex:1 1 100%}
+  .hero-in{padding-top:96px}
+  .hero-clock .big{font-size:72px}
+  .proof ul{gap:8px 20px;font-size:14px}
+  .flood-stage{height:600px;margin-top:60px}
+  .ntf{width:92%}
+  .phone{transform:scale(.92);transform-origin:top center;margin-bottom:-50px}
+  .laptop{padding:8px 8px 10px;border-radius:12px 12px 4px 4px}
+  .r{grid-template-columns:1fr auto;font-size:12.5px}.r .ph,.r .city{display:none}
+  .lhead b{font-size:17px}
+  .toast{white-space:normal;width:88%;bottom:16px}
+  .push{width:220px}
+  .results li{grid-template-columns:1fr;gap:4px}
+  .f2{grid-template-columns:1fr}
+  .asset-tag{inset-block-start:70px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<!--
+  SmartKav v2 · final proposal (prototype, drafts only).
+  Concept: "22:40 → 22:45". The page is the five minutes that close a whole week of shift transport.
+  Hero effect: a night city of light trails (canvas). Every trail is one employee's trip; scrolling sorts the chaos into 4 lanes = 4 shared rides.
+  AI photographs are optional slots (see ASSETS below + drafts/proposal/ASSETS.md). Every scene works without them.
+-->
+<a class="skip" href="#main">דלג לתוכן הראשי</a>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" dir="ltr" aria-label="SmartKav, לראש הדף"><svg viewBox="0 0 92 40" aria-hidden="true"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg><span>Smart<b>Kav</b></span></a>
+    <span class="nclock num" aria-hidden="true"><i></i><span id="nclock">22:40</span></span>
+    <a class="btn nav-cta" href="#contact">תיאום הדגמה</a>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<!-- 1 · HERO -->
+<section class="hero dark" id="top" aria-labelledby="h1">
+  <div class="photo" data-asset="city" aria-hidden="true"></div>
+  <canvas class="trails" id="trails-hero" aria-hidden="true"></canvas>
+  <span class="asset-tag" data-tag="city">PLACEHOLDER · assets/hero-city-night.jpg</span>
+  <div class="wrap hero-in">
+    <div>
+      <h1 id="h1"><span>כל ההסעות של השבוע.</span><span class="gold">בחמש דקות.</span></h1>
+      <p class="lede">העובדים נרשמים באפליקציה, <bdi dir="ltr" translate="no">SmartKav</bdi> מקבצת את הבקשות לנסיעות משותפות, ואתם מאשרים ושולחים לחברת ההסעות שכבר עובדת אתכם.</p>
+      <div class="acts">
+        <a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
+        <a class="tlink" href="#night">איך זה נראה בערב רגיל</a>
+      </div>
+    </div>
+    <div class="hero-clock" aria-hidden="true"><span class="big num">22<b>:</b>40</span><small>חמישי בערב. ההסעות של מחר עוד פתוחות.</small></div>
+  </div>
+  <div class="proof"><div class="wrap"><ul>
+    <li><b>שעתיים+ ← 5 דקות</b> בשבוע, בפיילוט</li>
+    <li><b>45</b> עובדי משמרות במוקד שירות ומכירות</li>
+    <li><b>24 שעות</b> הטמעה</li>
+    <li><b>אותה חברת הסעות</b>, בלי להחליף ספק</li>
+  </ul></div></div>
+</section>
+
+<!-- 2 · 22:40 THE FLOOD -->
+<section class="scene dark" id="night" data-time="22:40" aria-labelledby="h2-night">
+  <div class="wrap split">
+    <div>
+      <span class="stamp num">22:40</span>
+      <h2 id="h2-night">38 הודעות שלא נקראו. <em>ועוד אחת.</em></h2>
+      <p class="lede">קבוצת ההסעות, הודעות פרטיות, שיחה שלא נענתה ותחנת המוניות שמחכה לרשימה עד 23:00. מישהו ייזכר מאוחר מדי, ושתי מוניות ייסעו לאותו רחוב.</p>
+      <p class="lede">ככה נראה ערב רגיל של מי שמסדר הסעות. מכאן זה נגמר.</p>
+    </div>
+    <div class="flood-stage" id="flood" role="img" aria-label="המחשה: הודעות על הסעות נערמות עד 38 שלא נקראו, ואז מתחלפות בכרטיס אחד: 14 בקשות נקלטו באפליקציה">
+      <div class="unread zero" aria-hidden="true"><b class="num" id="unread">0</b><span>הודעות שלא נקראו</span></div>
+      <div class="calm" aria-hidden="true">
+        <div class="row1"><span class="brandmini" dir="ltr"><svg viewBox="0 0 92 40"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg>SmartKav</span><span class="tag ok">הכול נקלט</span></div>
+        <strong>14 בקשות נכנסו מהאפליקציה</strong>
+        <p>לשישי, 16:00 ו-01:00. אף אחד לא צריך לכתוב בקבוצה.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · 22:41 THE APP -->
+<section class="scene light" id="app" data-time="22:41" aria-labelledby="h2-app">
+  <div class="wrap split">
+    <div>
+      <span class="stamp num">22:41</span>
+      <h2 id="h2-app">דנה נרשמה. <em>שלוש לחיצות</em>, בלי להתקשר לאף אחד.</h2>
+      <p class="lede">לכל עובד יש אפליקציה: בוחר משמרת וכיוון ושולח. הכתובת כבר שמורה, והסטטוס מתעדכן לבד עד שהמונית מוזמנת.</p>
+      <ul class="facts">
+        <li>כתובת שמורה, אז הרשמה לוקחת כמה שניות</li>
+        <li>סטטוס בזמן אמת: נקלטה, אושרה, מונית הוזמנה</li>
+        <li>פתוח רק לעובדי הארגון</li>
+      </ul>
+    </div>
+    <div class="phone" role="img" aria-label="המחשה של אפליקציית העובד: דנה נרשמת למשמרת שישי 16:00, הלוך וחזור, והסטטוס מתעדכן מנקלטה עד מונית הוזמנה">
+      <div class="scr" aria-hidden="true">
+        <div class="top"><span class="hi">שלום, דנה</span><span class="av">ד</span></div>
+        <div class="fld"><small>משמרת</small><b>שישי 25.09 · 16:00–01:00</b></div>
+        <div class="fld"><small>כיוון נסיעה</small><div class="seg"><span class="on">הלוך וחזור</span><span>רק הלוך</span><span>רק חזור</span></div></div>
+        <div class="fld"><small>כתובת איסוף</small><b>רמת גן</b><span class="saved">שמורה</span></div>
+        <div class="pbtn" id="pbtn">שליחת הרשמה</div>
+        <div class="status" id="pstatus"><span><b>שישי · הלוך 16:00</b><small id="pstatus-t">עדכון אחרון 22:41</small></span><span class="tag ok" id="ptag">מונית הוזמנה</span></div>
+        <div class="mine"><div><span>חמישי 24.09 · הלוך 08:00</span><span class="tag ok">מונית הוזמנה</span></div><div><span>חמישי 24.09 · חזור 17:00</span><span class="tag ok">מונית הוזמנה</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · 22:42 GROUPING -->
+<section class="scene dark lines-wrap" id="group" data-time="22:42" aria-labelledby="h2-group">
+  <div class="wrap">
+    <span class="stamp num">22:42</span>
+    <h2 id="h2-group">14 בקשות. <em>4 נסיעות.</em></h2>
+    <p class="lede">בקשות לאותו תאריך, שעה, כיוון ועיר מתאחדות לנסיעה אחת. בלי טבלה ובלי לחשוב מי גר ליד מי.</p>
+    <div class="board" id="board" role="img" aria-label="דוגמה: 14 בקשות מתחברות לארבע נסיעות משותפות: רמת גן 16:00 ארבעה נוסעים, חולון 16:00 שלושה, תל אביב 01:00 ארבעה, בת ים 01:00 שלושה">
+      <ul class="reqs" aria-hidden="true"></ul>
+      <svg class="lines" aria-hidden="true"></svg>
+      <ul class="chips" aria-hidden="true"></ul>
+      <ol class="rides" aria-hidden="true"></ol>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · 22:43 APPROVE & SEND -->
+<section class="scene light" id="send" data-time="22:43" aria-labelledby="h2-send">
+  <div class="wrap split">
+    <div>
+      <span class="stamp num">22:43</span>
+      <h2 id="h2-send">המערכת מציעה. <em>אתם מאשרים ושולחים.</em></h2>
+      <p class="lede">מסך אחד, רק מה שדורש טיפול. מעתיקים את ההזמנה לחברת ההסעות שכבר עובדת אתכם, מסמנים שטופל, וכל העובדים בקבוצה מקבלים "מונית הוזמנה".</p>
+      <ul class="facts">
+        <li>לא מחליפים ספק הסעות</li>
+        <li>בקשה מאוחרת מסומנת, והמנהל מקבל התראה</li>
+        <li>הרשמה כפולה נחסמת אוטומטית</li>
+      </ul>
+    </div>
+    <div class="desk" role="img" aria-label="המחשה של מסך המנהל: נסיעה משותפת לרמת גן ב-16:00 עם ארבעה נוסעים, העתקת ההזמנה לחברת ההסעות, והעובדים מקבלים עדכון שהמונית הוזמנה">
+      <div class="laptop" aria-hidden="true"><div class="lscr">
+        <div class="lbar"><span class="brandmini"><svg viewBox="0 0 92 40"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg>SmartKav</span><span class="who">מנהל משמרת<i>מ</i></span></div>
+        <div class="lbody">
+          <div class="lhead"><span><b>נסיעות למחר</b><small>שישי 25.09 · <span id="dpend">10</span> ממתינות לטיפול</small></span><span class="tag">שבוע נוכחי</span></div>
+          <div class="grp">
+            <div class="grp-h"><span class="t">הלוך · עד 16:00 <span>· רמת גן · 4 נוסעים</span></span><span class="acts-s"><span class="lb pri" id="dcopy">העתק הזמנה</span><span class="lb" id="ddone">סמן כטופלה</span></span></div>
+            <div class="r"><span>דנה כ.</span><span class="ph">050-•••-4127</span><span class="city">רמת גן</span><span class="tag dt">ממתין</span></div>
+            <div class="r"><span>אבי מ.</span><span class="ph">052-•••-8830</span><span class="city">רמת גן</span><span class="tag dt">ממתין</span></div>
+            <div class="r"><span>נועה ש.</span><span class="ph">054-•••-2915</span><span class="city">רמת גן</span><span class="tag dt">ממתין</span></div>
+            <div class="r"><span>רון ב.</span><span class="ph">053-•••-6072</span><span class="city">רמת גן</span><span class="tag wait">מאוחרת</span></div>
+          </div>
+          <div class="grp closed"><div class="grp-h"><span class="t">הלוך · עד 16:00 <span>· חולון · 3 נוסעים</span></span><span class="tag">ממתין</span></div></div>
+          <div class="grp closed"><div class="grp-h"><span class="t">חזור · 01:00 <span>· תל אביב · 4 נוסעים</span></span><span class="tag">ממתין</span></div></div>
+        </div>
+      </div></div>
+      <div class="toast" id="dtoast" aria-hidden="true"><span class="tag ok">הועתק</span>ההזמנה מוכנה להדבקה אצל חברת ההסעות</div>
+      <div class="push" id="dpush" aria-hidden="true"><b>SmartKav<small>עכשיו</small></b><p>המונית שלך הוזמנה · שישי, הלוך 16:00</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · 22:45 QUIET -->
+<section class="scene light quiet" id="quiet" data-time="22:45" aria-labelledby="h2-quiet">
+  <div class="wrap split">
+    <div>
+      <p class="qclock num" aria-hidden="true">22<b>:</b>45</p>
+      <h2 id="h2-quiet" style="margin-top:var(--s4)">0 הודעות שלא נקראו. <em>ההסעות של מחר סגורות.</em></h2>
+    </div>
+    <div>
+      <ul class="results">
+        <li><b>5 דקות</b><span>במקום שעתיים ויותר בשבוע, אצל מוקד שירות ומכירות עם 45 עובדי משמרות.</span></li>
+        <li><b>פחות מוניות</b><span>מי שנסע לבד באותה שעה ובאותו כיוון נוסע עכשיו בנסיעה משותפת.</span></li>
+        <li><b>0 כפולות</b><span>הרשמה כפולה לאותה משמרת נחסמת לפני שהיא מגיעה לחשבונית.</span></li>
+      </ul>
+      <figure class="quote">
+        <blockquote>״זה לקח לי יותר משעתיים בשבוע, בין אקסל לוואטסאפ. היום אני רק מאשר ושולח. חמש דקות וזהו.״</blockquote>
+        <figcaption>מנהל מוקד, מוקד שירות ומכירות עם 45 עובדי משמרות</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · 01:00 THE GATE -->
+<section class="gate dark" id="gate" data-time="01:00" aria-labelledby="h2-gate">
+  <div class="photo" data-asset="gate" aria-hidden="true"></div>
+  <canvas class="trails" id="trails-gate" aria-hidden="true"></canvas>
+  <span class="asset-tag" data-tag="gate">PLACEHOLDER · assets/gate-0100.jpg</span>
+  <div class="wrap">
+    <span class="stamp num">01:00</span>
+    <h2 id="h2-gate">נועה מסיימת משמרת. <em>המונית כבר בשער,</em> והיא לא שלחה אף הודעה.</h2>
+    <div class="acts"><a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div>
+  </div>
+</section>
+
+<!-- 8 · FAQ -->
+<section class="scene light" id="faq" aria-labelledby="h2-faq" style="min-height:0">
+  <div class="wrap">
+    <h2 id="h2-faq" style="margin-bottom:var(--s4)">שאלות שמנהלים שואלים</h2>
+    <div class="faq">
+      <details><summary>צריך להחליף את חברת ההסעות או המוניות?</summary><p>לא. <bdi dir="ltr" translate="no">SmartKav</bdi> מכינה את ההזמנה, ואתם שולחים אותה לחברה הקיימת.</p></details>
+      <details><summary>איך המערכת מחליטה מי נוסע עם מי?</summary><p>לפי תאריך, שעה, כיוון ועיר. המנהל מאשר לפני שההזמנה יוצאת.</p></details>
+      <details><summary>מה עם משמרת שמסתיימת אחרי חצות?</summary><p>היא נשארת משויכת ליום שבו התחילה.</p></details>
+      <details><summary>מה קורה עם בקשה שמגיעה ברגע האחרון?</summary><p>היא נקלטת ומסומנת כמאוחרת, והמנהל מקבל התראה.</p></details>
+      <details><summary>כמה זמן לוקחת ההטמעה?</summary><p>עד 24 שעות: מגדירים ארגון ומשמרות ושולחים לעובדים קישור לאפליקציה.</p></details>
+      <details><summary>כמה זה עולה?</summary><p>המחיר מותאם לכל ארגון. <a href="#contact">השאירו פרטים</a> ונציג מטעמנו יחזור אליכם.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · CONTACT -->
+<section class="scene light contact" id="contact" aria-labelledby="h2-contact" style="min-height:0;padding-top:24px">
+  <div class="wrap split">
+    <div>
+      <h2 id="h2-contact">רוצים לראות איך זה ייראה אצלכם?</h2>
+      <p class="lede">השאירו פרטים, ובהדגמה קצרה נראה לכם את המערכת ונבדוק כמה זמן תחסכו.</p>
+      <p class="story">ניהלתי מוקד שעבד גם בסופ״ש ובחגים, וסידור ההסעות היה עליי: וואטסאפ, אקסל ובדיקה אחרונה בעשר בלילה. חיפשתי מערכת שתעשה את זה ולא מצאתי, אז בניתי.</p>
+      <p class="sig">אלון ברגר<small>מייסד <bdi dir="ltr" translate="no">SmartKav</bdi></small></p>
+      <a class="wa tlink" href="https://wa.me/972522427546?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A2%D7%95%D7%93%20%D7%A2%D7%9C%20SmartKav" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5l1.2-3.6A8 8 0 1 1 8.6 18.6z"/><path d="M9 10.5h6M9 13.5h4"/></svg>מעדיפים WhatsApp? כתבו לנו</a>
+    </div>
+    <div>
+      <!-- Prototype: the same fields and names the live form sends to Make. Here it validates and does not send. -->
+      <form class="form" id="lead-form" novalidate>
+        <div class="f2">
+          <div class="field"><label for="f-name">שם מלא</label><input id="f-name" name="full_name" type="text" autocomplete="name" aria-required="true" aria-describedby="err-full_name"><p class="err" id="err-full_name" aria-live="polite"></p></div>
+          <div class="field"><label for="f-phone">טלפון</label><input id="f-phone" name="phone" type="tel" inputmode="numeric" dir="ltr" autocomplete="tel" aria-required="true" aria-describedby="err-phone"><p class="err" id="err-phone" aria-live="polite"></p></div>
+        </div>
+        <div class="field"><label for="f-org">שם הארגון</label><input id="f-org" name="organization" type="text" autocomplete="organization" aria-required="true" aria-describedby="err-organization"><p class="err" id="err-organization" aria-live="polite"></p></div>
+        <div class="f2">
+          <div class="field"><label for="f-size">כמה עובדי משמרות נוסעים? <span class="opt">(רשות)</span></label><select id="f-size" name="employees"><option value="">בחרו</option><option value="עד 50">עד 50</option><option value="50-200">50–200</option><option value="200-500">200–500</option><option value="500+">יותר מ-500</option></select></div>
+          <div class="field"><label for="f-email">דוא״ל <span class="opt">(רשות)</span></label><input id="f-email" name="email" type="email" dir="ltr" autocomplete="email" spellcheck="false" aria-describedby="err-email"><p class="err" id="err-email" aria-live="polite"></p></div>
+        </div>
+        <div class="field"><label for="f-notes">פרטים נוספים <span class="opt">(רשות)</span></label><textarea id="f-notes" name="notes" rows="3"></textarea></div>
+        <div class="hp" aria-hidden="true"><label for="f-website">website</label><input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <p class="legal" id="privacy-note">הפרטים מגיעים ישירות לאלון ברגר וישמשו רק ליצירת קשר. אפשר לבקש את מחיקתם בכל עת.</p>
+        <div class="field"><label class="check" for="f-consent"><input id="f-consent" name="consent" type="checkbox" aria-required="true" aria-describedby="err-consent privacy-note"><span>אני מאשר/ת פנייה אליי בטלפון או בדוא״ל בנוגע למערכת.</span></label><p class="err" id="err-consent" aria-live="polite"></p></div>
+        <button class="btn submit" type="submit">לתיאום הדגמה</button>
+      </form>
+      <div class="form success" id="success" hidden><strong tabindex="-1">תודה, קיבלנו.</strong><p>נציג מטעמנו יחזור אליכם בהקדם לתיאום הדגמה.</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot dark">
+  <div class="wrap">
+    <a class="brand" href="#top" dir="ltr"><svg viewBox="0 0 92 40" aria-hidden="true"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg><span>Smart<b>Kav</b></span></a>
+    <a href="../../accessibility.html">הצהרת נגישות</a>
+    <span>© <bdi dir="ltr" translate="no">SmartKav</bdi> · אלון ברגר</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script>
+/* ===== Settings ===== */
+// Flip to true when the AI photographs are in drafts/proposal/assets/ (see ASSETS.md).
+var ASSETS = { city: false, cityMobile: false, gate: false };
+var ASSET_FILES = { city: 'assets/hero-city-night.jpg', cityMobile: 'assets/hero-city-night-mobile.jpg', gate: 'assets/gate-0100.jpg' };
+
+(function(){
+  'use strict';
+  // The live page's accessibility widget ("עצירת אנימציות") sets html.a11y-still; it stops this motion the same way.
+  var REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('a11y-still');
+  var G = window.gsap, ST = window.ScrollTrigger;
+  var $ = function(s, r){ return (r || document).querySelector(s); }, $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  /* ---------- asset slots ---------- */
+  ['city', 'gate'].forEach(function(k){
+    if (!ASSETS[k]) return;
+    var file = k === 'city' && ASSETS.cityMobile && innerWidth < 700 ? ASSET_FILES.cityMobile : ASSET_FILES[k];
+    var el = $('[data-asset="' + k + '"]'), tag = $('[data-tag="' + k + '"]'), img = new Image();
+    img.onload = function(){ el.style.backgroundImage = 'url(' + file + ')'; el.classList.add('on'); if (tag) tag.hidden = true; };
+    img.src = file;
+  });
+
+  /* ---------- light trails: every trail is one trip; order 0 = chaos, 1 = four shared lanes ---------- */
+  function Trails(canvas, o){
+    this.c = canvas; this.ctx = canvas.getContext('2d'); this.order = o.order || 0; this.target = this.order;
+    this.lanes = o.lanes; this.count = o.count; this.alpha = o.alpha || 1; this.running = false; this.t = 0;
+    this.resize(); this.seed();
+  }
+  Trails.prototype.resize = function(){
+    var d = Math.min(1.5, window.devicePixelRatio || 1), r = this.c.getBoundingClientRect();
+    this.W = r.width; this.H = r.height; this.c.width = Math.round(r.width * d); this.c.height = Math.round(r.height * d);
+    this.ctx.setTransform(d, 0, 0, d, 0, 0);
+  };
+  Trails.prototype.seed = function(){
+    this.ps = [];
+    for (var i = 0; i < this.count; i++) this.ps.push({ x: Math.random() * this.W, y: Math.random() * this.H, lane: i % this.lanes.length,
+      spd: 1.5 + Math.random() * 1.7, s: Math.random() * 6.28, gold: Math.random() < .8 });
+    if (this.order > .5) this.ps.forEach(function(p){ p.y = this.laneY(p.lane, p.x) + (Math.random() - .5) * 26; }, this);
+  };
+  Trails.prototype.laneY = function(i, x){ return this.H * this.lanes[i] + Math.sin(x * .0022 + i * 1.7 + this.t * .004) * this.H * .028; };
+  Trails.prototype.step = function(){
+    this.t++; this.order += (this.target - this.order) * .035;
+    var o = this.order, W = this.W, H = this.H, t = this.t;
+    for (var i = 0; i < this.ps.length; i++){
+      var p = this.ps[i], a = Math.sin(p.x * .0016 + t * .003 + p.s * .3) * 2.4 + Math.cos(p.y * .0019 - t * .0025) * 2.4,
+          cx = Math.cos(a) * p.spd, cy = Math.sin(a) * p.spd, ly = this.laneY(p.lane, p.x),
+          ox = -p.spd * 1.5, oy = (ly - p.y) * .045;
+      p.px = p.x; p.py = p.y;
+      p.x += cx * (1 - o) + ox * o; p.y += cy * (1 - o) + oy * o;
+      if (p.x < -40 || p.x > W + 40 || p.y < -40 || p.y > H + 40){
+        if (o > .5){ p.x = W + 20; p.y = this.laneY(p.lane, W) + (Math.random() - .5) * 30; }
+        else { p.x = Math.random() * W; p.y = Math.random() * H; }
+        p.px = p.x; p.py = p.y;
+      }
+    }
+  };
+  // Each frame fades what is already there and adds only the newest segment of every trip,
+  // so a trail is ~70 frames long at the cost of one segment per particle.
+  Trails.prototype.draw = function(){
+    var c = this.ctx;
+    c.globalCompositeOperation = 'destination-out'; c.fillStyle = 'rgba(0,0,0,.045)'; c.fillRect(0, 0, this.W, this.H);
+    c.globalCompositeOperation = 'lighter'; c.lineCap = 'butt';
+    var groups = [[true, 'rgba(255,176,0,' + (.55 * this.alpha) + ')', 1.3], [false, 'rgba(246,244,239,' + (.35 * this.alpha) + ')', .9]];
+    for (var g = 0; g < 2; g++){
+      c.strokeStyle = groups[g][1]; c.lineWidth = groups[g][2]; c.beginPath();
+      for (var i = 0; i < this.ps.length; i++){
+        var p = this.ps[i]; if (p.gold !== groups[g][0] || p.px === p.x && p.py === p.y) continue;
+        c.moveTo(p.px, p.py); c.lineTo(p.x, p.y);
+      }
+      c.stroke();
+    }
+    c.globalCompositeOperation = 'source-over';
+  };
+  Trails.prototype.loop = function(){
+    var self = this;
+    function f(){ if (!self.running) return; self.step(); self.draw(); self.raf = requestAnimationFrame(f); }
+    f();
+  };
+  Trails.prototype.start = function(){ if (this.running) return; this.running = true; this.loop(); };
+  Trails.prototype.stop = function(){ this.running = false; cancelAnimationFrame(this.raf); };
+  Trails.prototype.still = function(order){ this.order = this.target = order; this.ctx.clearRect(0, 0, this.W, this.H); for (var i = 0; i < 90; i++){ this.step(); this.draw(); } };
+
+  var phone = innerWidth < 700;
+  var heroT = new Trails($('#trails-hero'), { count: phone ? 80 : 170, lanes: phone ? [.1, .17, .24, .31] : [.13, .21, .29, .37] });
+  var gateT = new Trails($('#trails-gate'), { count: phone ? 60 : 120, lanes: [.36, .46, .56, .66], order: 1, alpha: .85 });
+  [heroT, gateT].forEach(function(tr){
+    if (REDUCE){ tr.still(tr === heroT ? .9 : 1); return; }
+    for (var w = 0; w < 80; w++){ tr.step(); tr.draw(); }
+    new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting ? tr.start() : tr.stop(); }); }).observe(tr.c);
+  });
+  var rz; addEventListener('resize', function(){ clearTimeout(rz); rz = setTimeout(function(){ [heroT, gateT].forEach(function(tr){ tr.resize(); if (REDUCE) tr.still(tr.order); }); }, 150); });
+  document.addEventListener('visibilitychange', function(){ if (document.hidden){ heroT.stop(); gateT.stop(); } });
+
+  /* ---------- nav: solid + live clock ---------- */
+  var nav = $('#nav'), nclock = $('#nclock');
+  function onScroll(){ nav.classList.toggle('solid', scrollY > innerHeight * .6); }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  var timed = $$('[data-time]');
+  var clockIO = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) nclock.textContent = e.target.dataset.time; }); }, { rootMargin: '-45% 0px -50% 0px' });
+  timed.forEach(function(s){ clockIO.observe(s); });
+
+  /* ---------- grouping board (built for every mode) ---------- */
+  var REQ = [['דנה','רמת גן',0],['מיכל','חולון',1],['יוסי','תל אביב',2],['אבי','רמת גן',0],['שירן','בת ים',3],['עומר','חולון',1],['נועה','רמת גן',0],
+             ['ליאור','תל אביב',2],['תמר','בת ים',3],['רון','רמת גן',0],['גל','חולון',1],['עדי','תל אביב',2],['מאיה','בת ים',3],['איתי','תל אביב',2]];
+  var RIDES = [['הלוך · 16:00','רמת גן'],['הלוך · 16:00','חולון'],['חזור · 01:00','תל אביב'],['חזור · 01:00','בת ים']];
+  var ROW = 26, BH = REQ.length * ROW, TY = [46, 136, 228, 318], NS = 'http://www.w3.org/2000/svg';
+  var board = $('#board'), reqs = $('.reqs', board), svg = $('.lines', board), rides = $('.rides', board), chips = $('.chips', board);
+  REQ.forEach(function(r){
+    var li = document.createElement('li'); li.dataset.r = r[2]; li.innerHTML = r[0] + ' <small>' + r[1] + '</small>'; reqs.appendChild(li);
+    var c = document.createElement('li'); c.dataset.r = r[2]; c.textContent = r[0] + ' · ' + r[1]; chips.appendChild(c);
+  });
+  RIDES.forEach(function(r, i){
+    var n = REQ.filter(function(q){ return q[2] === i; }).length, li = document.createElement('li');
+    li.dataset.r = i; li.style.top = TY[i] + 'px';
+    li.innerHTML = '<span><b>' + r[1] + '</b><small>' + r[0] + ' · נסיעה משותפת</small></span><span class="cnt num">' + n + '</span>';
+    rides.appendChild(li);
+  });
+  function drawLines(){
+    svg.innerHTML = ''; var W = svg.getBoundingClientRect().width; if (!W) return;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + BH); var mx = W * .4;
+    REQ.forEach(function(q, i){
+      var y0 = i * ROW + ROW / 2, y1 = TY[q[2]], dy = Math.abs(y1 - y0), bend = Math.min(W - 12, mx + 50 + dy * 1.1);
+      var p = document.createElementNS(NS, 'path'); p.setAttribute('class', 'req'); p.dataset.r = q[2];
+      p.setAttribute('d', 'M ' + (W - 4) + ' ' + y0 + ' H ' + bend + ' C ' + (bend - dy * .55) + ' ' + y0 + ' ' + (bend - dy * .55) + ' ' + y1 + ' ' + (bend - dy * 1.1) + ' ' + y1 + ' H ' + mx);
+      svg.appendChild(p);
+    });
+    var gap = svg.getBoundingClientRect().left - rides.getBoundingClientRect().right;
+    TY.forEach(function(y, r){ var p = document.createElementNS(NS, 'path'); p.setAttribute('class', 'trunk'); p.dataset.r = r; p.setAttribute('d', 'M ' + mx + ' ' + y + ' H ' + (-gap + 2)); svg.appendChild(p); });
+  }
+  drawLines(); addEventListener('resize', function(){ clearTimeout(drawLines.t); drawLines.t = setTimeout(drawLines, 150); });
+  function focus(r){ board.classList.toggle('focus', r != null); $$('[data-r]', board).forEach(function(el){ el.classList.toggle('hot', r != null && el.dataset.r == r); }); }
+  $$('li', rides).forEach(function(li){ li.addEventListener('mouseenter', function(){ focus(li.dataset.r); }); li.addEventListener('mouseleave', function(){ focus(null); }); });
+
+  /* ---------- form: same fields and rules as the live page; prototype does not send ---------- */
+  var form = $('#lead-form'), F = { full_name: $('#f-name'), phone: $('#f-phone'), organization: $('#f-org'), email: $('#f-email'), consent: $('#f-consent') };
+  var MSG = { full_name: 'נא להזין שם מלא.', phone: 'מספר הטלפון אינו תקין. יש להזין 10 ספרות, לדוגמה 0501234567.', organization: 'נא להזין את שם הארגון.', email: 'כתובת הדוא״ל אינה תקינה.', consent: 'נא לאשר פנייה כדי שנוכל לחזור אליכם.' };
+  function digits(v){ return (v || '').replace(/\D/g, ''); }
+  function check(k){ var el = F[k], v = el.type === 'checkbox' ? el.checked : el.value.trim();
+    if (k === 'consent') return v ? '' : MSG.consent; if (k === 'email') return !v || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? '' : MSG.email;
+    if (k === 'phone') return /^\d{10}$/.test(digits(v)) ? '' : MSG.phone; return v.length > 1 ? '' : MSG[k]; }
+  function show(k){ var m = check(k); F[k].setAttribute('aria-invalid', m ? 'true' : 'false'); $('#err-' + k).textContent = m; return !m; }
+  Object.keys(F).forEach(function(k){ F[k].addEventListener('blur', function(){ if (F[k].getAttribute('aria-invalid')) show(k); }); });
+  form.addEventListener('submit', function(e){
+    e.preventDefault(); var ok = true, first = null;
+    Object.keys(F).forEach(function(k){ if (!show(k)){ ok = false; first = first || F[k]; } });
+    if (!ok){ first.focus(); return; }
+    form.hidden = true; $('#success').hidden = false; $('#success strong').focus();
+  });
+
+  /* ---------- motion ---------- */
+  if (REDUCE || !G || !ST){ heroT.target = heroT.order = REDUCE ? .9 : 0; return; } // static markup = final state of every scene
+  G.registerPlugin(ST);
+  var mm = G.matchMedia(), DESK = '(min-width: 1024px) and (min-height: 700px)', MOB = '(max-width: 1023px), (max-height: 699px)';
+
+  // hero entrance: words rise, then the city starts moving
+  G.from('.hero h1 span', { yPercent: 40, autoAlpha: 0, duration: 1.1, stagger: .12, ease: 'expo.out', delay: .15 });
+  G.from(['.hero .lede', '.hero .acts', '.hero-clock', '.proof'], { autoAlpha: 0, y: 18, duration: .9, stagger: .08, ease: 'expo.out', delay: .45 });
+
+  // hero scroll: the chaos sorts itself into four lanes; the big clock hands over to the nav clock
+  mm.add(DESK, function(){
+    ST.create({ trigger: '.hero', start: 'top top', end: '+=70%', pin: true, scrub: true,
+      onUpdate: function(s){ heroT.target = s.progress * 1.05; } });
+  });
+  mm.add(MOB, function(){
+    ST.create({ trigger: '.hero', start: 'top top', end: 'bottom 30%', scrub: true, onUpdate: function(s){ heroT.target = s.progress * 1.4; } });
+  });
+  G.fromTo('.hero-clock .big, .hero-clock small', { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -40, immediateRender: false, ease: 'none', scrollTrigger: { trigger: '.proof', start: 'top 70%', end: 'top 20%', scrub: true } });
+
+  // 22:40 · the flood
+  var MSGS = [
+    ['ע','#0F6B5E','עומר','הזמנתם לי? אין לי שום אישור','22:40'],['ה','#5B6470','הסעות מוקד · מיכל','מי מזמין לי מונית ל-16:00 מחר?','22:31'],
+    ['ד','#3B5BA9','דנה','כתבתי בקבוצה, לא בטוחה שראית','22:39'],['taxi','#4A4F57','תחנת המוניות','כמה נוסעים מחר ב-16:00? צריך עד 23:00','22:35'],
+    ['נ','#9A6A00','נועה','מחר רק חזור, מסיימת ב-01:00','22:36'],['call','#7A4FA0','יוסי','שיחה שלא נענתה','22:38'],
+    ['א','#B4461E','אבי','צריך הסעה למשמרת של מחר, 18:00','22:33'],['ה','#5B6470','הסעות מוקד · רון','גם אני ל-16:00, רמת גן','22:32'],
+    ['ת','#B4461E','תמר','שכחתי להירשם, עוד אפשר?','22:42'],
+    ['taxi','#4A4F57','תחנת המוניות','מחכים לרשימה','22:44']
+  ];
+  var ICON = { taxi: '<svg viewBox="0 0 24 24"><path d="M5 16V11l2-5h10l2 5v5M5 16h14M5 16v2M19 16v2M8 13h.01M16 13h.01M10 6V4h4v2"/></svg>',
+               call: '<svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2zM15 3l6 6M21 3l-6 6"/></svg>' };
+  var stage = $('#flood'), calm = $('.calm', stage), unread = $('.unread', stage), ub = $('#unread');
+  var cards = MSGS.map(function(m, i){
+    var d = document.createElement('div'); d.className = 'ntf'; d.style.setProperty('--c', m[1]); d.setAttribute('aria-hidden', 'true');
+    d.innerHTML = '<span class="av">' + (ICON[m[0]] || m[0]) + '</span><b>' + m[2] + '<time class="num">' + m[4] + '</time></b><span class="m">' + m[3] + '</span>';
+    stage.insertBefore(d, calm); return d;
+  });
+  function placeCards(){
+    var sw = stage.clientWidth, sh = stage.clientHeight;
+    cards.forEach(function(d, i){ var w = d.offsetWidth; G.set(d, { x: (i % 2 ? sw - w : 0) + (sw > 500 ? (i % 3 - 1) * 10 : 0), y: i * ((sh - 74) / (cards.length - 1)) }); });
+  }
+  placeCards();
+  var n = { v: 0 };
+  function paintN(){ var v = Math.round(n.v); ub.textContent = v; unread.classList.toggle('zero', v === 0); }
+  unread.classList.remove('zero');
+  G.set(calm, { autoAlpha: 0, scale: .92 }); G.set(cards, { autoAlpha: 0, scale: .9 });
+  var flood = G.timeline({ paused: true });
+  cards.forEach(function(d, i){ flood.to(d, { autoAlpha: 1, scale: 1, duration: .1, ease: 'back.out(2)' }, i * .045); });
+  flood.to(n, { v: 38, duration: .55, ease: 'none', onUpdate: paintN }, 0)
+       .to(cards, { x: function(i, el){ return stage.clientWidth / 2 - el.offsetWidth / 2; }, y: stage.clientHeight / 2 - 36, scale: .6, autoAlpha: 0, duration: .25, stagger: .012, ease: 'power3.in' }, .78)
+       .to(n, { v: 0, duration: .2, ease: 'power2.in', onUpdate: paintN }, .8)
+       .to(calm, { autoAlpha: 1, scale: 1, duration: .2, ease: 'expo.out' }, .98);
+  mm.add(DESK, function(){ ST.create({ trigger: '#night', start: 'top top', end: '+=140%', pin: true, scrub: .4, animation: flood }); });
+  mm.add(MOB, function(){ flood.duration(5.5); ST.create({ trigger: stage, start: 'top 70%', once: true, onEnter: function(){ flood.play(0); } }); });
+
+  // 22:41 · the app loop (2.5–4 s cycle, pauses off screen)
+  var ptag = $('#ptag'), pt = $('#pstatus-t'), pbtn = $('#pbtn'), pstatus = $('#pstatus');
+  function setTag(cls, txt){ return function(){ ptag.className = 'tag ' + cls; ptag.textContent = txt; }; }
+  var app = G.timeline({ repeat: 2, repeatDelay: .8, paused: true }); // three cycles, then it rests on the final state
+  app.set(pstatus, { autoAlpha: 0, y: 14 }).call(setTag('', 'נקלטה'))
+     .to(pbtn, { scale: .96, duration: .12, ease: 'power2.out' }, .4).to(pbtn, { scale: 1, duration: .25, ease: 'expo.out' })
+     .to(pstatus, { autoAlpha: 1, y: 0, duration: .45, ease: 'expo.out' }, .6)
+     .call(setTag('wait', 'אושרה'), null, 1.6).call(function(){ pt.textContent = 'עדכון אחרון 22:43'; }, null, 1.6)
+     .call(setTag('ok', 'מונית הוזמנה'), null, 2.6).call(function(){ pt.textContent = 'עדכון אחרון 22:44'; }, null, 2.6)
+     .to({}, { duration: .9 });
+  ST.create({ trigger: '#app', start: 'top 75%', end: 'bottom 25%', onToggle: function(s){ s.isActive ? app.play() : app.pause(); } });
+
+  // 22:42 · lines draw with the scroll (desktop), names fall into rides (phone)
+  mm.add('(min-width: 1024px)', function(){
+    drawLines();
+    var reqPaths = $$('.lines .req'), trunks = $$('.lines .trunk');
+    reqPaths.concat(trunks).forEach(function(p){ var L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
+    var tl = G.timeline({ scrollTrigger: { trigger: '#board', start: 'top 80%', end: 'bottom 55%', scrub: .5 } });
+    tl.fromTo('.reqs li', { autoAlpha: 0, x: 16 }, { autoAlpha: 1, x: 0, stagger: .03, duration: .2 }, 0)
+      .to(reqPaths, { strokeDashoffset: 0, stagger: .025, duration: .5, ease: 'none' }, .15)
+      .to(trunks, { strokeDashoffset: 0, duration: .4, ease: 'none' }, .7)
+      .fromTo('.rides li', { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, stagger: .06, duration: .25 }, .85);
+    return function(){ reqPaths.concat(trunks).forEach(function(p){ p.style.strokeDasharray = p.style.strokeDashoffset = ''; }); };
+  });
+  mm.add('(max-width: 1023px)', function(){
+    var cs = $$('li', chips);
+    G.set('.rides li', { autoAlpha: 0, y: 16 });
+    ST.create({ trigger: board, start: 'top 70%', once: true, onEnter: function(){
+      var tl = G.timeline();
+      tl.from(cs, { autoAlpha: 0, scale: .85, stagger: .04, duration: .3, ease: 'back.out(2)' })
+        .to('.rides li', { autoAlpha: 1, y: 0, stagger: .08, duration: .4, ease: 'expo.out' }, '+=.3')
+        .add(function(){ cs.forEach(function(c, i){ var t = rides.querySelector('[data-r="' + c.dataset.r + '"]').getBoundingClientRect(), b = c.getBoundingClientRect();
+          G.to(c, { x: t.left + t.width / 2 - (b.left + b.width / 2), y: t.top + t.height / 2 - (b.top + b.height / 2), scale: .3, autoAlpha: 0, duration: .7, delay: i * .03, ease: 'power3.in' }); }); }, '+=.4')
+        .to(chips, { height: 0, marginBottom: 0, duration: .5, ease: 'power2.inOut' }, '+=1.1');
+    } });
+  });
+
+  // 22:43 · dashboard loop
+  var dtags = $$('.dt'), dcopy = $('#dcopy'), ddone = $('#ddone'), dtoast = $('#dtoast'), dpush = $('#dpush'), dpend = $('#dpend');
+  function tags(cls, txt){ return function(){ dtags.forEach(function(t){ t.className = 'tag dt ' + cls; t.textContent = txt; }); }; }
+  var desk = G.timeline({ repeat: 2, repeatDelay: 1, paused: true });
+  desk.set([dtoast, dpush], { autoAlpha: 0, y: 12 }).call(tags('', 'ממתין')).call(function(){ dpend.textContent = '10'; })
+      .call(function(){ dcopy.classList.add('press'); }, null, .5).call(function(){ dcopy.classList.remove('press'); }, null, .8)
+      .to(dtoast, { autoAlpha: 1, y: 0, duration: .4, ease: 'expo.out' }, .8)
+      .call(function(){ ddone.classList.add('press'); }, null, 1.9).call(function(){ ddone.classList.remove('press'); }, null, 2.2)
+      .call(tags('ok', 'מונית הוזמנה'), null, 2.2).call(function(){ dpend.textContent = '6'; }, null, 2.2)
+      .to(dtoast, { autoAlpha: 0, duration: .3 }, 2.3)
+      .to(dpush, { autoAlpha: 1, y: 0, duration: .45, ease: 'expo.out' }, 2.4)
+      .to({}, { duration: 1 });
+  ST.create({ trigger: '#send', start: 'top 75%', end: 'bottom 25%', onToggle: function(s){ s.isActive ? desk.play() : desk.pause(); } });
+
+  // 22:45 · the clock lands
+  G.from('.qclock', { autoAlpha: 0, y: 40, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '#quiet', start: 'top 65%' } });
+
+  addEventListener('resize', function(){ clearTimeout(placeCards.t); placeCards.t = setTimeout(function(){ if (flood.progress() === 0) placeCards(); ST.refresh(); }, 200); });
+})();
+</script>
+</body>
+</html>
