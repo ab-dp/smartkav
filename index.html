@@ -102,6 +102,17 @@ h1 b,h2 b,h2 em{font-weight:500;font-style:normal;color:var(--fg)}
 .nclock{font-size:14px;font-weight:300;letter-spacing:.14em;color:var(--fg-2);direction:ltr;display:flex;align-items:center;gap:9px;opacity:0;transition:opacity var(--t-mid)}
 .nclock i{width:5px;height:5px;border-radius:50%;background:var(--signal)}
 .nav.solid .nclock{opacity:1}
+/* the clock turns like a departures board: only the digits that change roll up */
+#nclock{display:flex;align-items:center}
+.nclock .dg{display:block;position:relative;overflow:hidden;height:1.3em;line-height:1.3em}
+.nclock .dg span{display:block}
+.nclock .dg .in{animation:dgIn .55s var(--ease-out)}
+.nclock .dg .out{position:absolute;inset:0;animation:dgOut .55s var(--ease-out) forwards}
+@keyframes dgIn{from{transform:translateY(100%);opacity:0}}
+@keyframes dgOut{to{transform:translateY(-100%);opacity:0}}
+/* the night as a line: a hairline under the bar fills from 22:40 to the taxi as the page scrolls */
+.nav::after{content:"";position:absolute;inset:auto 0 -1px;height:1px;background:linear-gradient(270deg,var(--signal),rgba(255,176,0,.25));transform-origin:100% 50%;transform:scaleX(var(--p,0));opacity:0;transition:opacity var(--t-mid)}
+.nav.solid::after{opacity:1}
 /* the one standing call to action: a dark pill on a hairline, with a small amber light and its trail orbiting the frame.
    Slow (8s a lap) and thin, so it reads as a signal, not an effect; it fills amber on hover. Still under reduced motion. */
 @property --orb{syntax:'<angle>';inherits:false;initial-value:0deg}
@@ -344,6 +355,7 @@ h1 span{display:block}
   .results li{grid-template-columns:1fr;gap:4px}
   .f2{grid-template-columns:1fr}
   #gate > .wrap{padding-bottom:104px} /* clear of Kobi's bubble */
+  .foot{padding-bottom:100px} /* the footer line stays clear of the two corner buttons */
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
 /* Accessibility widget (v3 style: the dark panel of the page, same high contrast; behaviour unchanged) */
@@ -798,11 +810,30 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
   /* ---------- nav: solid + live clock ---------- */
   var nav = $('#nav'), nclock = $('#nclock');
   // the text scrolls under the bar from the first pixel, so the bar turns solid almost at once
-  function onScroll(){ nav.classList.toggle('solid', scrollY > 24); }
-  addEventListener('scroll', onScroll, { passive: true }); onScroll();
-  var timed = $$('[data-time]');
-  var clockIO = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) nclock.textContent = e.target.dataset.time; }); }, { rootMargin: '-45% 0px -50% 0px' });
-  timed.forEach(function(s){ clockIO.observe(s); });
+  function onScroll(){
+    nav.classList.toggle('solid', scrollY > 24);
+    var max = document.documentElement.scrollHeight - innerHeight;
+    nav.style.setProperty('--p', max > 0 ? Math.min(1, scrollY / max).toFixed(4) : 0);
+  }
+  addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll); onScroll();
+  // the clock: each character in its own cell, so only the digits that change roll (a plain swap under reduced motion)
+  function setClock(t){
+    var cells = $$('.dg', nclock);
+    if (REDUCE || cells.length !== t.length){ nclock.innerHTML = t.split('').map(function(c){ return '<span class="dg"><span>' + c + '</span></span>'; }).join(''); return; }
+    t.split('').forEach(function(c, i){
+      var cell = cells[i], now = cell.lastElementChild; if (now.textContent === c) return;
+      $$('.out', cell).forEach(function(o){ o.remove(); });
+      now.className = 'out'; var nx = document.createElement('span'); nx.className = 'in'; nx.textContent = c; cell.appendChild(nx);
+      setTimeout(function(){ now.remove(); }, 600);
+    });
+  }
+  setClock(nclock.textContent);
+  // the time is that of the last scene whose top has passed the middle of the screen, so a jump (to the form, say) shows the right hour
+  var timed = $$('[data-time]'), clockRaf = 0;
+  function syncClock(){ clockRaf = 0; var t = timed[0] && timed[0].dataset.time;
+    for (var i = 0; i < timed.length; i++){ if (timed[i].getBoundingClientRect().top < innerHeight * .5) t = timed[i].dataset.time; else break; }
+    if (t) setClock(t); }
+  addEventListener('scroll', function(){ if (!clockRaf) clockRaf = requestAnimationFrame(syncClock); }, { passive: true }); syncClock();
 
   /* ---------- grouping board (built for every mode) ---------- */
   var REQ = [['דנה','רמת גן',0],['מיכל','חולון',1],['יוסי','תל אביב',2],['אבי','רמת גן',0],['שירן','בת ים',3],['עומר','חולון',1],['נועה','רמת גן',0],
