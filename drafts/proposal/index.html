@@ -76,7 +76,7 @@ h2 em{font-style:normal;color:var(--signal)}
 .hero .photo,.gate .photo{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.2s}
 .hero .photo.on,.gate .photo.on{opacity:.55}
 .trails{position:absolute;inset:0;width:100%;height:100%;display:block}
-.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(14,17,22,.5) 0,rgba(14,17,22,0) 18%,rgba(14,17,22,0) 38%,rgba(14,17,22,.82) 70%,var(--ink) 100%),linear-gradient(270deg,rgba(14,17,22,.6) 0,rgba(14,17,22,0) 55%)}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:var(--shade,1);background:linear-gradient(180deg,rgba(14,17,22,.5) 0,rgba(14,17,22,0) 18%,rgba(14,17,22,0) 38%,rgba(14,17,22,.82) 70%,var(--ink) 100%),linear-gradient(270deg,rgba(14,17,22,.88) 0,rgba(14,17,22,.62) 34%,rgba(14,17,22,.12) 62%,rgba(14,17,22,.12) 100%)}
 .hero-in{position:relative;z-index:2;flex:1;width:100%;display:grid;grid-template-columns:1.3fr .7fr;align-items:end;gap:var(--s4);padding-top:120px;padding-bottom:clamp(36px,6vh,72px)}
 h1{font-family:var(--serif);font-weight:900;font-size:clamp(50px,7.4vw,112px);line-height:.98;letter-spacing:-.02em}
 h1 span{display:block}
@@ -92,6 +92,19 @@ h1 .gold{color:var(--signal)}
 .proof b{color:var(--paper);font-weight:600}
 .asset-tag{position:absolute;z-index:3;inset-block-start:88px;inset-inline-start:var(--gut);font:500 11px/1 ui-monospace,Consolas,monospace;color:var(--signal);border:1px dashed rgba(255,176,0,.55);padding:7px 10px;border-radius:6px;direction:ltr}
 .asset-tag[hidden]{display:none}
+
+/* ===== film: real AI footage (Seedance 2.5), one take scrubbed by the scroll. Frames live in film/<name>/ ===== */
+/* Without JS, GSAP or motion the track has no height and the section shows its still (poster / end frame). */
+.film{position:absolute;inset:0;width:100%;height:100%;display:block;background:var(--ink) center/cover no-repeat}
+.film-track.on{height:var(--track,300svh)}
+.film-track.on > .hero,.film-track.on > .gate{position:sticky;top:0;height:100svh;min-height:0}
+.film-rest{position:absolute;inset:0;z-index:-1;background:center/cover no-repeat;opacity:.42}
+.film-rest::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,var(--ink) 0,rgba(14,17,22,.78) 38%,rgba(14,17,22,.25) 70%),linear-gradient(180deg,var(--ink) 0,rgba(14,17,22,0) 22%,rgba(14,17,22,0) 78%,var(--ink) 100%)}
+#night{isolation:isolate;overflow:hidden}
+/* 01:00: the taxi stops in the middle of the frame, so the headline stays in the bottom quarter, under it */
+.gate .wrap h2{font-size:clamp(34px,4.2vw,62px);max-width:16em}
+#gate > .wrap{padding-bottom:clamp(24px,4vh,44px)}
+.gate .wrap .acts{margin-top:var(--s3)}
 
 /* ===== shared scene layout ===== */
 .scene{position:relative;padding:var(--s6) 0;min-height:100svh;display:grid;align-items:center}
@@ -307,10 +320,11 @@ h1 .gold{color:var(--signal)}
 <main id="main" tabindex="-1">
 
 <!-- 1 · HERO -->
+<div class="film-track" id="hero-track" style="--track:320svh">
 <section class="hero dark" id="top" aria-labelledby="h1">
-  <div class="photo" data-asset="city" aria-hidden="true"></div>
+  <!-- One take: the descent over the city to the lit 9th floor (C1) and the flight through the window to the desk (C2). -->
+  <canvas class="film" id="film-hero" data-src="film/hero" data-n="118" style="background-image:url(film/hero/poster.jpg)" aria-hidden="true"></canvas>
   <canvas class="trails" id="trails-hero" aria-hidden="true"></canvas>
-  <span class="asset-tag" data-tag="city">PLACEHOLDER · assets/hero-city-night.jpg</span>
   <div class="wrap hero-in">
     <div>
       <h1 id="h1"><span>כל ההסעות של השבוע.</span><span class="gold">בחמש דקות.</span></h1>
@@ -329,9 +343,11 @@ h1 .gold{color:var(--signal)}
     <li><b>אותה חברת הסעות</b>, בלי להחליף ספק</li>
   </ul></div></div>
 </section>
+</div>
 
 <!-- 2 · 22:40 THE FLOOD -->
 <section class="scene dark" id="night" data-time="22:40" aria-labelledby="h2-night">
+  <div class="film-rest" style="background-image:url(film/hero/end.jpg)" aria-hidden="true"></div>
   <div class="wrap split">
     <div>
       <span class="stamp num">22:40</span>
@@ -449,16 +465,18 @@ h1 .gold{color:var(--signal)}
 </section>
 
 <!-- 7 · 01:00 THE GATE -->
+<div class="film-track" id="gate-track" style="--track:230svh">
 <section class="gate dark" id="gate" data-time="01:00" aria-labelledby="h2-gate">
-  <div class="photo" data-asset="gate" aria-hidden="true"></div>
+  <!-- C3: the taxi pulls up at the gate and Noa walks out. Rests on the last frame. -->
+  <canvas class="film" id="film-gate" data-src="film/gate" data-n="59" style="background-image:url(film/gate/end.jpg)" aria-hidden="true"></canvas>
   <canvas class="trails" id="trails-gate" aria-hidden="true"></canvas>
-  <span class="asset-tag" data-tag="gate">PLACEHOLDER · assets/gate-0100.jpg</span>
   <div class="wrap">
     <span class="stamp num">01:00</span>
     <h2 id="h2-gate">נועה מסיימת משמרת. <em>המונית כבר בשער,</em> והיא לא שלחה אף הודעה.</h2>
     <div class="acts"><a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div>
   </div>
 </section>
+</div>
 
 <!-- 8 · FAQ -->
 <section class="scene light" id="faq" aria-labelledby="h2-faq" style="min-height:0">
@@ -521,11 +539,7 @@ h1 .gold{color:var(--signal)}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
 <script>
-/* ===== Settings ===== */
-// Flip to true when the AI photographs are in drafts/proposal/assets/ (see ASSETS.md).
-var ASSETS = { city: false, cityMobile: false, gate: false };
-var ASSET_FILES = { city: 'assets/hero-city-night.jpg', cityMobile: 'assets/hero-city-night-mobile.jpg', gate: 'assets/gate-0100.jpg' };
-
+/* Footage: drafts/film/SHOTLIST.md (shots) and drafts/film/build-frames.sh (clips → film/<name>/{d,m}/0000.webp). */
 (function(){
   'use strict';
   // The live page's accessibility widget ("עצירת אנימציות") sets html.a11y-still; it stops this motion the same way.
@@ -533,14 +547,42 @@ var ASSET_FILES = { city: 'assets/hero-city-night.jpg', cityMobile: 'assets/hero
   var G = window.gsap, ST = window.ScrollTrigger;
   var $ = function(s, r){ return (r || document).querySelector(s); }, $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  /* ---------- asset slots ---------- */
-  ['city', 'gate'].forEach(function(k){
-    if (!ASSETS[k]) return;
-    var file = k === 'city' && ASSETS.cityMobile && innerWidth < 700 ? ASSET_FILES.cityMobile : ASSET_FILES[k];
-    var el = $('[data-asset="' + k + '"]'), tag = $('[data-tag="' + k + '"]'), img = new Image();
-    img.onload = function(){ el.style.backgroundImage = 'url(' + file + ')'; el.classList.add('on'); if (tag) tag.hidden = true; };
-    img.src = file;
-  });
+  /* ---------- film: a frame sequence drawn to a canvas, the scroll picks the frame ---------- */
+  // Loads coarse-to-fine (every 8th frame first), so the scrub works within a second and sharpens as the rest arrives.
+  function Film(canvas){
+    this.c = canvas; this.ctx = canvas.getContext('2d'); this.n = +canvas.dataset.n; this.p = 0; this.shown = -1;
+    var portrait = innerWidth < 700 && innerHeight > innerWidth;
+    this.base = canvas.dataset.src + (portrait ? '/m/' : '/d/'); this.imgs = new Array(this.n); this.resize();
+  }
+  Film.prototype.resize = function(){
+    var d = Math.min(1.5, window.devicePixelRatio || 1), r = this.c.getBoundingClientRect();
+    this.c.width = Math.round(r.width * d); this.c.height = Math.round(r.height * d); this.shown = -1; this.draw();
+  };
+  Film.prototype.load = function(){
+    var self = this, order = [], seen = {};
+    [8, 4, 2, 1].forEach(function(s){ for (var i = 0; i < self.n; i += s) if (!seen[i]){ seen[i] = 1; order.push(i); } });
+    if (!seen[this.n - 1]) order.splice(1, 0, this.n - 1);
+    var next = 0;
+    function one(){
+      if (next >= order.length) return;
+      var i = order[next++], img = new Image(); img.decoding = 'async';
+      img.onload = function(){ self.imgs[i] = img; if (self.shown < 0 || Math.abs(i - self.want()) < Math.abs(self.shown - self.want())) self.draw(); one(); };
+      img.onerror = one;
+      img.src = self.base + ('000' + (i + 1)).slice(-4) + '.webp';
+    }
+    for (var k = 0; k < 4; k++) one(); // four requests in flight
+  };
+  Film.prototype.want = function(){ return Math.round(this.p * (this.n - 1)); };
+  Film.prototype.draw = function(){
+    var w = this.want(), best = -1;
+    for (var d = 0; d < this.n; d++){ if (this.imgs[w - d]){ best = w - d; break; } if (this.imgs[w + d]){ best = w + d; break; } }
+    if (best < 0 || best === this.shown) return;
+    var img = this.imgs[best], cw = this.c.width, ch = this.c.height, s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight),
+        iw = img.naturalWidth * s, ih = img.naturalHeight * s;
+    this.ctx.drawImage(img, (cw - iw) / 2, (ch - ih) / 2, iw, ih); this.shown = best;
+    if (!this.ready){ this.ready = true; this.c.style.backgroundImage = 'none'; }
+  };
+  Film.prototype.seek = function(p){ this.p = Math.max(0, Math.min(1, p)); this.draw(); };
 
   /* ---------- light trails: every trail is one trip; order 0 = chaos, 1 = four shared lanes ---------- */
   function Trails(canvas, o){
@@ -603,7 +645,7 @@ var ASSET_FILES = { city: 'assets/hero-city-night.jpg', cityMobile: 'assets/hero
   Trails.prototype.still = function(order){ this.order = this.target = order; this.ctx.clearRect(0, 0, this.W, this.H); for (var i = 0; i < 90; i++){ this.step(); this.draw(); } };
 
   var phone = innerWidth < 700;
-  var heroT = new Trails($('#trails-hero'), { count: phone ? 80 : 170, lanes: phone ? [.1, .17, .24, .31] : [.13, .21, .29, .37] });
+  var heroT = new Trails($('#trails-hero'), { count: phone ? 80 : 170, alpha: .7, lanes: phone ? [.1, .17, .24, .31] : [.13, .21, .29, .37] });
   var gateT = new Trails($('#trails-gate'), { count: phone ? 60 : 120, lanes: [.36, .46, .56, .66], order: 1, alpha: .85 });
   [heroT, gateT].forEach(function(tr){
     if (REDUCE){ tr.still(tr === heroT ? .9 : 1); return; }
@@ -678,15 +720,19 @@ var ASSET_FILES = { city: 'assets/hero-city-night.jpg', cityMobile: 'assets/hero
   G.from('.hero h1 span', { yPercent: 40, autoAlpha: 0, duration: 1.1, stagger: .12, ease: 'expo.out', delay: .15 });
   G.from(['.hero .lede', '.hero .acts', '.hero-clock', '.proof'], { autoAlpha: 0, y: 18, duration: .9, stagger: .08, ease: 'expo.out', delay: .45 });
 
-  // hero scroll: the chaos sorts itself into four lanes; the big clock hands over to the nav clock
-  mm.add(DESK, function(){
-    ST.create({ trigger: '.hero', start: 'top top', end: '+=70%', pin: true, scrub: true,
-      onUpdate: function(s){ heroT.target = s.progress * 1.05; } });
-  });
-  mm.add(MOB, function(){
-    ST.create({ trigger: '.hero', start: 'top top', end: 'bottom 30%', scrub: true, onUpdate: function(s){ heroT.target = s.progress * 1.4; } });
-  });
-  G.fromTo('.hero-clock .big, .hero-clock small', { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -40, immediateRender: false, ease: 'none', scrollTrigger: { trigger: '.proof', start: 'top 70%', end: 'top 20%', scrub: true } });
+  // hero scroll: one take. The camera descends over the city to the lit 9th floor and flies through the window to the desk.
+  // The track gives the sticky hero its scroll length (CSS sticky, so the phone gets the same shot without a GSAP pin).
+  // The light trails sort into four lanes in the first part, then hand over to the real traffic of the footage.
+  var heroFilm = new Film($('#film-hero')), heroTrack = $('#hero-track');
+  heroTrack.classList.add('on'); heroFilm.load();
+  var cam = { p: 0 };
+  G.timeline({ scrollTrigger: { trigger: heroTrack, start: 'top top', end: 'bottom bottom', scrub: .6 } })
+    .to(cam, { p: 1, duration: 1, ease: 'none', onUpdate: function(){ heroFilm.seek(cam.p); heroT.target = Math.min(1, cam.p * 4); } }, 0)
+    .to('#trails-hero', { autoAlpha: 0, duration: .22, ease: 'none' }, .14)
+    .to(['.hero-in', '.proof'], { autoAlpha: 0, y: -36, duration: .1, ease: 'power1.in' }, .36)
+    .to('.hero', { '--shade': .35, duration: .2, ease: 'none' }, .4)
+    .to('.hero', { '--shade': .7, duration: .1, ease: 'none' }, .9);
+  addEventListener('resize', function(){ clearTimeout(heroFilm.t); heroFilm.t = setTimeout(function(){ heroFilm.resize(); }, 150); });
 
   // 22:40 · the flood
   var MSGS = [
@@ -776,6 +822,16 @@ var ASSET_FILES = { city: 'assets/hero-city-night.jpg', cityMobile: 'assets/hero
 
   // 22:45 · the clock lands
   G.from('.qclock', { autoAlpha: 0, y: 40, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '#quiet', start: 'top 65%' } });
+
+  // 01:00 · the taxi pulls up at the gate while the visitor scrolls; the headline is there from the first frame
+  var gateCanvas = $('#film-gate');
+  if (+gateCanvas.dataset.n){
+    var gateFilm = new Film(gateCanvas), gateTrack = $('#gate-track'), gp = { p: 0 };
+    gateTrack.classList.add('on'); gateT.stop(); gateT.start = function(){}; $('#trails-gate').style.display = 'none'; gateFilm.load(); gateFilm.seek(0);
+    G.to(gp, { p: 1, ease: 'none', onUpdate: function(){ gateFilm.seek(gp.p); },
+      scrollTrigger: { trigger: gateTrack, start: 'top top', end: 'bottom bottom', scrub: .6 } });
+    addEventListener('resize', function(){ clearTimeout(gateFilm.t); gateFilm.t = setTimeout(function(){ gateFilm.resize(); }, 150); });
+  }
 
   addEventListener('resize', function(){ clearTimeout(placeCards.t); placeCards.t = setTimeout(function(){ if (flood.progress() === 0) placeCards(); ST.refresh(); }, 200); });
 })();
