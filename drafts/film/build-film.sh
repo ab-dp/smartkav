@@ -10,7 +10,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 BIN=$(ls -d /c/Users/Alon/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg*/ffmpeg-*/bin 2>/dev/null | head -1)
 FF="${BIN:+$BIN/}ffmpeg"; FP="${BIN:+$BIN/}ffprobe"
-OUT=../proposal/film; STEP=3   # 8 frames per film second: smooth under the lerped playhead, a third lighter
+OUT=../../film; STEP=3   # 8 frames per film second: smooth under the lerped playhead, a third lighter
 SHOTS=(
   "S1:raw/C1-seedance-final.mp4:0.10"
   "S2:raw/chain/S2.mp4:0.25"
