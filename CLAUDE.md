@@ -26,7 +26,7 @@
 - `index.html` – כל הדף: HTML, CSS ו-JS בקובץ אחד, בלי build.
 - `accessibility.html` – הצהרת נגישות.
 - `film/` – הסרט שרץ מאחורי הדף: `d/` (דסקטופ 1280×720) ו-`m/` (נייד 720×720) פריימי WebP, `poster.jpg`, `film.json` (מספר הפריימים ונקודת ההתחלה של כל שוט).
-- `og.png` – תמונת שיתוף (1200×630), נבנית מ-`drafts/og/og.html`. `apple-touch-icon.png` – אייקון למסך הבית (180×180).
+- `og.jpg` – תמונת שיתוף (1200×630, כ-150KB), נבנית מ-`drafts/og/og.html`. `apple-touch-icon.png` – אייקון למסך הבית (180×180).
 - `drafts/` – עבודה ותיעוד: `drafts/film/` (רשימת השוטים, `build-film.sh` שבונה את `film/`, `chain.sh`; המקורות ב-`raw/` לא בגיט), `drafts/proposal/` (ההדמיה והצילומים), `drafts/live-before.html` (הדף הקודם, להשוואה).
 - `_config.yml` – מוציא את `CLAUDE.md` מבניית האתר. הריפו ציבורי, אז הקובץ גלוי ב-GitHub; לא לכתוב כאן סודות.
 
