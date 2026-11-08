@@ -20,23 +20,29 @@ SHOTS=(
   "S5:raw/chain/S5.mp4:0.45"
   "S6:raw/chain/S6.mp4:0.50"
   "S7:raw/chain/S7.mp4:0.40"
-  "BR:raw/chain/BR.mp4:0.45"          # bridge: S7's last frame → S8 frame 73 (replaces S8's shaky start)
-  "S8:raw/chain/S8.mp4:0.72:74-186"   # from the bridge's landing frame to the cut before the second figure
+  "BR:raw/chain/BW2.mp4:0.40>0.72"    # bridge (the phone crop pans from S7's centre to S8's) (Wan 3.0 first/last frame): exactly S7's last frame → exactly S8 frame 56
+  "S8:raw/chain/S8.mp4:0.72:57-186"   # from the frame after the bridge lands to the cut before the second figure
   "S9:raw/chain/S9.mp4:0.50"
 )
 tmp=$(mktemp -d); command -v cygpath >/dev/null && tmp=$(cygpath -m "$tmp")
-rm -rf "$OUT"; mkdir -p "$OUT/d" "$OUT/m"
+mkdir -p "$OUT/d" "$OUT/m"; rm -f "$OUT"/d/*.webp "$OUT"/m/*.webp   # clear the frames, not the folders (a local server may hold them open)
 json='{'; total=0; first=1
 for spec in "${SHOTS[@]}"; do
   spec=${spec%%#*}; spec=${spec%% *}
   IFS=: read -r name file cx range <<<"$spec"
   [ -f "$file" ] || { echo "stop at $name (missing $file)"; break; }
   if [ -n "${range:-}" ]; then a=${range%-*}; b=${range#*-}; else a=$([ $first = 1 ] && echo 0 || echo 1); b=99999; fi
-  sel="select='between(n\,$a\,$b)',setpts=N/24/TB"
+  sel="fps=24,select='between(n\,$a\,$b)',setpts=N/24/TB"   # fps=24 first: a 30fps clip (the Wan bridge) keeps its real speed
   pick="select='not(mod(n\,$STEP))',setpts=N/12/TB"
   "$FF" -v error -y -i "$file" -vf "$sel,scale=1280:720:flags=lanczos,$pick" -fps_mode vfr -an -c:v libx264 -crf 8 -preset fast "$tmp/$name-d.mp4"
-  "$FF" -v error -y -i "$file" -vf "$sel,scale=-2:900:flags=lanczos,crop=540:900:(iw-540)*$cx:0,$pick" -fps_mode vfr -an -c:v libx264 -crf 8 -preset fast "$tmp/$name-m.mp4"
   n=$("$FP" -v error -count_frames -select_streams v -show_entries stream=nb_read_frames -of csv=p=0 "$tmp/$name-d.mp4")
+  # phone crop: a fixed centre ("0.45"), or a pan across the clip ("0.40>0.72") so the crop meets both neighbours without a jump
+  # and a clip whose centre differs from where the previous clip's crop ended eases over from it in its first 1.5 s
+  if [[ $cx == *">"* ]]; then c0=${cx%>*}; c1=${cx#*>}; cxe="($c0+($c1-$c0)*min(1\,n/$((n * STEP - 1))))"
+  elif [ -n "${prevcx:-}" ] && [ "$prevcx" != "$cx" ]; then c1=$cx; cxe="($prevcx+($cx-$prevcx)*(1-pow(1-min(1\,n/36)\,2)))"
+  else c1=$cx; cxe=$cx; fi
+  prevcx=$c1
+  "$FF" -v error -y -i "$file" -vf "$sel,scale=-2:900:flags=lanczos,crop=540:900:(iw-540)*$cxe:0,$pick" -fps_mode vfr -an -c:v libx264 -crf 8 -preset fast "$tmp/$name-m.mp4"
   "$FF" -v error -y -i "$tmp/$name-d.mp4" -start_number $((total + 1)) -c:v libwebp -quality 64 -compression_level 6 "$OUT/d/%04d.webp"
   "$FF" -v error -y -i "$tmp/$name-m.mp4" -start_number $((total + 1)) -c:v libwebp -quality 62 -compression_level 6 "$OUT/m/%04d.webp"
   if [ $first = 1 ]; then

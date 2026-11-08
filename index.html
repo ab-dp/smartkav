@@ -94,7 +94,7 @@ h1 b,h2 b,h2 em{font-weight:500;font-style:normal;color:var(--fg)}
 
 /* ===== nav: thin, the clock in the middle ===== */
 .nav{position:fixed;inset:0 0 auto;z-index:50;transition:background var(--t-mid),border-color var(--t-mid);border-bottom:1px solid transparent}
-.nav.solid{background:rgba(11,13,17,.72);border-color:var(--line)}
+.nav.solid{background:rgba(11,13,17,.88);border-color:var(--line)}
 .nav .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:68px}
 .brand{display:flex;align-items:center;gap:9px;color:var(--fg);text-decoration:none;font-weight:500;font-size:16px;letter-spacing:.01em;justify-self:start}
 .brand svg{width:32px;height:15px}.brand line{stroke:var(--signal);stroke-width:5;stroke-linecap:round}.brand circle{fill:none;stroke:var(--signal);stroke-width:5}
@@ -127,7 +127,7 @@ html:not(.has-film) .dark,html:not(.has-film) .light{background:var(--ink)}
 
 /* ===== 1. hero ===== */
 .hero{position:relative;min-height:100svh}
-.hero-stick{position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column}
+.hero-stick{min-height:100svh;display:flex;flex-direction:column}
 .hero-in{position:relative;z-index:2;flex:1;width:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding-top:120px;padding-bottom:clamp(40px,7vh,84px)}
 .hero-in > div{max-width:660px}
 @media (min-width:768px){h1 span{white-space:nowrap}}
@@ -238,11 +238,14 @@ h1 span{display:block}
 .quote figcaption{margin-top:12px;color:var(--fg-3);font-size:14px}
 
 /* ===== 7. gate ===== */
-/* taller than a screen: the camera comes down to the gate and the taxi pulls up; the headline holds at the bottom */
-.gate{position:relative;min-height:100svh;display:grid;align-items:end}
-#gate > .wrap{position:sticky;bottom:0;padding-bottom:clamp(40px,8vh,96px)}
-.gate .wrap > div{max-width:var(--col)}
-.film-mark{position:absolute;top:34%;left:0;width:1px;height:1px}
+/* taller than a screen: the camera comes down to the gate and the taxi pulls up, while the beats scroll past */
+.gate{position:relative;min-height:100svh;display:flex}
+/* three beats that follow the film: Noa comes out, the taxi waits, the way in. Spread over the section, so there is always text on screen */
+/* each beat carries data-film: the film reaches that moment as the beat comes up, and pace() sets the room between beats */
+#gate > .beats{display:flex;flex-direction:column;padding-block:clamp(72px,14vh,160px)}
+.gate .beat{max-width:var(--col)}
+.gate .beat + .beat{margin-top:var(--s6)}
+.say{margin:10px 0 0;font-weight:300;font-size:clamp(24px,2.4vw,34px);line-height:1.2;letter-spacing:-.02em;color:var(--fg)}
 
 /* ===== 8. faq ===== */
 .faq{max-width:720px}
@@ -377,7 +380,7 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 <a class="skip" href="#main">דלג לתוכן הראשי</a>
 <div class="world" aria-hidden="true"><canvas id="film"></canvas></div>
 <!-- film manifest: written by drafts/film/build-film.sh (same as film/film.json) -->
-<script type="application/json" id="film-data">{"n":838,"shots":{"S1":[0,61],"S2":[61,60],"S3":[121,60],"S4":[181,120],"S5":[301,120],"S6":[421,120],"S7":[541,96],"BR":[637,48],"S8":[685,57],"S9":[742,96]}}</script>
+<script type="application/json" id="film-data">{"n":846,"shots":{"S1":[0,61],"S2":[61,60],"S3":[121,60],"S4":[181,120],"S5":[301,120],"S6":[421,120],"S7":[541,96],"BR":[637,48],"S8":[685,65],"S9":[750,96]}}</script>
 
 <header class="nav" id="nav">
   <div class="wrap">
@@ -531,13 +534,13 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 
 <!-- 7 · 01:00 THE GATE -->
 <section class="gate dark" id="gate" data-film="S7" data-time="01:00" aria-labelledby="h2-gate">
-  <i class="film-mark" data-film="S8" aria-hidden="true"></i>
-  <div class="wrap"><div>
-    <span class="stamp num">01:00</span>
-    <h2 id="h2-gate">המונית<br><b>כבר בשער.</b></h2>
-    <p class="lede">נועה סיימה משמרת ולא שלחה אף הודעה.</p>
-    <div class="acts"><a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div>
-  </div></div>
+  <div class="wrap beats">
+    <div class="beat" data-film="S7@.1"><span class="stamp num">01:00</span><p class="say">נועה סיימה משמרת.</p></div>
+    <div class="beat" data-film="BR@.5"><p class="say">המונית שלה הוזמנה ביום חמישי, ב-22:43.</p></div>
+    <div class="beat" data-film="S8@.5"><h2 id="h2-gate">המונית<br><b>כבר בשער.</b></h2></div>
+    <div class="beat" data-film="S8@.72"><p class="lede">ולא שלחה אף הודעה.</p>
+      <div class="acts"><a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div></div>
+  </div>
 </section>
 
 <!-- 8 · FAQ -->
@@ -661,24 +664,33 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
           cur = 0, target = 0, last = 0, drawn = '', inflight = 0, anchors = [], raf = 0, dir = 1,
           TAU = fine ? 70 : 120, MAXIN = portrait ? 4 : 6;
       function shotFrame(spec){ var p = String(spec).split('@'), s = M.shots[p[0]]; return s ? s[0] + Math.round((+p[1] || 0) * (s[1] - 1)) : null; }
-      // one steady pace: each section's scroll length comes from the frames it covers
+      // the text always moves with the scroll (nothing is pinned or sticky): each section is as tall as its content,
+      // plus a little room for its part of the film (a third of a screen at most), and the film
+      // follows the sections. The camera keeps a near-even pace without ever holding the text still.
       function pace(){
-        var R = FILM.R = Math.max(14, Math.min(24, innerHeight / (portrait ? 42 : 40)));
+        var R = FILM.R = Math.max(12, Math.min(18, innerHeight / (portrait ? 56 : 60)));
+        // the gate's beats: room between them from the film they cover, between a quarter and 0.8 of a screen,
+        // so the text never leaves the screen (the drone's descent runs a little faster, the taxi at its own pace)
+        var beats = $$('#gate .beat[data-film]');
+        beats.forEach(function(b){ b.style.marginTop = ''; });
+        beats.forEach(function(b, i){
+          if (!i) return;
+          var want = (shotFrame(b.dataset.film) - shotFrame(beats[i - 1].dataset.film)) * R - beats[i - 1].offsetHeight;
+          b.style.marginTop = Math.round(Math.max(innerHeight * .25, Math.min(want, innerHeight * .8))) + 'px';
+        });
         var secs = [$('#top')].concat($$('section[data-film]')), f = secs.map(function(el, i){ return i ? shotFrame(el.dataset.film) : 0; });
         secs.forEach(function(el, i){
           if (i === secs.length - 1) return; // the last stretch runs to the end of the page
+          el.style.minHeight = '';
           var len = Math.round((f[i + 1] - f[i]) * R); if (!(len > 0)) return;
-          // the flood is pinned on large screens and takes its length from the pin; everywhere else it gets the height
-          if (el.id === 'night'){ FILM.nightLen = len; if (matchMedia('(min-width: 1024px) and (min-height: 700px)').matches) return; }
-          el.style.minHeight = len + 'px';
+          var natural = el.offsetHeight, room = innerHeight * (el.id === 'gate' ? .15 : .35);
+          el.style.minHeight = Math.max(natural, Math.min(len, natural + room)) + 'px';
         });
         // the last stretch (questions and the form) gets the length it needs too, by stretching the questions
         var lastSec = secs[secs.length - 1], need = Math.round((N - 1 - f[f.length - 1]) * R);
         lastSec.style.minHeight = '';
         var have = root.scrollHeight - innerHeight - (lastSec.getBoundingClientRect().top + scrollY - innerHeight * .35);
         if (need > have) lastSec.style.minHeight = (lastSec.offsetHeight + need - have) + 'px';
-        var g = $('#gate'), mk = g && $('.film-mark', g);
-        if (mk){ var a = shotFrame(g.dataset.film), b = shotFrame(mk.dataset.film), c = shotFrame('S9'); mk.style.top = ((b - a) / (c - a) * 100).toFixed(2) + '%'; }
       }
       function size(){ var d = Math.min(portrait ? 2 : 1.5, devicePixelRatio || 1); canvas.width = Math.round(innerWidth * d); canvas.height = Math.round(innerHeight * d); drawn = ''; }
       // anchors: [scrollY, frame] pairs from the sections; the page end is the last frame
@@ -766,7 +778,8 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
 
   /* ---------- nav: solid + live clock ---------- */
   var nav = $('#nav'), nclock = $('#nclock');
-  function onScroll(){ nav.classList.toggle('solid', scrollY > innerHeight * .6); }
+  // the text scrolls under the bar from the first pixel, so the bar turns solid almost at once
+  function onScroll(){ nav.classList.toggle('solid', scrollY > 24); }
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
   var timed = $$('[data-time]');
   var clockIO = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) nclock.textContent = e.target.dataset.time; }); }, { rootMargin: '-45% 0px -50% 0px' });
@@ -924,14 +937,16 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
   var n = { v: 0 };
   function paintN(){ var v = Math.round(n.v); ub.textContent = v; unread.classList.toggle('zero', v === 0); }
   unread.classList.remove('zero');
-  G.set(calm, { autoAlpha: 0, scale: .92 }); G.set(cards, { autoAlpha: 0, scale: .9 });
+  G.set(calm, { autoAlpha: 0, scale: .92 }); G.set(cards, { autoAlpha: 0, scale: .9 }); G.set(unread, { autoAlpha: 0 });
   var flood = G.timeline({ paused: true });
+  flood.to(unread, { autoAlpha: 1, duration: .04 }, 0);
   cards.forEach(function(d, i){ flood.to(d, { autoAlpha: 1, scale: 1, duration: .1, ease: 'back.out(2)' }, i * .045); });
   flood.to(n, { v: 38, duration: .55, ease: 'none', onUpdate: paintN }, 0)
        .to(cards, { x: function(i, el){ return stage.clientWidth / 2 - el.offsetWidth / 2; }, y: stage.clientHeight / 2 - 36, scale: .6, autoAlpha: 0, duration: .25, stagger: .012, ease: 'power3.in' }, .78)
        .to(n, { v: 0, duration: .2, ease: 'power2.in', onUpdate: paintN }, .8)
        .to(calm, { autoAlpha: 1, scale: 1, duration: .2, ease: 'expo.out' }, .98);
-  mm.add(DESK, function(){ ST.create({ trigger: '#night', start: 'top top', end: function(){ return '+=' + Math.max(innerHeight * 1.2, FILM.nightLen - innerHeight); }, invalidateOnRefresh: true, pin: true, scrub: .4, animation: flood }); });
+  // no pin: the flood plays with the scroll while its stage crosses the screen, and the text keeps moving
+  mm.add(DESK, function(){ ST.create({ trigger: stage, start: 'top 85%', end: 'bottom 30%', scrub: .4, animation: flood }); });
   mm.add(MOB, function(){ flood.duration(5.5); ST.create({ trigger: stage, start: 'top 70%', once: true, onEnter: function(){ flood.play(0); } }); });
 
   // 22:41 · the app loop (2.5–4 s cycle, pauses off screen)
@@ -1032,13 +1047,13 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
     + '@media (min-width:768px){.bpFABWebchat{right:24px!important;left:auto!important;transform-origin:100% 100%!important}}'
     /* the greeting card sat over the copy column and the buttons on every screen; the bubble stays, the card does not */
     + '.bpFABMessagePreview{display:none!important}';
-  var tries = 0, timer = setInterval(function(){
+  // checked every frame (a cheap lookup), so the style is in before the greeting card can paint; up to 60s, since Kobi loads after the page is idle
+  var t0 = Date.now();
+  (function look(){
     var host = document.querySelector('.bpChatContainer #fab-root'), sr = host && host.shadowRoot;
-    if(sr && !sr.querySelector('style[data-sk]')){
-      var s = document.createElement('style'); s.setAttribute('data-sk', ''); s.textContent = css; sr.appendChild(s);
-    }
-    if((sr && sr.querySelector('style[data-sk]')) || ++tries > 160) clearInterval(timer); // up to 40s: Kobi now loads after the page is idle
-  }, 250);
+    if(sr){ var s = document.createElement('style'); s.setAttribute('data-sk', ''); s.textContent = css; sr.appendChild(s); return; }
+    if(Date.now() - t0 < 60000) requestAnimationFrame(look);
+  })();
 })();
 </script>
 
