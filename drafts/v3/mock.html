@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SmartKav v3 · style mockup</title>
+<!-- Static style study for the v3 refinement: the same film frames, the new type and layout. Not the page. -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0B0D11;--fg:#F3F1EC;--fg-2:rgba(243,241,236,.66);--fg-3:rgba(243,241,236,.44);--line:rgba(243,241,236,.12);--panel:rgba(14,17,22,.62);--signal:#FFB000;--r:14px;--gut:clamp(20px,5vw,88px)}
+*{box-sizing:border-box}html,body{margin:0;background:var(--ink);color:var(--fg);font-family:Heebo,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.screen{position:relative;height:100vh;min-height:620px;overflow:hidden;background:center/cover no-repeat}
+.screen::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,rgba(11,13,17,.72) 0,rgba(11,13,17,.38) 34%,rgba(11,13,17,0) 62%),linear-gradient(180deg,rgba(11,13,17,.5) 0,rgba(11,13,17,0) 18%,rgba(11,13,17,0) 70%,rgba(11,13,17,.55) 100%)}
+.in{position:absolute;inset:0;z-index:1;padding:0 var(--gut)}
+/* nav */
+.nav{position:absolute;inset:0 0 auto;z-index:2;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gut)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:500;font-size:16px;letter-spacing:.01em;direction:ltr}
+.brand svg{width:30px;height:14px}.brand line{stroke:var(--signal);stroke-width:5;stroke-linecap:round}.brand circle{fill:none;stroke:var(--signal);stroke-width:5}
+.clock{font-weight:300;font-size:14px;letter-spacing:.12em;color:var(--fg-2);direction:ltr}
+.clock i{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--signal);margin-inline-end:8px;vertical-align:2px}
+.cta{height:38px;padding:0 18px;border-radius:99px;background:var(--fg);color:var(--ink);font:500 14px/38px Heebo;text-decoration:none}
+/* type */
+.kick{font-weight:300;font-size:13px;letter-spacing:.16em;color:var(--signal);direction:ltr;text-align:right;margin:0 0 18px}
+h1{font-weight:300;font-size:clamp(38px,4.2vw,62px);line-height:1.05;letter-spacing:-.025em;margin:0}
+h1 b,h2 b{font-weight:500}
+h2{font-weight:300;font-size:clamp(30px,3.1vw,46px);line-height:1.1;letter-spacing:-.02em;margin:0}
+.lede{font-weight:300;font-size:17px;line-height:1.65;color:var(--fg-2);margin:18px 0 0;max-width:30em}
+.col{position:absolute;right:var(--gut);max-width:520px}
+.btn{display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 24px;border-radius:99px;background:var(--signal);color:#121212;font:500 15px Heebo;text-decoration:none}
+.ghost{font:400 15px Heebo;color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:3px}
+.acts{display:flex;gap:24px;align-items:center;margin-top:32px}
+.facts{position:absolute;bottom:34px;right:var(--gut);left:var(--gut);display:flex;gap:44px;font-weight:300;font-size:14px;color:var(--fg-2);border-top:1px solid var(--line);padding-top:18px}
+.facts b{display:block;font-weight:400;font-size:20px;color:var(--fg);letter-spacing:-.01em;margin-bottom:2px}
+/* hero */
+.s1 .col{bottom:150px}
+/* flood: small, quiet notifications */
+.s2 .col{top:32%}
+.ntfs{position:absolute;left:clamp(24px,9vw,170px);top:21%;width:330px;display:grid;gap:8px}
+.n{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:2px 10px;align-items:center;padding:10px 12px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);font-size:12.5px;line-height:1.4}
+.n .av{grid-row:1/3;grid-column:1;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:500;background:#2B3442}
+.n b{grid-column:2;grid-row:1;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.n time{grid-column:3;grid-row:1;color:var(--fg-3);font-size:11px}.n span{grid-row:2;grid-column:2/4;color:var(--fg-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.n:nth-child(4){opacity:.75}.n:nth-child(5){opacity:.5}.n:nth-child(6){opacity:.28}
+.badge{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12px;color:var(--fg-2)}
+.badge b{min-width:30px;height:22px;padding:0 8px;border-radius:11px;background:#D9443F;color:#fff;font-weight:500;font-size:12px;line-height:22px;text-align:center}
+/* manager: dark UI panel */
+.s3 .col{top:30%}
+.ui{position:absolute;left:clamp(24px,7vw,130px);top:22%;width:min(520px,44vw);border-radius:18px;background:rgba(14,17,22,.78);border:1px solid var(--line);overflow:hidden;font-size:13px}
+.ui-h{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);color:var(--fg-2)}
+.ui-h b{color:var(--fg);font-weight:500;font-size:15px}
+.ride{padding:14px 18px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center}
+.ride .t{font-weight:500}.ride .t small{font-weight:300;color:var(--fg-3);margin-inline-start:6px}
+.chip{height:28px;padding:0 12px;border-radius:99px;font-size:12px;line-height:28px;border:1px solid var(--line);color:var(--fg-2)}
+.chip.pri{background:var(--fg);color:var(--ink);border-color:var(--fg)}
+.chip.ok{color:#7FD3A2;border-color:rgba(127,211,162,.35)}
+.ppl{grid-column:1/3;display:flex;gap:6px;flex-wrap:wrap;color:var(--fg-3);font-size:12px}
+.ppl span{padding:3px 9px;border-radius:99px;background:rgba(243,241,236,.06)}
+/* gate */
+.s4 .col{bottom:120px}
+.s4 h2{font-size:clamp(34px,3.6vw,54px)}
+@media (max-width:700px){
+  .clock{display:none}.cta{height:34px;line-height:34px;padding:0 14px;font-size:13px}
+  .screen::after{background:linear-gradient(180deg,rgba(11,13,17,.55) 0,rgba(11,13,17,.1) 30%,rgba(11,13,17,.25) 55%,rgba(11,13,17,.85) 100%)}
+  .col{left:var(--gut);max-width:none}
+  .s1 .col{bottom:200px}.facts{flex-wrap:wrap;gap:12px 26px;bottom:24px}.facts div{flex:0 0 calc(50% - 13px)}
+  .ntfs{left:var(--gut);right:var(--gut);width:auto;top:96px}.n:nth-child(n+4){display:none}
+  .s2 .col{top:auto;bottom:70px}
+  .ui{left:var(--gut);right:var(--gut);width:auto;top:92px}.ride:nth-child(n+4){display:none}
+  .s3 .col{top:auto;bottom:60px}
+  h1{font-size:40px}
+}
+</style>
+</head>
+<body>
+
+<section class="screen s1" style="background-image:url(../../film/d/0006.webp)">
+  <div class="nav"><span class="brand"><svg viewBox="0 0 92 40"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg>SmartKav</span><span class="clock"><i></i>22:40</span><a class="cta" href="#">תיאום הדגמה</a></div>
+  <div class="in">
+    <div class="col">
+      <p class="kick">חמישי · 22:40</p>
+      <h1><span style="white-space:nowrap">כל ההסעות של השבוע.</span><br><b>בחמש דקות.</b></h1>
+      <p class="lede">העובדים נרשמים באפליקציה, המערכת מקבצת לנסיעות משותפות, ואתם מאשרים ושולחים לחברת ההסעות שלכם.</p>
+      <div class="acts"><a class="btn" href="#">לתיאום הדגמה ←</a><a class="ghost" href="#">איך זה עובד</a></div>
+    </div>
+    <div class="facts"><div><b>5 דקות</b>במקום שעתיים בשבוע</div><div><b>24 שעות</b>הטמעה</div><div><b>אותו ספק</b>בלי להחליף חברת הסעות</div><div><b>45</b>עובדי משמרות בפיילוט</div></div>
+  </div>
+</section>
+
+<section class="screen s2" style="background-image:url(../../film/d/0150.webp)">
+  <div class="nav"><span class="brand"><svg viewBox="0 0 92 40"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg>SmartKav</span><span class="clock"><i></i>22:40</span><a class="cta" href="#">תיאום הדגמה</a></div>
+  <div class="in">
+    <div class="ntfs">
+      <div class="badge"><b>38</b>הודעות שלא נקראו</div>
+      <div class="n"><span class="av">ע</span><b>עומר</b><time>22:40</time><span>הזמנתם לי? אין לי שום אישור</span></div>
+      <div class="n"><span class="av">מ</span><b>הסעות מוקד · מיכל</b><time>22:31</time><span>מי מזמין לי מונית ל-16:00 מחר?</span></div>
+      <div class="n"><span class="av">ת</span><b>תחנת המוניות</b><time>22:35</time><span>כמה נוסעים מחר ב-16:00? צריך עד 23:00</span></div>
+      <div class="n"><span class="av">נ</span><b>נועה</b><time>22:36</time><span>מחר רק חזור, מסיימת ב-01:00</span></div>
+      <div class="n"><span class="av">י</span><b>יוסי</b><time>22:38</time><span>שיחה שלא נענתה</span></div>
+      <div class="n"><span class="av">א</span><b>אבי</b><time>22:33</time><span>צריך הסעה למשמרת של מחר, 18:00</span></div>
+    </div>
+    <div class="col">
+      <p class="kick">22:40</p>
+      <h2>38 הודעות.<br><b>כל ערב מחדש.</b></h2>
+      <p class="lede">קבוצת וואטסאפ, הודעות פרטיות ושיחות שלא נענו. ככה נראה סידור הסעות בלי מערכת.</p>
+    </div>
+  </div>
+</section>
+
+<section class="screen s3" style="background-image:url(../../film/d/0262.webp)">
+  <div class="nav"><span class="brand"><svg viewBox="0 0 92 40"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg>SmartKav</span><span class="clock"><i></i>22:43</span><a class="cta" href="#">תיאום הדגמה</a></div>
+  <div class="in">
+    <div class="ui">
+      <div class="ui-h"><b>נסיעות למחר</b><span>שישי 25.09 · 4 ממתינות</span></div>
+      <div class="ride"><span class="t">הלוך 16:00 · רמת גן<small>4 נוסעים</small></span><span class="chip pri">העתק הזמנה</span><div class="ppl"><span>דנה כ.</span><span>אבי מ.</span><span>נועה ש.</span><span>רון ב.</span></div></div>
+      <div class="ride"><span class="t">הלוך 16:00 · חולון<small>3 נוסעים</small></span><span class="chip ok">הוזמנה</span><div class="ppl"><span>מיכל</span><span>עומר</span><span>גל</span></div></div>
+      <div class="ride"><span class="t">חזור 01:00 · תל אביב<small>4 נוסעים</small></span><span class="chip">ממתין</span><div class="ppl"><span>יוסי</span><span>ליאור</span><span>עדי</span><span>איתי</span></div></div>
+      <div class="ride"><span class="t">חזור 01:00 · בת ים<small>3 נוסעים</small></span><span class="chip">ממתין</span><div class="ppl"><span>שירן</span><span>תמר</span><span>מאיה</span></div></div>
+    </div>
+    <div class="col">
+      <p class="kick">22:43</p>
+      <h2>הזמנה אחת<br><b>לחברת ההסעות.</b></h2>
+      <p class="lede">המערכת מקבצת לפי תאריך, שעה, כיוון ועיר. אתם מעתיקים, שולחים ומסמנים שטופל, והעובדים מקבלים עדכון.</p>
+    </div>
+  </div>
+</section>
+
+<section class="screen s4" style="background-image:url(../../film/d/0486.webp)">
+  <div class="nav"><span class="brand"><svg viewBox="0 0 92 40"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg>SmartKav</span><span class="clock"><i></i>01:00</span><a class="cta" href="#">תיאום הדגמה</a></div>
+  <div class="in">
+    <div class="col">
+      <p class="kick">01:00</p>
+      <h2>המונית כבר בשער.</h2>
+      <p class="lede">נועה סיימה משמרת ולא שלחה אף הודעה. ככה נראה סידור הסעות עם SmartKav.</p>
+      <div class="acts"><a class="btn" href="#">לתיאום הדגמה ←</a></div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
