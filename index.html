@@ -804,6 +804,10 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
         size(); if (innerWidth !== w0){ w0 = innerWidth; pace(); if (ST) ST.refresh(); } measure(); }, 150); });
       if (ST) ST.addEventListener('refresh', measure); // pins change the page length
       addEventListener('load', measure);
+      // the anchors follow the layout: re-measure when the font arrives and whenever the page changes height
+      // (an answer opens, the chips fold away), so each scene still meets its moment in the film
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ pace(); if (ST) ST.refresh(); measure(); });
+      if (window.ResizeObserver){ var ro; new ResizeObserver(function(){ clearTimeout(ro); ro = setTimeout(measure, 120); }).observe($('main')); }
     }
   })();
 

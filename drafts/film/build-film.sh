@@ -20,8 +20,8 @@ SHOTS=(
   "S5:raw/chain/S5.mp4:0.45"
   "S6:raw/chain/S6.mp4:0.50"
   "S7:raw/chain/S7.mp4:0.40"
-  "BR:raw/chain/BW2.mp4:0.40>0.72"    # bridge (the phone crop pans from S7's centre to S8's) (Wan 3.0 first/last frame): exactly S7's last frame → exactly S8 frame 56
-  "S8:raw/chain/S8.mp4:0.72:57-186"   # from the frame after the bridge lands to the cut before the second figure
+  "BR:raw/chain/BW2.mp4:0.40>0.90"    # bridge, phone crop panning from S7.s centre to S8.s (Wan 3.0 first/last frame): exactly S7's last frame → exactly S8 frame 56
+  "S8:raw/chain/S8.mp4:0.90:57-186"   # phone crop on the right, where the taxi stops; from the frame after the bridge lands to the cut before the second figure
   "S9:raw/chain/S9.mp4:0.50"
 )
 tmp=$(mktemp -d); command -v cygpath >/dev/null && tmp=$(cygpath -m "$tmp")
@@ -38,7 +38,7 @@ for spec in "${SHOTS[@]}"; do
   n=$("$FP" -v error -count_frames -select_streams v -show_entries stream=nb_read_frames -of csv=p=0 "$tmp/$name-d.mp4")
   # phone crop: a fixed centre ("0.45"), or a pan across the clip ("0.40>0.72") so the crop meets both neighbours without a jump
   # and a clip whose centre differs from where the previous clip's crop ended eases over from it in its first 1.5 s
-  if [[ $cx == *">"* ]]; then c0=${cx%>*}; c1=${cx#*>}; cxe="($c0+($c1-$c0)*min(1\,n/$((n * STEP - 1))))"
+  if [[ $cx == *">"* ]]; then c0=${cx%>*}; c1=${cx#*>}; u="min(1\,n/$((n * STEP - 1)))"; cxe="($c0+($c1-$c0)*(3*pow($u\,2)-2*pow($u\,3)))"   # eased in and out
   elif [ -n "${prevcx:-}" ] && [ "$prevcx" != "$cx" ]; then c1=$cx; cxe="($prevcx+($cx-$prevcx)*(1-pow(1-min(1\,n/36)\,2)))"
   else c1=$cx; cxe=$cx; fi
   prevcx=$c1
