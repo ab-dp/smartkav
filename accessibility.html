@@ -15,7 +15,7 @@
 /* The same design tokens as the home page (index.html, v3): quiet type on the night ink. */
 :root{
   --ink:#0B0D11; --ink-2:#12151B;
-  --fg:#F3F1EC; --fg-2:rgba(243,241,236,.74); --fg-3:rgba(243,241,236,.58);
+  --fg:#F3F1EC; --fg-2:rgba(243,241,236,.8); --fg-3:rgba(243,241,236,.62);
   --line:rgba(243,241,236,.12); --line-2:rgba(243,241,236,.2);
   --signal:#FFB000;
   --sans:Heebo,"IBM Plex Sans Hebrew",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
@@ -55,7 +55,8 @@ li::before{content:"";position:absolute;right:0;top:24px;width:5px;height:5px;bo
 .card p + p{border-top:1px solid var(--line)}
 .card b{min-width:7.5em;font-weight:400;color:var(--fg-3)}
 .meta{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);color:var(--fg-3);font-size:14px}
-footer{border-top:1px solid var(--line);color:var(--fg-3);font-size:13px}
+footer{border-top:1px solid var(--line);color:var(--fg-3);font-size:13px;font-weight:400}
+.meta{font-weight:400}
 footer .bar{max-width:1360px;margin:0 auto;padding:32px var(--gut);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 footer a{color:var(--fg-2)}
 @media (max-width:640px){

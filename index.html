@@ -43,7 +43,7 @@
 /* ===== Design system (v3): quiet, precise type over the film. One place for every token. ===== */
 :root{
   --ink:#0B0D11; --ink-2:#12151B; --ink-3:#1A1E26;
-  --fg:#F3F1EC; --fg-2:rgba(243,241,236,.7); --fg-3:rgba(243,241,236,.5);
+  --fg:#F3F1EC; --fg-2:rgba(243,241,236,.8); --fg-3:rgba(243,241,236,.62);
   --line:rgba(243,241,236,.12); --line-2:rgba(243,241,236,.2);
   --panel:rgba(14,17,22,.78); --panel-solid:#12151B;
   --signal:#FFB000; --ok:#7FD3A2; --ok-bg:rgba(127,211,162,.12); --wait:#F2C46B; --wait-bg:rgba(242,196,107,.12); --alert:#E5544E;
@@ -80,6 +80,9 @@ h1,h2,h3{margin:0;text-wrap:balance;font-weight:300}
 h1{font-size:clamp(40px,5.2vw,78px);line-height:1.02;letter-spacing:-.03em}
 h2{font-size:clamp(30px,3.1vw,46px);line-height:1.1;letter-spacing:-.022em}
 h1 b,h2 b,h2 em{font-weight:500;font-style:normal;color:var(--fg)}
+h1 .dot{font-style:normal;color:var(--signal)} /* the one touch of amber in the headline, like the colon of the 22:45 clock */
+/* small text over the film reads at 400; the display sizes stay light */
+.proof ul,.facts,.results span,.quote figcaption,.story,.sig small,.wa,.legal,.foot,.faq p,.ntf,.scr,.lscr,.reqs li,.rides small,.chips li,.nclock,.unread,.calm p,.push p,.toast{font-weight:400}
 .lede{font-size:17px;line-height:1.7;color:var(--fg-2);max-width:31em;margin:20px 0 0}
 .stamp{display:block;margin:0 0 18px;font-size:13px;font-weight:400;letter-spacing:.16em;color:var(--signal);direction:ltr;text-align:right}
 
@@ -148,6 +151,9 @@ html:not(.has-film) .dark,html:not(.has-film) .light{background:var(--ink)}
 html.has-film .scene.hold{display:block}
 html.has-film .scene.hold > .wrap{position:sticky}
 html.has-film .scene.hold::after{content:"";display:block;height:var(--hold,0px)}
+/* the same for a single block inside a scene (the quiet column's two parts, the gate's beats): .hb sticks inside its .hold-b */
+html.has-film .hold-b > .hb{position:sticky}
+html.has-film .hold-b::after{content:"";display:block;height:var(--hold,0px)}
 .split{display:grid;grid-template-columns:minmax(0,var(--col)) minmax(0,1fr);gap:clamp(40px,7vw,120px);align-items:center}
 .split > :last-child{justify-self:start}
 .facts{list-style:none;margin:28px 0 0;padding:0;display:grid;max-width:28em;font-size:15px;color:var(--fg-2)}
@@ -434,7 +440,7 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
   <div class="wrap hero-in">
     <div>
       <span class="stamp num">חמישי · 22:40</span>
-      <h1 id="h1"><span>כל ההסעות של השבוע.</span><span><b>בחמש דקות.</b></span></h1>
+      <h1 id="h1"><span>כל ההסעות של השבוע.</span><span><b>בחמש דקות<i class="dot">.</i></b></span></h1>
       <p class="lede">העובדים נרשמים באפליקציה, המערכת מקבצת לנסיעות משותפות, ואתם מאשרים ושולחים לחברת ההסעות שלכם.</p>
       <div class="acts">
         <a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
@@ -548,13 +554,13 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 </section>
 
 <!-- 6 · 22:45 QUIET -->
-<section class="scene light quiet hold" id="quiet" data-film="S6" data-time="22:45" aria-labelledby="h2-quiet">
+<section class="scene light quiet" id="quiet" data-film="S6" data-time="22:45" aria-labelledby="h2-quiet">
   <div class="wrap split">
-    <div data-hold>
+    <div class="hold-b"><div class="hb">
       <p class="qclock num" aria-hidden="true">22<b>:</b>45</p>
       <h2 id="h2-quiet">0 הודעות.<br><b>ההסעות של מחר סגורות.</b></h2>
-    </div>
-    <div>
+    </div></div>
+    <div class="hold-b"><div class="hb">
       <ul class="results">
         <li><b>5 דקות</b><span>בשבוע במקום שעתיים ויותר. פיילוט במוקד עם 45 עובדי משמרות.</span></li>
         <li><b>פחות מוניות</b><span>מי שנסע לבד באותה שעה ובאותו כיוון נוסע בנסיעה משותפת.</span></li>
@@ -564,7 +570,7 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
         <blockquote>״זה לקח לי יותר משעתיים בשבוע, בין אקסל לוואטסאפ. היום אני רק מאשר ושולח. חמש דקות וזהו.״</blockquote>
         <figcaption>מנהל מוקד שירות ומכירות, 45 עובדי משמרות</figcaption>
       </figure>
-    </div>
+    </div></div>
   </div>
 </section>
 
@@ -572,18 +578,18 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 <section class="gate dark" id="gate" data-film="S7" data-time="01:00" aria-labelledby="h2-gate">
   <div class="wrap beats">
     <div class="beat" data-film="S7@.1"><span class="stamp num">01:00</span><p class="say">נועה סיימה משמרת.</p></div>
-    <div class="beat" data-film="BR@.5"><p class="say">המונית שלה הוזמנה ביום חמישי, ב-22:43.</p></div>
-    <div class="beat" data-film="S8@.5"><h2 id="h2-gate">המונית<br><b>כבר בשער.</b></h2></div>
-    <div class="beat" data-film="S8@.72"><p class="lede">ולא שלחה אף הודעה.</p>
-      <div class="acts"><a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div></div>
+    <div class="beat hold-b" data-film="BR@.5"><div class="hb"><p class="say">המונית שלה הוזמנה ביום חמישי, ב-22:43.</p></div></div>
+    <div class="beat hold-b" data-film="S8@.5"><div class="hb"><h2 id="h2-gate">המונית<br><b>כבר בשער.</b></h2></div></div>
+    <div class="beat hold-b" data-film="S8@.72"><div class="hb"><p class="lede">ולא שלחה אף הודעה.</p>
+      <div class="acts"><a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div></div></div>
   </div>
 </section>
 
 <!-- 8 · FAQ -->
-<section class="scene light" id="faq" data-film="S9" aria-labelledby="h2-faq" style="min-height:0">
+<section class="scene light hold" id="faq" data-film="S9" aria-labelledby="h2-faq" style="min-height:0">
   <div class="wrap">
-    <h2 id="h2-faq" style="margin-bottom:var(--s4)">שאלות נפוצות</h2>
-    <div class="faq">
+    <h2 id="h2-faq" style="margin-bottom:var(--s4)" data-hold>שאלות נפוצות</h2>
+    <div class="faq" data-hold>
       <details><summary>צריך להחליף את חברת ההסעות או המוניות?</summary><p>לא. <bdi dir="ltr" translate="no">SmartKav</bdi> מכינה את ההזמנה, ואתם שולחים אותה לחברה הקיימת.</p></details>
       <details><summary>איך המערכת מחליטה מי נוסע עם מי?</summary><p>לפי תאריך, שעה, כיוון ועיר. המנהל מאשר לפני שההזמנה יוצאת.</p></details>
       <details><summary>מה עם משמרת שמסתיימת אחרי חצות?</summary><p>היא נשארת משויכת ליום שבו התחילה.</p></details>
@@ -688,17 +694,21 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
      Native sticky (no scroll-jacking): each scene's .wrap sticks for --hold px of scroll (set on the section), from the amount of text
      it carries (a fifth to under half a screen), at a top that puts its copy ([data-hold]) in the middle of the screen
      below the bar. The page is longer by exactly the holds; the film's pace() reads the new heights. Off under reduced motion. */
+  // hold length: a quarter of a screen plus the reading it asks for (the copy in full, the mockups' small text a little),
+  // up to 0.6 of a screen. A scene holds its whole .wrap (centred on its [data-hold] copy); a .hold-b holds its .hb.
   function holdText(){
-    var vh = innerHeight, navH = innerWidth <= 640 ? 64 : 72;
-    $$('.scene.hold').forEach(function(sec){
-      var w = $('.wrap', sec), parts = $$('[data-hold]', sec); if (!w || !parts.length) return;
-      sec.style.setProperty('--hold', '0px'); w.style.top = '';
-      var wr = w.getBoundingClientRect(), t0 = Infinity, b0 = -Infinity, chars = 0;
-      parts.forEach(function(p){ var r = p.getBoundingClientRect(); t0 = Math.min(t0, r.top - wr.top); b0 = Math.max(b0, r.bottom - wr.top); chars += (p.innerText || '').replace(/\s+/g, ' ').length; });
-      var H = Math.round(Math.min(vh * .45, Math.max(vh * .2, vh * .15 + chars * .9)));
-      var avail = vh - navH - 24, h = b0 - t0;
-      var top = h <= avail ? navH + (avail - h) / 2 - t0 : vh - 24 - b0; // centred below the bar, or (a tall column) its end in view
-      sec.style.setProperty('--hold', H + 'px'); w.style.top = Math.round(top) + 'px';
+    var vh = innerHeight, navH = innerWidth <= 640 ? 64 : 72, avail = vh - navH - 24;
+    function len(el){ return (el.innerText || '').replace(/\s+/g, ' ').length; }
+    $$('.scene.hold, .hold-b').forEach(function(box){
+      var scene = box.classList.contains('scene'), w = scene ? $('.wrap', box) : $('.hb', box); if (!w) return;
+      var parts = scene ? $$('[data-hold]', box) : [w]; if (!parts.length) return;
+      box.style.setProperty('--hold', '0px'); w.style.top = '';
+      var wr = w.getBoundingClientRect(), t0 = Infinity, b0 = -Infinity, copy = 0;
+      parts.forEach(function(p){ var r = p.getBoundingClientRect(); t0 = Math.min(t0, r.top - wr.top); b0 = Math.max(b0, r.bottom - wr.top); copy += len(p); });
+      var rest = Math.max(0, len(w) - copy);
+      var H = Math.round(Math.min(vh * .6, vh * .25 + copy * 1.1 + rest * .25));
+      var h = b0 - t0, top = h <= avail ? navH + (avail - h) / 2 - t0 : vh - 24 - b0; // centred below the bar, or (a tall column) its end in view
+      box.style.setProperty('--hold', H + 'px'); w.style.top = Math.round(top) + 'px';
     });
   }
 
@@ -738,7 +748,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
           if (i === secs.length - 1) return; // the last stretch runs to the end of the page
           el.style.minHeight = '';
           var len = Math.round((f[i + 1] - f[i]) * R); if (!(len > 0)) return;
-          var natural = el.offsetHeight, room = el.classList.contains('hold') ? 0 : innerHeight * (el.id === 'gate' ? .15 : .35);
+          var natural = el.offsetHeight, room = el.classList.contains('hold') || $('.hold-b', el) ? 0 : innerHeight * .35;
           el.style.minHeight = Math.max(natural, Math.min(len, natural + room)) + 'px';
         });
         // the last stretch (questions and the form) gets the length it needs too, by stretching the questions
