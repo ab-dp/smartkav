@@ -324,29 +324,30 @@ h1 span{display:block}
   #gate > .wrap{padding-bottom:104px} /* clear of Kobi's bubble */
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
-/* Accessibility widget */
-.a11y{position:fixed;left:24px;bottom:24px;z-index:2147483000;font:400 16px/1.4 Heebo,"IBM Plex Sans Hebrew",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;direction:rtl;color:#0E1116}
-.a11y-fab{display:grid;place-items:center;width:52px;height:52px;padding:0;border:2px solid #FFB000;border-radius:50%;background:#0E1116;color:#FFB000;cursor:pointer;box-shadow:0 6px 20px rgba(14,17,22,.28);transition:transform 160ms ease}
+/* Accessibility widget (v3 style: the dark panel of the page, same high contrast; behaviour unchanged) */
+.a11y{position:fixed;left:24px;bottom:24px;z-index:2147483000;font:400 16px/1.4 Heebo,"IBM Plex Sans Hebrew",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;direction:rtl;color:#F3F1EC}
+.a11y-fab{display:grid;place-items:center;width:52px;height:52px;padding:0;border:1.5px solid #FFB000;border-radius:50%;background:#0B0D11;color:#FFB000;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.4);transition:transform 160ms ease}
 .a11y-fab:hover{transform:scale(1.06)}
-.a11y-fab:focus-visible,.a11y-panel button:focus-visible,.a11y-panel a:focus-visible{outline:3px solid #FFB000;outline-offset:3px}
-.a11y-fab svg{width:30px;height:30px}
-.a11y-panel{position:absolute;left:0;bottom:64px;width:min(320px,calc(100vw - 32px));max-height:calc(100vh - 200px);overflow:auto;padding:18px;border:1px solid #BDB7AC;border-radius:16px;background:#FFFFFF;box-shadow:0 18px 48px rgba(14,17,22,.22)}
+.a11y-fab:focus-visible,.a11y-panel button:focus-visible,.a11y-panel a:focus-visible{outline:2px solid #FFB000;outline-offset:3px}
+.a11y-fab svg{width:28px;height:28px}
+.a11y-panel{position:absolute;left:0;bottom:64px;width:min(320px,calc(100vw - 32px));max-height:calc(100vh - 200px);overflow:auto;padding:18px;border:1px solid rgba(243,241,236,.2);border-radius:20px;background:#12151B;box-shadow:0 24px 60px rgba(0,0,0,.55)}
 .a11y-panel[hidden]{display:none}
 .a11y-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.a11y-head h2{margin:0;font-size:19px;font-weight:700}
-.a11y-x{display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;background:#F6F4EF;color:#0E1116;font-size:22px;line-height:1;cursor:pointer}
-.a11y-size{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;padding:10px 12px;border:1px solid #E4E0D8;border-radius:12px}
-.a11y-size span{font-weight:600}
+.a11y-head h2{margin:0;font-size:18px;font-weight:500;letter-spacing:0}
+.a11y-x{display:grid;place-items:center;width:36px;height:36px;border:1px solid rgba(243,241,236,.2);border-radius:50%;background:transparent;color:#F3F1EC;font-size:20px;line-height:1;cursor:pointer}
+.a11y-size{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;padding:10px 12px;border:1px solid rgba(243,241,236,.14);border-radius:14px}
+.a11y-size span{font-weight:500}
 .a11y-size div{display:flex;align-items:center;gap:6px}
 .a11y-size output{min-width:44px;text-align:center;font-variant-numeric:tabular-nums}
-.a11y-size button{width:36px;height:36px;border:1px solid #0E1116;border-radius:50%;background:#FFFFFF;color:#0E1116;font:700 20px/1 Arial,sans-serif;cursor:pointer}
+.a11y-size button{width:36px;height:36px;border:1px solid rgba(243,241,236,.35);border-radius:50%;background:transparent;color:#F3F1EC;font:500 20px/1 Arial,sans-serif;cursor:pointer}
 .a11y-size button:disabled{opacity:.35;cursor:default}
 .a11y-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.a11y-opt{min-height:64px;padding:10px 8px;border:1px solid #E4E0D8;border-radius:12px;background:#FFFFFF;color:#0E1116;font:600 14px/1.3 inherit;cursor:pointer;text-align:center}
-.a11y-opt[aria-pressed="true"]{border-color:#0E1116;background:#0E1116;color:#FFB000}
+.a11y-opt{min-height:60px;padding:10px 8px;border:1px solid rgba(243,241,236,.14);border-radius:14px;background:rgba(243,241,236,.04);color:#F3F1EC;font:400 14px/1.3 inherit;cursor:pointer;text-align:center;transition:border-color 160ms ease}
+.a11y-opt:hover{border-color:rgba(243,241,236,.35)}
+.a11y-opt[aria-pressed="true"]{border-color:#FFB000;background:#FFB000;color:#0B0D11;font-weight:500}
 .a11y-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;font-size:14px}
-.a11y-reset{padding:8px 12px;border:1px solid #0E1116;border-radius:10px;background:#FFFFFF;color:#0E1116;font:600 14px/1 inherit;cursor:pointer}
-.a11y-foot a{color:#0E1116;text-decoration:underline;text-underline-offset:3px}
+.a11y-reset{padding:8px 14px;border:1px solid rgba(243,241,236,.35);border-radius:999px;background:transparent;color:#F3F1EC;font:500 14px/1 inherit;cursor:pointer}
+.a11y-foot a{color:#F3F1EC;text-decoration:underline;text-underline-offset:3px}
 @media (max-width:767px){.a11y{left:16px;bottom:16px}.a11y-fab{width:48px;height:48px}}
 /* Modes */
 /* Contrast and grayscale run through a fixed overlay's backdrop-filter: a filter on the page itself would turn it
@@ -361,7 +362,7 @@ html.a11y-font body,html.a11y-font body *{font-family:Arial,"Helvetica Neue",san
 html.a11y-still *,html.a11y-still *::before,html.a11y-still *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24'%3E%3Cpath d='M4 2l16 10-7 1.5L9.5 21z' fill='%230E1116' stroke='%23FFFFFF' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 4 2,auto!important}
 /* the live page: form failure, footer links */
-.fail{padding:14px 16px;border:1px solid #C2341F;border-radius:12px;background:#FBEDEA;color:#C2341F;font-size:15px;font-weight:600}
+.fail{padding:12px 16px;border:1px solid rgba(229,84,78,.55);border-radius:12px;background:rgba(229,84,78,.1);color:#FF9A94;font-size:14.5px;font-weight:400}
 .submit[disabled]{opacity:.7;cursor:progress}
 .foot-links a{color:var(--paper);text-decoration:underline;text-underline-offset:4px}
 </style>
