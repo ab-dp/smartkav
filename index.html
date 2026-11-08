@@ -143,6 +143,11 @@ html:not(.has-film) .dark,html:not(.has-film) .light{background:var(--ink)}
 /* ===== scenes: the copy in one column on the right, the picture breathes ===== */
 .scene{position:relative;padding:var(--s6) 0;min-height:100svh;display:grid;align-items:center}
 .scene > .wrap,.gate > .wrap{width:100%}
+/* reading hold (set by holdText in the page script, only with the film): the scene's content sticks for --hold px.
+   A block (not grid) section with a spacer after the content, so the sticky content has exactly that much room. */
+html.has-film .scene.hold{display:block}
+html.has-film .scene.hold > .wrap{position:sticky}
+html.has-film .scene.hold::after{content:"";display:block;height:var(--hold,0px)}
 .split{display:grid;grid-template-columns:minmax(0,var(--col)) minmax(0,1fr);gap:clamp(40px,7vw,120px);align-items:center}
 .split > :last-child{justify-self:start}
 .facts{list-style:none;margin:28px 0 0;padding:0;display:grid;max-width:28em;font-size:15px;color:var(--fg-2)}
@@ -447,9 +452,9 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 </section>
 
 <!-- 2 · 22:40 THE FLOOD -->
-<section class="scene dark" id="night" data-film="S3" data-time="22:40" aria-labelledby="h2-night">
+<section class="scene dark hold" id="night" data-film="S3" data-time="22:40" aria-labelledby="h2-night">
   <div class="wrap split">
-    <div>
+    <div data-hold>
       <span class="stamp num">22:40</span>
       <h2 id="h2-night">38 הודעות.<br><b>כל ערב מחדש.</b></h2>
       <p class="lede">קבוצת וואטסאפ, הודעות פרטיות ושיחות שלא נענו. מישהו נזכר מאוחר מדי, ושתי מוניות נוסעות לאותו רחוב. ככה נראה סידור הסעות בלי מערכת.</p>
@@ -466,9 +471,9 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 </section>
 
 <!-- 3 · 22:41 THE APP -->
-<section class="scene light" id="app" data-film="S4@.5" data-time="22:41" aria-labelledby="h2-app">
+<section class="scene light hold" id="app" data-film="S4@.5" data-time="22:41" aria-labelledby="h2-app">
   <div class="wrap split">
-    <div>
+    <div data-hold>
       <span class="stamp num">22:41</span>
       <h2 id="h2-app">העובדים נרשמים<br><b>באפליקציה.</b></h2>
       <p class="lede">משמרת, כיוון, שליחה. הכתובת שמורה, והסטטוס מתעדכן לבד עד שהמונית מוזמנת.</p>
@@ -493,11 +498,11 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 </section>
 
 <!-- 4 · 22:42 GROUPING -->
-<section class="scene dark lines-wrap" id="group" data-film="S5" data-time="22:42" aria-labelledby="h2-group">
+<section class="scene dark lines-wrap hold" id="group" data-film="S5" data-time="22:42" aria-labelledby="h2-group">
   <div class="wrap">
-    <span class="stamp num">22:42</span>
-    <h2 id="h2-group">14 בקשות.<br><b>4 נסיעות.</b></h2>
-    <p class="lede">המערכת מקבצת לפי תאריך, שעה, כיוון ועיר. בלי טבלה ובלי לחשוב מי גר ליד מי.</p>
+    <span class="stamp num" data-hold>22:42</span>
+    <h2 id="h2-group" data-hold>14 בקשות.<br><b>4 נסיעות.</b></h2>
+    <p class="lede" data-hold>המערכת מקבצת לפי תאריך, שעה, כיוון ועיר. בלי טבלה ובלי לחשוב מי גר ליד מי.</p>
     <div class="board" id="board" role="img" aria-label="דוגמה: 14 בקשות מתחברות לארבע נסיעות משותפות: רמת גן 16:00 ארבעה נוסעים, חולון 16:00 שלושה, תל אביב 01:00 ארבעה, בת ים 01:00 שלושה">
       <ul class="reqs" aria-hidden="true"></ul>
       <svg class="lines" aria-hidden="true"></svg>
@@ -508,9 +513,9 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 </section>
 
 <!-- 5 · 22:43 APPROVE & SEND -->
-<section class="scene light" id="send" data-film="S5@.55" data-time="22:43" aria-labelledby="h2-send">
+<section class="scene light hold" id="send" data-film="S5@.55" data-time="22:43" aria-labelledby="h2-send">
   <div class="wrap split">
-    <div>
+    <div data-hold>
       <span class="stamp num">22:43</span>
       <h2 id="h2-send">הזמנה אחת<br><b>לחברת ההסעות.</b></h2>
       <p class="lede">מסך אחד, רק מה שדורש טיפול. מעתיקים את ההזמנה, שולחים ומסמנים שטופל, והעובדים מקבלים עדכון אוטומטי.</p>
@@ -543,9 +548,9 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 </section>
 
 <!-- 6 · 22:45 QUIET -->
-<section class="scene light quiet" id="quiet" data-film="S6" data-time="22:45" aria-labelledby="h2-quiet">
+<section class="scene light quiet hold" id="quiet" data-film="S6" data-time="22:45" aria-labelledby="h2-quiet">
   <div class="wrap split">
-    <div>
+    <div data-hold>
       <p class="qclock num" aria-hidden="true">22<b>:</b>45</p>
       <h2 id="h2-quiet">0 הודעות.<br><b>ההסעות של מחר סגורות.</b></h2>
     </div>
@@ -679,6 +684,24 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
        and the two frames around it are blended, so 12 film frames per second read as continuous motion.
      Weight: frames load nearest-to-the-playhead first, only within a window around it, and are decoded off the main
        thread into ImageBitmaps just ahead of where the visitor is going. */
+  /* ---------- reading holds: the text pauses briefly in the middle of the screen, the film goes on ----------
+     Native sticky (no scroll-jacking): each scene's .wrap sticks for --hold px of scroll (set on the section), from the amount of text
+     it carries (a fifth to under half a screen), at a top that puts its copy ([data-hold]) in the middle of the screen
+     below the bar. The page is longer by exactly the holds; the film's pace() reads the new heights. Off under reduced motion. */
+  function holdText(){
+    var vh = innerHeight, navH = innerWidth <= 640 ? 64 : 72;
+    $$('.scene.hold').forEach(function(sec){
+      var w = $('.wrap', sec), parts = $$('[data-hold]', sec); if (!w || !parts.length) return;
+      sec.style.setProperty('--hold', '0px'); w.style.top = '';
+      var wr = w.getBoundingClientRect(), t0 = Infinity, b0 = -Infinity, chars = 0;
+      parts.forEach(function(p){ var r = p.getBoundingClientRect(); t0 = Math.min(t0, r.top - wr.top); b0 = Math.max(b0, r.bottom - wr.top); chars += (p.innerText || '').replace(/\s+/g, ' ').length; });
+      var H = Math.round(Math.min(vh * .45, Math.max(vh * .2, vh * .15 + chars * .9)));
+      var avail = vh - navH - 24, h = b0 - t0;
+      var top = h <= avail ? navH + (avail - h) / 2 - t0 : vh - 24 - b0; // centred below the bar, or (a tall column) its end in view
+      sec.style.setProperty('--hold', H + 'px'); w.style.top = Math.round(top) + 'px';
+    });
+  }
+
   var FILM = { R: 20, nightLen: 0 };
   (function film(){
     var root = document.documentElement, canvas = $('#film');
@@ -695,10 +718,11 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
           cur = 0, target = 0, last = 0, drawn = '', inflight = 0, anchors = [], raf = 0, dir = 1,
           TAU = fine ? 70 : 120, MAXIN = portrait ? 4 : 6;
       function shotFrame(spec){ var p = String(spec).split('@'), s = M.shots[p[0]]; return s ? s[0] + Math.round((+p[1] || 0) * (s[1] - 1)) : null; }
-      // the text always moves with the scroll (nothing is pinned or sticky): each section is as tall as its content,
-      // plus a little room for its part of the film (a third of a screen at most), and the film
-      // follows the sections. The camera keeps a near-even pace without ever holding the text still.
+      // the text moves with the scroll, with one short reading hold per scene (holdText): each section is as tall as
+      // its content and its hold, plus a little room for its part of the film (a third of a screen at most, none where
+      // the hold already gives it), and the film follows the sections.
       function pace(){
+        holdText();
         var R = FILM.R = Math.max(12, Math.min(18, innerHeight / (portrait ? 56 : 60)));
         // the gate's beats: room between them from the film they cover, between a quarter and 0.8 of a screen,
         // so the text never leaves the screen (the drone's descent runs a little faster, the taxi at its own pace)
@@ -714,7 +738,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
           if (i === secs.length - 1) return; // the last stretch runs to the end of the page
           el.style.minHeight = '';
           var len = Math.round((f[i + 1] - f[i]) * R); if (!(len > 0)) return;
-          var natural = el.offsetHeight, room = innerHeight * (el.id === 'gate' ? .15 : .35);
+          var natural = el.offsetHeight, room = el.classList.contains('hold') ? 0 : innerHeight * (el.id === 'gate' ? .15 : .35);
           el.style.minHeight = Math.max(natural, Math.min(len, natural + room)) + 'px';
         });
         // the last stretch (questions and the form) gets the length it needs too, by stretching the questions
