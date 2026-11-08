@@ -72,11 +72,10 @@ h2 em{font-style:normal;color:var(--signal)}
 .nav.solid .nav-cta{background:var(--signal);color:var(--ink);box-shadow:none}
 
 /* ===== 1. hero ===== */
-.hero{position:relative;min-height:100svh;overflow:hidden;isolation:isolate;display:flex;flex-direction:column}
-.hero .photo,.gate .photo{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.2s}
-.hero .photo.on,.gate .photo.on{opacity:.55}
-.trails{position:absolute;inset:0;width:100%;height:100%;display:block}
-.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:var(--shade,1);background:linear-gradient(180deg,rgba(14,17,22,.5) 0,rgba(14,17,22,0) 18%,rgba(14,17,22,0) 38%,rgba(14,17,22,.82) 70%,var(--ink) 100%),linear-gradient(270deg,rgba(14,17,22,.88) 0,rgba(14,17,22,.62) 34%,rgba(14,17,22,.12) 62%,rgba(14,17,22,.12) 100%)}
+.hero{position:relative;min-height:100svh}
+/* with the film on, the hero holds for two screens while the camera descends to the lit floor */
+html.has-film .hero{min-height:200svh}
+.hero-stick{position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column}
 .hero-in{position:relative;z-index:2;flex:1;width:100%;display:grid;grid-template-columns:1.3fr .7fr;align-items:end;gap:var(--s4);padding-top:120px;padding-bottom:clamp(36px,6vh,72px)}
 h1{font-family:var(--serif);font-weight:900;font-size:clamp(50px,7.4vw,112px);line-height:.98;letter-spacing:-.02em}
 h1 span{display:block}
@@ -90,17 +89,27 @@ h1 .gold{color:var(--signal)}
 .proof{position:relative;z-index:2;border-top:1px solid var(--line-dark)}
 .proof ul{list-style:none;margin:0;padding:18px 0 26px;display:flex;gap:12px 40px;flex-wrap:wrap;font-size:15px;color:var(--text-dark)}
 .proof b{color:var(--paper);font-weight:600}
-.asset-tag{position:absolute;z-index:3;inset-block-start:88px;inset-inline-start:var(--gut);font:500 11px/1 ui-monospace,Consolas,monospace;color:var(--signal);border:1px dashed rgba(255,176,0,.55);padding:7px 10px;border-radius:6px;direction:ltr}
-.asset-tag[hidden]{display:none}
-
-/* ===== film: real AI footage (Seedance 2.5), one take scrubbed by the scroll. Frames live in film/<name>/ ===== */
-/* Without JS, GSAP or motion the track has no height and the section shows its still (poster / end frame). */
-.film{position:absolute;inset:0;width:100%;height:100%;display:block;background:var(--ink) center/cover no-repeat}
-.film-track.on{height:var(--track,300svh)}
-.film-track.on > .hero,.film-track.on > .gate{position:sticky;top:0;height:100svh;min-height:0}
-.film-rest{position:absolute;inset:0;z-index:-1;background:center/cover no-repeat;opacity:.42}
-.film-rest::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,var(--ink) 0,rgba(14,17,22,.78) 38%,rgba(14,17,22,.25) 70%),linear-gradient(180deg,var(--ink) 0,rgba(14,17,22,0) 22%,rgba(14,17,22,0) 78%,var(--ink) 100%)}
-#night{isolation:isolate;overflow:hidden}
+/* ===== the film: one continuous take behind the whole page (Seedance 2.5 footage, drafts/film/) =====
+   A fixed canvas under every section. The scroll position picks the frame, so the camera moves the
+   whole way down: city, tower, window, desk, out over the city, down to the gate at 01:00, up to the sky.
+   Without JS the poster still sits behind the page; the sections keep their own dark ground. */
+.world{position:fixed;inset:0;z-index:0;pointer-events:none;background:var(--ink) url(film/poster.jpg) center/cover no-repeat}
+.world canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* the shade keeps the copy legible on any frame: darker on the text side (right, RTL) and at the edges */
+.world::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,rgba(14,17,22,.84) 0,rgba(14,17,22,.58) 36%,rgba(14,17,22,.22) 66%,rgba(14,17,22,.3) 100%),linear-gradient(180deg,rgba(14,17,22,.55) 0,rgba(14,17,22,0) 16%,rgba(14,17,22,0) 72%,rgba(14,17,22,.7) 100%)}
+main,.foot{position:relative;z-index:1}
+html.has-film .dark,html.has-film .light{background:transparent}
+/* every scene sits on the night film now: the paper scenes take the dark type, the product mocks stay light cards */
+.light{color:var(--paper);color-scheme:dark}
+.light h2 em,.light .stamp{color:var(--signal)}
+.light .lede,.results span,.faq p,.story{color:var(--text-dark)}
+.results li,.results li:last-child,.faq details,.faq details:last-child,.story{border-color:var(--line-dark)}
+.quote figcaption,.sig small{color:var(--text-mute-dark)}
+.qclock b{color:var(--signal)}
+.wa{color:var(--paper)}
+.form{color:var(--ink)}
+html:not(.has-film) .light{background:var(--ink)}
+[hidden]{display:none!important}
 /* 01:00: the taxi stops in the middle of the frame, so the headline stays in the bottom quarter, under it */
 .gate .wrap h2{font-size:clamp(34px,4.2vw,62px);max-width:16em}
 #gate > .wrap{padding-bottom:clamp(24px,4vh,44px)}
@@ -217,8 +226,14 @@ h1 .gold{color:var(--signal)}
 .quote figcaption{margin-top:14px;color:var(--text-mute-light);font-size:15px}
 
 /* ===== 7. gate ===== */
-.gate{position:relative;min-height:100svh;overflow:hidden;display:grid;align-items:end;isolation:isolate}
-.gate::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,var(--ink) 0,rgba(14,17,22,0) 30%,rgba(14,17,22,.2) 55%,rgba(14,17,22,.92) 100%)}
+/* taller than a screen: the taxi pulls up while the visitor scrolls, the headline holds at the bottom */
+.gate{position:relative;min-height:100svh;display:grid;align-items:end}
+#gate > .wrap{position:sticky;bottom:0}
+.film-mark{position:absolute;top:34%;left:0;width:1px;height:1px}
+/* scroll length per scene, so the camera keeps one steady pace (~20px of scroll per film frame):
+   22:45 holds while the camera flies out over the city, 01:00 while it comes down to the gate and the taxi arrives */
+html.has-film .gate{min-height:300svh}
+html.has-film #quiet{min-height:170svh}
 .gate .wrap{position:relative;z-index:2;padding-bottom:var(--s6);width:100%}
 .gate h2{font-size:clamp(40px,5.6vw,84px);max-width:13em}
 .gate .acts{margin-top:var(--s4)}
@@ -304,10 +319,11 @@ h1 .gold{color:var(--signal)}
 <!--
   SmartKav v2 · final proposal (prototype, drafts only).
   Concept: "22:40 → 22:45". The page is the five minutes that close a whole week of shift transport.
-  Hero effect: a night city of light trails (canvas). Every trail is one employee's trip; scrolling sorts the chaos into 4 lanes = 4 shared rides.
-  AI photographs are optional slots (see ASSETS below + drafts/proposal/ASSETS.md). Every scene works without them.
+  The film: one continuous Seedance 2.5 take behind the whole page, scrubbed by the scroll (drafts/film/SHOTLIST.md).
+  22:40 over the city → into the lit 9th floor → the desk → out over the city as the night goes quiet → down to the gate at 01:00 → up to the sky.
 -->
 <a class="skip" href="#main">דלג לתוכן הראשי</a>
+<div class="world" aria-hidden="true"><canvas id="film"></canvas></div>
 
 <header class="nav" id="nav">
   <div class="wrap">
@@ -320,11 +336,8 @@ h1 .gold{color:var(--signal)}
 <main id="main" tabindex="-1">
 
 <!-- 1 · HERO -->
-<div class="film-track" id="hero-track" style="--track:320svh">
 <section class="hero dark" id="top" aria-labelledby="h1">
-  <!-- One take: the descent over the city to the lit 9th floor (C1) and the flight through the window to the desk (C2). -->
-  <canvas class="film" id="film-hero" data-src="film/hero" data-n="118" style="background-image:url(film/hero/poster.jpg)" aria-hidden="true"></canvas>
-  <canvas class="trails" id="trails-hero" aria-hidden="true"></canvas>
+  <div class="hero-stick">
   <div class="wrap hero-in">
     <div>
       <h1 id="h1"><span>כל ההסעות של השבוע.</span><span class="gold">בחמש דקות.</span></h1>
@@ -342,12 +355,11 @@ h1 .gold{color:var(--signal)}
     <li><b>24 שעות</b> הטמעה</li>
     <li><b>אותה חברת הסעות</b>, בלי להחליף ספק</li>
   </ul></div></div>
+  </div>
 </section>
-</div>
 
 <!-- 2 · 22:40 THE FLOOD -->
-<section class="scene dark" id="night" data-time="22:40" aria-labelledby="h2-night">
-  <div class="film-rest" style="background-image:url(film/hero/end.jpg)" aria-hidden="true"></div>
+<section class="scene dark" id="night" data-film="S3" data-time="22:40" aria-labelledby="h2-night">
   <div class="wrap split">
     <div>
       <span class="stamp num">22:40</span>
@@ -367,7 +379,7 @@ h1 .gold{color:var(--signal)}
 </section>
 
 <!-- 3 · 22:41 THE APP -->
-<section class="scene light" id="app" data-time="22:41" aria-labelledby="h2-app">
+<section class="scene light" id="app" data-film="S4@.5" data-time="22:41" aria-labelledby="h2-app">
   <div class="wrap split">
     <div>
       <span class="stamp num">22:41</span>
@@ -394,7 +406,7 @@ h1 .gold{color:var(--signal)}
 </section>
 
 <!-- 4 · 22:42 GROUPING -->
-<section class="scene dark lines-wrap" id="group" data-time="22:42" aria-labelledby="h2-group">
+<section class="scene dark lines-wrap" id="group" data-film="S5" data-time="22:42" aria-labelledby="h2-group">
   <div class="wrap">
     <span class="stamp num">22:42</span>
     <h2 id="h2-group">14 בקשות. <em>4 נסיעות.</em></h2>
@@ -409,7 +421,7 @@ h1 .gold{color:var(--signal)}
 </section>
 
 <!-- 5 · 22:43 APPROVE & SEND -->
-<section class="scene light" id="send" data-time="22:43" aria-labelledby="h2-send">
+<section class="scene light" id="send" data-film="S5@.55" data-time="22:43" aria-labelledby="h2-send">
   <div class="wrap split">
     <div>
       <span class="stamp num">22:43</span>
@@ -444,7 +456,7 @@ h1 .gold{color:var(--signal)}
 </section>
 
 <!-- 6 · 22:45 QUIET -->
-<section class="scene light quiet" id="quiet" data-time="22:45" aria-labelledby="h2-quiet">
+<section class="scene light quiet" id="quiet" data-film="S6" data-time="22:45" aria-labelledby="h2-quiet">
   <div class="wrap split">
     <div>
       <p class="qclock num" aria-hidden="true">22<b>:</b>45</p>
@@ -465,21 +477,17 @@ h1 .gold{color:var(--signal)}
 </section>
 
 <!-- 7 · 01:00 THE GATE -->
-<div class="film-track" id="gate-track" style="--track:230svh">
-<section class="gate dark" id="gate" data-time="01:00" aria-labelledby="h2-gate">
-  <!-- C3: the taxi pulls up at the gate and Noa walks out. Rests on the last frame. -->
-  <canvas class="film" id="film-gate" data-src="film/gate" data-n="59" style="background-image:url(film/gate/end.jpg)" aria-hidden="true"></canvas>
-  <canvas class="trails" id="trails-gate" aria-hidden="true"></canvas>
+<section class="gate dark" id="gate" data-film="S7" data-time="01:00" aria-labelledby="h2-gate">
+  <i class="film-mark" data-film="S8" aria-hidden="true"></i>
   <div class="wrap">
     <span class="stamp num">01:00</span>
     <h2 id="h2-gate">נועה מסיימת משמרת. <em>המונית כבר בשער,</em> והיא לא שלחה אף הודעה.</h2>
     <div class="acts"><a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div>
   </div>
 </section>
-</div>
 
 <!-- 8 · FAQ -->
-<section class="scene light" id="faq" aria-labelledby="h2-faq" style="min-height:0">
+<section class="scene light" id="faq" data-film="S9" aria-labelledby="h2-faq" style="min-height:0">
   <div class="wrap">
     <h2 id="h2-faq" style="margin-bottom:var(--s4)">שאלות שמנהלים שואלים</h2>
     <div class="faq">
@@ -547,113 +555,94 @@ h1 .gold{color:var(--signal)}
   var G = window.gsap, ST = window.ScrollTrigger;
   var $ = function(s, r){ return (r || document).querySelector(s); }, $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  /* ---------- film: a frame sequence drawn to a canvas, the scroll picks the frame ---------- */
-  // Loads coarse-to-fine (every 8th frame first), so the scrub works within a second and sharpens as the rest arrives.
-  function Film(canvas){
-    this.c = canvas; this.ctx = canvas.getContext('2d'); this.n = +canvas.dataset.n; this.p = 0; this.shown = -1;
-    var portrait = innerWidth < 700 && innerHeight > innerWidth;
-    this.base = canvas.dataset.src + (portrait ? '/m/' : '/d/'); this.imgs = new Array(this.n); this.resize();
-  }
-  Film.prototype.resize = function(){
-    var d = Math.min(1.5, window.devicePixelRatio || 1), r = this.c.getBoundingClientRect();
-    this.c.width = Math.round(r.width * d); this.c.height = Math.round(r.height * d); this.shown = -1; this.draw();
-  };
-  Film.prototype.load = function(){
-    var self = this, order = [], seen = {};
-    [8, 4, 2, 1].forEach(function(s){ for (var i = 0; i < self.n; i += s) if (!seen[i]){ seen[i] = 1; order.push(i); } });
-    if (!seen[this.n - 1]) order.splice(1, 0, this.n - 1);
-    var next = 0;
-    function one(){
-      if (next >= order.length) return;
-      var i = order[next++], img = new Image(); img.decoding = 'async';
-      img.onload = function(){ self.imgs[i] = img; if (self.shown < 0 || Math.abs(i - self.want()) < Math.abs(self.shown - self.want())) self.draw(); one(); };
-      img.onerror = one;
-      img.src = self.base + ('000' + (i + 1)).slice(-4) + '.webp';
-    }
-    for (var k = 0; k < 4; k++) one(); // four requests in flight
-  };
-  Film.prototype.want = function(){ return Math.round(this.p * (this.n - 1)); };
-  Film.prototype.draw = function(){
-    var w = this.want(), best = -1;
-    for (var d = 0; d < this.n; d++){ if (this.imgs[w - d]){ best = w - d; break; } if (this.imgs[w + d]){ best = w + d; break; } }
-    if (best < 0 || best === this.shown) return;
-    var img = this.imgs[best], cw = this.c.width, ch = this.c.height, s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight),
-        iw = img.naturalWidth * s, ih = img.naturalHeight * s;
-    this.ctx.drawImage(img, (cw - iw) / 2, (ch - ih) / 2, iw, ih); this.shown = best;
-    if (!this.ready){ this.ready = true; this.c.style.backgroundImage = 'none'; }
-  };
-  Film.prototype.seek = function(p){ this.p = Math.max(0, Math.min(1, p)); this.draw(); };
-
-  /* ---------- light trails: every trail is one trip; order 0 = chaos, 1 = four shared lanes ---------- */
-  function Trails(canvas, o){
-    this.c = canvas; this.ctx = canvas.getContext('2d'); this.order = o.order || 0; this.target = this.order;
-    this.lanes = o.lanes; this.count = o.count; this.alpha = o.alpha || 1; this.running = false; this.t = 0;
-    this.resize(); this.seed();
-  }
-  Trails.prototype.resize = function(){
-    var d = Math.min(1.5, window.devicePixelRatio || 1), r = this.c.getBoundingClientRect();
-    this.W = r.width; this.H = r.height; this.c.width = Math.round(r.width * d); this.c.height = Math.round(r.height * d);
-    this.ctx.setTransform(d, 0, 0, d, 0, 0);
-  };
-  Trails.prototype.seed = function(){
-    this.ps = [];
-    for (var i = 0; i < this.count; i++) this.ps.push({ x: Math.random() * this.W, y: Math.random() * this.H, lane: i % this.lanes.length,
-      spd: 1.5 + Math.random() * 1.7, s: Math.random() * 6.28, gold: Math.random() < .8 });
-    if (this.order > .5) this.ps.forEach(function(p){ p.y = this.laneY(p.lane, p.x) + (Math.random() - .5) * 26; }, this);
-  };
-  Trails.prototype.laneY = function(i, x){ return this.H * this.lanes[i] + Math.sin(x * .0022 + i * 1.7 + this.t * .004) * this.H * .028; };
-  Trails.prototype.step = function(){
-    this.t++; this.order += (this.target - this.order) * .035;
-    var o = this.order, W = this.W, H = this.H, t = this.t;
-    for (var i = 0; i < this.ps.length; i++){
-      var p = this.ps[i], a = Math.sin(p.x * .0016 + t * .003 + p.s * .3) * 2.4 + Math.cos(p.y * .0019 - t * .0025) * 2.4,
-          cx = Math.cos(a) * p.spd, cy = Math.sin(a) * p.spd, ly = this.laneY(p.lane, p.x),
-          ox = -p.spd * 1.5, oy = (ly - p.y) * .045;
-      p.px = p.x; p.py = p.y;
-      p.x += cx * (1 - o) + ox * o; p.y += cy * (1 - o) + oy * o;
-      if (p.x < -40 || p.x > W + 40 || p.y < -40 || p.y > H + 40){
-        if (o > .5){ p.x = W + 20; p.y = this.laneY(p.lane, W) + (Math.random() - .5) * 30; }
-        else { p.x = Math.random() * W; p.y = Math.random() * H; }
-        p.px = p.x; p.py = p.y;
+  /* ---------- the film: one take behind the whole page, the scroll is the playhead ----------
+     film/film.json (written by drafts/film/build-frames.sh) lists the frames and where each shot starts.
+     Sections carry data-film="<shot>" so the story stays in step: the shot starts as the section arrives,
+     and between those anchors the frame moves linearly with the scroll, so the camera never stops.
+     Frames load nearest-to-the-playhead first (with a coarse pass over the whole film), are decoded off the
+     main thread into ImageBitmaps around the playhead, and drawn with a lerped playhead for a smooth glide. */
+  (function film(){
+    var root = document.documentElement, canvas = $('#film');
+    if (REDUCE || !canvas || !window.fetch) return; // the poster stays behind the page
+    // set before the scroll scenes are measured: the film layout (a taller hero) changes every position below it
+    root.classList.add('has-film');
+    fetch('film/film.json').then(function(r){ return r.json(); }).then(start).catch(function(){ root.classList.remove('has-film'); if (ST) ST.refresh(); });
+    function start(M){
+      var ctx = canvas.getContext('2d'), N = M.n, portrait = innerWidth < 700 && innerHeight > innerWidth,
+          base = 'film/' + (portrait ? 'm' : 'd') + '/', imgs = new Array(N), asked = new Array(N), bmps = new Map(), decoding = {},
+          cur = 0, target = 0, shown = -1, inflight = 0, anchors = [], raf = 0;
+      function size(){ var d = Math.min(1.5, devicePixelRatio || 1); canvas.width = Math.round(innerWidth * d); canvas.height = Math.round(innerHeight * d); shown = -1; }
+      // anchors: [scrollY, frame] pairs from the sections; the page end is the last frame
+      function measure(){
+        var maxY = Math.max(1, root.scrollHeight - innerHeight), list = [[0, 0]];
+        $$('[data-film]').forEach(function(el){
+          // data-film="S4" starts that shot here; "S4@.5" is half way through it
+          var spec = el.dataset.film.split('@'), s = M.shots[spec[0]]; if (!s) return;
+          var shot = s[0] + Math.round((+spec[1] || 0) * (s[1] - 1));
+          var y = el.getBoundingClientRect().top + scrollY - innerHeight * .35;
+          if (y > list[list.length - 1][0] && shot > list[list.length - 1][1]) list.push([Math.min(y, maxY - 1), shot]);
+        });
+        list.push([maxY, N - 1]); anchors = list; update();
       }
-    }
-  };
-  // Each frame fades what is already there and adds only the newest segment of every trip,
-  // so a trail is ~70 frames long at the cost of one segment per particle.
-  Trails.prototype.draw = function(){
-    var c = this.ctx;
-    c.globalCompositeOperation = 'destination-out'; c.fillStyle = 'rgba(0,0,0,.045)'; c.fillRect(0, 0, this.W, this.H);
-    c.globalCompositeOperation = 'lighter'; c.lineCap = 'butt';
-    var groups = [[true, 'rgba(255,176,0,' + (.55 * this.alpha) + ')', 1.3], [false, 'rgba(246,244,239,' + (.35 * this.alpha) + ')', .9]];
-    for (var g = 0; g < 2; g++){
-      c.strokeStyle = groups[g][1]; c.lineWidth = groups[g][2]; c.beginPath();
-      for (var i = 0; i < this.ps.length; i++){
-        var p = this.ps[i]; if (p.gold !== groups[g][0] || p.px === p.x && p.py === p.y) continue;
-        c.moveTo(p.px, p.py); c.lineTo(p.x, p.y);
+      function frameAt(y){
+        for (var i = 1; i < anchors.length; i++) if (y <= anchors[i][0]){
+          var a = anchors[i - 1], b = anchors[i]; return a[1] + (b[1] - a[1]) * (y - a[0]) / (b[0] - a[0]);
+        }
+        return N - 1;
       }
-      c.stroke();
+      function update(){ target = frameAt(Math.max(0, scrollY)); if (!raf) raf = requestAnimationFrame(tick); }
+      // loading: a coarse pass (every 8th frame) and a window around the playhead, nearest first, six at a time
+      function pick(){
+        var c = Math.round(target), best = -1;
+        for (var d = 0; d < N && best < 0; d++){
+          var ahead = c + d, back = c - d;
+          if (ahead < N && !asked[ahead] && (d < 48 || ahead % 8 === 0)) best = ahead;
+          else if (back >= 0 && !asked[back] && (d < 24 || back % 8 === 0)) best = back;
+        }
+        if (best < 0) for (var i = 0; i < N; i++) if (!asked[i]){ best = i; break; }
+        return best;
+      }
+      function pump(){
+        while (inflight < 6){
+          var i = pick(); if (i < 0) return;
+          asked[i] = 1; inflight++;
+          (function(i){
+            var img = new Image(); img.decoding = 'async';
+            img.onload = function(){ imgs[i] = img; inflight--; if (Math.abs(i - target) < 3) shown = -1, wake(); pump(); };
+            img.onerror = function(){ inflight--; pump(); };
+            img.src = base + ('000' + (i + 1)).slice(-4) + '.webp';
+          })(i);
+        }
+      }
+      // decoded bitmaps around the playhead, so drawing is a blit (no decode spike while scrolling)
+      function keep(c){
+        for (var i = Math.max(0, c - 10); i <= Math.min(N - 1, c + 16); i++){
+          if (!imgs[i] || bmps.has(i) || decoding[i] || !window.createImageBitmap) continue;
+          decoding[i] = 1;
+          (function(i){ createImageBitmap(imgs[i]).then(function(b){ delete decoding[i]; if (Math.abs(i - cur) > 30){ b.close(); return; } bmps.set(i, b); if (i === Math.round(cur)) shown = -1, wake(); }).catch(function(){ delete decoding[i]; }); })(i);
+        }
+        bmps.forEach(function(b, k){ if (Math.abs(k - c) > 30){ b.close(); bmps.delete(k); } });
+      }
+      function nearest(i){ for (var d = 0; d < N; d++){ if (imgs[i - d]) return i - d; if (imgs[i + d]) return i + d; } return -1; }
+      function draw(i){
+        var k = nearest(i); if (k < 0 || k === shown) return;
+        var src = bmps.get(k) || imgs[k], w = src.width || src.naturalWidth, h = src.height || src.naturalHeight,
+            cw = canvas.width, ch = canvas.height, s = Math.max(cw / w, ch / h);
+        ctx.drawImage(src, (cw - w * s) / 2, (ch - h * s) / 2, w * s, h * s); shown = k;
+      }
+      function tick(){
+        raf = 0; cur += (target - cur) * .14; if (Math.abs(target - cur) < .02) cur = target;
+        var i = Math.round(cur); keep(i); draw(i);
+        if (cur !== target) wake();
+      }
+      function wake(){ if (!raf) raf = requestAnimationFrame(tick); }
+      size(); measure(); cur = target; pump();
+      addEventListener('scroll', function(){ update(); pump(); }, { passive: true });
+      var rz; addEventListener('resize', function(){ clearTimeout(rz); rz = setTimeout(function(){ size(); measure(); }, 150); });
+      if (ST) ST.addEventListener('refresh', measure); // pins change the page length
+      addEventListener('load', measure);
     }
-    c.globalCompositeOperation = 'source-over';
-  };
-  Trails.prototype.loop = function(){
-    var self = this;
-    function f(){ if (!self.running) return; self.step(); self.draw(); self.raf = requestAnimationFrame(f); }
-    f();
-  };
-  Trails.prototype.start = function(){ if (this.running) return; this.running = true; this.loop(); };
-  Trails.prototype.stop = function(){ this.running = false; cancelAnimationFrame(this.raf); };
-  Trails.prototype.still = function(order){ this.order = this.target = order; this.ctx.clearRect(0, 0, this.W, this.H); for (var i = 0; i < 90; i++){ this.step(); this.draw(); } };
-
-  var phone = innerWidth < 700;
-  var heroT = new Trails($('#trails-hero'), { count: phone ? 80 : 170, alpha: .7, lanes: phone ? [.1, .17, .24, .31] : [.13, .21, .29, .37] });
-  var gateT = new Trails($('#trails-gate'), { count: phone ? 60 : 120, lanes: [.36, .46, .56, .66], order: 1, alpha: .85 });
-  [heroT, gateT].forEach(function(tr){
-    if (REDUCE){ tr.still(tr === heroT ? .9 : 1); return; }
-    for (var w = 0; w < 80; w++){ tr.step(); tr.draw(); }
-    new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting ? tr.start() : tr.stop(); }); }).observe(tr.c);
-  });
-  var rz; addEventListener('resize', function(){ clearTimeout(rz); rz = setTimeout(function(){ [heroT, gateT].forEach(function(tr){ tr.resize(); if (REDUCE) tr.still(tr.order); }); }, 150); });
-  document.addEventListener('visibilitychange', function(){ if (document.hidden){ heroT.stop(); gateT.stop(); } });
+  })();
 
   /* ---------- nav: solid + live clock ---------- */
   var nav = $('#nav'), nclock = $('#nclock');
@@ -712,7 +701,7 @@ h1 .gold{color:var(--signal)}
   });
 
   /* ---------- motion ---------- */
-  if (REDUCE || !G || !ST){ heroT.target = heroT.order = REDUCE ? .9 : 0; return; } // static markup = final state of every scene
+  if (REDUCE || !G || !ST) return; // static markup = final state of every scene
   G.registerPlugin(ST);
   var mm = G.matchMedia(), DESK = '(min-width: 1024px) and (min-height: 700px)', MOB = '(max-width: 1023px), (max-height: 699px)';
 
@@ -720,19 +709,6 @@ h1 .gold{color:var(--signal)}
   G.from('.hero h1 span', { yPercent: 40, autoAlpha: 0, duration: 1.1, stagger: .12, ease: 'expo.out', delay: .15 });
   G.from(['.hero .lede', '.hero .acts', '.hero-clock', '.proof'], { autoAlpha: 0, y: 18, duration: .9, stagger: .08, ease: 'expo.out', delay: .45 });
 
-  // hero scroll: one take. The camera descends over the city to the lit 9th floor and flies through the window to the desk.
-  // The track gives the sticky hero its scroll length (CSS sticky, so the phone gets the same shot without a GSAP pin).
-  // The light trails sort into four lanes in the first part, then hand over to the real traffic of the footage.
-  var heroFilm = new Film($('#film-hero')), heroTrack = $('#hero-track');
-  heroTrack.classList.add('on'); heroFilm.load();
-  var cam = { p: 0 };
-  G.timeline({ scrollTrigger: { trigger: heroTrack, start: 'top top', end: 'bottom bottom', scrub: .6 } })
-    .to(cam, { p: 1, duration: 1, ease: 'none', onUpdate: function(){ heroFilm.seek(cam.p); heroT.target = Math.min(1, cam.p * 4); } }, 0)
-    .to('#trails-hero', { autoAlpha: 0, duration: .22, ease: 'none' }, .14)
-    .to(['.hero-in', '.proof'], { autoAlpha: 0, y: -36, duration: .1, ease: 'power1.in' }, .36)
-    .to('.hero', { '--shade': .35, duration: .2, ease: 'none' }, .4)
-    .to('.hero', { '--shade': .7, duration: .1, ease: 'none' }, .9);
-  addEventListener('resize', function(){ clearTimeout(heroFilm.t); heroFilm.t = setTimeout(function(){ heroFilm.resize(); }, 150); });
 
   // 22:40 · the flood
   var MSGS = [
@@ -822,16 +798,6 @@ h1 .gold{color:var(--signal)}
 
   // 22:45 · the clock lands
   G.from('.qclock', { autoAlpha: 0, y: 40, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '#quiet', start: 'top 65%' } });
-
-  // 01:00 · the taxi pulls up at the gate while the visitor scrolls; the headline is there from the first frame
-  var gateCanvas = $('#film-gate');
-  if (+gateCanvas.dataset.n){
-    var gateFilm = new Film(gateCanvas), gateTrack = $('#gate-track'), gp = { p: 0 };
-    gateTrack.classList.add('on'); gateT.stop(); gateT.start = function(){}; $('#trails-gate').style.display = 'none'; gateFilm.load(); gateFilm.seek(0);
-    G.to(gp, { p: 1, ease: 'none', onUpdate: function(){ gateFilm.seek(gp.p); },
-      scrollTrigger: { trigger: gateTrack, start: 'top top', end: 'bottom bottom', scrub: .6 } });
-    addEventListener('resize', function(){ clearTimeout(gateFilm.t); gateFilm.t = setTimeout(function(){ gateFilm.resize(); }, 150); });
-  }
 
   addEventListener('resize', function(){ clearTimeout(placeCards.t); placeCards.t = setTimeout(function(){ if (flood.progress() === 0) placeCards(); ST.refresh(); }, 200); });
 })();
