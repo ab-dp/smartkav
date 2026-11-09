@@ -461,7 +461,8 @@ h1 span{display:block}
 .a11y-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;font-size:14px}
 .a11y-reset{padding:8px 14px;border:1px solid rgba(243,241,236,.35);border-radius:999px;background:transparent;color:#F3F1EC;font:500 14px/1 inherit;cursor:pointer}
 .a11y-foot a{color:#F3F1EC;text-decoration:underline;text-underline-offset:3px}
-@media (max-width:767px){.a11y{left:16px;bottom:16px}.a11y-fab{width:48px;height:48px}}
+@media (max-width:767px){.a11y{left:16px;bottom:16px}.a11y-fab{width:48px;height:48px}
+  html.kobi-open .a11y{opacity:0;visibility:hidden;pointer-events:none}} /* Kobi fills the phone's screen; the button returns when it closes */
 /* Modes */
 /* Contrast and grayscale run through a fixed overlay's backdrop-filter: a filter on the page itself would turn it
    into the containing block for the fixed header and the pinned sections. */
@@ -1322,12 +1323,63 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
     + '.bpFABMessagePreview{right:24px!important;left:auto!important}'
     + '@media (min-width:768px){.bpFABWebchat{right:24px!important;left:auto!important;transform-origin:100% 100%!important}}'
     /* the greeting card sat over the copy column and the buttons on every screen; the bubble stays, the card does not */
-    + '.bpFABMessagePreview{display:none!important}';
+    + '.bpFABMessagePreview{display:none!important}'
+    /* Kobi in the site's night: Botpress draws everything from --bpGray-* and --bpPrimary-*, so the gray ramp is turned
+       over to the page's ink (dark surfaces, ivory type) and the primary ramp becomes the amber. On top: a see-through
+       window with a soft blur and a hairline edge, a transparent header on an amber hairline, amber starter pills from the
+       site's button family, amber-lit outgoing bubbles, quiet incoming ones, and the site's type (IBM Plex Sans Hebrew). */
+    + [':host,.bpReset{',
+       '--bpGray-1:#0F1218!important;--bpGray-25:#11141A!important;--bpGray-50:#14181F!important;--bpGray-75:#171B23!important;--bpGray-100:#1A1F27!important;',
+       '--bpGray-150:#1F242D!important;--bpGray-200:#232933!important;--bpGray-250:#2A303B!important;--bpGray-300:#323945!important;--bpGray-350:#3E4552!important;',
+       '--bpGray-400:#4C5462!important;--bpGray-450:#5E6673!important;--bpGray-500:#737A86!important;--bpGray-550:#8A909A!important;--bpGray-600:#A1A6AE!important;',
+       '--bpGray-650:#B6BAC0!important;--bpGray-700:#C9CCD0!important;--bpGray-750:#D8DADC!important;--bpGray-800:#E3E3E1!important;--bpGray-850:#EBEAE6!important;',
+       '--bpGray-900:#F3F1EC!important;--bpGray-925:#F6F4F0!important;--bpGray-950:#F9F8F5!important;--bpGray-975:#FCFBFA!important;',
+       '--bpPrimary-25:rgba(255,176,0,.04)!important;--bpPrimary-50:rgba(255,176,0,.07)!important;--bpPrimary-75:rgba(255,176,0,.1)!important;--bpPrimary-100:rgba(255,176,0,.13)!important;',
+       '--bpPrimary-150:rgba(255,176,0,.18)!important;--bpPrimary-200:rgba(255,176,0,.24)!important;--bpPrimary-300:rgba(255,176,0,.4)!important;--bpPrimary-400:#E09B00!important;',
+       '--bpPrimary-500:#FFB000!important;--bpPrimary-600:#FFC23D!important;--bpPrimary-700:#FFD27A!important;--bpPrimary-800:#FFE2A3!important;--bpPrimary-900:#FFF1D1!important;',
+       '--bpRadius-md:12px!important;--bpRadius-lg:14px!important;--bpRadius-xl:18px!important;--bpRadius-2xl:22px!important}',
+     '.bpFont,.bpReset,.bpWebchat,.bpWebchat *{font-family:"IBM Plex Sans Hebrew",Heebo,system-ui,sans-serif!important}',
+     '.bpWebchat{background:rgba(12,14,19,.82)!important;-webkit-backdrop-filter:blur(22px) saturate(1.15);backdrop-filter:blur(22px) saturate(1.15);',
+       'border:1px solid rgba(218,226,240,.14)!important;border-radius:22px!important;box-shadow:0 30px 80px -24px rgba(0,0,0,.75),inset 0 1px 0 rgba(243,241,236,.06)!important;overflow:hidden}',
+     '.bpContainer,.bpMessageListContainer,.bpMessageListViewport,.bpComposerContainer,.bpComposerFooter{background:transparent!important}',
+     '.bpHeaderContainer{background:transparent!important;color:#F3F1EC!important;border-bottom:1px solid rgba(255,176,0,.35)!important;box-shadow:none!important}',
+     '.bpHeaderContentTitle{color:#F3F1EC!important;font-weight:500!important}',
+     '.bpHeaderContentDescription{color:rgba(243,241,236,.66)!important;font-weight:400!important}',
+     '.bpHeaderContentActionsIcons,.bpHeaderContentActionsContainer button,.bpHeaderContainer svg{color:rgba(243,241,236,.8)!important}',
+     '.bpHeaderContentAvatarImage{box-shadow:0 0 0 1px rgba(255,176,0,.5)!important}',
+     '.bpWelcomeHeroHeading{color:#F3F1EC!important;font-weight:300!important;letter-spacing:-.02em}',
+     '.bpWelcomeHeroSubtitle{color:rgba(243,241,236,.7)!important;font-weight:400!important}',
+     '.bpStartersItem,.bpStartersButton{background:rgba(255,176,0,.08)!important;color:#FFD27A!important;border:1px solid rgba(255,176,0,.42)!important;',
+       'border-radius:999px!important;font-weight:500!important;transition:background .35s,color .35s,border-color .35s}',
+     '.bpStartersItem:hover,.bpStartersButton:hover{background:#FFB000!important;color:#14120D!important;border-color:#FFB000!important}',
+     '.bpMessageBlocksBubble[data-direction=outgoing]{background:rgba(255,176,0,.14)!important;color:#FFE7B0!important;box-shadow:inset 0 0 0 1px rgba(255,176,0,.38)}',
+     '.bpMessageBlocksBubble[data-direction=incoming]{background:rgba(243,241,236,.07)!important;color:#F3F1EC!important;box-shadow:inset 0 0 0 1px rgba(218,226,240,.1)}',
+     '.bpMessageBlocksButton{background:rgba(255,176,0,.08)!important;color:#FFD27A!important;border:1px solid rgba(255,176,0,.42)!important;border-radius:999px!important}',
+     '.bpMessageBlocksButton:hover{background:#FFB000!important;color:#14120D!important}',
+     '.bpMessageBlocksTextLink{color:#FFD27A!important}',
+     '.bpComposerContainer{border-top:1px solid rgba(218,226,240,.1)!important}',
+     '.bpComposerInputContainer{background:rgba(243,241,236,.05)!important;border:1px solid rgba(218,226,240,.18)!important;border-radius:16px!important;box-shadow:none!important}',
+     '.bpComposerInputContainer:focus-within{border-color:rgba(255,176,0,.6)!important}',
+     '.bpComposerInput{color:#F3F1EC!important;caret-color:#FFB000}',
+     '.bpComposerInput::placeholder{color:rgba(243,241,236,.5)!important}',
+     '.bpComposerSendButton{background:#FFB000!important;color:#14120D!important;border-radius:999px!important}',
+     '.bpComposerToolbarIcons,.bpComposerVoiceButton,.bpComposerEmojiButton,.bpComposerUploadButton{color:rgba(243,241,236,.7)!important}',
+     '.bpComposerFooter,.bpComposerFooter *{color:rgba(243,241,236,.45)!important}',
+     '.bpTypingIndicatorLoader{--bpGray-500:#FFB000}',
+     '.bpFab{box-shadow:0 0 0 1.5px rgba(255,176,0,.7),0 10px 26px -10px rgba(0,0,0,.7)!important}'
+    ].join('');
   // checked every frame (a cheap lookup), so the style is in before the greeting card can paint; up to 60s, since Kobi loads after the page is idle
   var t0 = Date.now();
   (function look(){
     var host = document.querySelector('.bpChatContainer #fab-root'), sr = host && host.shadowRoot;
-    if(sr){ var s = document.createElement('style'); s.setAttribute('data-sk', ''); s.textContent = css; sr.appendChild(s); return; }
+    if(sr){
+      var s = document.createElement('style'); s.setAttribute('data-sk', ''); s.textContent = css; sr.appendChild(s);
+      // while Kobi is open the page knows it (html.kobi-open): on a phone the chat fills the screen, so the
+      // accessibility button steps aside until it closes
+      var mark = function(){ document.documentElement.classList.toggle('kobi-open', !!sr.querySelector('.bpOpen')); };
+      new MutationObserver(mark).observe(sr, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'] }); mark();
+      return;
+    }
     if(Date.now() - t0 < 60000) requestAnimationFrame(look);
   })();
 })();
