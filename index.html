@@ -81,7 +81,7 @@ b,strong{font-weight:500}
    the peaks of the night (the opening line, the two centred moments, the calculator's answer) go thinner and larger,
    and the big clocks are hairline numerals, so the contrast of weight carries them, not a second face. */
 h1,h2,h3{margin:0;text-wrap:balance;font-weight:300}
-h1{font-size:clamp(40px,5.4vw,82px);line-height:1.04;letter-spacing:-.025em;font-weight:200}
+h1{font-size:clamp(40px,5.4vw,82px);line-height:1;letter-spacing:-.03em;font-weight:200}
 h2{font-size:clamp(30px,3.1vw,46px);line-height:1.12;letter-spacing:-.02em}
 h1 b,h2 b,h2 em{font-weight:500;font-style:normal;color:var(--fg)}
 h1 .dot{font-style:normal;color:var(--signal)} /* the one touch of amber in the headline, like the colon of the 22:45 clock */
@@ -96,7 +96,8 @@ h1 b,.moment h2 b{font-weight:500}
 .ntf,.scr,.lscr,.reqs li,.rides small,.chips li,.calm p,.push p,.toast{font-weight:400} /* the app mockups read like the app */
 .proof ul,.facts,.results span,.quote figcaption,.story,.sig small,.wa,.legal,.foot,.faq p,.nclock,.unread,.calc-note,.calc-sub,.calc-money,.field label{font-weight:500} /* small text over the film, firm and clear */
 .lede{font-size:17px;line-height:1.7;font-weight:400;color:var(--fg-2);max-width:31em;margin:20px 0 0}
-.stamp{display:block;margin:0 0 18px;font-size:13px;font-weight:400;letter-spacing:.16em;color:var(--signal);direction:ltr;text-align:right}
+.stamp{display:flex;align-items:center;gap:12px;margin:0 0 22px;font-size:13px;font-weight:400;letter-spacing:.14em;color:var(--signal)}
+.stamp::before{content:"";flex:none;width:28px;height:1px;background:var(--signal);opacity:.9} /* the logo's line, leading into the hour */
 
 /* buttons and links */
 /* one family for every call to action: amber light held in a dark, see-through pill with a fine amber edge; on hover it
@@ -118,7 +119,12 @@ h1 b,.moment h2 b{font-weight:500}
 .btn.ghost:hover{background:rgba(243,241,236,.94);color:#14120D;box-shadow:inset 0 0 0 1px rgba(243,241,236,.94),0 14px 30px -14px rgba(0,0,0,.75)}
 .tlink{font-weight:400;text-decoration:none;color:var(--fg);background:linear-gradient(var(--line-2),var(--line-2)) 100% 100%/100% 1px no-repeat;padding-bottom:4px;transition:background-size var(--t-mid) var(--ease-out),color var(--t-fast)}
 .tlink:hover{background-image:linear-gradient(var(--fg),var(--fg))}
-.acts{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:34px}
+.acts{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:38px}
+/* the hero's call: the arrow sits in its own small amber ring inside the pill */
+.btn.has-ic{padding-inline:26px 7px;gap:16px}
+.btn .ic{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:rgba(255,176,0,.14);box-shadow:inset 0 0 0 1px rgba(255,176,0,.35);transition:transform .45s var(--ease-out),background .3s,box-shadow .3s}
+.btn:hover .ic{background:rgba(20,18,13,.12);box-shadow:inset 0 0 0 1px rgba(20,18,13,.2);transform:translateX(-3px)}
+.btn .ic svg,.btn:hover .ic svg{transform:none}
 
 /* ===== nav: thin, the clock in the middle ===== */
 .nav{position:fixed;inset:0 0 auto;z-index:50;transition:background var(--t-mid),border-color var(--t-mid);border-bottom:1px solid transparent}
@@ -158,11 +164,11 @@ h1 b,.moment h2 b{font-weight:500}
    darker on the text side (right, RTL) and at the very top and bottom, clear in the middle of the picture. */
 .world{position:fixed;inset:0;z-index:0;pointer-events:none;background:var(--ink) url(film/poster.jpg) center/cover no-repeat}
 .world canvas{position:absolute;inset:0;width:100%;height:100%;display:block;filter:saturate(.82) contrast(.95)}
-.world::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,rgba(11,13,17,.8) 0,rgba(11,13,17,.58) 36%,rgba(11,13,17,.24) 62%,rgba(11,13,17,.24) 100%),linear-gradient(180deg,rgba(11,13,17,.5) 0,rgba(11,13,17,0) 15%,rgba(11,13,17,0) 74%,rgba(11,13,17,.6) 100%),linear-gradient(rgba(9,11,16,.28),rgba(9,11,16,.28))}
+.world::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,rgba(11,13,17,.8) 0,rgba(11,13,17,.58) 36%,rgba(11,13,17,.24) 62%,rgba(11,13,17,.24) 100%),linear-gradient(180deg,rgba(11,13,17,.5) 0,rgba(11,13,17,0) 15%,rgba(11,13,17,0) 74%,rgba(11,13,17,.6) 100%),linear-gradient(rgba(9,11,16,.36),rgba(9,11,16,.36))}
 /* phone: the copy spans the whole width, so the shade is even across it (a little deeper under the text) */
 @media (max-width:759px) and (orientation:portrait){
   .world{background-image:url(film/poster-m.jpg)}
-  .world::after{background:linear-gradient(270deg,rgba(11,13,17,.62) 0,rgba(11,13,17,.5) 100%),linear-gradient(180deg,rgba(11,13,17,.45) 0,rgba(11,13,17,0) 16%,rgba(11,13,17,0) 70%,rgba(11,13,17,.6) 100%)}
+  .world::after{background:linear-gradient(270deg,rgba(11,13,17,.68) 0,rgba(11,13,17,.57) 100%),linear-gradient(180deg,rgba(11,13,17,.45) 0,rgba(11,13,17,0) 16%,rgba(11,13,17,0) 70%,rgba(11,13,17,.6) 100%)}
 }
 main,.foot{position:relative;z-index:1}
 html:not(.has-film) .dark,html:not(.has-film) .light{background:var(--ink)}
@@ -196,16 +202,15 @@ html.has-film .hold-b::after{content:"";display:block;height:var(--hold,0px)}
 .hero-stick{min-height:100svh;display:flex;flex-direction:column}
 .hero-in{position:relative;z-index:2;flex:1;width:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding-top:120px;padding-bottom:clamp(40px,7vh,84px)}
 .hero-in > div{max-width:760px}
-.hero .lede{max-width:30em}
+.hero .lede{max-width:27em;text-wrap:pretty;margin-top:24px}
 @media (min-width:768px){h1 span{white-space:nowrap}}
 h1 span{display:block}
 .proof{position:relative;z-index:2}
-.proof .wrap{border-top:1px solid var(--line)}
 /* the facts as an instrument row: hairline-divided readings, the value light and large, the label small below */
-.proof ul{list-style:none;margin:0;padding:22px 0 30px;display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:14px 0;font-size:13.5px;color:var(--fg-2)}
-.proof li{padding-inline:0 36px}
-.proof li + li{padding-inline-start:36px;border-inline-start:1px solid var(--line)}
-.proof b{display:block;font-weight:300;font-size:24px;letter-spacing:-.015em;color:var(--fg);margin-bottom:3px}
+.proof ul{list-style:none;margin:0;padding:24px 0 34px;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:14px 0;font-size:12.5px;letter-spacing:.01em;color:var(--fg-3)}
+.proof li{padding-inline:0 40px}
+.proof li + li{padding-inline-start:40px;border-inline-start:1px solid var(--line)}
+.proof b{display:block;font-weight:200;font-size:30px;letter-spacing:-.03em;color:var(--fg);margin-bottom:6px;font-variant-numeric:tabular-nums}
 
 /* ===== 2. flood: small, quiet notifications ===== */
 .flood-stage{position:relative;height:520px;width:min(100%,360px)}
@@ -421,7 +426,7 @@ h1 span{display:block}
   .acts .btn{flex:1 1 100%}
   .hero-in{padding-top:96px}
   .proof ul{gap:14px 28px;font-size:13px;padding-bottom:22px}
-  .proof b{font-size:18px}
+  .proof b{font-size:22px}
   .proof ul{padding-bottom:84px} /* clear of the accessibility and Kobi buttons in the bottom corners */
   .hero-in{padding-bottom:28px}
   .flood-stage{height:520px;margin-top:48px}
@@ -512,7 +517,7 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
       <h1 id="h1"><span>כל ההסעות של השבוע.</span><span><b>בחמש דקות<i class="dot">.</i></b></span></h1>
       <p class="lede">העובדים נרשמים באפליקציה, המערכת מקבצת לנסיעות משותפות, ואתם מאשרים ושולחים לחברת ההסעות שלכם.</p>
       <div class="acts">
-        <a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
+        <a class="btn has-ic" href="#contact">לתיאום הדגמה<span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></span></a>
         <a class="btn ghost" href="#night">איך זה עובד</a>
       </div>
     </div>
@@ -783,8 +788,8 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
      it carries (a fifth to under half a screen), at a top that puts its copy ([data-hold]) in the middle of the screen
      below the bar. The page is longer by exactly the holds; the film's pace() reads the new heights. Off under reduced motion. */
   // How much it slows comes from how much there is to read: the copy in full, the mockups' small text a little (t, 0..1).
-  // The block then moves at (1 - k) of the scroll speed at its slowest, k from .6 (a line) to .92 (a full block), and the
-  // page gains --hold (from 0.22 to 0.74 of a screen) for it. It never stops. The zone is set so the block is at its
+  // The block then moves at (1 - k) of the scroll speed at its slowest, k from .65 (a line) to .93 (a full block), and the
+  // page gains --hold (from 0.25 to 0.8 of a screen) for it. It never stops. The zone is set so the block is at its
   // slowest exactly as it crosses the middle of the screen. A scene reads as its .wrap (centred on its [data-hold] copy),
   // the hero as its first screen, a .hold-b as its .hb.
   var READS = [], SDA = !!(window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()'));
@@ -799,7 +804,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
       var wr = w.getBoundingClientRect(), t0 = Infinity, b0 = -Infinity, copy = 0;
       parts.forEach(function(p){ var r = p.getBoundingClientRect(); t0 = Math.min(t0, r.top - wr.top); b0 = Math.max(b0, r.bottom - wr.top); copy += len(p); });
       var t = Math.min(1, (copy + Math.max(0, len(w) - copy) * .25) / 420);
-      var k = .6 + .32 * t, H = Math.round(vh * (.22 + .52 * t)); // slowest: from 40% of the scroll speed (a line) to 8% (a full block)
+      var k = .65 + .28 * t, H = Math.round(vh * (.25 + .55 * t)); // slowest: from 35% of the scroll speed (a line) to 7% (a full block)
       box.style.setProperty('--hold', H + 'px'); w.style.setProperty('--hy', H + 'px');
       READS.push({ w: w, rel: (t0 + b0) / 2, H: H, k: k, fade: hero ? 'readfade-out' : box.id === 'contact' ? 'readfade-in' : 'readfade' });
     });
@@ -846,7 +851,8 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
     function start(M){
       var ctx = canvas.getContext('2d', { alpha: false }), N = M.n,
           portrait = innerWidth < 760 && innerHeight > innerWidth, fine = matchMedia('(pointer: fine)').matches,
-          base = 'film/' + (portrait ? 'm' : 'd') + '/', imgs = new Array(N), asked = new Uint8Array(N), bmps = new Map(), decoding = {},
+          base = 'film/' + (portrait ? 'm' : 'd') + '/', blobs = new Array(N), asked = new Uint8Array(N), bmps = new Map(), decoding = {}, dec = 0,
+          AHEAD = 16, BEHIND = 6, KEEP = 22, MAXDEC = 3,
           cur = 0, target = 0, last = 0, drawn = '', inflight = 0, anchors = [], raf = 0, dir = 1,
           TAU = fine ? 70 : 120, MAXIN = portrait ? 4 : 6;
       function shotFrame(spec){ var p = String(spec).split('@'), s = M.shots[p[0]]; return s ? s[0] + Math.round((+p[1] || 0) * (s[1] - 1)) : null; }
@@ -908,29 +914,43 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
         }
         return best;
       }
+      // frames arrive as compressed files (a few dozen KB each, kept) and are decoded only near the playhead
       function pump(){
         while (inflight < MAXIN){
           var i = pick(); if (i < 0) return;
           asked[i] = 1; inflight++;
           (function(i){
-            var img = new Image(); img.decoding = 'async';
-            img.onload = function(){ imgs[i] = img; inflight--; if (Math.abs(i - cur) < 3){ drawn = ''; wake(); } pump(); };
-            img.onerror = function(){ inflight--; pump(); };
-            img.src = base + ('000' + (i + 1)).slice(-4) + '.webp';
+            fetch(base + ('000' + (i + 1)).slice(-4) + '.webp').then(function(r){ return r.ok ? r.blob() : Promise.reject(r.status); })
+              .then(function(b){ blobs[i] = b; inflight--; if (Math.abs(i - cur) <= KEEP) keep(Math.round(cur)); pump(); })
+              .catch(function(){ inflight--; pump(); });
           })(i);
         }
       }
-      // decoded bitmaps just ahead of the playhead (in the scroll direction), so drawing never waits on a decode
-      function keep(c){
-        var lo = Math.max(0, c - (dir < 0 ? 24 : 8)), hi = Math.min(N - 1, c + (dir > 0 ? 24 : 8));
-        for (var i = lo; i <= hi; i++){
-          if (!imgs[i] || bmps.has(i) || decoding[i] || !window.createImageBitmap) continue;
-          decoding[i] = 1;
-          (function(i){ createImageBitmap(imgs[i]).then(function(b){ delete decoding[i]; if (Math.abs(i - cur) > 40){ b.close(); return; } bmps.set(i, b); if (Math.abs(i - cur) < 2){ drawn = ''; wake(); } }).catch(function(){ delete decoding[i]; }); })(i);
-        }
-        bmps.forEach(function(b, k){ if (Math.abs(k - c) > 40){ b.close(); bmps.delete(k); } });
+      // Weight: decoding happens off the main thread (createImageBitmap from the file, not from an <img>, which decodes
+      // on the main thread and froze the page for most of a second as it opened), a few at a time, and only a short
+      // window of decoded frames is held (ahead of the playhead in the scroll direction), so memory stays bounded on
+      // phones (a decoded frame is 2-4 MB; holding every frame crashed mobile browsers).
+      function decodeFrame(blob){
+        if (window.createImageBitmap) return createImageBitmap(blob);
+        return new Promise(function(res, rej){ var u = URL.createObjectURL(blob), im = new Image(); im._u = u; im.onload = function(){ res(im); }; im.onerror = function(){ URL.revokeObjectURL(u); rej(); }; im.src = u; });
       }
-      function nearest(i){ for (var d = 0; d < N; d++){ if (imgs[i - d]) return i - d; if (imgs[i + d]) return i + d; } return -1; }
+      function release(f){ if (f.close) f.close(); else if (f._u){ URL.revokeObjectURL(f._u); f.src = ''; } }
+      function keep(c){
+        for (var d = 0; d <= AHEAD && dec < MAXDEC; d++){
+          for (var s = 0; s < (d && d <= BEHIND ? 2 : 1) && dec < MAXDEC; s++){
+            var i = c + (s ? -dir : dir) * d;
+            if (i < 0 || i >= N || !blobs[i] || bmps.has(i) || decoding[i]) continue;
+            decoding[i] = 1; dec++;
+            (function(i){ decodeFrame(blobs[i]).then(function(f){
+              delete decoding[i]; dec--;
+              if (Math.abs(i - cur) > KEEP) release(f); else { bmps.set(i, f); if (Math.abs(i - cur) < 2){ drawn = ''; wake(); } }
+              keep(Math.round(cur));
+            }).catch(function(){ delete decoding[i]; dec--; }); })(i);
+          }
+        }
+        bmps.forEach(function(f, k){ if (Math.abs(k - c) > KEEP){ release(f); bmps.delete(k); } });
+      }
+      function nearest(i){ for (var d = 0; d <= KEEP * 3; d++){ if (bmps.has(i - d)) return i - d; if (bmps.has(i + d)) return i + d; } return -1; }
       function blit(src, alpha){
         var w = src.width || src.naturalWidth, h = src.height || src.naturalHeight, cw = canvas.width, ch = canvas.height, s = Math.max(cw / w, ch / h);
         ctx.globalAlpha = alpha; ctx.drawImage(src, (cw - w * s) / 2, (ch - h * s) / 2, w * s, h * s); ctx.globalAlpha = 1;
@@ -938,10 +958,10 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
       // the frame under the playhead, with the next one blended in by the fraction between them
       function draw(){
         var i = Math.floor(cur), t = cur - i, a = nearest(i); if (a < 0) return;
-        var b = a === i && t > .03 && imgs[i + 1] ? i + 1 : -1, q = b < 0 ? 0 : Math.round(t * 20) / 20, key = a + ':' + q;
+        var b = a === i && t > .03 && bmps.has(i + 1) ? i + 1 : -1, q = b < 0 ? 0 : Math.round(t * 20) / 20, key = a + ':' + q;
         if (key === drawn) return; drawn = key;
-        blit(bmps.get(a) || imgs[a], 1);
-        if (b >= 0 && q > 0) blit(bmps.get(b) || imgs[b], q);
+        blit(bmps.get(a), 1);
+        if (b >= 0 && q > 0) blit(bmps.get(b), q);
       }
       function tick(now){
         raf = 0; var dt = last ? Math.min(64, now - last) : 16; last = now;
@@ -1310,7 +1330,14 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
 (function(){
   function add(src, next){ var s = document.createElement('script'); s.src = src; s.async = false; if (next) s.onload = next; document.body.appendChild(s); }
   function go(){ add('https://cdn.botpress.cloud/webchat/v5.0/inject.js', function(){ add('https://files.bpcontent.cloud/2026/10/21/21/20261021210632-WAPRBUU7.js'); }); }
-  function later(){ if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 4000 }); else setTimeout(go, 1500); }
+  // and only once the visitor has paused scrolling for a moment: on a phone its setup is over half a second of work,
+  // which landing mid-scroll made the page stutter
+  function later(){
+    var t, done = false;
+    function arm(){ clearTimeout(t); t = setTimeout(fire, 1500); }
+    function fire(){ if (done) return; done = true; removeEventListener('scroll', arm); if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 3000 }); else go(); }
+    addEventListener('scroll', arm, { passive: true }); setTimeout(arm, 1500);
+  }
   if (document.readyState === 'complete') later(); else addEventListener('load', later);
 })();
 </script>
