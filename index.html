@@ -38,7 +38,7 @@
 <link rel="preload" href="film/poster.jpg" as="image" media="(min-width:760px), (orientation:landscape)">
 <link rel="preload" href="film/poster-m.jpg" as="image" media="(max-width:759px) and (orientation:portrait)">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500&family=Heebo:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
 /* ===== Design system (v3): quiet, precise type over the film. One place for every token. ===== */
 :root{
@@ -48,6 +48,7 @@
   --panel:rgba(14,17,22,.78); --panel-solid:#12151B;
   --signal:#FFB000; --ok:#7FD3A2; --ok-bg:rgba(127,211,162,.12); --wait:#F2C46B; --wait-bg:rgba(242,196,107,.12); --alert:#E5544E;
   --sans:Heebo,"IBM Plex Sans Hebrew",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --serif:"Frank Ruhl Libre","David Libre",Georgia,serif;
   --gut:clamp(20px,5vw,88px); --wrap:1360px; --col:500px;
   --s1:8px; --s2:16px; --s3:24px; --s4:40px; --s5:64px; --s6:120px;
   --r-sm:10px; --r-md:14px; --r-lg:20px;
@@ -81,6 +82,15 @@ h1{font-size:clamp(40px,5.2vw,78px);line-height:1.02;letter-spacing:-.03em}
 h2{font-size:clamp(30px,3.1vw,46px);line-height:1.1;letter-spacing:-.022em}
 h1 b,h2 b,h2 em{font-weight:500;font-style:normal;color:var(--fg)}
 h1 .dot{font-style:normal;color:var(--signal)} /* the one touch of amber in the headline, like the colon of the 22:45 clock */
+/* two voices: Heebo explains; the serif (Frank Ruhl Libre) speaks only at the peaks of the night – the opening line,
+   the two centred moments, the calculator's answer and the last line. Serif display sits a step lighter and looser. */
+h1,.moment h2,.calc-big,.coda,.qclock{font-family:var(--serif);font-weight:300;letter-spacing:-.012em}
+.qclock b{font-weight:300}
+h1{line-height:1.06}
+h1 b,.moment h2 b{font-weight:500}
+/* the centred moments: the copy leaves its column and stands in the middle of the picture */
+.moment{text-align:center;margin-inline:auto}
+.moment h2{font-size:clamp(42px,5.6vw,84px);line-height:1.04}
 /* small text over the film reads at 400; the display sizes stay light */
 .proof ul,.facts,.results span,.quote figcaption,.story,.sig small,.wa,.legal,.foot,.faq p,.ntf,.scr,.lscr,.reqs li,.rides small,.chips li,.nclock,.unread,.calm p,.push p,.toast{font-weight:400}
 .lede{font-size:17px;line-height:1.7;color:var(--fg-2);max-width:31em;margin:20px 0 0}
@@ -211,9 +221,9 @@ h1 span{display:block}
 .tag.wait{background:var(--wait-bg);color:var(--wait);border-color:rgba(242,196,107,.28)}
 
 /* ===== 3. phone: dark app ===== */
-.phone{width:280px;height:580px;border-radius:44px;background:#07080B;padding:10px;box-shadow:0 40px 80px -40px rgba(0,0,0,.8),inset 0 0 0 1px rgba(243,241,236,.1);position:relative}
+.phone{width:280px;height:580px;border-radius:44px;background:rgba(7,8,11,.82);padding:10px;box-shadow:0 40px 80px -40px rgba(0,0,0,.8),inset 0 0 0 1px rgba(243,241,236,.1);position:relative}
 .phone::before{content:"";position:absolute;top:20px;left:50%;width:84px;height:24px;border-radius:13px;background:#000;transform:translateX(-50%);z-index:2}
-.scr{height:100%;border-radius:35px;background:var(--panel-solid);color:var(--fg);overflow:hidden;padding:54px 16px 16px;display:flex;flex-direction:column;gap:10px;font-size:12.5px}
+.scr{height:100%;border-radius:35px;background:rgba(18,21,27,.86);color:var(--fg);overflow:hidden;padding:54px 16px 16px;display:flex;flex-direction:column;gap:10px;font-size:12.5px}
 .scr .top{display:flex;justify-content:space-between;align-items:center}
 .scr .hi{font-weight:400;font-size:19px;letter-spacing:-.01em}
 .scr .av{width:30px;height:30px;border-radius:50%;background:#2B3442;color:#fff;display:grid;place-items:center;font-weight:500;font-size:12px}
@@ -251,8 +261,8 @@ h1 span{display:block}
 
 /* ===== 5. dashboard: dark product UI ===== */
 .desk{position:relative;width:min(100%,600px)}
-.laptop{background:#07080B;border-radius:16px 16px 6px 6px;padding:10px 10px 14px;box-shadow:0 40px 80px -40px rgba(0,0,0,.8),inset 0 0 0 1px rgba(243,241,236,.08)}
-.lscr{background:var(--panel-solid);color:var(--fg);border-radius:8px;overflow:hidden;font-size:12.5px}
+.laptop{background:rgba(7,8,11,.82);border-radius:16px 16px 6px 6px;padding:10px 10px 14px;box-shadow:0 40px 80px -40px rgba(0,0,0,.8),inset 0 0 0 1px rgba(243,241,236,.08)}
+.lscr{background:rgba(18,21,27,.86);color:var(--fg);border-radius:8px;overflow:hidden;font-size:12.5px}
 .lbar{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--line)}
 .lbar .who{display:flex;gap:8px;align-items:center;color:var(--fg-3)}
 .lbar .who i{width:24px;height:24px;border-radius:50%;background:var(--ink-3);color:var(--fg);font-style:normal;display:grid;place-items:center;font-size:11px}
@@ -277,8 +287,11 @@ h1 span{display:block}
 
 /* ===== 6. quiet ===== */
 /* one reading column on the shaded side: the clock, the line, then the results and the pilot's words */
-.quiet .split{grid-template-columns:minmax(0,560px);gap:var(--s5);align-items:start}
-.quiet .split > :last-child{justify-self:stretch}
+/* the first centred moment: the clock and the line stand in the middle; the results return to the reading column */
+.quiet .split{grid-template-columns:minmax(0,1fr);gap:var(--s6);align-items:start}
+.quiet .split > :first-child{justify-self:center}
+.quiet .split > :last-child{justify-self:start;width:min(100%,560px)}
+.quiet .moment .qclock{text-align:center;margin-bottom:32px}
 .qclock{font-weight:200;font-size:clamp(76px,8vw,128px);line-height:.85;letter-spacing:-.05em;direction:ltr;text-align:right;margin:0 0 28px}
 .qclock b{font-weight:200;color:var(--signal)}
 .results{list-style:none;margin:0;padding:0;width:min(100%,520px)}
@@ -297,8 +310,38 @@ h1 span{display:block}
 /* each beat carries data-film: the film reaches that moment as the beat comes up, and pace() sets the room between beats */
 #gate > .beats{display:flex;flex-direction:column;padding-block:clamp(72px,14vh,160px)}
 .gate .beat{max-width:var(--col)}
+.gate .beat.moment{max-width:none;align-self:center}
 .gate .beat + .beat{margin-top:var(--s6)}
 .say{margin:10px 0 0;font-weight:300;font-size:clamp(24px,2.4vw,34px);line-height:1.2;letter-spacing:-.02em;color:var(--fg)}
+
+/* ===== 6b. calculator: the question in the reading column, the answer standing large in the picture ===== */
+.calc .split{align-items:center}
+.calc .split > :last-child{justify-self:center}
+.calc-line{margin:28px 0 0;font-size:clamp(21px,2vw,28px);line-height:1.75;font-weight:300;color:var(--fg);max-width:21em}
+.calc-opt{margin-top:14px;font-size:clamp(17px,1.4vw,20px);color:var(--fg-2)}
+.calc-opt .opt{color:var(--fg-3);font-size:.8em}
+.ci{display:inline-block;position:relative;margin:0 .15em}
+.ci input{width:3.2ch;padding:0 .1em 2px;border:0;border-bottom:1px solid rgba(255,176,0,.6);border-radius:0;background:transparent;
+  color:#FFD27A;font:inherit;font-weight:400;text-align:center;-moz-appearance:textfield;appearance:textfield;
+  transition:border-color .3s var(--ease-out),background .3s var(--ease-out)}
+.ci input::-webkit-outer-spin-button,.ci input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.ci input::placeholder{color:rgba(255,210,122,.5)}
+.ci input:hover{border-bottom-color:var(--signal);background:rgba(255,176,0,.06)}
+.ci input:focus{outline:none;border-bottom-color:var(--signal);background:rgba(255,176,0,.1)}
+.ci input:focus-visible{outline:2px solid var(--signal);outline-offset:4px;border-radius:4px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.calc-note{margin:32px auto 0;padding-top:18px;border-top:1px solid var(--line);max-width:34em;font-size:13px;line-height:1.75;font-weight:400;color:var(--fg-3);text-align:center}
+.calc-out{text-align:center}
+.calc-big{margin:0;font-size:clamp(104px,12vw,188px);line-height:.92;color:var(--fg)}
+.calc-big b{font-weight:300;color:var(--signal)}
+.calc-sub{margin:14px 0 0;font-size:17px;font-weight:400;color:var(--fg-2)}
+.calc-sub b{font-weight:500;color:var(--fg)}
+.calc-money{margin:6px 0 0;font-size:17px;font-weight:400;color:var(--fg-2)}
+.calc-money b{font-weight:500;color:#FFD27A}
+.calc-out .acts{justify-content:center;margin-top:30px}
+/* the last line: the night closes where the form begins */
+.coda{margin:0 0 22px;font-size:clamp(20px,1.8vw,26px);line-height:1.3;color:var(--fg-2)}
+.coda .num{font-family:var(--sans);font-size:.62em;font-weight:400;letter-spacing:.16em;color:var(--signal);margin-left:.6em;vertical-align:.2em}
 
 /* ===== 8. faq ===== */
 .faq{max-width:640px}
@@ -570,7 +613,7 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 <!-- 6 · 22:45 QUIET -->
 <section class="scene light quiet" id="quiet" data-film="S6" data-time="22:45" aria-labelledby="h2-quiet">
   <div class="wrap split">
-    <div class="hold-b"><div class="hb">
+    <div class="hold-b"><div class="hb moment">
       <p class="qclock num" aria-hidden="true">22<b>:</b>45</p>
       <h2 id="h2-quiet">0 הודעות.<br><b>ההסעות של מחר סגורות.</b></h2>
     </div></div>
@@ -588,12 +631,30 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
   </div>
 </section>
 
+<!-- 6b · THE CALCULATOR: an estimate of the manager's time, its assumptions in plain sight (no promised savings) -->
+<section class="scene calc" id="calc" aria-labelledby="h2-calc">
+  <div class="wrap split">
+    <div class="calc-q">
+      <h2 id="h2-calc">כמה מהשבוע<br><b>חוזר אליכם?</b></h2>
+      <p class="calc-line">יש לנו <label class="ci"><span class="sr">מספר עובדי המשמרות</span><input id="c-emp" class="num" type="number" inputmode="numeric" min="1" max="5000" step="1" value="45"></label> עובדי משמרות, ומי שמסדר את ההסעות משקיע בזה <label class="ci"><span class="sr">שעות בשבוע על סידור ההסעות</span><input id="c-hrs" class="num" type="number" inputmode="decimal" min="0" max="40" step="0.5" value="2"></label> שעות בשבוע.</p>
+      <p class="calc-line calc-opt">שעת עבודה שלו עולה <label class="ci"><span class="sr">עלות שעת עבודה בשקלים, לא חובה</span><input id="c-cost" class="num" type="number" inputmode="numeric" min="0" max="2000" step="5" placeholder="–"></label> ₪ <span class="opt">(לא חובה)</span></p>
+    </div>
+    <div class="calc-out" aria-live="polite" aria-atomic="true">
+      <p class="calc-big num" dir="ltr"><span id="c-h">1</span><b>:</b><span id="c-m">55</span></p>
+      <p class="calc-sub" id="c-sub">שעות בשבוע חוזרות אליכם · כ-<b class="num" id="c-year">92</b> שעות בשנה</p>
+      <p class="calc-money" id="c-money" hidden>כ-<b class="num" id="c-money-v"></b> ₪ בשנה של זמן עבודה</p>
+      <div class="acts"><a class="btn" href="#contact" id="c-go">לתיאום הדגמה עם החישוב<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div>
+      <p class="calc-note">הערכה בלבד, לא התחייבות. מה הנחנו: אחרי ההטמעה נשארים רק אישור ושליחה של ההזמנה. בפיילוט, מוקד עם 45 עובדי משמרות, זה ירד משעתיים ויותר ל-5 דקות בשבוע, ולכן הערכנו כ-5 דקות לכל 45 עובדים, ו-48 שבועות עבודה בשנה. הסכום בשקלים הוא רק זמן העבודה לפי העלות שהזנתם. לא כללנו חיסכון בעלות המוניות עצמן, שתלוי בארגון.</p>
+    </div>
+  </div>
+</section>
+
 <!-- 7 · 01:00 THE GATE -->
 <section class="gate dark" id="gate" data-film="S7" data-time="01:00" aria-labelledby="h2-gate">
   <div class="wrap beats">
     <div class="beat hold-b" data-film="S7@.1"><div class="hb"><p class="say">נועה סיימה משמרת.</p></div></div>
     <div class="beat hold-b" data-film="BR@.5"><div class="hb"><p class="say">המונית שלה הוזמנה ביום חמישי, ב-22:43.</p></div></div>
-    <div class="beat hold-b" data-film="S8@.5"><div class="hb"><h2 id="h2-gate">המונית<br><b>כבר בשער.</b></h2></div></div>
+    <div class="beat hold-b moment" data-film="S8@.5"><div class="hb"><h2 id="h2-gate">המונית<br><b>כבר בשער.</b></h2></div></div>
     <div class="beat hold-b" data-film="S8@.72"><div class="hb"><p class="lede">ולא שלחה אף הודעה.</p>
       <div class="acts"><a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div></div></div>
   </div>
@@ -618,6 +679,7 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 <section class="scene light contact hold" id="contact" aria-labelledby="h2-contact" style="min-height:0;padding-top:24px">
   <div class="wrap split">
     <div data-hold>
+      <p class="coda"><span class="num">01:00</span> השבוע הבא כבר סגור.</p>
       <h2 id="h2-contact">רוצים לראות איך זה<br><b>ייראה אצלכם?</b></h2>
       <p class="lede">השאירו פרטים, ונציג מטעמנו יחזור אליכם לתיאום הדגמה קצרה.</p>
       <p class="story">ניהלתי מוקד משמרות, וסידור ההסעות היה עליי: וואטסאפ, אקסל ובדיקה אחרונה בעשר בלילה. לא מצאתי מערכת שעושה את זה, אז בניתי.</p>
@@ -949,6 +1011,45 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
     if (t) setClock(t); }
   addEventListener('scroll', function(){ if (!clockRaf) clockRaf = requestAnimationFrame(syncClock); }, { passive: true }); syncClock();
 
+  /* ---------- the calculator: an estimate from the pilot, its assumptions printed beside it ----------
+     After: about 5 minutes a week per 45 employees (the pilot: 45 employees, 2h+ down to 5 min), never less than 5.
+     Saved: what they spend now minus that, 48 working weeks a year; money only from the hourly cost they enter. */
+  (function calc(){
+    var emp = $('#c-emp'), hrs = $('#c-hrs'), cost = $('#c-cost'); if (!emp) return;
+    var H = $('#c-h'), Mi = $('#c-m'), yr = $('#c-year'), sub = $('#c-sub'), money = $('#c-money'), mv = $('#c-money-v'), shown = 115, tw = 0;
+    var fmt = new Intl.NumberFormat('he-IL', { maximumFractionDigits: 0 });
+    function val(el, lo, hi){ var v = parseFloat(el.value); return isFinite(v) ? Math.min(hi, Math.max(lo, v)) : NaN; }
+    function fit(el){ el.style.width = Math.max(2.2, String(el.value || el.placeholder).length + 1.2) + 'ch'; }
+    function paint(min){ var m = Math.round(min); H.textContent = Math.floor(m / 60); Mi.textContent = ('0' + m % 60).slice(-2); }
+    function run(){
+      var e = val(emp, 1, 5000), h = val(hrs, 0, 40), c = val(cost, 0, 2000);
+      if (!(e > 0)) e = 45; if (!(h >= 0)) h = 0;
+      var after = Math.max(5, 5 * e / 45), saved = Math.max(0, h * 60 - after), year = saved * 48 / 60;
+      yr.textContent = fmt.format(year);
+      sub.innerHTML = saved > 0 ? 'שעות בשבוע חוזרות אליכם · כ-<b class="num" id="c-year">' + fmt.format(year) + '</b> שעות בשנה'
+                                : 'לפי מה שהזנתם, הסידור אצלכם כבר קצר. נשמח להראות מה עוד המערכת עושה.';
+      yr = $('#c-year') || yr;
+      money.hidden = !(c > 0 && saved > 0); if (!money.hidden) mv.textContent = fmt.format(Math.round(year * c / 10) * 10);
+      // the answer turns over to its new value (a short count; immediate under reduced motion)
+      var from = shown, to = saved, t0 = 0; shown = to; cancelAnimationFrame(tw);
+      if (REDUCE){ paint(to); return; }
+      (function step(t){ if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 420), k = 1 - Math.pow(1 - p, 3); paint(from + (to - from) * k); if (p < 1) tw = requestAnimationFrame(step); })(performance.now());
+    }
+    [emp, hrs, cost].forEach(function(el){
+      fit(el);
+      el.addEventListener('input', function(){ fit(el); run(); });
+      el.addEventListener('blur', function(){ var lo = +el.min, hi = +el.max, v = parseFloat(el.value); if (isFinite(v)) el.value = Math.min(hi, Math.max(lo, v)); else if (el !== cost) el.value = el.defaultValue; fit(el); run(); });
+      el.addEventListener('keydown', function(ev){ if (ev.key === 'Enter') el.blur(); });
+    });
+    run();
+    // the call to action carries the numbers into the form (the same fields Make already receives)
+    $('#c-go').addEventListener('click', function(){
+      var e = val(emp, 1, 5000), h = val(hrs, 0, 40), c = val(cost, 0, 2000), size = $('#f-size'), notes = $('#f-notes');
+      if (size && e > 0) size.value = e <= 50 ? 'עד 50' : e <= 200 ? '50-200' : e <= 500 ? '200-500' : '500+';
+      if (notes && !notes.value.trim()) notes.value = 'מהמחשבון: ' + e + ' עובדי משמרות, ' + h + ' שעות בשבוע על סידור ההסעות' + (c > 0 ? ', שעת עבודה ' + c + ' ₪' : '') + '.';
+    });
+  })();
+
   /* ---------- grouping board (built for every mode) ---------- */
   var REQ = [['דנה','רמת גן',0],['מיכל','חולון',1],['יוסי','תל אביב',2],['אבי','רמת גן',0],['שירן','בת ים',3],['עומר','חולון',1],['נועה','רמת גן',0],
              ['ליאור','תל אביב',2],['תמר','בת ים',3],['רון','רמת גן',0],['גל','חולון',1],['עדי','תל אביב',2],['מאיה','בת ים',3],['איתי','תל אביב',2]];
@@ -1116,7 +1217,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
   // 22:41 · the app loop (2.5–4 s cycle, pauses off screen)
   var ptag = $('#ptag'), pt = $('#pstatus-t'), pbtn = $('#pbtn'), pstatus = $('#pstatus');
   function setTag(cls, txt){ return function(){ ptag.className = 'tag ' + cls; ptag.textContent = txt; }; }
-  var app = G.timeline({ repeat: 2, repeatDelay: .8, paused: true }); // three cycles, then it rests on the final state
+  var app = G.timeline({ paused: true }); // plays once as the scene comes in, then rests on the final state
   app.set(pstatus, { autoAlpha: 0, y: 14 }).call(setTag('', 'נקלטה'))
      .to(pbtn, { scale: .96, duration: .12, ease: 'power2.out' }, .4).to(pbtn, { scale: 1, duration: .25, ease: 'expo.out' })
      .to(pstatus, { autoAlpha: 1, y: 0, duration: .45, ease: 'expo.out' }, .6)
@@ -1153,7 +1254,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
   // 22:43 · dashboard loop
   var dtags = $$('.dt'), dcopy = $('#dcopy'), ddone = $('#ddone'), dtoast = $('#dtoast'), dpush = $('#dpush'), dpend = $('#dpend');
   function tags(cls, txt){ return function(){ dtags.forEach(function(t){ t.className = 'tag dt ' + cls; t.textContent = txt; }); }; }
-  var desk = G.timeline({ repeat: 2, repeatDelay: 1, paused: true });
+  var desk = G.timeline({ paused: true }); // once, then it rests on the final state
   desk.set([dtoast, dpush], { autoAlpha: 0, y: 12 }).call(tags('', 'ממתין')).call(function(){ dpend.textContent = '10'; })
       .call(function(){ dcopy.classList.add('press'); }, null, .5).call(function(){ dcopy.classList.remove('press'); }, null, .8)
       .to(dtoast, { autoAlpha: 1, y: 0, duration: .4, ease: 'expo.out' }, .8)
