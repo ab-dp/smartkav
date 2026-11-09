@@ -38,17 +38,18 @@
 <link rel="preload" href="film/poster.jpg" as="image" media="(min-width:760px), (orientation:landscape)">
 <link rel="preload" href="film/poster-m.jpg" as="image" media="(max-width:759px) and (orientation:portrait)">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500&family=Heebo:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@100;200;300;400;500&display=swap" rel="stylesheet">
 <style>
 /* ===== Design system (v3): quiet, precise type over the film. One place for every token. ===== */
 :root{
   --ink:#0B0D11; --ink-2:#12151B; --ink-3:#1A1E26;
   --fg:#F3F1EC; --fg-2:rgba(243,241,236,.8); --fg-3:rgba(243,241,236,.62);
-  --line:rgba(243,241,236,.12); --line-2:rgba(243,241,236,.2);
-  --panel:rgba(14,17,22,.78); --panel-solid:#12151B;
+  /* the night's two temperatures: warm ivory type and amber light, against hairlines and panels with a breath of
+     night-sky blue in them */
+  --line:rgba(218,226,240,.12); --line-2:rgba(218,226,240,.22);
+  --panel:rgba(13,16,22,.8); --panel-solid:#11141A;
   --signal:#FFB000; --ok:#7FD3A2; --ok-bg:rgba(127,211,162,.12); --wait:#F2C46B; --wait-bg:rgba(242,196,107,.12); --alert:#E5544E;
-  --sans:Heebo,"IBM Plex Sans Hebrew",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
-  --serif:"Frank Ruhl Libre","David Libre",Georgia,serif;
+  --sans:"IBM Plex Sans Hebrew",Heebo,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
   --gut:clamp(20px,5vw,88px); --wrap:1360px; --col:500px;
   --s1:8px; --s2:16px; --s3:24px; --s4:40px; --s5:64px; --s6:120px;
   --r-sm:10px; --r-md:14px; --r-lg:20px;
@@ -76,17 +77,17 @@ b,strong{font-weight:500}
 .num{font-variant-numeric:tabular-nums}
 [hidden]{display:none!important}
 
-/* type: light display, one weight step for emphasis */
+/* type: one family (IBM Plex Sans Hebrew), precise and engineered. Headings are light with one medium step for emphasis;
+   the peaks of the night (the opening line, the two centred moments, the calculator's answer) go thinner and larger,
+   and the big clocks are hairline numerals, so the contrast of weight carries them, not a second face. */
 h1,h2,h3{margin:0;text-wrap:balance;font-weight:300}
-h1{font-size:clamp(40px,5.2vw,78px);line-height:1.02;letter-spacing:-.03em}
-h2{font-size:clamp(30px,3.1vw,46px);line-height:1.1;letter-spacing:-.022em}
+h1{font-size:clamp(40px,5.4vw,82px);line-height:1.04;letter-spacing:-.025em;font-weight:200}
+h2{font-size:clamp(30px,3.1vw,46px);line-height:1.12;letter-spacing:-.02em}
 h1 b,h2 b,h2 em{font-weight:500;font-style:normal;color:var(--fg)}
 h1 .dot{font-style:normal;color:var(--signal)} /* the one touch of amber in the headline, like the colon of the 22:45 clock */
-/* two voices: Heebo explains; the serif (Frank Ruhl Libre) speaks only at the peaks of the night – the opening line,
-   the two centred moments, the calculator's answer and the last line. Serif display sits a step lighter and looser. */
-h1,.moment h2,.calc-big,.coda,.qclock{font-family:var(--serif);font-weight:300;letter-spacing:-.012em}
-.qclock b{font-weight:300}
-h1{line-height:1.06}
+.moment h2,.coda{font-weight:200;letter-spacing:-.025em}
+.calc-big,.qclock{font-weight:100;letter-spacing:-.04em}
+.qclock b,.calc-big b{font-weight:100}
 h1 b,.moment h2 b{font-weight:500}
 /* the centred moments: the copy leaves its column and stands in the middle of the picture */
 .moment{text-align:center;margin-inline:auto}
@@ -110,9 +111,13 @@ h1 b,.moment h2 b{font-weight:500}
 .btn:hover svg{transform:translateX(-4px)}
 .form .btn{background:var(--signal);color:#14120D;box-shadow:0 14px 34px -16px rgba(255,176,0,.5)}
 .form .btn:hover{background:#FFC23D}
+/* the quiet member of the family: the same pill in ivory light, for the way in rather than the call */
+.btn.ghost{color:var(--fg);font-weight:400;background:linear-gradient(180deg,rgba(243,241,236,.08),rgba(243,241,236,.02)),rgba(11,13,17,.36);
+  box-shadow:inset 0 0 0 1px var(--line-2),inset 0 1px 0 rgba(243,241,236,.1),0 12px 32px -16px rgba(0,0,0,.7)}
+.btn.ghost:hover{background:rgba(243,241,236,.94);color:#14120D;box-shadow:inset 0 0 0 1px rgba(243,241,236,.94),0 14px 34px -16px rgba(243,241,236,.3)}
 .tlink{font-weight:400;text-decoration:none;color:var(--fg);background:linear-gradient(var(--line-2),var(--line-2)) 100% 100%/100% 1px no-repeat;padding-bottom:4px;transition:background-size var(--t-mid) var(--ease-out),color var(--t-fast)}
 .tlink:hover{background-image:linear-gradient(var(--fg),var(--fg))}
-.acts{display:flex;align-items:center;gap:28px;flex-wrap:wrap;margin-top:32px}
+.acts{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:34px}
 
 /* ===== nav: thin, the clock in the middle ===== */
 .nav{position:fixed;inset:0 0 auto;z-index:50;transition:background var(--t-mid),border-color var(--t-mid);border-bottom:1px solid transparent}
@@ -152,11 +157,11 @@ h1 b,.moment h2 b{font-weight:500}
    darker on the text side (right, RTL) and at the very top and bottom, clear in the middle of the picture. */
 .world{position:fixed;inset:0;z-index:0;pointer-events:none;background:var(--ink) url(film/poster.jpg) center/cover no-repeat}
 .world canvas{position:absolute;inset:0;width:100%;height:100%;display:block;filter:saturate(.82) contrast(.95)}
-.world::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,rgba(11,13,17,.8) 0,rgba(11,13,17,.56) 36%,rgba(11,13,17,.14) 62%,rgba(11,13,17,.18) 100%),linear-gradient(180deg,rgba(11,13,17,.5) 0,rgba(11,13,17,0) 15%,rgba(11,13,17,0) 74%,rgba(11,13,17,.6) 100%),linear-gradient(rgba(11,13,17,.1),rgba(11,13,17,.1))}
+.world::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,rgba(11,13,17,.8) 0,rgba(11,13,17,.56) 36%,rgba(11,13,17,.14) 62%,rgba(11,13,17,.18) 100%),linear-gradient(180deg,rgba(11,13,17,.5) 0,rgba(11,13,17,0) 15%,rgba(11,13,17,0) 74%,rgba(11,13,17,.6) 100%),linear-gradient(rgba(9,11,16,.17),rgba(9,11,16,.17))}
 /* phone: the copy spans the whole width, so the shade is even across it (a little deeper under the text) */
 @media (max-width:759px) and (orientation:portrait){
   .world{background-image:url(film/poster-m.jpg)}
-  .world::after{background:linear-gradient(270deg,rgba(11,13,17,.5) 0,rgba(11,13,17,.34) 100%),linear-gradient(180deg,rgba(11,13,17,.45) 0,rgba(11,13,17,0) 16%,rgba(11,13,17,0) 70%,rgba(11,13,17,.6) 100%)}
+  .world::after{background:linear-gradient(270deg,rgba(11,13,17,.54) 0,rgba(11,13,17,.38) 100%),linear-gradient(180deg,rgba(11,13,17,.45) 0,rgba(11,13,17,0) 16%,rgba(11,13,17,0) 70%,rgba(11,13,17,.6) 100%)}
 }
 main,.foot{position:relative;z-index:1}
 html:not(.has-film) .dark,html:not(.has-film) .light{background:var(--ink)}
@@ -195,8 +200,11 @@ html.has-film .hold-b::after{content:"";display:block;height:var(--hold,0px)}
 h1 span{display:block}
 .proof{position:relative;z-index:2}
 .proof .wrap{border-top:1px solid var(--line)}
-.proof ul{list-style:none;margin:0;padding:20px 0 30px;display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:12px 56px;font-size:14px;color:var(--fg-2)}
-.proof b{display:block;font-weight:400;font-size:21px;letter-spacing:-.01em;color:var(--fg);margin-bottom:2px}
+/* the facts as an instrument row: hairline-divided readings, the value light and large, the label small below */
+.proof ul{list-style:none;margin:0;padding:22px 0 30px;display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:14px 0;font-size:13.5px;color:var(--fg-2)}
+.proof li{padding-inline:0 36px}
+.proof li + li{padding-inline-start:36px;border-inline-start:1px solid var(--line)}
+.proof b{display:block;font-weight:300;font-size:24px;letter-spacing:-.015em;color:var(--fg);margin-bottom:3px}
 
 /* ===== 2. flood: small, quiet notifications ===== */
 .flood-stage{position:relative;height:520px;width:min(100%,360px)}
@@ -292,8 +300,8 @@ h1 span{display:block}
 .quiet .split > :first-child{justify-self:center}
 .quiet .split > :last-child{justify-self:start;width:min(100%,560px)}
 .quiet .moment .qclock{text-align:center;margin-bottom:32px}
-.qclock{font-weight:200;font-size:clamp(76px,8vw,128px);line-height:.85;letter-spacing:-.05em;direction:ltr;text-align:right;margin:0 0 28px}
-.qclock b{font-weight:200;color:var(--signal)}
+.qclock{font-weight:100;font-size:clamp(84px,9vw,144px);line-height:.85;letter-spacing:-.04em;direction:ltr;text-align:right;margin:0 0 28px}
+.qclock b{font-weight:100;color:var(--signal)}
 .results{list-style:none;margin:0;padding:0;width:min(100%,520px)}
 .results li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:var(--s3);padding:18px 0;border-top:1px solid var(--line);align-items:baseline}
 .results li:last-child{border-bottom:1px solid var(--line)}
@@ -333,7 +341,7 @@ h1 span{display:block}
 .calc-note{margin:32px auto 0;padding-top:18px;border-top:1px solid var(--line);max-width:34em;font-size:13px;line-height:1.75;font-weight:400;color:var(--fg-3);text-align:center}
 .calc-out{text-align:center}
 .calc-big{margin:0;font-size:clamp(104px,12vw,188px);line-height:.92;color:var(--fg)}
-.calc-big b{font-weight:300;color:var(--signal)}
+.calc-big b{font-weight:100;color:var(--signal)}
 .calc-sub{margin:14px 0 0;font-size:17px;font-weight:400;color:var(--fg-2)}
 .calc-sub b{font-weight:500;color:var(--fg)}
 .calc-money{margin:6px 0 0;font-size:17px;font-weight:400;color:var(--fg-2)}
@@ -398,6 +406,7 @@ h1 span{display:block}
   .push{inset-inline-end:auto;left:8px;top:auto;bottom:-40px}
   .scene{min-height:0;padding:96px 0}
   .proof ul{grid-template-columns:repeat(2,auto);gap:14px 40px}
+  .proof li,.proof li + li{padding:0;border:0}
 }
 @media (max-width:640px){
   body{font-size:16px}
@@ -427,7 +436,7 @@ h1 span{display:block}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
 /* Accessibility widget (v3 style: the dark panel of the page, same high contrast; behaviour unchanged) */
-.a11y{position:fixed;left:24px;bottom:24px;z-index:2147483000;font:400 16px/1.4 Heebo,"IBM Plex Sans Hebrew",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;direction:rtl;color:#F3F1EC}
+.a11y{position:fixed;left:24px;bottom:24px;z-index:2147483000;font:400 16px/1.4 "IBM Plex Sans Hebrew",Heebo,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;direction:rtl;color:#F3F1EC}
 .a11y-fab{display:grid;place-items:center;width:52px;height:52px;padding:0;border:1.5px solid #FFB000;border-radius:50%;background:#0B0D11;color:#FFB000;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.4);transition:transform 160ms ease}
 .a11y-fab:hover{transform:scale(1.06)}
 .a11y-fab:focus-visible,.a11y-panel button:focus-visible,.a11y-panel a:focus-visible{outline:2px solid #FFB000;outline-offset:3px}
@@ -501,7 +510,7 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
       <p class="lede">העובדים נרשמים באפליקציה, המערכת מקבצת לנסיעות משותפות, ואתם מאשרים ושולחים לחברת ההסעות שלכם.</p>
       <div class="acts">
         <a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
-        <a class="tlink" href="#night">איך זה עובד</a>
+        <a class="btn ghost" href="#night">איך זה עובד</a>
       </div>
     </div>
   </div>
