@@ -87,10 +87,19 @@ h1 .dot{font-style:normal;color:var(--signal)} /* the one touch of amber in the 
 .stamp{display:block;margin:0 0 18px;font-size:13px;font-weight:400;letter-spacing:.16em;color:var(--signal);direction:ltr;text-align:right}
 
 /* buttons and links */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:50px;padding:0 26px;border-radius:999px;background:var(--signal);color:#14120D;font:500 16px/1 var(--sans);text-decoration:none;border:0;cursor:pointer;transition:transform var(--t-fast) var(--ease-out),background var(--t-fast)}
-.btn:hover{transform:translateY(-2px);background:#FFC23D}.btn:active{transform:translateY(0) scale(.98)}
-.btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform var(--t-fast) var(--ease-out)}
-.btn:hover svg{transform:translateX(-3px)}
+/* one family for every call to action: amber light held in a dark, see-through pill with a fine amber edge; on hover it
+   fills with the amber it was holding. The form's send button is the family's filled state from the start. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:52px;padding:0 26px;border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,176,0,.2),rgba(255,176,0,.1)),rgba(11,13,17,.42);color:#FFD27A;
+  box-shadow:inset 0 0 0 1px rgba(255,176,0,.55),inset 0 1px 0 rgba(255,226,163,.22),0 12px 32px -16px rgba(0,0,0,.7);
+  font:500 15.5px/1 var(--sans);letter-spacing:.01em;text-decoration:none;border:0;cursor:pointer;
+  transition:background .45s var(--ease-out),color .45s var(--ease-out),box-shadow .45s var(--ease-out),transform .25s var(--ease-out)}
+.btn:hover{background:var(--signal);color:#14120D;box-shadow:inset 0 0 0 1px var(--signal),0 14px 34px -14px rgba(255,176,0,.45);transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.985)}
+.btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:transform .45s var(--ease-out)}
+.btn:hover svg{transform:translateX(-4px)}
+.form .btn{background:var(--signal);color:#14120D;box-shadow:0 14px 34px -16px rgba(255,176,0,.5)}
+.form .btn:hover{background:#FFC23D}
 .tlink{font-weight:400;text-decoration:none;color:var(--fg);background:linear-gradient(var(--line-2),var(--line-2)) 100% 100%/100% 1px no-repeat;padding-bottom:4px;transition:background-size var(--t-mid) var(--ease-out),color var(--t-fast)}
 .tlink:hover{background-image:linear-gradient(var(--fg),var(--fg))}
 .acts{display:flex;align-items:center;gap:28px;flex-wrap:wrap;margin-top:32px}
@@ -116,25 +125,24 @@ h1 .dot{font-style:normal;color:var(--signal)} /* the one touch of amber in the 
 /* the night as a line: a hairline under the bar fills from 22:40 to the taxi as the page scrolls */
 .nav::after{content:"";position:absolute;inset:auto 0 -1px;height:1px;background:linear-gradient(270deg,var(--signal),rgba(255,176,0,.25));transform-origin:100% 50%;transform:scaleX(var(--p,0));opacity:0;transition:opacity var(--t-mid)}
 .nav.solid::after{opacity:1}
-/* the one standing call to action: a dark pill on a hairline, with a small amber light and its trail orbiting the frame.
-   Slow (8s a lap) and thin, so it reads as a signal, not an effect; it fills amber on hover. Still under reduced motion. */
-@property --orb{syntax:'<angle>';inherits:false;initial-value:0deg}
-.nav-cta{position:relative;justify-self:end;height:38px;padding:0 18px;font-size:14px;font-weight:400;background:rgba(11,13,17,.55);color:var(--fg);box-shadow:inset 0 0 0 1px var(--line-2);transition:transform var(--t-fast) var(--ease-out),background var(--t-fast),color var(--t-fast)}
-.nav-cta::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;
-  background:conic-gradient(from var(--orb),transparent 0 74%,rgba(255,176,0,0) 74%,rgba(255,176,0,.7) 97.4%,#FFE2A3 98.6%,transparent 99.2%);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
-  animation:orb 8s linear infinite;transition:opacity var(--t-fast)}
-@keyframes orb{to{--orb:360deg}}
-.nav-cta:hover{background:var(--signal);color:#14120D}
-.nav-cta:hover::after{opacity:0}
-@media (prefers-reduced-motion:reduce){.nav-cta::after{animation:none}}
+/* the standing call to action: the same family, quieter, with a light and its long fading trail running round its edge
+   along the button's own outline, so the speed is the same all the way round (5.5s a lap). Run by the page script;
+   still under reduced motion and with the widget's "stop animations". */
+.nav-cta{position:relative;justify-self:end;height:38px;padding:0 18px;font-size:14px;font-weight:500;color:var(--fg);
+  background:linear-gradient(180deg,rgba(255,176,0,.12),rgba(255,176,0,.04)),rgba(11,13,17,.5);
+  box-shadow:inset 0 0 0 1px rgba(255,176,0,.26),inset 0 1px 0 rgba(255,226,163,.12)}
+.nav-cta .orb{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;fill:none;transition:opacity .45s var(--ease-out)}
+.nav-cta .orb rect{stroke:var(--signal);stroke-linecap:round;stroke-width:1.4}
+.nav-cta .orb .hd{stroke:#FFE7B0;stroke-width:2.2}
+.nav-cta:hover{color:#14120D}
+.nav-cta:hover .orb{opacity:0}
 
 /* ===== the film: one continuous take behind the whole page (drafts/film/) =====
    A fixed canvas under every section; the scroll picks the frame. The shade keeps the copy legible:
    darker on the text side (right, RTL) and at the very top and bottom, clear in the middle of the picture. */
 .world{position:fixed;inset:0;z-index:0;pointer-events:none;background:var(--ink) url(film/poster.jpg) center/cover no-repeat}
-.world canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.world::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,rgba(11,13,17,.8) 0,rgba(11,13,17,.56) 36%,rgba(11,13,17,.14) 62%,rgba(11,13,17,.18) 100%),linear-gradient(180deg,rgba(11,13,17,.5) 0,rgba(11,13,17,0) 15%,rgba(11,13,17,0) 74%,rgba(11,13,17,.6) 100%)}
+.world canvas{position:absolute;inset:0;width:100%;height:100%;display:block;filter:saturate(.82) contrast(.95)}
+.world::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,rgba(11,13,17,.8) 0,rgba(11,13,17,.56) 36%,rgba(11,13,17,.14) 62%,rgba(11,13,17,.18) 100%),linear-gradient(180deg,rgba(11,13,17,.5) 0,rgba(11,13,17,0) 15%,rgba(11,13,17,0) 74%,rgba(11,13,17,.6) 100%),linear-gradient(rgba(11,13,17,.1),rgba(11,13,17,.1))}
 /* phone: the copy spans the whole width, so the shade is even across it (a little deeper under the text) */
 @media (max-width:759px) and (orientation:portrait){
   .world{background-image:url(film/poster-m.jpg)}
@@ -149,10 +157,16 @@ html:not(.has-film) .dark,html:not(.has-film) .light{background:var(--ink)}
 /* reading hold (set by holdText in the page script, only with the film): the scene's content sticks for --hold px.
    A block (not grid) section with a spacer after the content, so the sticky content has exactly that much room. */
 html.has-film .scene.hold{display:block}
-html.has-film .scene.hold > .wrap{position:sticky}
 html.has-film .scene.hold::after{content:"";display:block;height:var(--hold,0px)}
 /* the same for a single block inside a scene (the quiet column's two parts, the gate's beats): .hb sticks inside its .hold-b */
-html.has-film .hold-b > .hb{position:sticky}
+html.has-film .hero.hold::after{content:"";display:block;height:var(--hold,0px)}
+/* slow reading: inside its zone the block drifts down by --hy while the page scrolls past it, so it travels the screen
+   at a fraction of the scroll speed (slowest as it crosses the middle), and it comes into full light as it does.
+   Driven by the browser's scroll timeline where there is one (on the compositor, in step with the scroll), else by the script. */
+@keyframes readmove{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,var(--hy,0px),0)}}
+@keyframes readfade{0%{opacity:.4}26%{opacity:1}74%{opacity:1}100%{opacity:.4}}
+@keyframes readfade-in{0%{opacity:.4}26%{opacity:1}100%{opacity:1}}
+@keyframes readfade-out{0%{opacity:1}74%{opacity:1}100%{opacity:.4}}
 html.has-film .hold-b::after{content:"";display:block;height:var(--hold,0px)}
 .split{display:grid;grid-template-columns:minmax(0,var(--col)) minmax(0,1fr);gap:clamp(40px,7vw,120px);align-items:center}
 .split > :last-child{justify-self:start}
@@ -217,7 +231,7 @@ h1 span{display:block}
 .mine div{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--fg-2);padding:8px 0;border-top:1px solid var(--line)}
 
 /* ===== 4. lines ===== */
-.lines-wrap .wrap > .lede{max-width:var(--col)}
+.lines-wrap .lede{max-width:var(--col)}
 .board{display:grid;grid-template-columns:170px minmax(0,1fr) 250px;margin-top:var(--s5);align-items:start}
 .reqs{list-style:none;margin:0;padding:0;display:grid;grid-auto-rows:26px}
 .reqs li{display:flex;align-items:center;gap:10px;font-size:13.5px;white-space:nowrap;color:var(--fg);transition:opacity var(--t-fast)}
@@ -428,17 +442,17 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
   <div class="wrap">
     <a class="brand" href="#top" dir="ltr" aria-label="SmartKav, לראש הדף"><svg viewBox="0 0 92 40" aria-hidden="true"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg><span>Smart<b>Kav</b></span></a>
     <span class="nclock num" aria-hidden="true"><i></i><span id="nclock">22:40</span></span>
-    <a class="btn nav-cta" href="#contact">תיאום הדגמה</a>
+    <a class="btn nav-cta" href="#contact">תיאום הדגמה<svg class="orb" aria-hidden="true" focusable="false"><rect/><rect/><rect/><rect/><rect/><rect class="hd"/></svg></a>
   </div>
 </header>
 
 <main id="main" tabindex="-1">
 
 <!-- 1 · HERO -->
-<section class="hero dark" id="top" aria-labelledby="h1">
+<section class="hero dark hold" id="top" aria-labelledby="h1">
   <div class="hero-stick">
   <div class="wrap hero-in">
-    <div>
+    <div data-hold>
       <span class="stamp num">חמישי · 22:40</span>
       <h1 id="h1"><span>כל ההסעות של השבוע.</span><span><b>בחמש דקות<i class="dot">.</i></b></span></h1>
       <p class="lede">העובדים נרשמים באפליקציה, המערכת מקבצת לנסיעות משותפות, ואתם מאשרים ושולחים לחברת ההסעות שלכם.</p>
@@ -461,7 +475,6 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 <section class="scene dark hold" id="night" data-film="S3" data-time="22:40" aria-labelledby="h2-night">
   <div class="wrap split">
     <div data-hold>
-      <span class="stamp num">22:40</span>
       <h2 id="h2-night">38 הודעות.<br><b>כל ערב מחדש.</b></h2>
       <p class="lede">קבוצת וואטסאפ, הודעות פרטיות ושיחות שלא נענו. מישהו נזכר מאוחר מדי, ושתי מוניות נוסעות לאותו רחוב. ככה נראה סידור הסעות בלי מערכת.</p>
     </div>
@@ -480,7 +493,6 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 <section class="scene light hold" id="app" data-film="S4@.5" data-time="22:41" aria-labelledby="h2-app">
   <div class="wrap split">
     <div data-hold>
-      <span class="stamp num">22:41</span>
       <h2 id="h2-app">העובדים נרשמים<br><b>באפליקציה.</b></h2>
       <p class="lede">משמרת, כיוון, שליחה. הכתובת שמורה, והסטטוס מתעדכן לבד עד שהמונית מוזמנת.</p>
       <ul class="facts">
@@ -504,17 +516,20 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 </section>
 
 <!-- 4 · 22:42 GROUPING -->
-<section class="scene dark lines-wrap hold" id="group" data-film="S5" data-time="22:42" aria-labelledby="h2-group">
+<section class="scene dark lines-wrap" id="group" data-film="S5" data-time="22:42" aria-labelledby="h2-group">
   <div class="wrap">
-    <span class="stamp num" data-hold>22:42</span>
-    <h2 id="h2-group" data-hold>14 בקשות.<br><b>4 נסיעות.</b></h2>
-    <p class="lede" data-hold>המערכת מקבצת לפי תאריך, שעה, כיוון ועיר. בלי טבלה ובלי לחשוב מי גר ליד מי.</p>
+    <div class="hold-b"><div class="hb">
+    <h2 id="h2-group">14 בקשות.<br><b>4 נסיעות.</b></h2>
+    <p class="lede">המערכת מקבצת לפי תאריך, שעה, כיוון ועיר. בלי טבלה ובלי לחשוב מי גר ליד מי.</p>
+    </div></div>
+    <div class="hold-b"><div class="hb">
     <div class="board" id="board" role="img" aria-label="דוגמה: 14 בקשות מתחברות לארבע נסיעות משותפות: רמת גן 16:00 ארבעה נוסעים, חולון 16:00 שלושה, תל אביב 01:00 ארבעה, בת ים 01:00 שלושה">
       <ul class="reqs" aria-hidden="true"></ul>
       <svg class="lines" aria-hidden="true"></svg>
       <ul class="chips" aria-hidden="true"></ul>
       <ol class="rides" aria-hidden="true"></ol>
     </div>
+    </div></div>
   </div>
 </section>
 
@@ -522,7 +537,6 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 <section class="scene light hold" id="send" data-film="S5@.55" data-time="22:43" aria-labelledby="h2-send">
   <div class="wrap split">
     <div data-hold>
-      <span class="stamp num">22:43</span>
       <h2 id="h2-send">הזמנה אחת<br><b>לחברת ההסעות.</b></h2>
       <p class="lede">מסך אחד, רק מה שדורש טיפול. מעתיקים את ההזמנה, שולחים ומסמנים שטופל, והעובדים מקבלים עדכון אוטומטי.</p>
       <ul class="facts">
@@ -577,7 +591,7 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 <!-- 7 · 01:00 THE GATE -->
 <section class="gate dark" id="gate" data-film="S7" data-time="01:00" aria-labelledby="h2-gate">
   <div class="wrap beats">
-    <div class="beat" data-film="S7@.1"><span class="stamp num">01:00</span><p class="say">נועה סיימה משמרת.</p></div>
+    <div class="beat hold-b" data-film="S7@.1"><div class="hb"><p class="say">נועה סיימה משמרת.</p></div></div>
     <div class="beat hold-b" data-film="BR@.5"><div class="hb"><p class="say">המונית שלה הוזמנה ביום חמישי, ב-22:43.</p></div></div>
     <div class="beat hold-b" data-film="S8@.5"><div class="hb"><h2 id="h2-gate">המונית<br><b>כבר בשער.</b></h2></div></div>
     <div class="beat hold-b" data-film="S8@.72"><div class="hb"><p class="lede">ולא שלחה אף הודעה.</p>
@@ -601,9 +615,9 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 </section>
 
 <!-- 9 · CONTACT -->
-<section class="scene light contact" id="contact" aria-labelledby="h2-contact" style="min-height:0;padding-top:24px">
+<section class="scene light contact hold" id="contact" aria-labelledby="h2-contact" style="min-height:0;padding-top:24px">
   <div class="wrap split">
-    <div>
+    <div data-hold>
       <h2 id="h2-contact">רוצים לראות איך זה<br><b>ייראה אצלכם?</b></h2>
       <p class="lede">השאירו פרטים, ונציג מטעמנו יחזור אליכם לתיאום הדגמה קצרה.</p>
       <p class="story">ניהלתי מוקד משמרות, וסידור ההסעות היה עליי: וואטסאפ, אקסל ובדיקה אחרונה בעשר בלילה. לא מצאתי מערכת שעושה את זה, אז בניתי.</p>
@@ -694,23 +708,57 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
      Native sticky (no scroll-jacking): each scene's .wrap sticks for --hold px of scroll (set on the section), from the amount of text
      it carries (a fifth to under half a screen), at a top that puts its copy ([data-hold]) in the middle of the screen
      below the bar. The page is longer by exactly the holds; the film's pace() reads the new heights. Off under reduced motion. */
-  // hold length: a quarter of a screen plus the reading it asks for (the copy in full, the mockups' small text a little),
-  // up to 0.6 of a screen. A scene holds its whole .wrap (centred on its [data-hold] copy); a .hold-b holds its .hb.
+  // How much it slows comes from how much there is to read: the copy in full, the mockups' small text a little (t, 0..1).
+  // The block then moves at (1 - k) of the scroll speed at its slowest, k from .5 (a line) to .85 (a full block), and the
+  // page gains --hold (from a sixth to 0.58 of a screen) for it. It never stops. The zone is set so the block is at its
+  // slowest exactly as it crosses the middle of the screen. A scene reads as its .wrap (centred on its [data-hold] copy),
+  // the hero as its first screen, a .hold-b as its .hb.
+  var READS = [], SDA = !!(window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()'));
   function holdText(){
-    var vh = innerHeight, navH = innerWidth <= 640 ? 64 : 72, avail = vh - navH - 24;
-    function len(el){ return (el.innerText || '').replace(/\s+/g, ' ').length; }
-    $$('.scene.hold, .hold-b').forEach(function(box){
-      var scene = box.classList.contains('scene'), w = scene ? $('.wrap', box) : $('.hb', box); if (!w) return;
-      var parts = scene ? $$('[data-hold]', box) : [w]; if (!parts.length) return;
-      box.style.setProperty('--hold', '0px'); w.style.top = '';
+    var vh = innerHeight; READS = [];
+    // all the text, visible yet or not (the headline is still hidden by its entrance when this runs); a form is not reading
+    function len(el){ var n = (el.textContent || '').replace(/\s+/g, ' ').trim().length; $$('form', el).forEach(function(f){ n -= (f.textContent || '').replace(/\s+/g, ' ').trim().length; }); return Math.max(0, n); }
+    $$('.scene.hold, .hero.hold, .hold-b').forEach(function(box){
+      var hero = box.classList.contains('hero'), held = box.classList.contains('hold-b');
+      var w = hero ? $('.hero-stick', box) : held ? $('.hb', box) : $('.wrap', box); if (!w) return;
+      var parts = held ? [w] : $$('[data-hold]', box); if (!parts.length) return;
       var wr = w.getBoundingClientRect(), t0 = Infinity, b0 = -Infinity, copy = 0;
       parts.forEach(function(p){ var r = p.getBoundingClientRect(); t0 = Math.min(t0, r.top - wr.top); b0 = Math.max(b0, r.bottom - wr.top); copy += len(p); });
-      var rest = Math.max(0, len(w) - copy);
-      var H = Math.round(Math.min(vh * .6, vh * .25 + copy * 1.1 + rest * .25));
-      var h = b0 - t0, top = h <= avail ? navH + (avail - h) / 2 - t0 : vh - 24 - b0; // centred below the bar, or (a tall column) its end in view
-      box.style.setProperty('--hold', H + 'px'); w.style.top = Math.round(top) + 'px';
+      var t = Math.min(1, (copy + Math.max(0, len(w) - copy) * .25) / 420);
+      var k = .5 + .35 * t, H = Math.round(vh * (.16 + .42 * t));
+      box.style.setProperty('--hold', H + 'px'); w.style.setProperty('--hy', H + 'px');
+      READS.push({ w: w, rel: (t0 + b0) / 2, H: H, k: k, fade: hero ? 'readfade-out' : box.id === 'contact' ? 'readfade-in' : 'readfade' });
     });
   }
+  function docTop(el){ var y = 0; for (; el; el = el.offsetParent) y += el.offsetTop; return y; } // layout position, transforms aside
+  // the zones, from the laid-out page (run after every layout change); the ease-in-out curve's steepest slope is 1.72
+  function placeReads(){
+    var vh = innerHeight, maxY = Math.max(1, document.documentElement.scrollHeight - vh);
+    READS.forEach(function(r){
+      var Z = 1.72 * r.H / r.k, mid = docTop(r.w) + r.rel + r.H / 2 - vh / 2, A = mid - Z / 2, B = A + Z;
+      if (A < 0){ B -= A; A = 0; }
+      if (B > maxY){ A = Math.max(0, A - (B - maxY)); B = maxY; }
+      r.A = A; r.B = B;
+      if (SDA){
+        var s = r.w.style;
+        s.setProperty('animation-name', 'readmove, ' + r.fade); s.setProperty('animation-duration', 'auto, auto');
+        s.setProperty('animation-timing-function', 'ease-in-out, linear'); s.setProperty('animation-fill-mode', 'both');
+        s.setProperty('animation-timeline', 'scroll(root)'); s.setProperty('animation-range', Math.round(A) + 'px ' + Math.round(B) + 'px');
+      }
+    });
+    readTick();
+  }
+  // the same by script where the browser has no scroll timeline
+  function readTick(){
+    if (SDA) return; var y = scrollY;
+    READS.forEach(function(r){
+      var p = Math.max(0, Math.min(1, (y - r.A) / (r.B - r.A))), e = p * p * (3 - 2 * p);
+      var inn = p < .26 ? .4 + .6 * p / .26 : 1, out = p > .74 ? 1 - .6 * (p - .74) / .26 : 1;
+      var o = r.fade === 'readfade-out' ? out : r.fade === 'readfade-in' ? inn : Math.min(inn, out);
+      r.w.style.transform = 'translate3d(0,' + (e * r.H).toFixed(1) + 'px,0)'; r.w.style.opacity = o.toFixed(3);
+    });
+  }
+  if (!SDA) addEventListener('scroll', readTick, { passive: true });
 
   var FILM = { R: 20, nightLen: 0 };
   (function film(){
@@ -767,6 +815,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
           if (y > list[list.length - 1][0] && shot > list[list.length - 1][1]) list.push([Math.min(y, maxY - 1), shot]);
         });
         list.push([maxY, N - 1]); anchors = list; update();
+        placeReads(); // the reading zones follow the same layout
       }
       function frameAt(y){
         for (var i = 1; i < anchors.length; i++) if (y <= anchors[i][0]){
@@ -866,6 +915,33 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
     });
   }
   setClock(nclock.textContent);
+
+  // the light round the call-to-action: three dashes on the button's outline (a long faint trail, a shorter brighter
+  // one, the head) whose leading edges meet, moved together at one steady speed along the real perimeter
+  (function orb(){
+    var cta = $('.nav-cta'), svg = cta && $('.orb', cta); if (!svg) return;
+    var rects = $$('rect', svg), runs = [];
+    function draw(){
+      var w = cta.offsetWidth, h = cta.offsetHeight, i = .75; if (!w || !h) return;
+      svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+      rects.forEach(function(r){ r.setAttribute('x', i); r.setAttribute('y', i); r.setAttribute('width', w - 2 * i); r.setAttribute('height', h - 2 * i); r.setAttribute('rx', (h - 2 * i) / 2); });
+      // a long trail in five layered steps (they add up to a smooth fade toward the head), then the head itself
+      var P = rects[0].getTotalLength ? rects[0].getTotalLength() : 2 * (w + h),
+          lens = [P * .34, P * .25, P * .17, P * .1, P * .045, 1.6], ops = [.1, .14, .2, .3, .5, 1];
+      runs.forEach(function(a){ a.cancel(); }); runs = [];
+      rects.forEach(function(r, k){
+        var L = lens[k]; r.style.opacity = ops[k]; r.style.strokeDasharray = L + ' ' + (P - L); r.style.strokeDashoffset = L;
+        if (!REDUCE && r.animate) runs.push(r.animate([{ strokeDashoffset: L }, { strokeDashoffset: L - P }], { duration: 5500, iterations: Infinity, easing: 'linear' }));
+      });
+      var t = runs[0] && runs[0].currentTime; runs.forEach(function(a){ if (t != null) a.currentTime = t; }); // one clock for the three
+    }
+    draw();
+    // the accessibility widget's "stop animations" stops it too
+    new MutationObserver(function(){ var still = document.documentElement.classList.contains('a11y-still'); runs.forEach(function(a){ still ? a.pause() : a.play(); }); })
+      .observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+    var rt; addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(draw, 150); });
+  })();
   // the time is that of the last scene whose top has passed the middle of the screen, so a jump (to the form, say) shows the right hour
   var timed = $$('[data-time]'), clockRaf = 0;
   function syncClock(){ clockRaf = 0; var t = timed[0] && timed[0].dataset.time;
