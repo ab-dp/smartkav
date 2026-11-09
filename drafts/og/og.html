@@ -3,28 +3,29 @@
 <head>
 <meta charset="utf-8">
 <title>SmartKav share image</title>
-<!-- Source of og.png (1200×630). Render: open at 1200×630 and screenshot. The photo is the film's first frame. -->
-<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700;900&family=IBM+Plex+Sans+Hebrew:wght@500;600&display=swap" rel="stylesheet">
+<!-- Source of og.jpg (1200×630). Render: open at 1200×630, screenshot, save as JPG (~100KB).
+     Logo-led and centred (it survives WhatsApp's square crop). The night city is the film's first frame, held far back. -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@200;500&display=swap" rel="stylesheet">
 <style>
-html,body{margin:0;width:1200px;height:630px;overflow:hidden;background:#0E1116}
-.og{position:relative;width:1200px;height:630px;background:#0E1116 url(../../film/poster.jpg) 30% 50%/cover no-repeat;color:#F6F4EF;font-family:"IBM Plex Sans Hebrew",sans-serif}
-.og::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,rgba(14,17,22,.92) 0,rgba(14,17,22,.72) 42%,rgba(14,17,22,.15) 75%),linear-gradient(180deg,rgba(14,17,22,0) 60%,rgba(14,17,22,.6) 100%)}
-.in{position:absolute;z-index:1;inset:64px 72px;display:flex;flex-direction:column;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:12px;font-weight:600;font-size:30px;direction:ltr;align-self:flex-end}
-.brand svg{width:56px;height:24px}.brand line{stroke:#FFB000;stroke-width:5;stroke-linecap:round}.brand circle{fill:none;stroke:#FFB000;stroke-width:5}
-h1{margin:0;font:900 76px/1.02 "Frank Ruhl Libre",serif;max-width:9.5em}
-h1 b{color:#FFB000;font-weight:900}
-p{margin:18px 0 0;font-size:30px;color:#D5D8DC}
+html,body{margin:0;width:1200px;height:630px;overflow:hidden;background:#0B0D11}
+.og{position:relative;width:1200px;height:630px;background:#0B0D11 url(../../film/poster.jpg) 30% 50%/cover no-repeat;color:#F3F1EC;font-family:"IBM Plex Sans Hebrew",sans-serif;display:grid;place-items:center}
+.og::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(11,13,17,.72) 0,rgba(11,13,17,.9) 70%,rgba(11,13,17,.96) 100%)}
+.og::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(270deg,#FFB000,rgba(255,176,0,.15))}
+.in{position:relative;z-index:1;text-align:center}
+.mark{width:200px;height:87px;display:block;margin:0 auto 30px}
+.mark line{stroke:#FFB000;stroke-width:5;stroke-linecap:round}.mark circle{fill:none;stroke:#FFB000;stroke-width:5}
+.word{direction:ltr;font-weight:500;font-size:64px;letter-spacing:.005em;line-height:1}
+.word span{font-weight:200}
+.line{margin:30px 0 0;font-weight:200;font-size:34px;letter-spacing:-.01em;color:rgba(243,241,236,.86)}
+.line b{font-weight:500;color:#F3F1EC}.line i{font-style:normal;color:#FFB000}
 </style>
 </head>
 <body>
 <div class="og">
   <div class="in">
-    <div class="brand"><svg viewBox="0 0 92 40"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg><span>Smart<b>Kav</b></span></div>
-    <div>
-      <h1>ניהול הסעות חכם <b>לעובדי משמרות</b></h1>
-      <p>העובדים נרשמים, המערכת מקבצת, אתם מאשרים.</p>
-    </div>
+    <svg class="mark" viewBox="0 0 92 40" aria-hidden="true"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg>
+    <div class="word">Smart<span>Kav</span></div>
+    <p class="line">כל ההסעות של השבוע. <b>בחמש דקות<i>.</i></b></p>
   </div>
 </div>
 </body>
