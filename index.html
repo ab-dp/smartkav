@@ -43,7 +43,7 @@
 /* ===== Design system (v3): quiet, precise type over the film. One place for every token. ===== */
 :root{
   --ink:#0B0D11; --ink-2:#12151B; --ink-3:#1A1E26;
-  --fg:#F3F1EC; --fg-2:rgba(243,241,236,.8); --fg-3:rgba(243,241,236,.62);
+  --fg:#F3F1EC; --fg-2:rgba(243,241,236,.86); --fg-3:rgba(243,241,236,.68);
   /* the night's two temperatures: warm ivory type and amber light, against hairlines and panels with a breath of
      night-sky blue in them */
   --line:rgba(218,226,240,.12); --line-2:rgba(218,226,240,.22);
@@ -93,8 +93,9 @@ h1 b,.moment h2 b{font-weight:500}
 .moment{text-align:center;margin-inline:auto}
 .moment h2{font-size:clamp(42px,5.6vw,84px);line-height:1.04}
 /* small text over the film reads at 400; the display sizes stay light */
-.proof ul,.facts,.results span,.quote figcaption,.story,.sig small,.wa,.legal,.foot,.faq p,.ntf,.scr,.lscr,.reqs li,.rides small,.chips li,.nclock,.unread,.calm p,.push p,.toast{font-weight:400}
-.lede{font-size:17px;line-height:1.7;color:var(--fg-2);max-width:31em;margin:20px 0 0}
+.ntf,.scr,.lscr,.reqs li,.rides small,.chips li,.calm p,.push p,.toast{font-weight:400} /* the app mockups read like the app */
+.proof ul,.facts,.results span,.quote figcaption,.story,.sig small,.wa,.legal,.foot,.faq p,.nclock,.unread,.calc-note,.calc-sub,.calc-money,.field label{font-weight:500} /* small text over the film, firm and clear */
+.lede{font-size:17px;line-height:1.7;font-weight:400;color:var(--fg-2);max-width:31em;margin:20px 0 0}
 .stamp{display:block;margin:0 0 18px;font-size:13px;font-weight:400;letter-spacing:.16em;color:var(--signal);direction:ltr;text-align:right}
 
 /* buttons and links */
@@ -157,11 +158,11 @@ h1 b,.moment h2 b{font-weight:500}
    darker on the text side (right, RTL) and at the very top and bottom, clear in the middle of the picture. */
 .world{position:fixed;inset:0;z-index:0;pointer-events:none;background:var(--ink) url(film/poster.jpg) center/cover no-repeat}
 .world canvas{position:absolute;inset:0;width:100%;height:100%;display:block;filter:saturate(.82) contrast(.95)}
-.world::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,rgba(11,13,17,.8) 0,rgba(11,13,17,.56) 36%,rgba(11,13,17,.14) 62%,rgba(11,13,17,.18) 100%),linear-gradient(180deg,rgba(11,13,17,.5) 0,rgba(11,13,17,0) 15%,rgba(11,13,17,0) 74%,rgba(11,13,17,.6) 100%),linear-gradient(rgba(9,11,16,.17),rgba(9,11,16,.17))}
+.world::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,rgba(11,13,17,.8) 0,rgba(11,13,17,.58) 36%,rgba(11,13,17,.24) 62%,rgba(11,13,17,.24) 100%),linear-gradient(180deg,rgba(11,13,17,.5) 0,rgba(11,13,17,0) 15%,rgba(11,13,17,0) 74%,rgba(11,13,17,.6) 100%),linear-gradient(rgba(9,11,16,.28),rgba(9,11,16,.28))}
 /* phone: the copy spans the whole width, so the shade is even across it (a little deeper under the text) */
 @media (max-width:759px) and (orientation:portrait){
   .world{background-image:url(film/poster-m.jpg)}
-  .world::after{background:linear-gradient(270deg,rgba(11,13,17,.54) 0,rgba(11,13,17,.38) 100%),linear-gradient(180deg,rgba(11,13,17,.45) 0,rgba(11,13,17,0) 16%,rgba(11,13,17,0) 70%,rgba(11,13,17,.6) 100%)}
+  .world::after{background:linear-gradient(270deg,rgba(11,13,17,.62) 0,rgba(11,13,17,.5) 100%),linear-gradient(180deg,rgba(11,13,17,.45) 0,rgba(11,13,17,0) 16%,rgba(11,13,17,0) 70%,rgba(11,13,17,.6) 100%)}
 }
 main,.foot{position:relative;z-index:1}
 html:not(.has-film) .dark,html:not(.has-film) .light{background:var(--ink)}
@@ -298,16 +299,16 @@ h1 span{display:block}
 /* the first centred moment: the clock and the line stand in the middle; the results return to the reading column */
 .quiet .split{grid-template-columns:minmax(0,1fr);gap:var(--s6);align-items:start}
 .quiet .split > :first-child{justify-self:center}
-.quiet .split > :last-child{justify-self:start;width:min(100%,560px)}
+.quiet .split > :last-child{justify-self:center;width:min(100%,600px)}
 .quiet .moment .qclock{text-align:center;margin-bottom:32px}
 .qclock{font-weight:100;font-size:clamp(84px,9vw,144px);line-height:.85;letter-spacing:-.04em;direction:ltr;text-align:right;margin:0 0 28px}
 .qclock b{font-weight:100;color:var(--signal)}
-.results{list-style:none;margin:0;padding:0;width:min(100%,520px)}
+.results{list-style:none;margin:0 auto;padding:0;width:min(100%,600px)}
 .results li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:var(--s3);padding:18px 0;border-top:1px solid var(--line);align-items:baseline}
 .results li:last-child{border-bottom:1px solid var(--line)}
 .results b{font-weight:300;font-size:clamp(24px,2.2vw,32px);line-height:1.1;letter-spacing:-.02em}
 .results span{color:var(--fg-2);font-size:15px}
-.quote{margin:var(--s4) 0 0;padding:0;max-width:520px}
+.quote{margin:var(--s4) auto 0;padding:0;max-width:560px;text-align:center}
 .quote blockquote{margin:0;font-weight:300;font-size:clamp(19px,1.6vw,23px);line-height:1.55;letter-spacing:-.01em}
 .quote figcaption{margin-top:12px;color:var(--fg-3);font-size:14px}
 
@@ -317,8 +318,8 @@ h1 span{display:block}
 /* three beats that follow the film: Noa comes out, the taxi waits, the way in. Spread over the section, so there is always text on screen */
 /* each beat carries data-film: the film reaches that moment as the beat comes up, and pace() sets the room between beats */
 #gate > .beats{display:flex;flex-direction:column;padding-block:clamp(72px,14vh,160px)}
-.gate .beat{max-width:var(--col)}
-.gate .beat.moment{max-width:none;align-self:center}
+.gate .beat{max-width:none;align-self:center;text-align:center} /* the night ends in the middle of the picture */
+.gate .beat .acts{justify-content:center}
 .gate .beat + .beat{margin-top:var(--s6)}
 .say{margin:10px 0 0;font-weight:300;font-size:clamp(24px,2.4vw,34px);line-height:1.2;letter-spacing:-.02em;color:var(--fg)}
 
@@ -338,13 +339,13 @@ h1 span{display:block}
 .ci input:focus{outline:none;border-bottom-color:var(--signal);background:rgba(255,176,0,.1)}
 .ci input:focus-visible{outline:2px solid var(--signal);outline-offset:4px;border-radius:4px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.calc-note{margin:32px auto 0;padding-top:18px;border-top:1px solid var(--line);max-width:34em;font-size:13px;line-height:1.75;font-weight:400;color:var(--fg-3);text-align:center}
+.calc-note{margin:32px auto 0;padding-top:18px;border-top:1px solid var(--line);max-width:34em;font-size:13px;line-height:1.75;font-weight:500;color:var(--fg-3);text-align:center}
 .calc-out{text-align:center}
 .calc-big{margin:0;font-size:clamp(104px,12vw,188px);line-height:.92;color:var(--fg)}
 .calc-big b{font-weight:100;color:var(--signal)}
-.calc-sub{margin:14px 0 0;font-size:17px;font-weight:400;color:var(--fg-2)}
+.calc-sub{margin:14px 0 0;font-size:17px;font-weight:500;color:var(--fg-2)}
 .calc-sub b{font-weight:500;color:var(--fg)}
-.calc-money{margin:6px 0 0;font-size:17px;font-weight:400;color:var(--fg-2)}
+.calc-money{margin:6px 0 0;font-size:17px;font-weight:500;color:var(--fg-2)}
 .calc-money b{font-weight:500;color:#FFD27A}
 .calc-out .acts{justify-content:center;margin-top:30px}
 /* the last line: the night closes where the form begins */
@@ -352,7 +353,8 @@ h1 span{display:block}
 .coda .num{font-family:var(--sans);font-size:max(12px,.62em);font-weight:400;letter-spacing:.16em;color:var(--signal);margin-left:.6em;vertical-align:.2em}
 
 /* ===== 8. faq ===== */
-.faq{max-width:640px}
+.faq{max-width:680px;margin-inline:auto}
+#faq h2{text-align:center}
 .faq details{border-top:1px solid var(--line)}
 .faq details:last-child{border-bottom:1px solid var(--line)}
 .faq summary{list-style:none;cursor:pointer;padding:20px 0;display:flex;justify-content:space-between;gap:20px;font-weight:400;font-size:17px;line-height:1.45}
@@ -370,7 +372,7 @@ h1 span{display:block}
 .wa svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6}
 .form{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(22px,3vw,36px);display:grid;gap:16px;width:min(100%,540px);color:var(--fg)}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.field label{display:block;font-weight:400;font-size:14px;color:var(--fg-2);margin-bottom:6px}
+.field label{display:block;font-weight:500;font-size:14px;color:var(--fg-2);margin-bottom:6px}
 .field .opt{color:var(--fg-3)}
 .field input,.field select,.field textarea{width:100%;font:300 16px/1.4 var(--sans);color:var(--fg);background:rgba(11,13,17,.6);border:1px solid var(--line-2);border-radius:12px;padding:12px 14px;transition:border-color var(--t-fast),box-shadow var(--t-fast)}
 .field select{color-scheme:dark}
@@ -780,8 +782,8 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
      it carries (a fifth to under half a screen), at a top that puts its copy ([data-hold]) in the middle of the screen
      below the bar. The page is longer by exactly the holds; the film's pace() reads the new heights. Off under reduced motion. */
   // How much it slows comes from how much there is to read: the copy in full, the mockups' small text a little (t, 0..1).
-  // The block then moves at (1 - k) of the scroll speed at its slowest, k from .5 (a line) to .85 (a full block), and the
-  // page gains --hold (from a sixth to 0.58 of a screen) for it. It never stops. The zone is set so the block is at its
+  // The block then moves at (1 - k) of the scroll speed at its slowest, k from .6 (a line) to .92 (a full block), and the
+  // page gains --hold (from 0.22 to 0.74 of a screen) for it. It never stops. The zone is set so the block is at its
   // slowest exactly as it crosses the middle of the screen. A scene reads as its .wrap (centred on its [data-hold] copy),
   // the hero as its first screen, a .hold-b as its .hb.
   var READS = [], SDA = !!(window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()'));
@@ -796,7 +798,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
       var wr = w.getBoundingClientRect(), t0 = Infinity, b0 = -Infinity, copy = 0;
       parts.forEach(function(p){ var r = p.getBoundingClientRect(); t0 = Math.min(t0, r.top - wr.top); b0 = Math.max(b0, r.bottom - wr.top); copy += len(p); });
       var t = Math.min(1, (copy + Math.max(0, len(w) - copy) * .25) / 420);
-      var k = .5 + .35 * t, H = Math.round(vh * (.16 + .42 * t));
+      var k = .6 + .32 * t, H = Math.round(vh * (.22 + .52 * t)); // slowest: from 40% of the scroll speed (a line) to 8% (a full block)
       box.style.setProperty('--hold', H + 'px'); w.style.setProperty('--hy', H + 'px');
       READS.push({ w: w, rel: (t0 + b0) / 2, H: H, k: k, fade: hero ? 'readfade-out' : box.id === 'contact' ? 'readfade-in' : 'readfade' });
     });
