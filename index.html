@@ -438,12 +438,12 @@ h1 span{display:block}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
 /* Accessibility widget (v3 style: the dark panel of the page, same high contrast; behaviour unchanged) */
-.a11y{position:fixed;left:24px;bottom:24px;z-index:2147483000;font:400 16px/1.4 "IBM Plex Sans Hebrew",Heebo,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;direction:rtl;color:#F3F1EC}
+.a11y{position:fixed;right:24px;bottom:24px;z-index:2147483000;font:400 16px/1.4 "IBM Plex Sans Hebrew",Heebo,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;direction:rtl;color:#F3F1EC}
 .a11y-fab{display:grid;place-items:center;width:52px;height:52px;padding:0;border:1.5px solid #FFB000;border-radius:50%;background:#0B0D11;color:#FFB000;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.4);transition:transform 160ms ease}
 .a11y-fab:hover{transform:scale(1.06)}
 .a11y-fab:focus-visible,.a11y-panel button:focus-visible,.a11y-panel a:focus-visible{outline:2px solid #FFB000;outline-offset:3px}
 .a11y-fab svg{width:28px;height:28px}
-.a11y-panel{position:absolute;left:0;bottom:64px;width:min(320px,calc(100vw - 32px));max-height:calc(100vh - 200px);overflow:auto;padding:18px;border:1px solid rgba(243,241,236,.2);border-radius:20px;background:#12151B;box-shadow:0 24px 60px rgba(0,0,0,.55)}
+.a11y-panel{position:absolute;right:0;bottom:64px;width:min(320px,calc(100vw - 32px));max-height:calc(100vh - 200px);overflow:auto;padding:18px;border:1px solid rgba(243,241,236,.2);border-radius:20px;background:#12151B;box-shadow:0 24px 60px rgba(0,0,0,.55)}
 .a11y-panel[hidden]{display:none}
 .a11y-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .a11y-head h2{margin:0;font-size:18px;font-weight:500;letter-spacing:0}
@@ -461,7 +461,7 @@ h1 span{display:block}
 .a11y-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;font-size:14px}
 .a11y-reset{padding:8px 14px;border:1px solid rgba(243,241,236,.35);border-radius:999px;background:transparent;color:#F3F1EC;font:500 14px/1 inherit;cursor:pointer}
 .a11y-foot a{color:#F3F1EC;text-decoration:underline;text-underline-offset:3px}
-@media (max-width:767px){.a11y{left:16px;bottom:16px}.a11y-fab{width:48px;height:48px}
+@media (max-width:767px){.a11y{right:16px;bottom:16px}.a11y-fab{width:48px;height:48px}
   html.kobi-open .a11y{opacity:0;visibility:hidden;pointer-events:none}} /* Kobi fills the phone's screen; the button returns when it closes */
 /* Modes */
 /* Contrast and grayscale run through a fixed overlay's backdrop-filter: a filter on the page itself would turn it
@@ -1319,9 +1319,9 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
    so the rules are added there once it appears. */
 (function(){
   var css = ''
-    + '.bpFabWrapper{right:24px!important;left:auto!important}'
-    + '.bpFABMessagePreview{right:24px!important;left:auto!important}'
-    + '@media (min-width:768px){.bpFABWebchat{right:24px!important;left:auto!important;transform-origin:100% 100%!important}}'
+    + '.bpFabWrapper{left:24px!important;right:auto!important}'
+    + '.bpFABMessagePreview{left:24px!important;right:auto!important}'
+    + '@media (min-width:768px){.bpFABWebchat{left:24px!important;right:auto!important;transform-origin:0 100%!important}}'
     /* the greeting card sat over the copy column and the buttons on every screen; the bubble stays, the card does not */
     + '.bpFABMessagePreview{display:none!important}'
     /* Kobi in the site's night: Botpress draws everything from --bpGray-* and --bpPrimary-*, so the gray ramp is turned
