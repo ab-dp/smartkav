@@ -13,12 +13,13 @@ TOTAL=21.4   # the ad's length, timed to the voice-over (which starts at VO_AT)
 VO_AT=0.3
 #      start  end   source (or "black")   in-point  [slow-down factor]
 CUTS=( "0.0   5.3   raw/shot1.mp4  0.0  1.32"
-       "5.3   8.1   raw/shot2.mp4  0.8"
-       "8.1   10.7  black          0"
-       "10.7  12.9  raw/shot3.mp4  0.9"
+       "5.3   8.4   raw/shot2.mp4  0.8"
+       "8.4   10.4  black          0"
+       "10.4  12.9  raw/shot3.mp4  0.6"
        "12.9  17.0  raw/shot4.mp4  0.3"
-       "17.0  19.1  raw/shot5.mp4  1.9"
-       "19.1  21.4  black          0" )
+       "17.0  19.6  raw/shot5.mp4  1.4"
+       "19.6  21.4  black          0" )
+# The footage runs on under each full-screen graphic while it dissolves in or out, so no cut lands on black.
 TMP=raw/tmp; mkdir -p "$TMP"; : > "$TMP/list.txt"
 GRADE="scale=1080:1920:force_original_aspect_ratio=increase:flags=lanczos,crop=1080:1920,setsar=1,eq=brightness=-0.035:saturation=0.86:contrast=1.03,vignette=PI/5"
 i=0
@@ -42,6 +43,6 @@ if [ -n "$VO" ]; then AIN=(-i "$VO"); AF="[2:a]aresample=48000,adelay=${ms}|${ms
 else AIN=(-f lavfi -t "$TOTAL" -i "anullsrc=r=48000:cl=stereo"); AF="[2:a]anull[a]"; fi
 "$FF" -v error -y -i "$TMP/base.mp4" -framerate 24 -i "raw/gfx/f%04d.png" "${AIN[@]}" \
   -filter_complex "[1:v]format=rgba[g];[0:v][g]overlay=0:0:format=auto:eof_action=pass,fade=t=in:st=0:d=0.25,format=yuv420p[v];$AF" \
-  -map "[v]" -map "[a]" -t "$TOTAL" -c:v libx264 -preset medium -crf 18 -profile:v high -pix_fmt yuv420p -movflags +faststart \
+  -map "[v]" -map "[a]" -t "$TOTAL" -c:v libx264 -preset slow -crf 16 -profile:v high -pix_fmt yuv420p -movflags +faststart \
   -c:a aac -b:a 192k -ar 48000 "$OUT"
 echo "built $OUT ($(du -h "$OUT" | cut -f1))"
