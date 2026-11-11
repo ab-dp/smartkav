@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "createdAt": "2026-11-11T18:21:32.700Z",
+        "reason": "Claude: Arial is only the last system fallback in the accessibility widget's font stack; the site's single font is IBM Plex Sans Hebrew per CLAUDE.md (decided 9.11.2026); predates this session"
+      }
+    ]
+  }
+}
