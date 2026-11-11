@@ -37,7 +37,8 @@ for c in "${CUTS[@]}"; do
   echo "file 'seg$i.mp4'" >> "$TMP/list.txt"; i=$((i+1))
 done
 "$FF" -v error -y -f concat -safe 0 -i "$TMP/list.txt" -c copy "$TMP/base.mp4"
-VO=$(ls raw/vo.wav raw/vo-v2.mp3 raw/vo-src.mp3 2>/dev/null | head -1 || true)   # the newest recording first
+VO=""; for f in raw/vo.wav raw/vo-v2.mp3 raw/vo-src.mp3; do [ -f "$f" ] && { VO=$f; break; }; done   # the newest recording first (in this order, not ls's alphabetical one)
+echo "voice-over: ${VO:-none}"
 ms=$(awk "BEGIN{print int($VO_AT*1000)}"); fo=$(awk "BEGIN{print $TOTAL-0.35}")
 if [ -n "$VO" ]; then AIN=(-i "$VO"); AF="[2:a]aresample=48000,adelay=${ms}|${ms},apad,atrim=0:$TOTAL,afade=t=out:st=$fo:d=0.35[a]"
 else AIN=(-f lavfi -t "$TOTAL" -i "anullsrc=r=48000:cl=stereo"); AF="[2:a]anull[a]"; fi
