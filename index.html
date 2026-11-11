@@ -169,8 +169,8 @@ h1 b,.moment h2 b{font-weight:500}
 @media (max-width:759px) and (orientation:portrait){
   .world{background-image:url(film/poster-m.jpg)}
   /* with the film: the phone frame at its full width, in the middle, melting into the ink above and below (the canvas
-     draws it the same way: 540x900, so half its height is 83.33vw; a 70px fade) */
-  html.has-film .world{background-image:linear-gradient(180deg,var(--ink) calc(50% - var(--ph,83.33vw)),rgba(11,13,17,0) calc(50% - var(--ph,83.33vw) + 70px),rgba(11,13,17,0) calc(50% + var(--ph,83.33vw) - 70px),var(--ink) calc(50% + var(--ph,83.33vw))),url(film/poster-m.jpg);background-size:100% 100%,100% auto;background-position:center}
+     draws it the same way: 720x900, so half its height is 62.5vw; a 70px fade) */
+  html.has-film .world{background-image:linear-gradient(180deg,var(--ink) calc(50% - 62.5vw),rgba(11,13,17,0) calc(50% - 62.5vw + 70px),rgba(11,13,17,0) calc(50% + 62.5vw - 70px),var(--ink) calc(50% + 62.5vw)),url(film/poster-m.jpg);background-size:100% 100%,100% auto;background-position:center}
   .world::after{background:linear-gradient(270deg,rgba(11,13,17,.68) 0,rgba(11,13,17,.57) 100%),linear-gradient(180deg,rgba(11,13,17,.45) 0,rgba(11,13,17,0) 16%,rgba(11,13,17,0) 70%,rgba(11,13,17,.6) 100%)}
 }
 /* touch: the film is as tall as the screen without the address bar, so the bar sliding away never resizes it */
@@ -869,8 +869,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
     function start(M){
       var ctx = canvas.getContext('2d', { alpha: false }), N = M.n,
           portrait = innerWidth < 760 && innerHeight > innerWidth, fine = matchMedia('(pointer: fine)').matches,
-          MW = portrait && /[?&]m=(620|720)(&|$)/.exec(location.search), // TEST ONLY (branch claude/mobile-wider-film): ?m=620 / ?m=720 tries a wider phone crop
-          base = MW ? 'film/m' + MW[1] + '/' : 'film/' + (portrait ? 'm' : 'd') + '/', blobs = new Array(N), asked = new Uint8Array(N), bmps = new Map(), decoding = {}, dec = 0,
+          base = 'film/' + (portrait ? 'm' : 'd') + '/', blobs = new Array(N), asked = new Uint8Array(N), bmps = new Map(), decoding = {}, dec = 0,
           AHEAD = 16, BEHIND = 6, KEEP = 22, MAXDEC = 3,
           cur = 0, target = 0, last = 0, drawn = '', inflight = 0, anchors = [], raf = 0, dir = 1,
           TAU = fine ? 70 : 75, MAXIN = portrait ? 4 : 6, fit = null;
@@ -974,7 +973,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
       function nearest(i){ for (var d = 0; d <= KEEP * 3; d++){ if (bmps.has(i - d)) return i - d; if (bmps.has(i + d)) return i + d; } return -1; }
       // a phone held upright shows the phone frame at its full width (filling the height cut a further quarter off each
       // side and blew the frame up ~1.9x); the frame sits in the middle and melts into the ink above and below it
-      // (frames/poster-m are 540x900; the poster is laid out the same way in the CSS, 83.33vw = half its height)
+      // (frames/poster-m are 720x900, a 45% slice of the source; the poster is laid out the same way in the CSS, 62.5vw = half its height)
       function blit(src, alpha){
         var w = src.width || src.naturalWidth, h = src.height || src.naturalHeight, cw = canvas.width, ch = canvas.height, s = portrait ? cw / w : Math.max(cw / w, ch / h);
         ctx.globalAlpha = alpha; ctx.drawImage(src, (cw - w * s) / 2, (ch - h * s) / 2, w * s, h * s); ctx.globalAlpha = 1;
@@ -1006,7 +1005,6 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
         if (cur !== target) wake(); else last = 0;
       }
       function wake(){ if (!raf) raf = requestAnimationFrame(tick); }
-      if (MW){ root.style.setProperty('--ph', (50 * 900 / +MW[1]).toFixed(2) + 'vw'); var wl = $('.world'); wl.style.backgroundImage = getComputedStyle(wl).backgroundImage.replace('film/poster-m.jpg', base + 'poster.jpg'); } // TEST ONLY
       pace(); size(); measure(); cur = target;
       // the poster covers the first screen; frames start after the page's own load so they never compete with the headline
       if (document.readyState === 'complete') pump(); else addEventListener('load', pump);

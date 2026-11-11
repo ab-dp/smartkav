@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # build-film.sh — assembles the chained shots into ONE continuous film for /film (the page plays it by scroll).
 #   film/d/0001.webp …  desktop frames, 1280x720
-#   film/m/0001.webp …  phone frames, 540x900 portrait crop that follows the subject of each shot
+#   film/m/0001.webp …  phone frames, 720x900 portrait crop that follows the subject of each shot
 #   film/poster.jpg, film/poster-m.jpg   the first frame (before JS, without motion, while frames load)
 #   film/film.json      { n, shots: { S1: [firstFrame, frameCount], … } } — the page anchors sections to shots
 # Shots are listed in order as  name:file:phone-crop-centre(0..1)[:first-last]  (source frame range to keep).
@@ -42,7 +42,7 @@ for spec in "${SHOTS[@]}"; do
   elif [ -n "${prevcx:-}" ] && [ "$prevcx" != "$cx" ]; then c1=$cx; cxe="($prevcx+($cx-$prevcx)*(1-pow(1-min(1\,n/36)\,2)))"
   else c1=$cx; cxe=$cx; fi
   prevcx=$c1
-  "$FF" -v error -y -i "$file" -vf "$sel,scale=-2:900:flags=lanczos,crop=540:900:(iw-540)*$cxe:0,$pick" -fps_mode vfr -an -c:v libx264 -crf 8 -preset fast "$tmp/$name-m.mp4"
+  "$FF" -v error -y -i "$file" -vf "$sel,scale=-2:900:flags=lanczos,crop=720:900:(iw-720)*$cxe:0,$pick" -fps_mode vfr -an -c:v libx264 -crf 8 -preset fast "$tmp/$name-m.mp4"
   "$FF" -v error -y -i "$tmp/$name-d.mp4" -start_number $((total + 1)) -c:v libwebp -quality 64 -compression_level 6 "$OUT/d/%04d.webp"
   "$FF" -v error -y -i "$tmp/$name-m.mp4" -start_number $((total + 1)) -c:v libwebp -quality 62 -compression_level 6 "$OUT/m/%04d.webp"
   if [ $first = 1 ]; then
