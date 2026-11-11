@@ -6,7 +6,7 @@
 <!-- The graphics layer of the 20-second ad (1080×1920, transparent). Every time lives in T and VO below, so the
      whole layer re-times to the recorded voice-over. Rendered frame by frame: window.renderAt(seconds) seeks the
      paused GSAP timeline, then the frame is captured with a transparent background. ?preview adds a dark backdrop. -->
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@100;200;300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
 <style>
 :root{--ink:#0B0D11;--fg:#F3F1EC;--fg2:rgba(243,241,236,.86);--fg3:rgba(243,241,236,.66);--line:rgba(218,226,240,.16);--panel:rgba(13,16,22,.84);--amber:#FFB000;--amber2:#FFD27A}
@@ -24,12 +24,16 @@ body.preview{background:#1b1f27}
 #clock{position:absolute;top:290px;right:84px;font-weight:100;font-size:168px;line-height:1;letter-spacing:-.04em}
 #clock b{font-weight:100;color:var(--amber)}
 #badge{position:absolute;top:500px;right:88px;display:flex;align-items:center;gap:16px;font-size:34px;font-weight:500;color:var(--fg2)}
-#badge span{min-width:84px;height:56px;padding:0 18px;border-radius:28px;background:#E5544E;color:#fff;font-size:34px;line-height:56px;text-align:center;font-weight:500}
-.ntf{position:absolute;right:84px;top:1290px;width:760px;display:grid;grid-template-columns:76px 1fr;gap:2px 22px;align-items:center;padding:20px 26px;background:rgba(13,16,22,.6);border:1px solid var(--line);border-radius:28px;box-shadow:0 24px 50px -24px rgba(0,0,0,.6)}
-.ntf i{grid-row:span 2;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:500;font-size:32px;color:#fff}
-.ntf b{display:flex;justify-content:space-between;font-weight:500;font-size:32px}
-.ntf b em{font-style:normal;font-weight:400;font-size:26px;color:var(--fg3)}
-.ntf p{margin:0;font-size:29px;font-weight:400;color:var(--fg2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#badge span{min-width:56px;height:56px;padding:0 16px;border-radius:28px;background:#FF3B30;color:#fff;font-size:32px;line-height:56px;text-align:center;font-weight:500}
+/* the messages look like what they are: phone notifications (the system's dark material, the app's icon, the
+   system's own type), not designed cards */
+.ntf{position:absolute;right:70px;left:70px;top:1284px;display:grid;grid-template-columns:84px 1fr;gap:0 24px;align-items:center;padding:22px 26px 22px 30px;background:rgba(44,44,46,.7);border-radius:38px;font-family:-apple-system,"SF Pro Text","Segoe UI",Arial,sans-serif}
+.ntf i{grid-row:span 2;width:84px;height:84px;border-radius:20px;display:grid;place-items:center;background:#25D366}
+.ntf i.call{background:#34C759}
+.ntf i svg{width:58px;height:58px}
+.ntf b{display:flex;justify-content:space-between;align-items:baseline;font-weight:600;font-size:32px;color:#fff}
+.ntf b em{font-style:normal;font-weight:400;font-size:25px;color:rgba(235,235,245,.6)}
+.ntf p{margin:2px 0 0;font-size:30px;font-weight:400;color:rgba(255,255,255,.92);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* 2 · the app */
 #phone{position:absolute;left:50%;top:700px;width:420px;height:740px;margin-left:-210px;transform-origin:50% 100%;border-radius:72px;background:rgba(7,8,11,.9);padding:16px;box-shadow:0 60px 120px -40px rgba(0,0,0,.9),inset 0 0 0 2px rgba(243,241,236,.12)}
@@ -103,7 +107,8 @@ body.preview{background:#1b1f27}
 
 /* subtitles: the voice-over, bottom of the safe area */
 #subs{position:absolute;left:60px;right:60px;top:1470px;text-align:center}
-#subs p{position:absolute;left:0;right:0;margin:0 auto;width:max-content;max-width:100%;padding:14px 30px;border-radius:20px;background:rgba(11,13,17,.62);font-size:42px;font-weight:500;line-height:1.35;color:var(--fg);opacity:0}
+/* captions the way social video carries them: plain white type with a soft shadow, no box */
+#subs p{position:absolute;left:0;right:0;margin:0 auto;width:max-content;max-width:100%;padding:0 10px;font-size:46px;font-weight:600;line-height:1.3;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.85),0 0 22px rgba(0,0,0,.55);opacity:0}
 </style>
 </head>
 <body>
@@ -176,13 +181,13 @@ body.preview{background:#1b1f27}
 
 <script>
 /* ---------- timing: scenes and the voice-over lines (seconds). Re-timed to the recording by build-ad.sh ---------- */
-/* timed to the recorded voice-over (raw/vo-src.mp3, starting at 0.3s; speech found with ffmpeg silencedetect) */
-var T = window.AD_T || { flood:[0,5.3], app:[5.3,8.1], group:[8.1,10.7], send:[10.7,12.9], result:[12.9,17.0], strike:14.55, now:15.85, nochange:[17.0,19.1], end:[19.1,21.4], total:21.4 };
+/* timed to the recorded voice-over (raw/vo-v2.mp3, starting at 0.3s; speech found with ffmpeg silencedetect) */
+var T = window.AD_T || { flood:[0,5.95], app:[5.95,8.9], group:[8.9,11.3], send:[11.3,13.5], result:[13.5,17.6], strike:15.1, now:16.5, nochange:[17.6,19.65], end:[19.65,22.0], total:22.0 };
 var VO = window.AD_VO || [
-  [0.3,2.2,'עשר וארבעים בלילה.'], [2.52,4.97,'שלושים ושמונה הודעות על ההסעות של מחר.'],
-  [5.59,8.11,'עם SmartKav, העובדים נרשמים באפליקציה,'], [8.34,10.58,'המערכת מקבצת לנסיעות משותפות,'],
-  [10.95,12.64,'ואתם רק מאשרים ושולחים.'], [13.1,14.7,'מה שלקח שעתיים בשבוע,'], [15.0,16.77,'לוקח עכשיו חמש דקות.'],
-  [17.2,18.78,'בלי להחליף את חברת ההסעות.',false], [19.36,21.0,'SmartKav. תאמו הדגמה.']
+  [0.45,2.47,'עשר וארבעים בלילה.'], [3.18,5.59,'שלושים ושמונה הודעות על ההסעות של מחר.'],
+  [6.29,8.77,'עם SmartKav, העובדים נרשמים באפליקציה,'], [9.12,11.25,'המערכת מקבצת לנסיעות משותפות,'],
+  [11.49,13.21,'ואתם רק מאשרים ושולחים.'], [13.64,15.19,'מה שלקח שעתיים בשבוע,'], [15.5,17.43,'לוקח עכשיו חמש דקות.'],
+  [17.8,19.34,'בלי להחליף את חברת ההסעות.',false], [19.86,21.55,'SmartKav. תאמו הדגמה.',false]
 ];
 var SUBS = /[?&]subs=0/.test(location.search) ? false : true;
 if (/preview/.test(location.search)) document.body.classList.add('preview');
@@ -191,23 +196,26 @@ var tl = gsap.timeline({ paused: true, defaults: { ease: 'expo.out' } });
 function layerIn(id, a, b, fadeIn, fadeOut){ tl.fromTo('#' + id, { autoAlpha: 0 }, { autoAlpha: 1, duration: fadeIn || .35, ease: 'power2.out' }, a); tl.to('#' + id, { autoAlpha: 0, duration: fadeOut || .3, ease: 'power2.in' }, b - (fadeOut || .3)); }
 
 /* 1 · the flood: the clock, then messages pile up and the counter runs to 38 */
-var MSGS = [['ע','#0F6B5E','עומר','הזמנתם לי? אין לי שום אישור','22:40'],['מ','#5B6470','מיכל','מי מזמין לי מונית ל-16:00 מחר?','22:31'],
-  ['ד','#3B5BA9','דנה','כתבתי בקבוצה, לא בטוחה שראית','22:39'],['ת','#4A4F57','תחנת המוניות','כמה נוסעים מחר ב-16:00?','22:35'],
-  ['נ','#9A6A00','נועה','מחר רק חזור, מסיימת ב-01:00','22:36'],['י','#7A4FA0','יוסי','שיחה שלא נענתה','22:38'],
-  ['א','#B4461E','אבי','צריך הסעה למשמרת של מחר','22:33'],['ר','#5B6470','רון','גם אני ל-16:00, רמת גן','22:32']];
+/* [kind, sender (a group shows as "name ‏· group"), message] – written the way people actually text */
+var MSGS = [['wa','עומר','הזמנתם לי למחר? לא קיבלתי אישור'],['wa','מיכל · הסעות מוקד','מי מזמין מונית ל-16:00 מחר??'],
+  ['wa','דנה','כתבתי בקבוצה, לא בטוחה שראית'],['wa','תחנת המוניות','כמה נוסעים מחר ב-16? צריך לדעת עד 23:00'],
+  ['wa','נועה','מחר אני רק חזור, מסיימת ב-1'],['call','יוסי','שיחה שלא נענתה'],
+  ['wa','אבי · הסעות מוקד','גם אני צריך הסעה למחר'],['wa','רון','אני ל-16:00 מרמת גן, תודה!']];
+var GLYPH = { wa: '<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 3.4a8.4 8.4 0 0 0-7.2 12.700L3.600 20.400l4.400-1.150A8.400 8.400 0 1 0 12 3.400z"/><path d="M9 8.600c0 3.500 2.900 6.400 6.400 6.400" stroke="#25D366" stroke-width="2.300" stroke-linecap="round" fill="none"/></svg>',
+              call: '<svg viewBox="0 0 24 24"><path d="M7 6.500c0 5.800 4.700 10.500 10.500 10.500" stroke="#fff" stroke-width="3.200" stroke-linecap="round" fill="none"/></svg>' };
 var flood = $('#flood');
 MSGS.forEach(function(m, i){ var d = document.createElement('div'); d.className = 'ntf';
-  d.innerHTML = '<i style="background:' + m[1] + '">' + m[0] + '</i><b>' + m[2] + '<em class="num">' + m[4] + '</em></b><p>' + m[3] + '</p>'; flood.appendChild(d); });
+  d.innerHTML = '<i class="' + m[0] + '">' + GLYPH[m[0]] + '</i><b>' + m[1] + '<em>עכשיו</em></b><p>' + m[2] + '</p>'; flood.appendChild(d); });
 layerIn('flood', T.flood[0], T.flood[1], .01);
 tl.from('#clock', { autoAlpha: 0, y: 30, duration: .8 }, T.flood[0] + .15);
 tl.from('#badge', { autoAlpha: 0, duration: .4 }, T.flood[0] + .5);
 /* a rolling stack low in the frame, clear of the face: slow at first, then faster; each new message pushes the
    older ones up and they fade, so at most three show at once */
-var NT = [.7, 1.5, 2.2, 2.8, 3.3, 3.7, 4.05, 4.35], NA = [1, .62, .34], ntfs = $$('.ntf');
+var NT = [.8, 1.75, 2.6, 3.3, 3.9, 4.4, 4.8, 5.1], NA = [1, .7, .4], ntfs = $$('.ntf');
 ntfs.forEach(function(d, i){ var t = T.flood[0] + NT[i];
   tl.fromTo(d, { autoAlpha: 0, y: 46, scale: .95 }, { autoAlpha: 1, y: 0, scale: 1, duration: .5 }, t);
-  for (var j = 0; j < i; j++){ var k = i - j; tl.to(ntfs[j], { y: -k * 130, autoAlpha: k < 3 ? NA[k] : 0, duration: .5 }, t); } });
-var cnt = { v: 0 }; tl.to(cnt, { v: 38, duration: 3.9, ease: 'power2.in', onUpdate: function(){ $('#cnt').textContent = Math.round(cnt.v); } }, T.flood[0] + .7);
+  for (var j = 0; j < i; j++){ var k = i - j; tl.to(ntfs[j], { y: -k * 140, autoAlpha: k < 3 ? NA[k] : 0, duration: .5 }, t); } });
+var cnt = { v: 0 }; tl.to(cnt, { v: 38, duration: 4.5, ease: 'power2.in', onUpdate: function(){ $('#cnt').textContent = Math.round(cnt.v); } }, T.flood[0] + .8);
 tl.to('.ntf', { autoAlpha: 0, duration: .3, ease: 'power2.in' }, T.flood[1] - .5);
 
 /* 2 · the app: the phone rises, the button is pressed, the request lands */
