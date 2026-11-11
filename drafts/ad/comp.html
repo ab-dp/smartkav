@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>SmartKav ad – graphics layer</title>
+<!-- The graphics layer of the 20-second ad (1080×1920, transparent). Every time lives in T and VO below, so the
+     whole layer re-times to the recorded voice-over. Rendered frame by frame: window.renderAt(seconds) seeks the
+     paused GSAP timeline, then the frame is captured with a transparent background. ?preview adds a dark backdrop. -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@100;200;300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<style>
+:root{--ink:#0B0D11;--fg:#F3F1EC;--fg2:rgba(243,241,236,.86);--fg3:rgba(243,241,236,.66);--line:rgba(218,226,240,.16);--panel:rgba(13,16,22,.84);--amber:#FFB000;--amber2:#FFD27A}
+*{box-sizing:border-box}
+html,body{margin:0;background:transparent}
+body{width:1080px;height:1920px;overflow:hidden;font-family:"IBM Plex Sans Hebrew",sans-serif;color:var(--fg);-webkit-font-smoothing:antialiased}
+body.preview{background:#1b1f27}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden}
+.layer{position:absolute;inset:0;opacity:0}
+.num{font-variant-numeric:tabular-nums;direction:ltr}
+/* shared scrim: a soft dark gradient under text that sits on the footage */
+.scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,13,17,.55) 0,rgba(11,13,17,0) 30%,rgba(11,13,17,0) 58%,rgba(11,13,17,.7) 100%)}
+
+/* 1 · the flood */
+#clock{position:absolute;top:290px;right:84px;font-weight:100;font-size:168px;line-height:1;letter-spacing:-.04em}
+#clock b{font-weight:100;color:var(--amber)}
+#badge{position:absolute;top:500px;right:88px;display:flex;align-items:center;gap:16px;font-size:34px;font-weight:500;color:var(--fg2)}
+#badge span{min-width:84px;height:56px;padding:0 18px;border-radius:28px;background:#E5544E;color:#fff;font-size:34px;line-height:56px;text-align:center;font-weight:500}
+.ntf{position:absolute;right:84px;width:820px;display:grid;grid-template-columns:76px 1fr;gap:2px 22px;align-items:center;padding:20px 26px;background:var(--panel);border:1px solid var(--line);border-radius:28px;box-shadow:0 24px 50px -24px rgba(0,0,0,.8)}
+.ntf i{grid-row:span 2;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:500;font-size:32px;color:#fff}
+.ntf b{display:flex;justify-content:space-between;font-weight:500;font-size:32px}
+.ntf b em{font-style:normal;font-weight:400;font-size:26px;color:var(--fg3)}
+.ntf p{margin:0;font-size:29px;font-weight:400;color:var(--fg2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* 2 · the app */
+#phone{position:absolute;left:50%;top:700px;width:420px;height:740px;margin-left:-210px;transform-origin:50% 100%;border-radius:72px;background:rgba(7,8,11,.9);padding:16px;box-shadow:0 60px 120px -40px rgba(0,0,0,.9),inset 0 0 0 2px rgba(243,241,236,.12)}
+#phone .scr{height:100%;border-radius:58px;background:rgba(18,21,27,.96);padding:78px 24px 24px;display:flex;flex-direction:column;gap:13px;zoom:.86}
+#phone .notch{position:absolute;top:34px;left:50%;width:140px;height:40px;margin-left:-70px;border-radius:20px;background:#000}
+.hi{display:flex;justify-content:space-between;align-items:center;font-size:36px;font-weight:400}
+.hi i{width:56px;height:56px;border-radius:50%;background:#2B3442;display:grid;place-items:center;font-style:normal;font-size:26px;font-weight:500}
+.fld{background:#1A1E26;border:1px solid var(--line);border-radius:22px;padding:16px 22px}
+.fld small{display:block;font-size:22px;color:var(--fg3)}
+.fld b{font-weight:400;font-size:28px}
+.pbtn{height:84px;border-radius:22px;background:var(--fg);color:var(--ink);display:grid;place-items:center;font-size:30px;font-weight:500}
+.status{display:flex;justify-content:space-between;align-items:center;background:#1A1E26;border:1px solid var(--line);border-radius:22px;padding:18px 22px}
+.status b{font-weight:400;font-size:28px;display:block}.status small{font-size:21px;color:var(--fg3)}
+.tag{display:inline-block;padding:8px 20px;border-radius:999px;font-size:24px;font-weight:500;background:rgba(127,211,162,.14);color:#7FD3A2;border:1px solid rgba(127,211,162,.3)}
+.tag.wait{background:rgba(242,196,107,.14);color:#F2C46B;border-color:rgba(242,196,107,.3)}
+
+/* 3 · grouping (full graphic) */
+#group .bg{position:absolute;inset:-40px;background:var(--ink) url(../../film/poster-m.jpg) center/cover;filter:blur(18px) brightness(.32) saturate(.8)}
+#gtitle{position:absolute;top:300px;right:84px;font-size:120px;font-weight:200;letter-spacing:-.03em;line-height:1.05}
+#gtitle b{font-weight:500}
+#gtitle span{position:absolute;right:0;top:0;white-space:nowrap}
+#chips{position:absolute;top:560px;right:84px;width:912px;display:flex;flex-wrap:wrap;gap:16px;direction:rtl}
+#chips span{padding:14px 26px;border-radius:999px;border:1px solid var(--line);background:var(--panel);font-size:30px;font-weight:400}
+#rides{position:absolute;top:640px;right:84px;width:912px;display:grid;gap:22px}
+#rides div{display:flex;justify-content:space-between;align-items:center;padding:26px 34px;border-radius:28px;background:var(--panel);border:1px solid var(--line)}
+#rides b{font-weight:500;font-size:38px}#rides small{display:block;font-size:26px;color:var(--fg3)}
+#rides em{font-style:normal;font-weight:100;font-size:96px;line-height:.8;color:var(--amber)}
+
+/* 4 · the manager's screen */
+#desk{position:absolute;left:50%;top:800px;width:940px;margin-left:-470px;border-radius:30px;background:var(--panel);border:1px solid var(--line);box-shadow:0 60px 120px -40px rgba(0,0,0,.9);padding:30px}
+.dhead{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:22px}
+.dhead b{font-weight:400;font-size:38px}.dhead small{display:block;font-size:24px;color:var(--fg3)}
+.grp{background:#1A1E26;border:1px solid var(--line);border-radius:24px;overflow:hidden}
+.grph{display:flex;justify-content:space-between;align-items:center;padding:22px 24px;font-size:27px}
+.grph span b{font-weight:500}
+.lb{padding:14px 26px;border-radius:16px;font-size:26px;font-weight:500;background:var(--fg);color:var(--ink)}
+.r{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-top:1px solid var(--line);font-size:27px;color:var(--fg2)}
+#toast{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);white-space:nowrap;background:var(--fg);color:var(--ink);border-radius:20px;padding:18px 28px;font-size:27px;font-weight:500;display:flex;gap:16px;align-items:center;opacity:0}
+
+/* 5 · the result */
+#res{position:absolute;inset:0;text-align:center}
+#was{position:absolute;top:520px;left:0;right:0;font-size:76px;font-weight:200;color:var(--fg2)}
+#was s{position:absolute;left:50%;top:52%;height:5px;width:0;margin-left:-300px;background:var(--amber);text-decoration:none}
+#now{position:absolute;top:660px;left:0;right:0;line-height:1}
+#now .n{font-size:360px;font-weight:100;letter-spacing:-.05em;color:var(--fg)}
+#now .u{display:block;margin-top:10px;font-size:84px;font-weight:300}
+#now .u b{color:var(--amber);font-weight:300}
+#pilot{position:absolute;top:1220px;left:0;right:0;font-size:32px;font-weight:500;color:var(--fg3);letter-spacing:.02em}
+
+/* 6 · no change */
+#noch{position:absolute;top:1230px;left:0;right:0;text-align:center}
+#noch i{display:block;width:120px;height:3px;margin:0 auto 30px;background:var(--amber)}
+#noch p{margin:0;font-size:62px;font-weight:300;letter-spacing:-.015em}
+#noch p b{font-weight:500}
+
+/* 7 · end card */
+#end .bg{position:absolute;inset:0;background:var(--ink)}
+#end .glow{position:absolute;inset:0;background:var(--ink) url(../../film/poster-m.jpg) center/cover;filter:brightness(.18) saturate(.7)}
+#endin{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#mark{width:260px;height:113px}
+#mark line{stroke:var(--amber);stroke-width:5;stroke-linecap:round}#mark circle{fill:none;stroke:var(--amber);stroke-width:5}
+#word{margin-top:36px;direction:ltr;font-size:112px;font-weight:500;letter-spacing:.005em;line-height:1}
+#word span{font-weight:200}
+#tag{margin-top:40px;font-size:50px;font-weight:200}
+#tag b{font-weight:500}#tag i{font-style:normal;color:var(--amber)}
+#cta{position:relative;margin-top:80px;height:120px;padding:0 70px;border-radius:999px;display:flex;align-items:center;gap:24px;font-size:46px;font-weight:500;color:var(--amber2);
+  background:linear-gradient(180deg,rgba(255,176,0,.2),rgba(255,176,0,.08)),rgba(11,13,17,.5);box-shadow:inset 0 0 0 2px rgba(255,176,0,.55)}
+#cta svg.ar{width:40px;height:40px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#orb{position:absolute;inset:0;width:100%;height:100%;overflow:visible;fill:none}
+#orb rect{stroke:var(--amber);stroke-linecap:round;stroke-width:3}
+
+/* subtitles: the voice-over, bottom of the safe area */
+#subs{position:absolute;left:60px;right:60px;top:1470px;text-align:center}
+#subs p{position:absolute;left:0;right:0;margin:0 auto;width:max-content;max-width:100%;padding:14px 30px;border-radius:20px;background:rgba(11,13,17,.62);font-size:42px;font-weight:500;line-height:1.35;color:var(--fg);opacity:0}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <div class="layer" id="flood"><div class="scrim"></div>
+    <div id="clock" class="num">22<b>:</b>40</div>
+    <div id="badge"><span class="num" id="cnt">0</span>הודעות שלא נקראו</div>
+  </div>
+
+  <div class="layer" id="app"><div class="scrim"></div>
+    <div id="phone"><div class="notch"></div><div class="scr">
+      <div class="hi"><span>שלום, דנה</span><i>ד</i></div>
+      <div class="fld"><small>משמרת</small><b>שישי · 16:00–01:00</b></div>
+      <div class="fld"><small>כיוון נסיעה</small><b>הלוך וחזור</b></div>
+      <div class="fld"><small>כתובת איסוף</small><b>רמת גן</b></div>
+      <div class="pbtn" id="pbtn">שליחת הרשמה</div>
+      <div class="status" id="pstatus"><span><b>שישי · הלוך 16:00</b><small>עכשיו</small></span><span class="tag" id="ptag">נקלטה</span></div>
+    </div></div>
+  </div>
+
+  <div class="layer" id="group"><div class="bg"></div>
+    <div id="gtitle"><span id="g1">14 בקשות.</span><span id="g2"><b>4 נסיעות.</b></span></div>
+    <div id="chips"></div>
+    <div id="rides">
+      <div><span><b>רמת גן</b><small>הלוך · 16:00 · נסיעה משותפת</small></span><em class="num">4</em></div>
+      <div><span><b>חולון</b><small>הלוך · 16:00 · נסיעה משותפת</small></span><em class="num">3</em></div>
+      <div><span><b>תל אביב</b><small>חזור · 01:00 · נסיעה משותפת</small></span><em class="num">4</em></div>
+      <div><span><b>בת ים</b><small>חזור · 01:00 · נסיעה משותפת</small></span><em class="num">3</em></div>
+    </div>
+  </div>
+
+  <div class="layer" id="send"><div class="scrim"></div>
+    <div id="desk">
+      <div class="dhead"><span><b>נסיעות למחר</b><small>שישי · 4 נסיעות משותפות</small></span></div>
+      <div class="grp">
+        <div class="grph"><span><b>הלוך · 16:00</b> · רמת גן · 4 נוסעים</span><span class="lb" id="dcopy">העתק הזמנה</span></div>
+        <div class="r"><span>דנה כ.</span><span class="tag wait dt">ממתין</span></div>
+        <div class="r"><span>אבי מ.</span><span class="tag wait dt">ממתין</span></div>
+        <div class="r"><span>נועה ש.</span><span class="tag wait dt">ממתין</span></div>
+        <div class="r"><span>רון ב.</span><span class="tag wait dt">ממתין</span></div>
+      </div>
+      <div id="toast"><span class="tag">הועתק</span>ההזמנה מוכנה לחברת ההסעות</div>
+    </div>
+  </div>
+
+  <div class="layer" id="result"><div class="scrim"></div>
+    <div id="res">
+      <div id="was">שעתיים בשבוע<s></s></div>
+      <div id="now"><span class="n num">5</span><span class="u"><b>דקות</b> בשבוע</span></div>
+      <div id="pilot">פיילוט · מוקד עם 45 עובדי משמרות</div>
+    </div>
+  </div>
+
+  <div class="layer" id="nochange"><div class="scrim"></div>
+    <div id="noch"><i></i><p>בלי להחליף את <b>חברת ההסעות</b></p></div>
+  </div>
+
+  <div class="layer" id="end"><div class="bg"></div><div class="glow"></div>
+    <div id="endin">
+      <svg id="mark" viewBox="0 0 92 40"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg>
+      <div id="word">Smart<span>Kav</span></div>
+      <div id="tag">כל ההסעות של השבוע. <b>בחמש דקות<i>.</i></b></div>
+      <div id="cta">תאמו הדגמה<svg class="ar" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><svg id="orb"><rect/><rect/><rect/><rect/></svg></div>
+    </div>
+  </div>
+
+  <div id="subs"></div>
+</div>
+
+<script>
+/* ---------- timing: scenes and the voice-over lines (seconds). Re-timed to the recording by build-ad.sh ---------- */
+/* timed to the recorded voice-over (raw/vo-src.mp3, starting at 0.3s; speech found with ffmpeg silencedetect) */
+var T = window.AD_T || { flood:[0,5.3], app:[5.3,8.1], group:[8.1,10.7], send:[10.7,12.9], result:[12.9,17.0], strike:14.55, now:15.85, nochange:[17.0,19.1], end:[19.1,21.4], total:21.4 };
+var VO = window.AD_VO || [
+  [0.3,2.2,'עשר וארבעים בלילה.'], [2.52,4.97,'שלושים ושמונה הודעות על ההסעות של מחר.'],
+  [5.59,8.11,'עם SmartKav, העובדים נרשמים באפליקציה,'], [8.34,10.58,'המערכת מקבצת לנסיעות משותפות,'],
+  [10.95,12.64,'ואתם רק מאשרים ושולחים.'], [13.1,14.7,'מה שלקח שעתיים בשבוע,'], [15.0,16.77,'לוקח עכשיו חמש דקות.'],
+  [17.2,18.78,'בלי להחליף את חברת ההסעות.',false], [19.36,21.0,'SmartKav. תאמו הדגמה.']
+];
+var SUBS = /[?&]subs=0/.test(location.search) ? false : true;
+if (/preview/.test(location.search)) document.body.classList.add('preview');
+var $ = function(s){ return document.querySelector(s); }, $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+var tl = gsap.timeline({ paused: true, defaults: { ease: 'expo.out' } });
+function layerIn(id, a, b, fadeIn, fadeOut){ tl.fromTo('#' + id, { autoAlpha: 0 }, { autoAlpha: 1, duration: fadeIn || .35, ease: 'power2.out' }, a); tl.to('#' + id, { autoAlpha: 0, duration: fadeOut || .3, ease: 'power2.in' }, b - (fadeOut || .3)); }
+
+/* 1 · the flood: the clock, then messages pile up and the counter runs to 38 */
+var MSGS = [['ע','#0F6B5E','עומר','הזמנתם לי? אין לי שום אישור','22:40'],['מ','#5B6470','מיכל','מי מזמין לי מונית ל-16:00 מחר?','22:31'],
+  ['ד','#3B5BA9','דנה','כתבתי בקבוצה, לא בטוחה שראית','22:39'],['ת','#4A4F57','תחנת המוניות','כמה נוסעים מחר ב-16:00?','22:35'],
+  ['נ','#9A6A00','נועה','מחר רק חזור, מסיימת ב-01:00','22:36'],['י','#7A4FA0','יוסי','שיחה שלא נענתה','22:38'],
+  ['א','#B4461E','אבי','צריך הסעה למשמרת של מחר','22:33'],['ר','#5B6470','רון','גם אני ל-16:00, רמת גן','22:32']];
+var flood = $('#flood');
+MSGS.forEach(function(m, i){ var d = document.createElement('div'); d.className = 'ntf'; d.style.top = (620 + i * 112) + 'px';
+  d.innerHTML = '<i style="background:' + m[1] + '">' + m[0] + '</i><b>' + m[2] + '<em class="num">' + m[4] + '</em></b><p>' + m[3] + '</p>'; flood.appendChild(d); });
+layerIn('flood', T.flood[0], T.flood[1], .01);
+tl.from('#clock', { autoAlpha: 0, y: 30, duration: .8 }, T.flood[0] + .15);
+tl.from('#badge', { autoAlpha: 0, duration: .4 }, T.flood[0] + .5);
+$$('.ntf').forEach(function(d, i){ tl.from(d, { autoAlpha: 0, scale: .92, y: 30, duration: .45, ease: 'back.out(1.6)' }, T.flood[0] + .6 + i * .3); });
+var cnt = { v: 0 }; tl.to(cnt, { v: 38, duration: 2.7, ease: 'none', onUpdate: function(){ $('#cnt').textContent = Math.round(cnt.v); } }, T.flood[0] + .6);
+tl.to('.ntf', { autoAlpha: 0, y: -40, scale: .9, stagger: .025, duration: .3, ease: 'power2.in' }, T.flood[1] - .55);
+
+/* 2 · the app: the phone rises, the button is pressed, the request lands */
+layerIn('app', T.app[0], T.app[1]);
+tl.from('#phone', { y: 160, autoAlpha: 0, duration: .7 }, T.app[0]);
+tl.set('#pstatus', { autoAlpha: 0, y: 20 }, 0);
+tl.to('#pbtn', { scale: .95, duration: .12, ease: 'power2.out' }, T.app[0] + .9).to('#pbtn', { scale: 1, duration: .3 }, T.app[0] + 1.02);
+tl.to('#pstatus', { autoAlpha: 1, y: 0, duration: .5 }, T.app[0] + 1.2);
+
+/* 3 · grouping: 14 names, then they fold into 4 shared rides */
+var NAMES = ['דנה · רמת גן','מיכל · חולון','יוסי · תל אביב','אבי · רמת גן','שירן · בת ים','עומר · חולון','נועה · רמת גן','ליאור · תל אביב','תמר · בת ים','רון · רמת גן','גל · חולון','עדי · תל אביב','מאיה · בת ים','איתי · תל אביב'];
+NAMES.forEach(function(n){ var s = document.createElement('span'); s.textContent = n; $('#chips').appendChild(s); });
+layerIn('group', T.group[0], T.group[1], .3);
+tl.from('#chips span', { autoAlpha: 0, scale: .85, stagger: .045, duration: .35, ease: 'back.out(2)' }, T.group[0] + .25);
+tl.to('#chips span', { autoAlpha: 0, y: 120, scale: .4, stagger: .02, duration: .45, ease: 'power3.in' }, T.group[0] + 1.25);
+tl.set('#rides div', { autoAlpha: 0, y: 30 }, 0);
+tl.to('#rides div', { autoAlpha: 1, y: 0, stagger: .1, duration: .5 }, T.group[0] + 1.55);
+tl.to('#g1', { autoAlpha: 0, y: -20, duration: .3, ease: 'power2.in' }, T.group[0] + 1.3);
+tl.fromTo('#g2', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: .5 }, T.group[0] + 1.55);
+
+/* 4 · the manager's screen: copy the order, then everyone's ride is booked */
+layerIn('send', T.send[0], T.send[1]);
+tl.from('#desk', { y: 140, autoAlpha: 0, duration: .7 }, T.send[0]);
+tl.to('#dcopy', { scale: .94, boxShadow: '0 0 0 8px rgba(255,176,0,.35)', duration: .12 }, T.send[0] + .7).to('#dcopy', { scale: 1, boxShadow: '0 0 0 0 rgba(255,176,0,0)', duration: .3 }, T.send[0] + .82);
+tl.fromTo('#toast', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: .4 }, T.send[0] + .85);
+tl.call(function(){ $$('.dt').forEach(function(t){ t.className = 'tag dt'; t.textContent = 'מונית הוזמנה'; }); }, null, T.send[0] + 1.45);
+tl.call(function(){ $$('.dt').forEach(function(t){ t.className = 'tag wait dt'; t.textContent = 'ממתין'; }); }, null, T.send[0] + 1.44);
+
+/* 5 · the result: two hours struck through, then five minutes, large and quiet */
+layerIn('result', T.result[0], T.result[1]);
+tl.from('#was', { autoAlpha: 0, y: 30, duration: .6 }, T.result[0] + .2);
+tl.to('#was s', { width: 600, duration: .5, ease: 'power2.inOut' }, T.strike || T.result[0] + 1.6);
+tl.to('#was', { autoAlpha: .45, duration: .4 }, (T.strike || T.result[0] + 1.6) + .4);
+tl.from('#now', { autoAlpha: 0, y: 50, duration: .9 }, (T.now || T.result[0] + 2.3) - .15);
+tl.from('#pilot', { autoAlpha: 0, duration: .6 }, (T.now || T.result[0] + 2.3) + .6);
+
+/* 6 · no change of provider */
+layerIn('nochange', T.nochange[0], T.nochange[1]);
+tl.from('#noch i', { scaleX: 0, duration: .6 }, T.nochange[0] + .1);
+tl.from('#noch p', { autoAlpha: 0, y: 24, duration: .6 }, T.nochange[0] + .2);
+
+/* 7 · end card */
+tl.fromTo('#end', { autoAlpha: 0 }, { autoAlpha: 1, duration: .45, ease: 'power2.out' }, T.end[0]);
+tl.from('#mark', { autoAlpha: 0, scale: .9, duration: .7 }, T.end[0] + .2);
+tl.from('#word', { autoAlpha: 0, y: 24, duration: .7 }, T.end[0] + .35);
+tl.from('#tag', { autoAlpha: 0, y: 20, duration: .7 }, T.end[0] + .55);
+tl.from('#cta', { autoAlpha: 0, y: 20, duration: .7 }, T.end[0] + .75);
+/* the light running round the button: a fading trail of four dashes, one steady lap in 2.4s, driven by the timeline */
+(function(){
+  var cta = $('#cta'), svg = $('#orb'), rects = Array.prototype.slice.call(svg.querySelectorAll('rect'));
+  var w = cta.offsetWidth, h = cta.offsetHeight, i = 1.5; svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+  rects.forEach(function(r){ r.setAttribute('x', i); r.setAttribute('y', i); r.setAttribute('width', w - 2 * i); r.setAttribute('height', h - 2 * i); r.setAttribute('rx', (h - 2 * i) / 2); });
+  var P = rects[0].getTotalLength(), lens = [P * .3, P * .17, P * .07, 4], ops = [.18, .32, .6, 1];
+  rects.forEach(function(r, k){ var L = lens[k]; r.style.opacity = ops[k]; r.style.strokeDasharray = L + ' ' + (P - L);
+    tl.fromTo(r, { strokeDashoffset: L }, { strokeDashoffset: L - P, duration: 2.4, ease: 'none' }, T.end[0] + .4); });
+})();
+
+/* subtitles */
+if (SUBS) VO.forEach(function(v, k){ if (v[3] === false) return; var p = document.createElement('p'); p.textContent = v[2]; $('#subs').appendChild(p);
+  tl.fromTo(p, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: .18, ease: 'power2.out' }, v[0]);
+  tl.to(p, { autoAlpha: 0, duration: .15, ease: 'power2.in' }, Math.max(v[0] + .2, v[1] + .05)); });
+/* nothing in the end card needs a subtitle under the button */
+tl.set('#subs', { autoAlpha: 1 }, 0).to('#subs', { autoAlpha: 0, duration: .2 }, T.end[0] + .2);
+
+tl.to({}, { duration: .01 }, T.total || 20); /* the timeline runs the full length */
+window.renderAt = function(t){ tl.seek(t, false); return true; };
+window.adReady = document.fonts.ready.then(function(){ tl.seek(0); return true; });
+</script>
+</body>
+</html>
