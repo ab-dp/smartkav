@@ -704,7 +704,7 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
       <a class="wa tlink" id="wa-link" href="#contact" hidden target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5l1.2-3.6A8 8 0 1 1 8.6 18.6z"/><path d="M9 10.5h6M9 13.5h4"/></svg>מעדיפים WhatsApp? כתבו לנו ישירות</a>
     </div>
     <div>
-      <!-- Sends JSON to Make (WEBHOOK_URL). The field names are the payload Make expects: change them only together with the scenario. -->
+      <!-- POSTs JSON to Make (WEBHOOK_URL): source, name, phone, email, organization, employees, details. Make maps these keys to the Google Sheet: change them only together with the scenario. -->
       <form class="form" id="lead-form" novalidate>
         <div class="f2">
           <div class="field"><label for="f-name">שם מלא</label><input id="f-name" name="full_name" type="text" autocomplete="name" aria-required="true" aria-describedby="err-full_name"><p class="err" id="err-full_name" aria-live="polite"></p></div>
@@ -1172,15 +1172,13 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
       var hp = $('#f-website').value;
       if (hp){ setBusy(false); done(); return; } // honeypot filled: show success, send nothing
       var payload = {
-        submitted_at: new Date().toISOString(),
-        full_name: F.full_name.value.trim(),
+        source: 'landing page',
+        name: F.full_name.value.trim(),
         phone: digits(F.phone.value.trim()),
         email: F.email.value.trim(),
         organization: F.organization.value.trim(),
         employees: $('#f-size').value,
-        notes: $('#f-notes').value.trim(),
-        consent: true,
-        website: hp
+        details: $('#f-notes').value.trim()
       };
       fetch(WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
         .then(function(res){ setBusy(false); if (res.status === 200) done(); else failed(); }, function(){ setBusy(false); failed(); });
