@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SmartKav email logo (transparent)</title>
+<!-- Source of email/logo-email.png (336×80, shown at 168×40 in the email = 2x for sharp screens).
+     Transparent background, amber mark, mid-gray wordmark (#8A8F98) so it reads on both white and dark.
+     Render: screenshot the .logo element with omitBackground. -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@200;500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:transparent}
+.logo{width:336px;height:80px;background:transparent;display:flex;align-items:center;justify-content:center;gap:16px;direction:ltr;color:#8A8F98;font-family:"IBM Plex Sans Hebrew",sans-serif}
+.logo svg{width:76px;height:33px;display:block}
+.logo line{stroke:#FFB000;stroke-width:5;stroke-linecap:round}.logo circle{fill:none;stroke:#FFB000;stroke-width:5}
+.word{font-weight:500;font-size:40px;letter-spacing:.005em;line-height:1}
+.word span{font-weight:200}
+/* preview only: the logo on white and on ink, side by side (not part of the screenshot) */
+.check{display:flex;gap:0;margin-top:24px}.check div{padding:24px}.check .w{background:#fff}.check .d{background:#0B0D11}
+.check img{display:block;width:168px;height:40px}
+</style>
+</head>
+<body>
+<div class="logo"><svg viewBox="0 0 92 40" aria-hidden="true"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg><div class="word">Smart<span>Kav</span></div></div>
+<div class="check"><div class="w"><img src="../../email/logo-email.png" alt="SmartKav"></div><div class="d"><img src="../../email/logo-email.png" alt="SmartKav"></div></div>
+</body>
+</html>
