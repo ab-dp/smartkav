@@ -168,8 +168,13 @@ h1 b,.moment h2 b{font-weight:500}
 /* phone: the copy spans the whole width, so the shade is even across it (a little deeper under the text) */
 @media (max-width:759px) and (orientation:portrait){
   .world{background-image:url(film/poster-m.jpg)}
+  /* with the film: the phone frame at its full width, in the middle, melting into the ink above and below (the canvas
+     draws it the same way: 540x900, so half its height is 83.33vw; a 70px fade) */
+  html.has-film .world{background-image:linear-gradient(180deg,var(--ink) calc(50% - 83.33vw),rgba(11,13,17,0) calc(50% - 83.33vw + 70px),rgba(11,13,17,0) calc(50% + 83.33vw - 70px),var(--ink) calc(50% + 83.33vw)),url(film/poster-m.jpg);background-size:100% 100%,100% auto;background-position:center}
   .world::after{background:linear-gradient(270deg,rgba(11,13,17,.68) 0,rgba(11,13,17,.57) 100%),linear-gradient(180deg,rgba(11,13,17,.45) 0,rgba(11,13,17,0) 16%,rgba(11,13,17,0) 70%,rgba(11,13,17,.6) 100%)}
 }
+/* touch: the film is as tall as the screen without the address bar, so the bar sliding away never resizes it */
+@media (pointer:coarse){html.has-film .world{bottom:auto;height:100vh;height:100lvh}}
 main,.foot{position:relative;z-index:1}
 html:not(.has-film) .dark,html:not(.has-film) .light{background:var(--ink)}
 
@@ -443,6 +448,16 @@ h1 span{display:block}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
 /* Accessibility widget (v3 style: the dark panel of the page, same high contrast; behaviour unchanged) */
+/* Kobi on a touch screen: his bubble as a plain button (exactly where and how Botpress draws it); the chat itself loads on
+   the first tap, or once the visitor is well into the page and pauses, and then takes the button's place */
+.kobi-fab{position:fixed;left:24px;bottom:24px;z-index:2147482998;width:64px;height:64px;padding:0;border:0;border-radius:50%;overflow:hidden;cursor:pointer;background:#1A1F27;box-shadow:0 0 0 1.5px rgba(255,176,0,.7),0 10px 26px -10px rgba(0,0,0,.7);-webkit-tap-highlight-color:transparent}
+.kobi-fab img{display:block;width:100%;height:100%;object-fit:cover}
+.kobi-fab:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
+.kobi-fab.is-loading img{animation:kobiwait 1s ease-in-out infinite alternate}
+@keyframes kobiwait{to{opacity:.45}}
+@media (prefers-reduced-motion:reduce){.kobi-fab.is-loading img{animation:none;opacity:.6}}
+html.a11y-still .kobi-fab.is-loading img{animation:none;opacity:.6}
+html.kobi-ready .kobi-fab{display:none}
 .a11y{position:fixed;right:24px;bottom:24px;z-index:2147483000;font:400 16px/1.4 "IBM Plex Sans Hebrew",Heebo,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;direction:rtl;color:#F3F1EC}
 .a11y-fab{display:grid;place-items:center;width:52px;height:52px;padding:0;border:1.5px solid #FFB000;border-radius:50%;background:#0B0D11;color:#FFB000;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.4);transition:transform 160ms ease}
 .a11y-fab:hover{transform:scale(1.06)}
@@ -792,7 +807,8 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
   // page gains --hold (from 0.25 to 0.8 of a screen) for it. It never stops. The zone is set so the block is at its
   // slowest exactly as it crosses the middle of the screen. A scene reads as its .wrap (centred on its [data-hold] copy),
   // the hero as its first screen, a .hold-b as its .hb.
-  var READS = [], SDA = !!(window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()'));
+  var TOUCH = !matchMedia('(pointer: fine)').matches; // a phone or tablet: native touch scrolling, no Lenis
+  var READS = [], SDA =!!(window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()'));
   function holdText(){
     var vh = innerHeight; READS = [];
     // all the text, visible yet or not (the headline is still hidden by its entrance when this runs); a form is not reading
@@ -804,7 +820,9 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
       var wr = w.getBoundingClientRect(), t0 = Infinity, b0 = -Infinity, copy = 0;
       parts.forEach(function(p){ var r = p.getBoundingClientRect(); t0 = Math.min(t0, r.top - wr.top); b0 = Math.max(b0, r.bottom - wr.top); copy += len(p); });
       var t = Math.min(1, (copy + Math.max(0, len(w) - copy) * .25) / 420);
-      var k = .65 + .28 * t, H = Math.round(vh * (.25 + .55 * t)); // slowest: from 35% of the scroll speed (a line) to 7% (a full block)
+      // slowest: from 35% of the scroll speed (a line) to 7% (a full block). On a touch screen the content should stay
+      // with the finger, so there it only eases: from 75% (a line) to 60% (a full block), on a shorter stretch.
+      var k = TOUCH ? .25 + .15 * t : .65 + .28 * t, H = Math.round(vh * (TOUCH ? .1 + .2 * t : .25 + .55 * t));
       box.style.setProperty('--hold', H + 'px'); w.style.setProperty('--hy', H + 'px');
       READS.push({ w: w, rel: (t0 + b0) / 2, H: H, k: k, fade: hero ? 'readfade-out' : box.id === 'contact' ? 'readfade-in' : 'readfade' });
     });
@@ -854,7 +872,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
           base = 'film/' + (portrait ? 'm' : 'd') + '/', blobs = new Array(N), asked = new Uint8Array(N), bmps = new Map(), decoding = {}, dec = 0,
           AHEAD = 16, BEHIND = 6, KEEP = 22, MAXDEC = 3,
           cur = 0, target = 0, last = 0, drawn = '', inflight = 0, anchors = [], raf = 0, dir = 1,
-          TAU = fine ? 70 : 120, MAXIN = portrait ? 4 : 6;
+          TAU = fine ? 70 : 75, MAXIN = portrait ? 4 : 6, fit = null;
       function shotFrame(spec){ var p = String(spec).split('@'), s = M.shots[p[0]]; return s ? s[0] + Math.round((+p[1] || 0) * (s[1] - 1)) : null; }
       // the text moves with the scroll, with one short reading hold per scene (holdText): each section is as tall as
       // its content and its hold, plus a little room for its part of the film (a third of a screen at most, none where
@@ -885,7 +903,9 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
         var have = root.scrollHeight - innerHeight - (lastSec.getBoundingClientRect().top + scrollY - innerHeight * .35);
         if (need > have) lastSec.style.minHeight = (lastSec.offsetHeight + need - have) + 'px';
       }
-      function size(){ var d = Math.min(portrait ? 2 : 1.5, devicePixelRatio || 1); canvas.width = Math.round(innerWidth * d); canvas.height = Math.round(innerHeight * d); drawn = ''; }
+      // on a touch screen the canvas is as tall as the screen with the address bar hidden (CSS: 100lvh), so the bar
+      // coming and going never resizes it
+      function size(){ var d = Math.min(portrait ? 2 : 1.5, devicePixelRatio || 1); canvas.width = Math.round(innerWidth * d); canvas.height = Math.round((fine ? innerHeight : canvas.clientHeight || innerHeight) * d); drawn = ''; fit = null; }
       // anchors: [scrollY, frame] pairs from the sections; the page end is the last frame
       function measure(){
         var maxY = Math.max(1, root.scrollHeight - innerHeight), list = [[0, 0]];
@@ -951,9 +971,21 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
         bmps.forEach(function(f, k){ if (Math.abs(k - c) > KEEP){ release(f); bmps.delete(k); } });
       }
       function nearest(i){ for (var d = 0; d <= KEEP * 3; d++){ if (bmps.has(i - d)) return i - d; if (bmps.has(i + d)) return i + d; } return -1; }
+      // a phone held upright shows the phone frame at its full width (filling the height cut a further quarter off each
+      // side and blew the frame up ~1.9x); the frame sits in the middle and melts into the ink above and below it
+      // (frames/poster-m are 540x900; the poster is laid out the same way in the CSS, 83.33vw = half its height)
       function blit(src, alpha){
-        var w = src.width || src.naturalWidth, h = src.height || src.naturalHeight, cw = canvas.width, ch = canvas.height, s = Math.max(cw / w, ch / h);
+        var w = src.width || src.naturalWidth, h = src.height || src.naturalHeight, cw = canvas.width, ch = canvas.height, s = portrait ? cw / w : Math.max(cw / w, ch / h);
         ctx.globalAlpha = alpha; ctx.drawImage(src, (cw - w * s) / 2, (ch - h * s) / 2, w * s, h * s); ctx.globalAlpha = 1;
+        if (portrait && !fit) fit = { top: (ch - h * s) / 2, h: h * s };
+      }
+      var INK = '#0B0D11', INK0 = 'rgba(11,13,17,0)';
+      function bands(){
+        if (!fit || fit.top <= 0) return;
+        var cw = canvas.width, ch = canvas.height, t = fit.top, b = t + fit.h, fe = Math.min(fit.h / 4, 70 * canvas.width / innerWidth), g;
+        ctx.fillStyle = INK; ctx.fillRect(0, 0, cw, Math.ceil(t)); ctx.fillRect(0, Math.floor(b), cw, ch - Math.floor(b));
+        g = ctx.createLinearGradient(0, t, 0, t + fe); g.addColorStop(0, INK); g.addColorStop(1, INK0); ctx.fillStyle = g; ctx.fillRect(0, t, cw, fe);
+        g = ctx.createLinearGradient(0, b - fe, 0, b); g.addColorStop(0, INK0); g.addColorStop(1, INK); ctx.fillStyle = g; ctx.fillRect(0, b - fe, cw, fe);
       }
       // the frame under the playhead, with the next one blended in by the fraction between them
       function draw(){
@@ -962,6 +994,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
         if (key === drawn) return; drawn = key;
         blit(bmps.get(a), 1);
         if (b >= 0 && q > 0) blit(bmps.get(b), q);
+        if (portrait) bands();
       }
       function tick(now){
         raf = 0; var dt = last ? Math.min(64, now - last) : 16; last = now;
@@ -977,7 +1010,9 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
       if (document.readyState === 'complete') pump(); else addEventListener('load', pump);
       addEventListener('scroll', function(){ update(); pump(); }, { passive: true });
       var rz, w0 = innerWidth;
-      addEventListener('resize', function(){ clearTimeout(rz); rz = setTimeout(function(){
+      // on a touch screen a change in height alone is the address bar (or the keyboard): nothing is re-laid out for it,
+      // so the text and the film never jump when the bar slides away; only a new width (turning the phone) re-measures
+      addEventListener('resize', function(){ if (!fine && innerWidth === w0) return; clearTimeout(rz); rz = setTimeout(function(){
         size(); if (innerWidth !== w0){ w0 = innerWidth; pace(); if (ST) ST.refresh(); } measure(); }, 150); });
       if (ST) ST.addEventListener('refresh', measure); // pins change the page length
       addEventListener('load', measure);
@@ -1298,7 +1333,8 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
   // 22:45 · the clock lands
   G.from('.qclock', { autoAlpha: 0, y: 40, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '#quiet', start: 'top 65%' } });
 
-  addEventListener('resize', function(){ clearTimeout(placeCards.t); placeCards.t = setTimeout(function(){ if (flood.progress() === 0) placeCards(); ST.refresh(); }, 200); });
+  var rw0 = innerWidth; // touch: the address bar (height alone) is not a reason to re-lay out the page (see the film's resize)
+  addEventListener('resize', function(){ if (TOUCH && innerWidth === rw0) return; rw0 = innerWidth; clearTimeout(placeCards.t); placeCards.t = setTimeout(function(){ if (flood.progress() === 0) placeCards(); ST.refresh(); }, 200); });
 })();
 </script>
 <script>
@@ -1326,8 +1362,13 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
 /* Kobi loads after the page is up and idle, so the chat never competes with the first screen (it was the largest
    main-thread task). Same two scripts as before, in the same order: the webchat, then its configuration. */
 (function(){
+  var started = false;
   function add(src, next){ var s = document.createElement('script'); s.src = src; s.async = false; if (next) s.onload = next; document.body.appendChild(s); }
-  function go(){ add('https://cdn.botpress.cloud/webchat/v5.0/inject.js', function(){ add('https://files.bpcontent.cloud/2026/10/21/21/20261021210632-WAPRBUU7.js'); }); }
+  function go(){
+    if (started) return; started = true;
+    if (window.__skKobiStyle) window.__skKobiStyle(); // the site's look, added as soon as the bubble appears
+    add('https://cdn.botpress.cloud/webchat/v5.0/inject.js', function(){ add('https://files.bpcontent.cloud/2026/10/21/21/20261021210632-WAPRBUU7.js'); });
+  }
   // and only once the visitor has paused scrolling for a moment: on a phone its setup is over half a second of work,
   // which landing mid-scroll made the page stutter
   function later(){
@@ -1336,7 +1377,24 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
     function fire(){ if (done) return; done = true; removeEventListener('scroll', arm); if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 3000 }); else go(); }
     addEventListener('scroll', arm, { passive: true }); setTimeout(arm, 1500);
   }
-  if (document.readyState === 'complete') later(); else addEventListener('load', later);
+  if (matchMedia('(pointer: fine)').matches){
+    if (document.readyState === 'complete') later(); else addEventListener('load', later);
+    return;
+  }
+  // Touch: a phone visitor reads the first screen for about the 1.5 s the pause rule waits, so Kobi's setup (the heaviest
+  // task on the page, close to a second on a mid-range phone) landed exactly on the first swipe. Here a stand-in bubble
+  // takes his place; the chat loads on its first tap, or once the visitor is past the middle of the page and pauses.
+  var b = document.createElement('button');
+  b.type = 'button'; b.className = 'kobi-fab'; b.setAttribute('aria-label', 'צ׳אט עם קובי, העוזר של SmartKav');
+  b.innerHTML = '<img src="https://files.bpcontent.cloud/2026/10/21/22/20261021221904-F6C2TMHF.png" alt="" width="64" height="64" decoding="async">';
+  // the tap is passed on to the real bubble as soon as it appears (see the style script below), which opens the chat
+  b.addEventListener('click', function(){ window.__skKobiWant = true; b.classList.add('is-loading'); b.setAttribute('aria-busy', 'true'); go(); });
+  document.body.appendChild(b);
+  function deep(){
+    var max = document.documentElement.scrollHeight - innerHeight;
+    if (max > 0 && scrollY > max * .45){ removeEventListener('scroll', deep); later(); }
+  }
+  addEventListener('scroll', deep, { passive: true });
 })();
 </script>
 <script>
@@ -1393,12 +1451,17 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
      '.bpTypingIndicatorLoader{--bpGray-500:#FFB000}',
      '.bpFab{box-shadow:0 0 0 1.5px rgba(255,176,0,.7),0 10px 26px -10px rgba(0,0,0,.7)!important}'
     ].join('');
-  // checked every frame (a cheap lookup), so the style is in before the greeting card can paint; up to 60s, since Kobi loads after the page is idle
-  var t0 = Date.now();
-  (function look(){
+  // checked every frame (a cheap lookup) from the moment Kobi starts loading, so the style is in before the greeting card
+  // can paint; for up to 60s
+  var t0 = 0;
+  window.__skKobiStyle = function(){ if (t0) return; t0 = Date.now(); look(); };
+  function look(){
     var host = document.querySelector('.bpChatContainer #fab-root'), sr = host && host.shadowRoot;
     if(sr){
       var s = document.createElement('style'); s.setAttribute('data-sk', ''); s.textContent = css; sr.appendChild(s);
+      document.documentElement.classList.add('kobi-ready'); // the real bubble is up: the touch stand-in steps aside
+      // the visitor tapped the stand-in: the same tap on the real bubble opens the chat (within a second, as it renders)
+      if (window.__skKobiWant){ window.__skKobiWant = false; (function tap(n){ var im = sr.querySelector('.bpFabImage'); if (im) im.click(); else if (n < 60) requestAnimationFrame(function(){ tap(n + 1); }); })(0); }
       // while Kobi is open the page knows it (html.kobi-open): on a phone the chat fills the screen, so the
       // accessibility button steps aside until it closes
       var mark = function(){ document.documentElement.classList.toggle('kobi-open', !!sr.querySelector('.bpOpen')); };
@@ -1406,7 +1469,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
       return;
     }
     if(Date.now() - t0 < 60000) requestAnimationFrame(look);
-  })();
+  }
 })();
 </script>
 
