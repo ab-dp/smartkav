@@ -187,18 +187,14 @@ html:not(.has-film) .dark,html:not(.has-film) .light{background:var(--ink)}
 /* ===== scenes: the copy in one column on the right, the picture breathes ===== */
 .scene{position:relative;padding:var(--s6) 0;min-height:100svh;display:grid;align-items:center}
 .scene > .wrap,.gate > .wrap{width:100%}
-/* reading hold (set by holdText in the page script, only with the film): the scene's content sticks for --hold px.
-   A block (not grid) section with a spacer after the content, so the sticky content has exactly that much room. */
+/* reading room (set by holdText in the page script, only with the film): a little open film after each block of text,
+   from how much there is to read. The text itself always moves exactly with the scroll. */
 html.has-film .scene.hold{display:block}
 html.has-film .scene.hold::after{content:"";display:block;height:var(--hold,0px)}
-/* the same for a single block inside a scene (the quiet column's two parts, the gate's beats): .hb sticks inside its .hold-b */
 html.has-film .hero.hold::after{content:"";display:block;height:var(--hold,0px)}
-/* slow reading: inside its zone the block drifts down by --hy while the page scrolls past it, so it travels the screen
-   at a fraction of the scroll speed (slowest as it crosses the middle), and it comes into full light as it does.
-   Driven by the browser's scroll timeline where there is one (on the compositor, in step with the scroll), else by the script. */
-@keyframes readmove{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,var(--hy,0px),0)}}
+/* a block comes into full light as it crosses the middle of the screen and dims as it leaves (opacity only, never
+   its position). Driven by the browser's scroll timeline where there is one (on the compositor), else by the script. */
 @keyframes readfade{0%{opacity:.4}26%{opacity:1}74%{opacity:1}100%{opacity:.4}}
-@keyframes readfade-in{0%{opacity:.4}26%{opacity:1}100%{opacity:1}}
 @keyframes readfade-out{0%{opacity:1}74%{opacity:1}100%{opacity:.4}}
 html.has-film .hold-b::after{content:"";display:block;height:var(--hold,0px)}
 .split{display:grid;grid-template-columns:minmax(0,var(--col)) minmax(0,1fr);gap:clamp(40px,7vw,120px);align-items:center}
@@ -890,21 +886,20 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
 
   /* ---------- the film: one take behind the whole page, the scroll is the playhead ----------
      film/film.json (written by drafts/film/build-film.sh) lists the frames and where each shot starts.
-     Pace: every section that carries data-film="<shot>" (or "<shot>@.5") is given exactly the scroll length its part of
-       the film needs (R px per frame), so the camera moves at one steady speed from the first screen to the last.
+     Pace: the film runs at one steady speed for the whole page (the page's length divided by the film's). Every
+       section that carries data-film="<shot>" (or "<shot>@.5") pulls its shot a little toward itself (PULL), and the
+       curve through those points is smooth (a monotone cubic), so the camera never races, crawls or changes speed
+       at a section's edge.
      Smoothness: the playhead follows the scroll with a time-based ease (independent of the screen's refresh rate),
        and the two frames around it are blended, so 12 film frames per second read as continuous motion.
      Weight: frames load nearest-to-the-playhead first, only within a window around it, and are decoded off the main
        thread into ImageBitmaps just ahead of where the visitor is going. */
-  /* ---------- reading holds: the text pauses briefly in the middle of the screen, the film goes on ----------
-     Native sticky (no scroll-jacking): each scene's .wrap sticks for --hold px of scroll (set on the section), from the amount of text
-     it carries (a fifth to under half a screen), at a top that puts its copy ([data-hold]) in the middle of the screen
-     below the bar. The page is longer by exactly the holds; the film's pace() reads the new heights. Off under reduced motion. */
-  // How much it slows comes from how much there is to read: the copy in full, the mockups' small text a little (t, 0..1).
-  // The block then moves at (1 - k) of the scroll speed at its slowest, k from .65 (a line) to .93 (a full block), and the
-  // page gains --hold (from 0.25 to 0.8 of a screen) for it. It never stops. The zone is set so the block is at its
-  // slowest exactly as it crosses the middle of the screen. A scene reads as its .wrap (centred on its [data-hold] copy),
-  // the hero as its first screen, a .hold-b as its .hb.
+  /* ---------- reading: one steady pace ----------
+     The text always moves exactly with the scroll: it never slows, stops or drifts (a block that moved at its own
+     changing speed read as the page sticking, and under a smoothed wheel it could tick backward for a frame).
+     What marks the block being read is light alone: it is at full brightness while it crosses the middle of the screen
+     and dimmer on its way in and out. Each block is followed by a little open film (--hold), from how much there is
+     to read. A scene reads as its .wrap (centred on its [data-hold] copy), the hero as its first screen, a .hold-b as its .hb. */
   var TOUCH = !matchMedia('(pointer: fine)').matches; // a phone or tablet: native touch scrolling, no Lenis
   var READS = [], SDA =!!(window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()'));
   function holdText(){
@@ -918,45 +913,45 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
       var wr = w.getBoundingClientRect(), t0 = Infinity, b0 = -Infinity, copy = 0;
       parts.forEach(function(p){ var r = p.getBoundingClientRect(); t0 = Math.min(t0, r.top - wr.top); b0 = Math.max(b0, r.bottom - wr.top); copy += len(p); });
       var t = Math.min(1, (copy + Math.max(0, len(w) - copy) * .25) / 420);
-      // slowest: from 35% of the scroll speed (a line) to 7% (a full block). On a touch screen the content should stay
-      // with the finger, so there it only eases: from 75% (a line) to 60% (a full block), on a shorter stretch.
-      var k = TOUCH ? .25 + .15 * t : .65 + .28 * t, H = Math.round(vh * (TOUCH ? .1 + .2 * t : .25 + .55 * t));
-      box.style.setProperty('--hold', H + 'px'); w.style.setProperty('--hy', H + 'px');
-      READS.push({ w: w, rel: (t0 + b0) / 2, H: H, k: k, fade: hero ? 'readfade-out' : box.id === 'contact' ? 'readfade-in' : 'readfade' });
+      // the open film after the block: a tenth to a third of a screen (half of that on a phone)
+      var H = Math.round(vh * (TOUCH ? .06 + .1 * t : .1 + .22 * t));
+      box.style.setProperty('--hold', H + 'px');
+      // the light is on the copy alone (the mockups beside it and the form stay as they are: fading a whole scene made
+      // the browser paint it as one large layer the moment it came near the screen, a visible stall at the form)
+      if (box.id !== 'contact') READS.push({ w: w, els: parts, rel: (t0 + b0) / 2, span: Math.max(0, b0 - t0), fade: hero ? 'readfade-out' : 'readfade' });
     });
   }
   function docTop(el){ var y = 0; for (; el; el = el.offsetParent) y += el.offsetTop; return y; } // layout position, transforms aside
-  // the zones, from the laid-out page (run after every layout change); the ease-in-out curve's steepest slope is 1.72
+  // the zones, from the laid-out page (run after every layout change): a block's zone is the stretch of scroll in which
+  // its copy crosses the screen, centred on the moment the copy's middle meets the middle of the screen
   function placeReads(){
     var vh = innerHeight, maxY = Math.max(1, document.documentElement.scrollHeight - vh);
     READS.forEach(function(r){
-      var Z = 1.72 * r.H / r.k, mid = docTop(r.w) + r.rel + r.H / 2 - vh / 2, A = mid - Z / 2, B = A + Z;
+      var Z = vh * .9 + r.span * .8, mid = docTop(r.w) + r.rel - vh / 2, A = mid - Z / 2, B = A + Z;
       if (A < 0){ B -= A; A = 0; }
       if (B > maxY){ A = Math.max(0, A - (B - maxY)); B = maxY; }
       r.A = A; r.B = B;
-      if (SDA){
-        var s = r.w.style;
-        s.setProperty('animation-name', 'readmove, ' + r.fade); s.setProperty('animation-duration', 'auto, auto');
-        s.setProperty('animation-timing-function', 'ease-in-out, linear'); s.setProperty('animation-fill-mode', 'both');
+      if (SDA) r.els.forEach(function(el){
+        var s = el.style;
+        s.setProperty('animation-name', r.fade); s.setProperty('animation-duration', 'auto');
+        s.setProperty('animation-timing-function', 'linear'); s.setProperty('animation-fill-mode', 'both');
         s.setProperty('animation-timeline', 'scroll(root)'); s.setProperty('animation-range', Math.round(A) + 'px ' + Math.round(B) + 'px');
-      }
+      });
     });
     readTick();
   }
   // the same by script where the browser has no scroll timeline
-  // (on a touch screen without a scroll timeline, iOS 18 and older, the script lands a frame after the scroll, so a
-  // moving block would tremble under the finger: there the text only brightens and dims, and never drifts)
   function readTick(){
-    if (SDA) return; var y = scrollY;
+    if (SDA) return; readRaf = 0; var y = scrollY;
     READS.forEach(function(r){
-      var p = Math.max(0, Math.min(1, (y - r.A) / (r.B - r.A))), e = p * p * (3 - 2 * p);
+      var p = Math.max(0, Math.min(1, (y - r.A) / (r.B - r.A)));
       var inn = p < .26 ? .4 + .6 * p / .26 : 1, out = p > .74 ? 1 - .6 * (p - .74) / .26 : 1;
-      var o = r.fade === 'readfade-out' ? out : r.fade === 'readfade-in' ? inn : Math.min(inn, out);
-      if (!TOUCH) r.w.style.transform = 'translate3d(0,' + (e * r.H).toFixed(1) + 'px,0)';
-      r.w.style.opacity = o.toFixed(3);
+      var o = (r.fade === 'readfade-out' ? out : Math.min(inn, out)).toFixed(2);
+      if (r.o !== o){ r.o = o; r.els.forEach(function(el){ el.style.opacity = o; }); }
     });
   }
-  if (!SDA) addEventListener('scroll', readTick, { passive: true });
+  var readRaf = 0; // once per frame, and only when a value changes
+  if (!SDA) addEventListener('scroll', function(){ if (!readRaf) readRaf = requestAnimationFrame(readTick); }, { passive: true });
 
   var FILM = { R: 20, nightLen: 0 };
   (function film(){
@@ -1011,20 +1006,32 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
         var cw = canvas.clientWidth || innerWidth, d = Math.min(portrait ? Math.max(1, 720 / cw) : 1.5, devicePixelRatio || 1);
         canvas.width = Math.round(cw * d); canvas.height = Math.round((fine && !portrait ? innerHeight : canvas.clientHeight || innerHeight) * d); drawn = '';
       }
-      // anchors: [scrollY, frame] pairs from the sections; the page end is the last frame
+      // anchors: [scrollY, frame, slope, shot] points from the sections; the page end is the last frame. Each point is
+      // the steady (even) frame for that place, pulled PULL of the way toward the section's own shot; the slopes are
+      // Fritsch-Carlson's, so the curve between the points is smooth and always moves forward.
+      var PULL = .25;
       function measure(){
-        var maxY = Math.max(1, root.scrollHeight - innerHeight), list = [[0, 0]];
+        var maxY = Math.max(1, root.scrollHeight - innerHeight), list = [[0, 0, 0, 0]], U = (N - 1) / maxY;
         $$('[data-film]').forEach(function(el){
           var shot = shotFrame(el.dataset.film); if (shot == null) return;
-          var y = el.getBoundingClientRect().top + scrollY - innerHeight * .35;
-          if (y > list[list.length - 1][0] && shot > list[list.length - 1][1]) list.push([Math.min(y, maxY - 1), shot]);
+          var y = Math.min(el.getBoundingClientRect().top + scrollY - innerHeight * .35, maxY - 1), p = list[list.length - 1];
+          if (y > p[0] + 1 && shot > p[3]) list.push([y, y * U + PULL * (shot - y * U), 0, shot]);
         });
-        list.push([maxY, N - 1]); anchors = list; update();
+        list.push([maxY, N - 1, 0, N - 1]);
+        var n = list.length, d = [], i;
+        for (i = 0; i < n - 1; i++) d.push((list[i + 1][1] - list[i][1]) / (list[i + 1][0] - list[i][0]));
+        list[0][2] = d[0]; list[n - 1][2] = d[n - 2];
+        for (i = 1; i < n - 1; i++){
+          var h0 = list[i][0] - list[i - 1][0], h1 = list[i + 1][0] - list[i][0], w1 = 2 * h1 + h0, w2 = h1 + 2 * h0;
+          list[i][2] = d[i - 1] * d[i] > 0 ? (w1 + w2) / (w1 / d[i - 1] + w2 / d[i]) : 0;
+        }
+        anchors = list; update();
         placeReads(); // the reading zones follow the same layout
       }
       function frameAt(y){
         for (var i = 1; i < anchors.length; i++) if (y <= anchors[i][0]){
-          var a = anchors[i - 1], b = anchors[i]; return a[1] + (b[1] - a[1]) * (y - a[0]) / (b[0] - a[0]);
+          var a = anchors[i - 1], b = anchors[i], h = b[0] - a[0], s = (y - a[0]) / h, s2 = s * s, s3 = s2 * s;
+          return (2 * s3 - 3 * s2 + 1) * a[1] + (s3 - 2 * s2 + s) * h * a[2] + (3 * s2 - 2 * s3) * b[1] + (s3 - s2) * h * b[2];
         }
         return N - 1;
       }
@@ -1101,6 +1108,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
         if (cur !== target) wake(); else last = 0;
       }
       function wake(){ if (!raf) raf = requestAnimationFrame(tick); }
+      window.__skFilm = function(){ return { cur: cur, target: target, drawn: drawn, have: bmps.has(Math.floor(cur)), anchors: anchors }; }; // read-only, for scroll measurements
       pace(); size(); measure(); cur = target;
       // the poster covers the first screen; frames start after the page's own load so they never compete with the headline
       if (document.readyState === 'complete') pump(); else addEventListener('load', pump);
@@ -1113,7 +1121,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
       if (ST) ST.addEventListener('refresh', measure); // pins change the page length
       addEventListener('load', measure);
       // the anchors follow the layout: re-measure when the font arrives and whenever the page changes height
-      // (an answer opens, the chips fold away), so each scene still meets its moment in the film
+      // (an answer opens), so each scene still meets its moment in the film
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ pace(); if (ST) ST.refresh(); measure(); });
       if (window.ResizeObserver){ var ro; new ResizeObserver(function(){ clearTimeout(ro); ro = setTimeout(measure, 120); }).observe($('main')); }
     }
@@ -1364,8 +1372,9 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
   var mm = G.matchMedia(), DESK = '(min-width: 1024px) and (min-height: 700px)', MOB = '(max-width: 1023px), (max-height: 699px)';
 
   // Smooth scroll only with a mouse or trackpad; touch keeps native scrolling. Scrolling inside Kobi's chat is left alone.
+  // A long, soft ease and a slightly shorter step per wheel notch: the notches run into one slow, even glide.
   if (window.Lenis && matchMedia('(pointer: fine)').matches){
-    var lenis = new window.Lenis({ lerp: 0.1, prevent: function(node){ return !!(node && node.closest && node.closest('.bpChatContainer')); } });
+    var lenis = new window.Lenis({ lerp: .075, wheelMultiplier: .85, prevent: function(node){ return !!(node && node.closest && node.closest('.bpChatContainer')); } });
     window.__skLenis = lenis; // the success card pauses it while open
     lenis.on('scroll', ST.update);
     G.ticker.add(function(t){ lenis.raf(t * 1000); }); G.ticker.lagSmoothing(0);
@@ -1445,14 +1454,18 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
   mm.add('(max-width: 1023px)', function(){
     var cs = $$('li', chips);
     G.set('.rides li', { autoAlpha: 0, y: 16 });
-    ST.create({ trigger: board, start: 'top 70%', once: true, onEnter: function(){
-      var tl = G.timeline();
+    // built once, ahead of time: when the board comes into view there is nothing left to set up, only to play
+    var tl = G.timeline({ paused: true });
       tl.from(cs, { autoAlpha: 0, scale: .85, stagger: .04, duration: .3, ease: 'back.out(2)' })
         .to('.rides li', { autoAlpha: 1, y: 0, stagger: .08, duration: .4, ease: 'expo.out' }, '+=.3')
-        .add(function(){ cs.forEach(function(c, i){ var t = rides.querySelector('[data-r="' + c.dataset.r + '"]').getBoundingClientRect(), b = c.getBoundingClientRect();
-          G.to(c, { x: t.left + t.width / 2 - (b.left + b.width / 2), y: t.top + t.height / 2 - (b.top + b.height / 2), scale: .3, autoAlpha: 0, duration: .7, delay: i * .03, ease: 'power3.in' }); }); }, '+=.4')
-        .to(chips, { height: 0, marginBottom: 0, duration: .5, ease: 'power2.inOut' }, '+=1.1');
-    } });
+        .add(function(){
+          // the names fall into their rides, then come back to their places, faint: the list keeps its room, so nothing
+          // below it moves under the finger
+          var fly = G.timeline({ onComplete: function(){ G.set(cs, { x: 0, y: 0, scale: 1 }); G.to(cs, { autoAlpha: .32, duration: .7, stagger: .02, ease: 'power1.out', delay: .15 }); } });
+          cs.forEach(function(c, i){ var t = rides.querySelector('[data-r="' + c.dataset.r + '"]').getBoundingClientRect(), b = c.getBoundingClientRect();
+            fly.to(c, { x: t.left + t.width / 2 - (b.left + b.width / 2), y: t.top + t.height / 2 - (b.top + b.height / 2), scale: .3, autoAlpha: 0, duration: .7, ease: 'power3.in' }, i * .03); });
+        }, '+=.4');
+    ST.create({ trigger: board, start: 'top 70%', once: true, onEnter: function(){ tl.play(); } });
   });
 
   // 22:43 · dashboard loop
@@ -1502,31 +1515,32 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
    main-thread task). Same two scripts as before, in the same order: the webchat, then its configuration. */
 (function(){
   var started = false;
+  var SRC = ['https://cdn.botpress.cloud/webchat/v5.0/inject.js', 'https://files.bpcontent.cloud/2026/10/21/21/20261021210632-WAPRBUU7.js'];
   function add(src, next){ var s = document.createElement('script'); s.src = src; s.async = false; if (next) s.onload = next; document.body.appendChild(s); }
   function go(){
     if (started) return; started = true;
     if (window.__skKobiStyle) window.__skKobiStyle(); // the site's look, added as soon as the bubble appears
-    add('https://cdn.botpress.cloud/webchat/v5.0/inject.js', function(){ add('https://files.bpcontent.cloud/2026/10/21/21/20261021210632-WAPRBUU7.js'); });
+    add(SRC[0], function(){ add(SRC[1]); });
   }
   // and only once the visitor has paused scrolling for a moment: on a phone its setup is over half a second of work,
   // which landing mid-scroll made the page stutter
   function later(){
     var t, done = false;
+    // the files are fetched now, into the browser's cache, so that at the pause they only have to run
+    if (window.fetch) SRC.forEach(function(u){ try { fetch(u, { mode: 'no-cors' }).catch(function(){}); } catch (e) {} });
     function arm(){ clearTimeout(t); t = setTimeout(fire, 1500); }
     function fire(){ if (done) return; done = true; removeEventListener('scroll', arm); if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 3000 }); else go(); }
     addEventListener('scroll', arm, { passive: true }); setTimeout(arm, 1500);
   }
-  if (matchMedia('(pointer: fine)').matches){
-    if (document.readyState === 'complete') later(); else addEventListener('load', later);
-    return;
-  }
-  // Touch: a phone visitor reads the first screen for about the 1.5 s the pause rule waits, so Kobi's setup (the heaviest
-  // task on the page, close to a second on a mid-range phone) landed exactly on the first swipe. Here a stand-in bubble
-  // takes his place; the chat loads on its first tap, or once the visitor is past the middle of the page and pauses.
+  // A visitor reads the first screen for about the 1.5 s the pause rule waits, so Kobi's setup (the heaviest task on the
+  // page: a tenth of a second on a computer, close to a second on a mid-range phone) landed exactly on the first scroll.
+  // On every device a stand-in bubble takes his place; the chat loads when the pointer reaches it or on its first tap,
+  // or once the visitor is past the middle of the page and pauses.
   var b = document.createElement('button');
   b.type = 'button'; b.className = 'kobi-fab'; b.setAttribute('aria-label', 'צ׳אט עם קובי, העוזר של SmartKav');
   b.innerHTML = '<img src="https://files.bpcontent.cloud/2026/10/21/22/20261021221904-F6C2TMHF.png" alt="" width="64" height="64" decoding="async">';
   // the tap is passed on to the real bubble as soon as it appears (see the style script below), which opens the chat
+  b.addEventListener('pointerenter', function(e){ if (e.pointerType === 'mouse') go(); });
   b.addEventListener('click', function(){ window.__skKobiWant = true; b.classList.add('is-loading'); b.setAttribute('aria-busy', 'true'); go(); });
   document.body.appendChild(b);
   // the page height is read when the layout changes, not on every scroll event (that forced a layout per event)
