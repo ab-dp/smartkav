@@ -146,6 +146,8 @@ h1 b,.moment h2 b{font-weight:500}
 @keyframes dgOut{to{transform:translateY(-100%);opacity:0}}
 /* the night as a line: a hairline under the bar fills from 22:40 to the taxi as the page scrolls */
 .nav::after{content:"";position:absolute;inset:auto 0 -1px;height:1px;background:linear-gradient(270deg,var(--signal),rgba(255,176,0,.25));transform-origin:100% 50%;transform:scaleX(var(--p,0));opacity:0;transition:opacity var(--t-mid)}
+@keyframes navline{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@supports (animation-timeline:scroll()){.nav::after{animation:navline linear both;animation-timeline:scroll(root)}}
 .nav.solid::after{opacity:1}
 /* the standing call to action: the same family, quieter, with a light and its long fading trail running round its edge
    along the button's own outline, so the speed is the same all the way round (5.5s a lap). Run by the page script;
@@ -172,6 +174,10 @@ h1 b,.moment h2 b{font-weight:500}
      draws it the same way: 720x900, so half its height is 62.5vw; a 70px fade) */
   html.has-film .world{background-image:linear-gradient(180deg,var(--ink) calc(50% - 62.5vw),rgba(11,13,17,0) calc(50% - 62.5vw + 70px),rgba(11,13,17,0) calc(50% + 62.5vw - 70px),var(--ink) calc(50% + 62.5vw)),url(film/poster-m.jpg);background-size:100% 100%,100% auto;background-position:center}
   .world::after{background:linear-gradient(270deg,rgba(11,13,17,.68) 0,rgba(11,13,17,.57) 100%),linear-gradient(180deg,rgba(11,13,17,.45) 0,rgba(11,13,17,0) 16%,rgba(11,13,17,0) 70%,rgba(11,13,17,.6) 100%)}
+  /* the canvas covers the frame only (not the whole screen): half the pixels per frame, and the ink bands and their
+     fades live in the shade layer above it, painted once, instead of being redrawn into the canvas on every frame */
+  html.has-film .world canvas{inset:calc(50% - 62.5vw) 0 auto;height:125vw}
+  html.has-film .world::after{background:linear-gradient(180deg,var(--ink) calc(50% - 62.5vw),rgba(11,13,17,0) calc(50% - 62.5vw + 70px),rgba(11,13,17,0) calc(50% + 62.5vw - 70px),var(--ink) calc(50% + 62.5vw)),linear-gradient(270deg,rgba(11,13,17,.68) 0,rgba(11,13,17,.57) 100%),linear-gradient(180deg,rgba(11,13,17,.45) 0,rgba(11,13,17,0) 16%,rgba(11,13,17,0) 70%,rgba(11,13,17,.6) 100%)}
 }
 /* touch: the film is as tall as the screen without the address bar, so the bar sliding away never resizes it */
 @media (pointer:coarse){html.has-film .world{bottom:auto;height:100vh;height:100lvh}}
@@ -552,6 +558,10 @@ html.kobi-ready .kobi-fab{display:none}
 .a11y-foot a{color:#F3F1EC;text-decoration:underline;text-underline-offset:3px}
 @media (max-width:767px){.a11y{right:16px;bottom:16px}.a11y-fab{width:48px;height:48px}
   html.kobi-open .a11y{opacity:0;visibility:hidden;pointer-events:none}} /* Kobi fills the phone's screen; the button returns when it closes */
+/* small phones (360-399px): the two round buttons are smaller and closer to the corners, so they no longer cover the
+   buttons in the product mockups (the real Kobi bubble gets the same in its own rules, below) */
+@media (max-width:399px){.a11y{right:12px;bottom:12px}.a11y-fab{width:44px;height:44px}.a11y-fab svg{width:24px;height:24px}
+  .kobi-fab{left:12px;bottom:12px;width:52px;height:52px}}
 /* Modes */
 /* Contrast and grayscale run through a fixed overlay's backdrop-filter: a filter on the page itself would turn it
    into the containing block for the fixed header and the pinned sections. */
@@ -934,13 +944,16 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
     readTick();
   }
   // the same by script where the browser has no scroll timeline
+  // (on a touch screen without a scroll timeline, iOS 18 and older, the script lands a frame after the scroll, so a
+  // moving block would tremble under the finger: there the text only brightens and dims, and never drifts)
   function readTick(){
     if (SDA) return; var y = scrollY;
     READS.forEach(function(r){
       var p = Math.max(0, Math.min(1, (y - r.A) / (r.B - r.A))), e = p * p * (3 - 2 * p);
       var inn = p < .26 ? .4 + .6 * p / .26 : 1, out = p > .74 ? 1 - .6 * (p - .74) / .26 : 1;
       var o = r.fade === 'readfade-out' ? out : r.fade === 'readfade-in' ? inn : Math.min(inn, out);
-      r.w.style.transform = 'translate3d(0,' + (e * r.H).toFixed(1) + 'px,0)'; r.w.style.opacity = o.toFixed(3);
+      if (!TOUCH) r.w.style.transform = 'translate3d(0,' + (e * r.H).toFixed(1) + 'px,0)';
+      r.w.style.opacity = o.toFixed(3);
     });
   }
   if (!SDA) addEventListener('scroll', readTick, { passive: true });
@@ -960,7 +973,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
           base = 'film/' + (portrait ? 'm' : 'd') + '/', blobs = new Array(N), asked = new Uint8Array(N), bmps = new Map(), decoding = {}, dec = 0,
           AHEAD = 16, BEHIND = 6, KEEP = 22, MAXDEC = 3,
           cur = 0, target = 0, last = 0, drawn = '', inflight = 0, anchors = [], raf = 0, dir = 1,
-          TAU = fine ? 70 : 75, MAXIN = portrait ? 4 : 6, fit = null;
+          TAU = fine ? 70 : 75, MAXIN = portrait ? 4 : 6;
       function shotFrame(spec){ var p = String(spec).split('@'), s = M.shots[p[0]]; return s ? s[0] + Math.round((+p[1] || 0) * (s[1] - 1)) : null; }
       // the text moves with the scroll, with one short reading hold per scene (holdText): each section is as tall as
       // its content and its hold, plus a little room for its part of the film (a third of a screen at most, none where
@@ -993,7 +1006,11 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
       }
       // on a touch screen the canvas is as tall as the screen with the address bar hidden (CSS: 100lvh), so the bar
       // coming and going never resizes it
-      function size(){ var d = Math.min(portrait ? 2 : 1.5, devicePixelRatio || 1); canvas.width = Math.round(innerWidth * d); canvas.height = Math.round((fine ? innerHeight : canvas.clientHeight || innerHeight) * d); drawn = ''; fit = null; }
+      // portrait: the canvas is the frame's own box (CSS), at the frame's own resolution (720 wide), never more
+      function size(){
+        var cw = canvas.clientWidth || innerWidth, d = Math.min(portrait ? Math.max(1, 720 / cw) : 1.5, devicePixelRatio || 1);
+        canvas.width = Math.round(cw * d); canvas.height = Math.round((fine && !portrait ? innerHeight : canvas.clientHeight || innerHeight) * d); drawn = '';
+      }
       // anchors: [scrollY, frame] pairs from the sections; the page end is the last frame
       function measure(){
         var maxY = Math.max(1, root.scrollHeight - innerHeight), list = [[0, 0]];
@@ -1059,21 +1076,13 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
         bmps.forEach(function(f, k){ if (Math.abs(k - c) > KEEP){ release(f); bmps.delete(k); } });
       }
       function nearest(i){ for (var d = 0; d <= KEEP * 3; d++){ if (bmps.has(i - d)) return i - d; if (bmps.has(i + d)) return i + d; } return -1; }
-      // a phone held upright shows the phone frame at its full width (filling the height cut a further quarter off each
-      // side and blew the frame up ~1.9x); the frame sits in the middle and melts into the ink above and below it
-      // (frames/poster-m are 720x900, a 45% slice of the source; the poster is laid out the same way in the CSS, 62.5vw = half its height)
+      // a phone held upright shows the phone frame at its full width, in the middle of the screen: the canvas is that
+      // frame's box (CSS: 125vw tall, 62.5vw = half of it; frames/poster-m are 720x900, a 45% slice of the source), and
+      // the ink above and below it, with its 70px fades, is in the shade layer (.world::after), so nothing but the frame
+      // is drawn per frame
       function blit(src, alpha){
-        var w = src.width || src.naturalWidth, h = src.height || src.naturalHeight, cw = canvas.width, ch = canvas.height, s = portrait ? cw / w : Math.max(cw / w, ch / h);
+        var w = src.width || src.naturalWidth, h = src.height || src.naturalHeight, cw = canvas.width, ch = canvas.height, s = Math.max(cw / w, ch / h);
         ctx.globalAlpha = alpha; ctx.drawImage(src, (cw - w * s) / 2, (ch - h * s) / 2, w * s, h * s); ctx.globalAlpha = 1;
-        if (portrait && !fit) fit = { top: (ch - h * s) / 2, h: h * s };
-      }
-      var INK = '#0B0D11', INK0 = 'rgba(11,13,17,0)';
-      function bands(){
-        if (!fit || fit.top <= 0) return;
-        var cw = canvas.width, ch = canvas.height, t = fit.top, b = t + fit.h, fe = Math.min(fit.h / 4, 70 * canvas.width / innerWidth), g;
-        ctx.fillStyle = INK; ctx.fillRect(0, 0, cw, Math.ceil(t)); ctx.fillRect(0, Math.floor(b), cw, ch - Math.floor(b));
-        g = ctx.createLinearGradient(0, t, 0, t + fe); g.addColorStop(0, INK); g.addColorStop(1, INK0); ctx.fillStyle = g; ctx.fillRect(0, t, cw, fe);
-        g = ctx.createLinearGradient(0, b - fe, 0, b); g.addColorStop(0, INK0); g.addColorStop(1, INK); ctx.fillStyle = g; ctx.fillRect(0, b - fe, cw, fe);
       }
       // the frame under the playhead, with the next one blended in by the fraction between them
       function draw(){
@@ -1082,7 +1091,6 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
         if (key === drawn) return; drawn = key;
         blit(bmps.get(a), 1);
         if (b >= 0 && q > 0) blit(bmps.get(b), q);
-        if (portrait) bands();
       }
       function tick(now){
         raf = 0; var dt = last ? Math.min(64, now - last) : 16; last = now;
@@ -1113,13 +1121,20 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
 
   /* ---------- nav: solid + live clock ---------- */
   var nav = $('#nav'), nclock = $('#nclock');
-  // the text scrolls under the bar from the first pixel, so the bar turns solid almost at once
-  function onScroll(){
-    nav.classList.toggle('solid', scrollY > 24);
-    var max = document.documentElement.scrollHeight - innerHeight;
-    nav.style.setProperty('--p', max > 0 ? Math.min(1, scrollY / max).toFixed(4) : 0);
+  // the text scrolls under the bar from the first pixel, so the bar turns solid almost at once. The amber line under it
+  // runs on a scroll timeline in the CSS (on the compositor, no work per scroll event); by script only where the browser
+  // has none, once per frame, against a page height read on layout changes (reading it per scroll forced a layout)
+  var solid = null, navRaf = 0, navMax = 0;
+  function navMeasure(){ navMax = document.documentElement.scrollHeight - innerHeight; }
+  function navPaint(){
+    navRaf = 0;
+    var s = scrollY > 24; if (s !== solid){ solid = s; nav.classList.toggle('solid', s); }
+    if (!SDA) nav.style.setProperty('--p', navMax > 0 ? Math.min(1, scrollY / navMax).toFixed(4) : 0);
   }
-  addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll); onScroll();
+  function onScroll(){ if (!navRaf) navRaf = requestAnimationFrame(navPaint); }
+  navMeasure();
+  if (!SDA && window.ResizeObserver) new ResizeObserver(function(){ navMeasure(); onScroll(); }).observe(document.body);
+  addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', function(){ navMeasure(); onScroll(); }); navPaint();
   // the clock: each character in its own cell, so only the digits that change roll (a plain swap under reduced motion)
   function setClock(t){
     var cells = $$('.dg', nclock);
@@ -1154,8 +1169,18 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
     }
     draw();
     // the accessibility widget's "stop animations" stops it too
-    new MutationObserver(function(){ var still = document.documentElement.classList.contains('a11y-still'); runs.forEach(function(a){ still ? a.pause() : a.play(); }); })
+    function still(){ return document.documentElement.classList.contains('a11y-still'); }
+    new MutationObserver(function(){ var s = still(); runs.forEach(function(a){ s ? a.pause() : a.play(); }); })
       .observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    // touch: the light moves a dash along an SVG outline, which the browser redraws on the main thread every frame;
+    // while a finger scrolls the page it rests, and it goes on a moment after the page comes to rest
+    if (TOUCH){
+      var resting = 0, held = false;
+      addEventListener('scroll', function(){
+        if (!held){ held = true; runs.forEach(function(a){ a.pause(); }); }
+        clearTimeout(resting); resting = setTimeout(function(){ held = false; if (!still()) runs.forEach(function(a){ a.play(); }); }, 400);
+      }, { passive: true });
+    }
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
     var rt; addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(draw, 150); });
   })();
@@ -1504,10 +1529,14 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
   // the tap is passed on to the real bubble as soon as it appears (see the style script below), which opens the chat
   b.addEventListener('click', function(){ window.__skKobiWant = true; b.classList.add('is-loading'); b.setAttribute('aria-busy', 'true'); go(); });
   document.body.appendChild(b);
+  // the page height is read when the layout changes, not on every scroll event (that forced a layout per event)
+  var max = 0, mro = null;
+  function remax(){ max = document.documentElement.scrollHeight - innerHeight; }
   function deep(){
-    var max = document.documentElement.scrollHeight - innerHeight;
-    if (max > 0 && scrollY > max * .45){ removeEventListener('scroll', deep); later(); }
+    if (max > 0 && scrollY > max * .45){ removeEventListener('scroll', deep); if (mro) mro.disconnect(); later(); }
   }
+  remax(); addEventListener('load', remax); addEventListener('resize', remax);
+  if (window.ResizeObserver){ mro = new ResizeObserver(remax); mro.observe(document.body); }
   addEventListener('scroll', deep, { passive: true });
 })();
 </script>
@@ -1517,6 +1546,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
 (function(){
   var css = ''
     + '.bpFabWrapper{left:24px!important;right:auto!important}'
+    + '@media (max-width:399px){.bpFabWrapper{left:12px!important;bottom:12px!important}.bpFab{width:52px!important;height:52px!important}}'
     + '.bpFABMessagePreview{left:24px!important;right:auto!important}'
     + '@media (min-width:768px){.bpFABWebchat{left:24px!important;right:auto!important;transform-origin:0 100%!important}}'
     /* the greeting card sat over the copy column and the buttons on every screen; the bubble stays, the card does not */
