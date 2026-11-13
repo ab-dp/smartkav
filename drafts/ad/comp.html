@@ -182,7 +182,7 @@ body.preview{background:#1b1f27}
 <script>
 /* ---------- timing: scenes and the voice-over lines (seconds). Re-timed to the recording by build-ad.sh ---------- */
 /* timed to the recorded voice-over (raw/vo-v2.mp3, starting at 0.3s; speech found with ffmpeg silencedetect) */
-var T = window.AD_T || { flood:[0,5.95], app:[5.95,8.9], group:[8.9,11.3], send:[11.3,13.5], result:[13.5,17.6], strike:15.1, now:16.5, nochange:[17.6,19.65], end:[19.65,22.0], total:22.0 };
+var T = window.AD_T || { flood:[0,5.15], app:[5.15,8.9], group:[8.9,11.3], send:[11.3,13.5], result:[13.5,17.6], strike:15.1, now:16.5, nochange:[17.6,19.65], end:[19.65,22.0], total:22.0 };
 var VO = window.AD_VO || [
   [0.45,2.47,'עשר וארבעים בלילה.'], [3.18,5.59,'שלושים ושמונה הודעות על ההסעות של מחר.'],
   [6.29,8.77,'עם SmartKav, העובדים נרשמים באפליקציה,'], [9.12,11.25,'המערכת מקבצת לנסיעות משותפות,'],
@@ -211,11 +211,11 @@ tl.from('#clock', { autoAlpha: 0, y: 30, duration: .8 }, T.flood[0] + .15);
 tl.from('#badge', { autoAlpha: 0, duration: .4 }, T.flood[0] + .5);
 /* a rolling stack low in the frame, clear of the face: slow at first, then faster; each new message pushes the
    older ones up and they fade, so at most three show at once */
-var NT = [.8, 1.75, 2.6, 3.3, 3.9, 4.4, 4.8, 5.1], NA = [1, .7, .4], ntfs = $$('.ntf');
+var NT = [.7, 1.5, 2.2, 2.8, 3.3, 3.75, 4.1, 4.4], NA = [1, .7, .4], ntfs = $$('.ntf');
 ntfs.forEach(function(d, i){ var t = T.flood[0] + NT[i];
   tl.fromTo(d, { autoAlpha: 0, y: 46, scale: .95 }, { autoAlpha: 1, y: 0, scale: 1, duration: .5 }, t);
   for (var j = 0; j < i; j++){ var k = i - j; tl.to(ntfs[j], { y: -k * 140, autoAlpha: k < 3 ? NA[k] : 0, duration: .5 }, t); } });
-var cnt = { v: 0 }; tl.to(cnt, { v: 38, duration: 4.5, ease: 'power2.in', onUpdate: function(){ $('#cnt').textContent = Math.round(cnt.v); } }, T.flood[0] + .8);
+var cnt = { v: 0 }; tl.to(cnt, { v: 38, duration: 3.9, ease: 'power2.in', onUpdate: function(){ $('#cnt').textContent = Math.round(cnt.v); } }, T.flood[0] + .8);
 tl.to('.ntf', { autoAlpha: 0, duration: .3, ease: 'power2.in' }, T.flood[1] - .5);
 
 /* 2 · the app: the phone rises, the button is pressed, the request lands */

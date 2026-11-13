@@ -12,11 +12,11 @@ OUT=${1:-smartkav-ad-9x16.mp4}
 TOTAL=22.0   # the ad's length, timed to the voice-over (which starts at VO_AT)
 VO_AT=0.3
 #      start  end   source (or "black")   in-point  [slow-down factor]
-CUTS=( "0.0   5.95  raw/shot1.mp4  0.0  1.48"
-       "5.95  9.2   raw/shot2.mp4  0.75"
+CUTS=( "0.0   5.15  raw/shot1.mp4  0.0  1.27"
+       "5.15  9.2   raw/shot2.mp4  0.3  1.08"
        "9.2   11.0  black          0"
        "11.0  13.5  raw/shot3.mp4  0.6"
-       "13.5  17.6  raw/shot4.mp4  0.3"
+       "13.5  17.6  raw/shot4c.mp4 0.04"   # continues from shot3's last frame (raw/smile-last.png), one take
        "17.6  20.2  raw/shot5.mp4  1.4"
        "20.2  22.0  black          0" )
 # The footage runs on under each full-screen graphic while it dissolves in or out, so no cut lands on black.
