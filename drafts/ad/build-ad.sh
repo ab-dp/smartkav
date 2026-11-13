@@ -24,26 +24,34 @@ TMP=raw/tmp; mkdir -p "$TMP"; : > "$TMP/list.txt"
 GRADE="scale=1080:1920:force_original_aspect_ratio=increase:flags=lanczos,crop=1080:1920,setsar=1,eq=brightness=-0.035:saturation=0.86:contrast=1.03,vignette=PI/5"
 i=0
 for c in "${CUTS[@]}"; do
-  read -r a b src in slow <<<"$c"; len=$(awk "BEGIN{print $b-$a}"); slow=${slow:-1}
+  read -r a b src in slow <<<"$c"; slow=${slow:-1}
+  nf=$(awk "BEGIN{print int($b*24+.5)-int($a*24+.5)}")   # exact frame count, so the footage never drifts from the graphics
   seg="$TMP/seg$i.mp4"
   hd="${src%.mp4}-hd.mp4"; [ "$src" != black ] && [ -f "$hd" ] && src="$hd"   # the full-quality take, when there is one
   if [ "$src" = black ]; then
-    "$FF" -v error -y -f lavfi -i "color=c=0x0B0D11:s=1080x1920:r=24:d=$len" -c:v libx264 -preset veryfast -crf 16 -pix_fmt yuv420p "$seg"
+    "$FF" -v error -y -f lavfi -i "color=c=0x0B0D11:s=1080x1920:r=24" -frames:v "$nf" -c:v libx264 -preset veryfast -crf 16 -pix_fmt yuv420p "$seg"
   else
     # a shot shorter than its scene plays a little slower (blended frames keep the motion smooth)
-    sp=""; [ "$slow" != 1 ] && sp="setpts=$slow*PTS,minterpolate=fps=24:mi_mode=blend,"
-    "$FF" -v error -y -ss "$in" -i "$src" -vf "${sp}fps=24,$GRADE" -t "$len" -an -c:v libx264 -preset veryfast -crf 16 -pix_fmt yuv420p "$seg"
+    sp="setpts=PTS-STARTPTS,"; [ "$slow" != 1 ] && sp+="setpts=$slow*PTS,minterpolate=fps=24:mi_mode=blend,"
+    "$FF" -v error -y -ss "$in" -i "$src" -vf "${sp}fps=24,$GRADE,tpad=stop_mode=clone:stop_duration=1,setpts=N/24/TB" -frames:v "$nf" -an -c:v libx264 -preset veryfast -crf 16 -pix_fmt yuv420p "$seg"
   fi
   echo "file 'seg$i.mp4'" >> "$TMP/list.txt"; i=$((i+1))
 done
-"$FF" -v error -y -f concat -safe 0 -i "$TMP/list.txt" -c copy "$TMP/base.mp4"
+"$FF" -v error -y -f concat -safe 0 -i "$TMP/list.txt" -c copy "$TMP/joined.mp4"
+# the smile → window cut is one continuous take made from shot3's frame at 3.1 s (raw/smile-last.png); the two renders sit
+# a hair apart, so shot3 runs on for 4 frames and dissolves into it, which hides the step
+SEAM=13.5; SEAM_SRC=raw/shot3-hd.mp4; SEAM_IN=3.1
+"$FF" -v error -y -i "$TMP/joined.mp4" -ss "$SEAM_IN" -i "$SEAM_SRC" -filter_complex   "[1:v]fps=24,$GRADE,format=yuva420p,trim=end_frame=4,fade=t=out:st=0:d=0.167:alpha=1,setpts=PTS-STARTPTS+$SEAM/TB[x];[0:v][x]overlay=eof_action=pass,format=yuv420p"   -c:v libx264 -preset veryfast -crf 14 "$TMP/base.mp4"
 VO=""; for f in raw/vo.wav raw/vo-v2.mp3 raw/vo-src.mp3; do [ -f "$f" ] && { VO=$f; break; }; done   # the newest recording first (in this order, not ls's alphabetical one)
 echo "voice-over: ${VO:-none}"
 ms=$(awk "BEGIN{print int($VO_AT*1000)}"); fo=$(awk "BEGIN{print $TOTAL-0.35}")
 if [ -n "$VO" ]; then AIN=(-i "$VO"); AF="[2:a]aresample=48000,adelay=${ms}|${ms},apad,atrim=0:$TOTAL,afade=t=out:st=$fo:d=0.35[a]"
 else AIN=(-f lavfi -t "$TOTAL" -i "anullsrc=r=48000:cl=stereo"); AF="[2:a]anull[a]"; fi
-"$FF" -v error -y -i "$TMP/base.mp4" -framerate 24 -i "raw/gfx/f%04d.png" "${AIN[@]}" \
-  -filter_complex "[1:v]format=rgba[g];[0:v][g]overlay=0:0:format=auto:eof_action=pass,fade=t=in:st=0:d=0.25,format=yuv420p[v];$AF" \
+# one pixel format for the whole graphics layer: Chrome saves fully opaque frames (the end card) without alpha,
+# and that switch mid-sequence made the overlay drop frames at the logo
+"$FF" -v error -y -framerate 24 -i "raw/gfx/f%04d.png" -vf format=rgba -c:v qtrle "$TMP/gfx.mov"
+"$FF" -v error -y -i "$TMP/base.mp4" -i "$TMP/gfx.mov" "${AIN[@]}" \
+  -filter_complex "[1:v]format=rgba,settb=1/24,setpts=N[g];[0:v]settb=1/24,setpts=N[b];[b][g]overlay=0:0:format=auto:eof_action=repeat:repeatlast=1,settb=1/24,setpts=N,fade=t=in:st=0:d=0.25,format=yuv420p[v];$AF" \
   -map "[v]" -map "[a]" -t "$TOTAL" -c:v libx264 -preset slow -crf 16 -profile:v high -pix_fmt yuv420p -movflags +faststart \
   -c:a aac -b:a 192k -ar 48000 "$OUT"
 echo "built $OUT ($(du -h "$OUT" | cut -f1))"
