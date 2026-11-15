@@ -94,7 +94,7 @@ h1 b,.moment h2 b{font-weight:500}
 .moment h2{font-size:clamp(42px,5.6vw,84px);line-height:1.04}
 /* small text over the film reads at 400; the display sizes stay light */
 .ntf,.scr,.lscr,.reqs li,.rides small,.chips li,.calm p,.push p,.toast{font-weight:400} /* the app mockups read like the app */
-.proof ul,.facts,.results span,.quote figcaption,.story,.sig small,.wa,.foot,.faq p,.nclock,.unread,.field label{font-weight:500} /* small text over the film, firm and clear */
+.proof ul,.facts,.results span,.quote figcaption,.story,.sig small,.wa,.legal,.foot,.faq p,.nclock,.unread,.field label{font-weight:500} /* small text over the film, firm and clear */
 .lede{font-size:17px;line-height:1.7;font-weight:400;color:var(--fg-2);max-width:31em;margin:20px 0 0}
 @media (min-width:1024px){.lede{font-size:19px;line-height:1.62}.facts{font-size:16px}.results span{font-size:16px}}
 .stamp{display:flex;align-items:center;gap:12px;margin:0 0 22px;font-size:13px;font-weight:400;letter-spacing:.14em;color:var(--signal)}
@@ -456,6 +456,7 @@ html.a11y-still .reel-frame{transition:none}
 .field input[aria-invalid="true"]{border-color:var(--alert)}
 .err{margin:6px 0 0;color:#FF8A84;font-size:13.5px}
 .err:empty{display:none}
+.legal{font-size:12px;line-height:1.6;color:var(--fg-3);margin:-2px 0 0;text-align:center;text-wrap:pretty}
 .consent{position:relative;display:flex;gap:12px;align-items:flex-start;margin:2px 0 0;cursor:pointer;text-wrap:balance;font-size:13.5px;line-height:1.55;font-weight:400;color:var(--fg-2)}
 .consent input{position:absolute;inset-inline-start:0;top:1px;width:20px;height:20px;margin:0;opacity:0;cursor:pointer}
 .consent .box{flex:none;width:20px;height:20px;margin-top:1px;border-radius:6px;border:1px solid var(--line-2);background:rgba(11,13,17,.6);display:grid;place-items:center;transition:background var(--t-fast),border-color var(--t-fast)}
@@ -870,7 +871,8 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
         <div class="fail" role="alert" hidden></div>
         <!-- marketing consent (the anti-spam law): optional, unchecked by default, never a condition of the demo; sent as marketing_consent: כן / לא -->
         <label class="consent" for="f-consent"><input id="f-consent" name="marketing_consent" type="checkbox"><span class="box" aria-hidden="true"></span><span>אני מאשר/ת קבלת עדכונים ותוכן שיווקי מ-<bdi dir="ltr" translate="no">SmartKav</bdi> בדוא״ל ובנייד. אפשר להסיר בכל עת.</span></label>
-        <button class="btn submit" type="submit"><span class="btn-label">תאמו הדגמה</span></button>
+        <button class="btn submit" type="submit" aria-describedby="privacy-note"><span class="btn-label">תאמו הדגמה</span></button>
+        <p class="legal" id="privacy-note">מסירת הפרטים אינה חובה לפי חוק, אך בלעדיהם לא נוכל לחזור אליכם. הפרטים נמסרים ל-<bdi dir="ltr" translate="no">SmartKav</bdi> (אלון ברגר) ונשמרים בשירותי ענן של צד שלישי. הם ישמשו ליצירת קשר ולתיאום ההדגמה, ולשליחת עדכונים ותוכן שיווקי רק אם סימנתם זאת. אפשר לבקש בכל עת לעיין בפרטים, לתקן אותם או למחוק אותם.</p>
       </form>
       <div class="form success" id="success" hidden><strong class="s-text" tabindex="-1">תודה, קיבלנו.</strong><p>נציג מטעמנו יחזור אליכם בהקדם לתיאום הדגמה.</p></div>
     </div>
