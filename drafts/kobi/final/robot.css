@@ -68,4 +68,22 @@
 @keyframes kr-wide{0%{transform:scaleY(.08)}30%{transform:scale(1.3)}100%{transform:none}}
 @keyframes kr-jump{0%,100%{transform:translateY(-4px)}45%{transform:translateY(-30px) scale(.96,1.05)}70%{transform:translateY(0) scale(1.06,.94)}}
 @keyframes kr-spark{0%{transform:scale(.2);opacity:0}30%{opacity:1}100%{transform:scale(1.2) translateY(-4px);opacity:0}}
+/* more shows for the corner: a somersault out of the circle, a high leap with a wave, a dance, a look around, a wink */
+.kobi-robot.is-flip .char{animation:kr-flip 1.7s cubic-bezier(.3,.7,.4,1) both}
+.kobi-robot.is-flip .eyes{opacity:0}.kobi-robot.is-flip .joy{opacity:1}
+.kobi-robot.is-leap .char,.kobi-robot.is-leap .arm-lean{animation:kr-leap 1.7s cubic-bezier(.3,.7,.4,1) both}
+.kobi-robot.is-leap .hand{opacity:1;transform:rotate(0deg);animation:kr-wave .5s ease-in-out .3s 3}
+.kobi-robot.is-leap .cheek,.kobi-robot.is-dance .cheek,.kobi-robot.is-wink .cheek{opacity:1}
+.kobi-robot.is-dance .char{animation:kr-dance .95s ease-in-out 2}
+.kobi-robot.is-dance .eyes{opacity:0}.kobi-robot.is-dance .joy{opacity:1}
+.kobi-robot.is-look .eyes{animation:kr-look 2.3s ease-in-out}
+.kobi-robot.is-look .char{animation:kr-tiptoe 2.3s ease-in-out}
+.kobi-robot.is-wink .eyes rect:last-child{animation:kr-wink 1.3s ease-in-out}
+.kobi-robot.is-wink .mouth{transform:scaleX(1.4)}
+@keyframes kr-flip{0%{transform:none}14%{transform:translateY(5px) scale(1.08,.92)}42%{transform:translateY(-74px) rotate(-180deg)}68%{transform:translateY(-16px) rotate(-360deg)}80%{transform:translateY(4px) rotate(-360deg) scale(1.08,.92)}100%{transform:rotate(-360deg)}}
+@keyframes kr-leap{0%{transform:none}12%{transform:translateY(6px) scale(1.1,.9)}34%,58%{transform:translateY(-62px) scale(.97,1.04)}80%{transform:translateY(4px) scale(1.07,.93)}100%{transform:none}}
+@keyframes kr-dance{0%,100%{transform:none}25%{transform:rotate(-9deg) translateY(-6px)}50%{transform:translateY(2px)}75%{transform:rotate(9deg) translateY(-6px)}}
+@keyframes kr-look{0%,100%{transform:none}20%,40%{transform:translateX(-7px)}60%,80%{transform:translateX(7px)}}
+@keyframes kr-tiptoe{0%,100%{transform:none}20%,80%{transform:translateY(-14px)}}
+@keyframes kr-wink{0%,30%,70%,100%{transform:none}45%,55%{transform:scaleY(.08)}}
 @media (prefers-reduced-motion:reduce){.kobi-robot *{animation:none!important;transition:none!important}}
