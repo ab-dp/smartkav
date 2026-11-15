@@ -1,0 +1,102 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>קובי · שלוש דמויות</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0B0D11;--fg:#F3F1EC;--fg2:rgba(243,241,236,.86);--fg3:rgba(243,241,236,.62);--line:rgba(218,226,240,.14);--am:#FFB000}
+*{box-sizing:border-box}body{margin:0;background:#07090C;color:var(--fg);font:300 15px/1.55 "IBM Plex Sans Hebrew",sans-serif;padding:36px clamp(16px,3vw,40px) 60px}
+h1{font-weight:200;font-size:clamp(28px,3vw,40px);margin:0 0 6px;letter-spacing:-.02em}h1 b{font-weight:500}
+.sub{color:var(--fg3);margin:0 0 30px;max-width:60em}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+@media (max-width:1000px){.row{grid-template-columns:1fr}}
+.col{background:#0F1217;border:1px solid rgba(218,226,240,.16);border-radius:20px;padding:22px;box-shadow:inset 0 1px 0 rgba(255,176,0,.35);min-width:0}
+.tag{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.tag b{font-weight:500;font-size:19px}.tag span{font-size:12px;letter-spacing:.14em;color:var(--am)}
+.idea{color:var(--fg2);font-size:14px;margin:6px 0 10px;min-height:4.6em}
+.stage{display:grid;place-items:center;height:300px;position:relative}
+.stage .kobi{width:200px;height:240px}
+.state{position:absolute;bottom:4px;right:0;left:0;text-align:center;font-size:12px;letter-spacing:.12em;color:var(--fg3)}
+/* the corner, over the film, and the chat opening from it: the line leaves the circle and runs up into the window */
+.scene{position:relative;height:440px;border-radius:14px;overflow:hidden;background:#0B0D11 url(../../../film/poster.jpg) 30% 60%/cover;margin-top:10px}
+.scene::before{content:"";position:absolute;inset:0;background:rgba(11,13,17,.55)}
+.fab{position:absolute;left:18px;bottom:16px;width:68px;height:82px;z-index:2}
+.fab .kobi{width:100%;height:100%;filter:drop-shadow(0 10px 18px rgba(0,0,0,.6))}
+.kav{position:absolute;left:52px;bottom:98px;width:1.5px;height:26px;background:var(--am);z-index:1;transform-origin:bottom;animation:kav 6s var(--e) infinite}
+.win{position:absolute;left:18px;right:18px;bottom:124px;border-radius:16px;background:rgba(11,13,17,.95);border:1px solid var(--line);overflow:hidden;z-index:1;transform-origin:20% 100%;animation:win 6s var(--e) infinite}
+.ch{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--am)}
+.ch .av{width:40px;height:48px;flex:none}.ch .av .kobi{width:100%;height:100%}
+.ch b{display:block;font-weight:500;font-size:14.5px}.ch small{color:var(--fg3);font-size:12px}
+.msgs{padding:12px;display:grid;gap:8px;font-size:13px;font-weight:400}
+.bub{background:#1A1E26;border-radius:14px 14px 14px 4px;padding:8px 11px;max-width:85%}
+.out{justify-self:end;background:var(--am);color:#14120D;border-radius:14px 14px 4px 14px;padding:8px 11px}
+.dots{display:inline-flex;gap:4px;padding:10px 12px;background:#1A1E26;border-radius:14px 14px 14px 4px;width:max-content}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--fg3);animation:dot 1s infinite}.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+.sizes{display:flex;align-items:flex-end;gap:18px;margin-top:16px;padding:14px;border-radius:14px;background:#0B0D11;border:1px solid var(--line)}
+.sizes .kobi{display:block}.sizes span{font-size:11px;color:var(--fg3);display:block;text-align:center;margin-top:4px}
+ul{margin:14px 0 0;padding:0;list-style:none;font-size:13.5px;color:var(--fg2)}li{padding:6px 0;border-top:1px solid rgba(218,226,240,.1)}
+li::before{content:"+ ";color:#7FD3A2}li.c::before{content:"– ";color:#E5544E}
+.big{margin-top:36px;background:#0F1217;border:1px solid rgba(218,226,240,.16);border-radius:20px;padding:24px}
+.big h2{font-weight:300;font-size:24px;margin:0 0 10px}.big h2 b{font-weight:500}.big p{color:var(--fg2);margin:6px 0;max-width:62em}
+:root{--e:cubic-bezier(.16,1,.3,1)}
+/* states, on transform/opacity only */
+.kobi .char,.kobi .eyes,.kobi .pup,.kobi .sig,.kobi .mouth,.kobi .sign{transform-box:fill-box;transform-origin:center}
+.s-idle .char{animation:breathe 4s ease-in-out infinite}
+.s-idle .eyes{animation:blink 4.2s infinite}
+.s-peek .char{transform:translateY(-26px);transition:transform .6s var(--e)}
+.s-peek .eyes{animation:blink 2.4s infinite}
+.s-type .eyes{animation:look 1.2s ease-in-out infinite}
+.s-type .sig{animation:pulse .6s ease-in-out infinite alternate}
+.s-type .sign{animation:lamp .5s ease-in-out infinite alternate}
+.s-type .pup{animation:read 1.2s ease-in-out infinite}
+.s-happy .eyes{opacity:0}.s-happy .joy{opacity:1}.kobi .eyes,.kobi .joy{transition:opacity .25s}
+.s-happy .char{transform:translateY(-10px)}
+.kobi .char{transition:transform .6s var(--e)}.kobi .eyes{transition:transform .3s}
+@keyframes breathe{50%{transform:translateY(-3px)}}
+@keyframes blink{0%,46%,50%,100%{transform:none}48%{transform:scaleY(.1)}}
+@keyframes look{0%,100%{transform:translateX(-4px)}50%{transform:translateX(4px)}}
+@keyframes read{0%,100%{transform:translateX(-4px)}50%{transform:translateX(3px)}}
+@keyframes pulse{to{transform:scale(1.7);opacity:.5}}
+@keyframes lamp{to{opacity:.82}}
+@keyframes dot{50%{transform:translateY(-3px);opacity:.5}}
+@keyframes win{0%,8%{opacity:0;transform:translateY(10px) scale(.96)}18%,92%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes kav{0%,6%{transform:scaleY(0)}16%,92%{transform:scaleY(1)}100%{transform:scaleY(0)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<h1>קובי · <b>שלוש דמויות</b></h1>
+<p class="sub">כל דמות גרה בתוך העיגול של הלוגו כמו בחלון עגול: החלק התחתון נשאר בתוך המסגרת, והראש יכול להציץ החוצה מעל השפה. מצבים מתחלפים כל כמה שניות: <b>נח</b> (נושם וממצמץ) · <b>מציץ</b> (יוצא מהעיגול) · <b>כותב</b> · <b>שמח</b>. בכל העמודות, כשהחלון נפתח, הקו של הלוגו יוצא מהעיגול ומוביל אל החלון.</p>
+<div class="row" id="row"></div>
+<div class="big"><h2>איך זה מתחבר לדף, <b>בגדול</b></h2>
+<p><b>החלון העגול.</b> העיגול בפינה הוא אותו עיגול כמו בלוגו, ובתוכו גר קובי. במצב רגיל רואים רק את הראש בתוך המסגרת.</p>
+<p><b>יוצא מהעיגול.</b> כשהגולש מגיע לשאלות הנפוצות או לטופס, וכשמרחפים עליו, קובי מציץ מעל שפת העיגול. זה קורה פעם אחת לכל מקום ולא מציק.</p>
+<p><b>הקו.</b> כשהצ׳אט נפתח, הקו הענברי של הלוגו נמתח מהעיגול אל החלון, אותו קו כמו מתחת לכותרת. בזמן שהוא כותב, הקו "זורם" (האנטנה מהבהבת, משקפי הינשוף קוראים, שלט המונית נדלק).</p>
+<p><b>אחרי שליחת הטופס.</b> קובי שמח (עיניים מחייכות), באותו רגע של הוי והניצוצות בכרטיס התודה.</p>
+<p>הכול ב-SVG שאנחנו מציירים, בלי תמונות: חד בכל גודל, כמה קילובייט בלבד, ואנימציה של transform/opacity בלבד שנעצרת ב-reduced motion.</p></div>
+<script src="chars.js"></script>
+<script>
+var D=[
+ ['a','א · הבוט','',
+  'רובוט קטן וידידותי: הראש עגול, הפנים מסך כהה כמו האפליקציה, והפה הוא הקו של הלוגו. האנטנה היא הלוגו עצמו (קו שעולה לעיגול עם נקודה), והיא זו שיוצאת מהעיגול ומהבהבת כשהוא כותב.',
+  ['הכי ברור שזה סוכן AI, וזה הוגן כלפי הגולש','הפנים קריאות גם ב-36px','האנטנה נותנת "חיים" בלי להזיז את כל הדמות'],['רובוט הוא כיוון מוכר, פחות מפתיע']],
+ ['b','ב · הינשוף','מומלץ',
+  'ינשוף של משמרת לילה, ער ב-22:40 כשכולם הולכים לישון, וחכם לייעץ. העיניים הן שני סימני לוגו (קו שנכנס לעיגול), כך שהלוגו הופך למשקפיים. האוזניים יוצאות מעל שפת העיגול.',
+  ['הכי מחובר לסיפור של הדף: לילה, משמרות, מישהו שער בשבילך','הלוגו הוא הפנים, אז אי אפשר לטעות במותג','חמוד ומקצועי, יועץ ולא צעצוע'],['בגודל 36px הפרטים של הבטן נעלמים (הפנים נשארות)']],
+ ['c','ג · שלט המונית','',
+  'השלט שעל גג המונית, עם פנים. הוא יושב על הגג בתחתית העיגול, ומעליו סימן הלוגו. כשהוא כותב, השלט נדלק ונכבה כמו מונית שמחפשת נוסע. מתחבר למונית שמחכה לנועה בשער.',
+  ['הכי שובב ובלתי נשכח','ענבר מלא, בולט מאוד בפינה'],['נראה "מונית" יותר מ"מערכת הסעות לארגונים"','הענבר המלא מתחרה בכפתור "תאמו הדגמה"']]
+];
+var row=document.getElementById('row'), STATES=['idle','peek','type','happy'], NAMES={idle:'נח',peek:'מציץ',type:'כותב',happy:'שמח'};
+var force=new URLSearchParams(location.search).get('state');
+D.forEach(function(d){
+  var k=d[0], c=document.createElement('div'); c.className='col';
+  c.innerHTML='<div class="tag"><b>'+d[1]+'</b><span>'+d[2]+'</span></div><p class="idea">'+d[3]+'</p>'
+   +'<div class="stage s-idle">'+KOBI[k]()+'<span class="state">נח</span></div>'
+   +'<div class="scene"><div class="win"><div class="ch"><span class="av s-idle">'+KOBI[k]()+'</span><span><b>קובי</b><small>העוזר הדיגיטלי של SmartKav</small></span></div>'
+   +'<div class="msgs"><div class="bub">היי, אני קובי. אפשר לשאול אותי על ההרשמה, הקיבוץ או ההטמעה.</div><div class="out">צריך להחליף חברת הסעות?</div><span class="dots"><i></i><i></i><i></i></span></div></div>'
+   +'<span class="kav"></span><span class="fab s-type">'+KOBI[k]()+'</span></div>'
+   +'<div class="sizes"><div>'+KOBI[k]().replace('<svg','<svg width="64" height="77"')+'<span>64</span></div><div>'+KOBI[k]().replace('<svg','<svg width="52" height="62"')+'<span>52</span></div><div>'+KOBI[k]().replace('<svg','<svg width="36" height="43"')+'<span>36</span></div></div>'
+   +'<ul>'+d[4].map(function(x){return '<li>'+x+'</li>'}).join('')+d[5].map(function(x){return '<li class="c">'+x+'</li>'}).join('')+'</ul>';
+  row.appendChild(c);
+});
+var i=0;
+function step(){ var s=force||STATES[i++%STATES.length];
+  document.querySelectorAll('.stage').forEach(function(st){ st.className='stage s-'+s; st.querySelector('.state').textContent=NAMES[s]; }); }
+step(); if(!force) setInterval(step,2600);
+</script></body></html>
