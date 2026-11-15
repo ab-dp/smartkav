@@ -47,7 +47,8 @@
   /* the night's two temperatures: warm ivory type and amber light, against hairlines and panels with a breath of
      night-sky blue in them */
   --line:rgba(218,226,240,.12); --line-2:rgba(218,226,240,.22);
-  --panel:rgba(13,16,22,.8); --panel-solid:#11141A;
+  --panel:#12151B; --panel-solid:#11141A; --body-0:#06070A; /* opaque: the product UI is a solid instrument over the film, never a muddy see-through panel */
+  --edge:inset 0 0 0 1px rgba(218,226,240,.16),inset 0 1px 0 rgba(255,176,0,.35); /* hairline + the thin amber light on the top edge (as on the reel) */
   --signal:#FFB000; --ok:#7FD3A2; --ok-bg:rgba(127,211,162,.12); --wait:#F2C46B; --wait-bg:rgba(242,196,107,.12); --alert:#E5544E;
   --sans:"IBM Plex Sans Hebrew",Heebo,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
   --gut:clamp(20px,5vw,88px); --wrap:1360px; --col:500px;
@@ -314,7 +315,7 @@ html.a11y-still .reel-frame{transition:none}
 .unread{position:absolute;top:-44px;left:0;display:flex;align-items:center;gap:8px;color:var(--fg-2);font-size:12.5px}
 .unread b{min-width:34px;height:24px;padding:0 9px;border-radius:12px;background:var(--alert);color:#fff;font:500 13px/24px var(--sans);text-align:center;transition:background var(--t-mid)}
 .unread.zero b{background:#2E7D55}
-.calm{position:absolute;left:50%;top:50%;width:min(340px,92%);transform:translate(-50%,-50%);background:var(--panel);border:1px solid var(--line-2);border-radius:var(--r-lg);padding:18px 20px;box-shadow:0 30px 60px -30px rgba(0,0,0,.8)}
+.calm{position:absolute;left:50%;top:50%;width:min(340px,92%);transform:translate(-50%,-50%);background:var(--panel);border:1px solid var(--line-2);border-radius:var(--r-lg);padding:18px 20px;box-shadow:0 40px 80px -40px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,176,0,.35)}
 .calm .row1{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--fg-3)}
 .brandmini{display:flex;align-items:center;gap:6px;font-weight:500;color:var(--fg);direction:ltr}
 .brandmini svg{width:22px;height:10px}.brandmini line{stroke:var(--signal);stroke-width:6}.brandmini circle{fill:none;stroke:var(--signal);stroke-width:6}
@@ -327,9 +328,9 @@ html.a11y-still .reel-frame{transition:none}
 .tag.wait{background:var(--wait-bg);color:var(--wait);border-color:rgba(242,196,107,.28)}
 
 /* ===== 3. phone: dark app ===== */
-.phone{width:280px;height:580px;border-radius:44px;background:rgba(7,8,11,.82);padding:10px;box-shadow:0 40px 80px -40px rgba(0,0,0,.8),inset 0 0 0 1px rgba(243,241,236,.1);position:relative}
+.phone{width:280px;height:580px;border-radius:44px;background:var(--body-0);padding:10px;box-shadow:0 60px 100px -50px rgba(0,0,0,.95),var(--edge);position:relative}
 .phone::before{content:"";position:absolute;top:20px;left:50%;width:84px;height:24px;border-radius:13px;background:#000;transform:translateX(-50%);z-index:2}
-.scr{height:100%;border-radius:35px;background:rgba(18,21,27,.86);color:var(--fg);overflow:hidden;padding:54px 16px 16px;display:flex;flex-direction:column;gap:10px;font-size:12.5px}
+.scr{height:100%;border-radius:35px;background:var(--panel);color:var(--fg);overflow:hidden;padding:54px 16px 16px;display:flex;flex-direction:column;gap:10px;font-size:12.5px}
 .scr .top{display:flex;justify-content:space-between;align-items:center}
 .scr .hi{font-weight:400;font-size:19px;letter-spacing:-.01em}
 .scr .av{width:30px;height:30px;border-radius:50%;background:#2B3442;color:#fff;display:grid;place-items:center;font-weight:500;font-size:12px}
@@ -367,8 +368,18 @@ html.a11y-still .reel-frame{transition:none}
 
 /* ===== 5. dashboard: dark product UI ===== */
 .desk{position:relative;width:min(100%,600px)}
-.laptop{background:rgba(7,8,11,.82);border-radius:16px 16px 6px 6px;padding:10px 10px 14px;box-shadow:0 40px 80px -40px rgba(0,0,0,.8),inset 0 0 0 1px rgba(243,241,236,.08)}
-.lscr{background:rgba(18,21,27,.86);color:var(--fg);border-radius:8px;overflow:hidden;font-size:12.5px}
+/* the spec frame: four hairline corner ticks around a product screen and a small label under it, like a drawing's
+   callout (static, aria-hidden; the screen itself carries the description) */
+.spec{position:absolute;inset:-22px;pointer-events:none;z-index:3;--c:rgba(218,226,240,.38);
+  background:linear-gradient(var(--c),var(--c)) 0 0/14px 1px no-repeat,linear-gradient(var(--c),var(--c)) 0 0/1px 14px no-repeat,
+   linear-gradient(var(--c),var(--c)) 100% 0/14px 1px no-repeat,linear-gradient(var(--c),var(--c)) 100% 0/1px 14px no-repeat,
+   linear-gradient(var(--c),var(--c)) 0 100%/14px 1px no-repeat,linear-gradient(var(--c),var(--c)) 0 100%/1px 14px no-repeat,
+   linear-gradient(var(--c),var(--c)) 100% 100%/14px 1px no-repeat,linear-gradient(var(--c),var(--c)) 100% 100%/1px 14px no-repeat}
+.spec-l{position:absolute;top:calc(100% + 10px);inset-inline-start:0;display:flex;align-items:center;gap:10px;white-space:nowrap;font-size:12.5px;font-weight:500;letter-spacing:.08em;color:var(--fg-3)}
+.spec-l::before{content:"";width:18px;height:1px;background:var(--signal)}
+@media (min-width:1024px){.phone{transform:scale(1.12)}.desk{width:min(100%,660px)}}
+.laptop{background:var(--body-0);border-radius:16px 16px 6px 6px;padding:10px 10px 14px;box-shadow:0 60px 100px -50px rgba(0,0,0,.95),var(--edge)}
+.lscr{background:var(--panel);color:var(--fg);border-radius:8px;overflow:hidden;font-size:12.5px}
 .lbar{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--line)}
 .lbar .who{display:flex;gap:8px;align-items:center;color:var(--fg-3)}
 .lbar .who i{width:24px;height:24px;border-radius:50%;background:var(--ink-3);color:var(--fg);font-style:normal;display:grid;place-items:center;font-size:11px}
@@ -400,11 +411,15 @@ html.a11y-still .reel-frame{transition:none}
 .quiet .moment .qclock{text-align:center;margin-bottom:32px}
 .qclock{font-weight:100;font-size:clamp(84px,9vw,144px);line-height:.85;letter-spacing:-.04em;direction:ltr;text-align:right;margin:0 0 28px}
 .qclock b{font-weight:100;color:var(--signal)}
-.results{list-style:none;margin:0 auto;padding:0;width:min(100%,600px)}
-.results li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:var(--s3);padding:18px 0;border-top:1px solid var(--line);align-items:baseline}
-.results li:last-child{border-bottom:1px solid var(--line)}
-.results b{font-weight:300;font-size:clamp(24px,2.2vw,32px);line-height:1.1;letter-spacing:-.02em}
-.results span{color:var(--fg-2);font-size:15px}
+.quiet .split > :last-child{width:min(100%,720px)}
+/* the results as readings, in the language of the hero's instrument row: a small amber key, the value large and thin,
+   the line under it; two columns divided by a hairline */
+.results{list-style:none;margin:0 auto;padding:0;width:100%;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line)}
+.results li{padding:28px 0 26px;text-align:center}
+.results li + li{border-inline-start:1px solid var(--line)}
+.results li::before{content:attr(data-k);display:block;font-size:12px;font-weight:500;letter-spacing:.16em;color:var(--signal);margin-bottom:14px}
+.results b{display:block;font-weight:200;font-size:clamp(34px,3.6vw,54px);line-height:1;letter-spacing:-.035em;margin-bottom:14px}
+.results span{display:block;max-width:20em;margin:0 auto;padding:0 20px;color:var(--fg-2);font-size:15px;line-height:1.55;text-wrap:balance}
 .quote{margin:clamp(64px,9vh,96px) 0 0;padding:0;text-align:center}
 /* the only voice from the pilot gets its own moment: large, thin, a short amber line above it */
 .quote::before{content:"";display:block;width:28px;height:1px;background:var(--signal);margin:0 auto 28px}
@@ -445,14 +460,19 @@ html.a11y-still .reel-frame{transition:none}
 .sig{margin:14px 0 0;font-weight:500;font-size:16px}.sig small{display:block;font-weight:300;font-size:13px;color:var(--fg-3);margin-top:2px}
 .wa{display:inline-flex;gap:10px;align-items:center;margin-top:24px;font-size:15px;color:var(--fg)}
 .wa svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6}
-.form{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(22px,3vw,36px);display:grid;gap:16px;width:min(100%,540px);color:var(--fg)}
+.form{--pad:clamp(22px,3vw,36px);background:#0F1217;border:1px solid rgba(218,226,240,.16);border-radius:var(--r-lg);box-shadow:0 60px 120px -60px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,176,0,.4);padding:var(--pad);display:grid;gap:18px;width:min(100%,540px);color:var(--fg)}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.field label{display:block;font-weight:500;font-size:14px;color:var(--fg-2);margin-bottom:6px}
+/* the form reads like a ride ticket: a header row, the required part, a perforation, then the optional part */
+.tk-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.tk-head b{font-weight:400;font-size:18px;letter-spacing:-.01em}
+.tk-head .brandmini{font-size:13px;color:var(--fg-3)}
+.field label{display:block;font-weight:500;font-size:14px;color:var(--fg);margin-bottom:6px}
 .field .opt{color:var(--fg-3)}
-.field input,.field select,.field textarea{width:100%;font:300 16px/1.4 var(--sans);color:var(--fg);background:rgba(11,13,17,.6);border:1px solid var(--line-2);border-radius:12px;padding:12px 14px;transition:border-color var(--t-fast),box-shadow var(--t-fast)}
+.field input,.field select,.field textarea{width:100%;font:300 16px/1.4 var(--sans);color:var(--fg);background:#090B0F;border:1px solid rgba(218,226,240,.2);border-radius:12px;padding:12px 14px;transition:border-color var(--t-fast),box-shadow var(--t-fast)}
+.field input,.field select{height:50px}
 .field select{color-scheme:dark}
 .field input:hover,.field select:hover,.field textarea:hover{border-color:rgba(243,241,236,.34)}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--fg-2);box-shadow:0 0 0 3px rgba(255,176,0,.22)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--signal);box-shadow:0 0 0 1px var(--signal)}
 .field input[aria-invalid="true"]{border-color:var(--alert)}
 .err{margin:6px 0 0;color:#FF8A84;font-size:13.5px}
 .err:empty{display:none}
@@ -472,9 +492,9 @@ html.a11y-still .reel-frame{transition:none}
 .hp{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .submit{width:100%}
 /* the optional fields: one quiet group under the three required ones, smaller labels and fainter boxes (16px text stays, so iOS does not zoom) */
-.opt-group{border:0;margin:4px 0 0;padding:0;min-width:0;display:grid;gap:12px}
+.opt-group{position:relative;border:0;margin:14px 0 0;padding:0;min-width:0;display:grid;gap:12px}
+.opt-group::before{content:"";position:absolute;top:-16px;inset-inline:calc(-1 * var(--pad));height:1px;background:repeating-linear-gradient(90deg,rgba(218,226,240,.3) 0 6px,transparent 6px 12px)} /* the perforation */
 .opt-group legend{display:flex;align-items:center;gap:12px;width:100%;padding:0;margin-bottom:12px;font-size:12.5px;font-weight:400;color:var(--fg-3)}
-.opt-group legend::after{content:"";flex:1;height:1px;background:var(--line)}
 .opt-group .field label{font-size:13px;font-weight:400;color:var(--fg-3);margin-bottom:5px}
 .opt-group .field input,.opt-group .field select,.opt-group .field textarea{padding:9px 12px;border-radius:10px;border-color:var(--line);background:rgba(11,13,17,.3);color:var(--fg-2)}
 .opt-group .field input:focus,.opt-group .field select:focus,.opt-group .field textarea:focus{color:var(--fg)}
@@ -587,7 +607,8 @@ html.a11y-still .done,html.a11y-still .done *,html.a11y-still .done *::after{ani
   .lhead b{font-size:15px}
   .toast{white-space:normal;width:88%;bottom:14px}
   .push{width:210px}
-  .results li{grid-template-columns:1fr;gap:4px}
+  .results li{padding:22px 0}.results b{font-size:30px}.results span{padding:0 10px;font-size:13.5px}
+  .desk .spec{inset:-14px -12px}
   .f2{grid-template-columns:1fr}
   #gate > .wrap{padding-bottom:104px} /* clear of Kobi's bubble */
   .foot{padding-bottom:100px} /* the footer line stays clear of the two corner buttons */
@@ -631,6 +652,13 @@ html.kobi-ready .kobi-fab{display:none}
   html.kobi-open .a11y{opacity:0;visibility:hidden;pointer-events:none}} /* Kobi fills the phone's screen; the button returns when it closes */
 /* small phones (360-399px): the two round buttons are smaller and closer to the corners, so they no longer cover the
    buttons in the product mockups (the real Kobi bubble gets the same in its own rules, below) */
+/* phone: while the end of the form (consents, the button, the privacy note) passes the bottom of the screen, the two
+   corner buttons step down out of its way (transform/opacity only), and come back as soon as it moves on */
+@media (max-width:767px){
+  .a11y,.kobi-fab,.bpChatContainer{transition:transform .35s var(--ease-out),opacity .35s var(--ease-out)}
+  html.corners-away:not(.kobi-open) .kobi-fab,html.corners-away .a11y:not(:focus-within){transform:translateY(calc(100% + 40px));opacity:0;pointer-events:none}
+  html.corners-away:not(.kobi-open) .bpChatContainer{opacity:0;pointer-events:none}
+}
 @media (max-width:399px){.a11y{right:12px;bottom:12px}.a11y-fab{width:44px;height:44px}.a11y-fab svg{width:24px;height:24px}
   .kobi-fab{left:12px;bottom:12px;width:52px;height:52px}}
 /* Modes */
@@ -743,6 +771,7 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
         <div class="status" id="pstatus"><span><b>שישי · הלוך 16:00</b><small id="pstatus-t">עדכון אחרון 22:41</small></span><span class="tag ok" id="ptag">מונית הוזמנה</span></div>
         <div class="mine"><div><span>חמישי 24.09 · הלוך 08:00</span><span class="tag ok">מונית הוזמנה</span></div><div><span>חמישי 24.09 · חזור 17:00</span><span class="tag ok">מונית הוזמנה</span></div></div>
       </div>
+      <span class="spec" aria-hidden="true"><span class="spec-l">אפליקציית העובד</span></span>
     </div>
   </div>
 </section>
@@ -794,6 +823,7 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
         </div>
       </div></div>
       <div class="toast" id="dtoast" aria-hidden="true"><span class="tag ok">הועתק</span>ההזמנה מוכנה להדבקה אצל חברת ההסעות</div>
+      <span class="spec" aria-hidden="true"><span class="spec-l">מסך המנהל</span></span>
       <div class="push" id="dpush" aria-hidden="true"><b>SmartKav<small>עכשיו</small></b><p>המונית שלך הוזמנה · שישי, הלוך 16:00</p></div>
     </div>
   </div>
@@ -808,8 +838,8 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
     </div></div>
     <div class="hold-b"><div class="hb">
       <ul class="results">
-        <li><b>פחות מוניות</b><span>מי שנסע לבד באותה שעה ובאותו כיוון נוסע בנסיעה משותפת.</span></li>
-        <li><b>0 כפולות</b><span>הרשמה כפולה נחסמת לפני שהיא מגיעה לחשבונית.</span></li>
+        <li data-k="נסיעות משותפות"><b>פחות מוניות</b><span>מי שנסע לבד באותה שעה ובאותו כיוון נוסע בנסיעה משותפת.</span></li>
+        <li data-k="הרשמות כפולות"><b>0 כפולות</b><span>הרשמה כפולה נחסמת לפני שהיא מגיעה לחשבונית.</span></li>
       </ul>
       <figure class="quote">
         <blockquote>״זה לקח לי יותר משעתיים בשבוע, בין אקסל לוואטסאפ. היום אני רק מאשר ושולח. חמש דקות וזהו.״</blockquote>
@@ -858,6 +888,7 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
     <div>
       <!-- POSTs JSON to Make (WEBHOOK_URL): source, name, phone, email, organization, employees, details. Make maps these keys to the Google Sheet: change them only together with the scenario. -->
       <form class="form" id="lead-form" novalidate>
+        <div class="tk-head" aria-hidden="true"><b>בקשת הדגמה</b><span class="brandmini" dir="ltr"><svg viewBox="0 0 92 40"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg>SmartKav</span></div>
         <div class="f2">
           <div class="field"><label for="f-name">שם מלא</label><input id="f-name" name="full_name" type="text" autocomplete="name" aria-required="true" aria-describedby="err-full_name"><p class="err" id="err-full_name" aria-live="polite"></p></div>
           <div class="field"><label for="f-phone">טלפון</label><input id="f-phone" name="phone" type="tel" inputmode="numeric" dir="ltr" autocomplete="tel" aria-required="true" aria-describedby="err-phone"><p class="err" id="err-phone" aria-live="polite"></p></div>
@@ -897,6 +928,19 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
     <span>© <bdi dir="ltr" translate="no">SmartKav</bdi> · אלון ברגר</span>
   </div>
 </footer>
+<script>
+/* phone: the corner buttons (Kobi, accessibility) step aside while the end of the form crosses the bottom band of the
+   screen, so they never cover the consents, the button or the privacy note (CSS: html.corners-away) */
+(function(){
+  if (!('IntersectionObserver' in window)) return;
+  var els = document.querySelectorAll('#lead-form .consents, #lead-form .submit, #lead-form .legal'), on = new Set();
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if (e.isIntersecting) on.add(e.target); else on.delete(e.target); });
+    document.documentElement.classList.toggle('corners-away', on.size > 0);
+  }, { rootMargin: '-84% 0px 0px 0px' });
+  els.forEach(function(el){ io.observe(el); });
+})();
+</script>
 
 <!-- The theater: the ad with sound. Opens from any [data-play]; on a phone it is the whole screen, like a story.
      The progress line is the logo's line, running right to left like the one under the header; at the end, the call. -->
