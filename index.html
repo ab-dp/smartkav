@@ -85,7 +85,7 @@ h1{font-size:clamp(40px,5.4vw,82px);line-height:1;letter-spacing:-.03em;font-wei
 h2{font-size:clamp(30px,3.1vw,46px);line-height:1.12;letter-spacing:-.02em}
 h1 b,h2 b,h2 em{font-weight:500;font-style:normal;color:var(--fg)}
 h1 .dot{font-style:normal;color:var(--signal)} /* the one touch of amber in the headline, like the colon of the 22:45 clock */
-.moment h2,.coda{font-weight:200;letter-spacing:-.025em}
+.moment h2{font-weight:200;letter-spacing:-.025em}
 .qclock{font-weight:100;letter-spacing:-.04em}
 .qclock b{font-weight:100}
 h1 b,.moment h2 b{font-weight:500}
@@ -94,7 +94,7 @@ h1 b,.moment h2 b{font-weight:500}
 .moment h2{font-size:clamp(42px,5.6vw,84px);line-height:1.04}
 /* small text over the film reads at 400; the display sizes stay light */
 .ntf,.scr,.lscr,.reqs li,.rides small,.chips li,.calm p,.push p,.toast{font-weight:400} /* the app mockups read like the app */
-.proof ul,.facts,.results span,.quote figcaption,.story,.sig small,.wa,.legal,.foot,.faq p,.nclock,.unread,.field label{font-weight:500} /* small text over the film, firm and clear */
+.proof ul,.facts,.results span,.quote figcaption,.story,.sig small,.wa,.foot,.faq p,.nclock,.unread,.field label{font-weight:500} /* small text over the film, firm and clear */
 .lede{font-size:17px;line-height:1.7;font-weight:400;color:var(--fg-2);max-width:31em;margin:20px 0 0}
 @media (min-width:1024px){.lede{font-size:19px;line-height:1.62}.facts{font-size:16px}.results span{font-size:16px}}
 .stamp{display:flex;align-items:center;gap:12px;margin:0 0 22px;font-size:13px;font-weight:400;letter-spacing:.14em;color:var(--signal)}
@@ -426,9 +426,6 @@ html.a11y-still .reel-frame{transition:none}
 
 /* screen-reader-only text */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-/* the last line: the night closes where the form begins */
-.coda{margin:0 0 22px;font-size:clamp(20px,1.8vw,26px);line-height:1.3;color:var(--fg-2)}
-.coda .num{font-family:var(--sans);font-size:max(12px,.62em);font-weight:400;letter-spacing:.16em;color:var(--signal);margin-left:.6em;vertical-align:.2em}
 
 /* ===== 8. faq ===== */
 .faq{max-width:680px;margin-inline:auto}
@@ -459,7 +456,14 @@ html.a11y-still .reel-frame{transition:none}
 .field input[aria-invalid="true"]{border-color:var(--alert)}
 .err{margin:6px 0 0;color:#FF8A84;font-size:13.5px}
 .err:empty{display:none}
-.legal{font-size:12.5px;line-height:1.55;color:var(--fg-3);margin:-4px 0 0;text-align:center}
+.consent{position:relative;display:flex;gap:12px;align-items:flex-start;margin:2px 0 0;cursor:pointer;text-wrap:balance;font-size:13.5px;line-height:1.55;font-weight:400;color:var(--fg-2)}
+.consent input{position:absolute;inset-inline-start:0;top:1px;width:20px;height:20px;margin:0;opacity:0;cursor:pointer}
+.consent .box{flex:none;width:20px;height:20px;margin-top:1px;border-radius:6px;border:1px solid var(--line-2);background:rgba(11,13,17,.6);display:grid;place-items:center;transition:background var(--t-fast),border-color var(--t-fast)}
+.consent .box::after{content:"";width:10px;height:5px;border-left:2px solid #14120D;border-bottom:2px solid #14120D;transform:translateY(-1px) rotate(-45deg);opacity:0}
+.consent:hover .box{border-color:rgba(243,241,236,.34)}
+.consent input:checked + .box{background:var(--signal);border-color:var(--signal)}
+.consent input:checked + .box::after{opacity:1}
+.consent input:focus-visible + .box{outline:2px solid var(--signal);outline-offset:3px}
 .hp{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .submit{width:100%}
 /* the optional fields: one quiet group under the three required ones, smaller labels and fainter boxes (16px text stays, so iOS does not zoom) */
@@ -839,7 +843,6 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 <section class="scene light contact hold" id="contact" aria-labelledby="h2-contact" style="min-height:0;padding-top:24px">
   <div class="wrap split">
     <div data-hold>
-      <p class="coda"><span class="num">01:00</span> השבוע הבא כבר סגור.</p>
       <h2 id="h2-contact">רוצים לראות איך זה<br><b>ייראה אצלכם?</b></h2>
       <p class="lede">השאירו פרטים, ונציג מטעמנו יחזור אליכם לתיאום הדגמה קצרה.</p>
       <p class="story">ניהלתי מוקד משמרות, וסידור ההסעות היה עליי: וואטסאפ, אקסל ובדיקה אחרונה בעשר בלילה. לא מצאתי מערכת שעושה את זה, אז בניתי.</p>
@@ -865,8 +868,9 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
         </fieldset>
         <div class="hp" aria-hidden="true"><label for="f-website">website</label><input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
         <div class="fail" role="alert" hidden></div>
-        <button class="btn submit" type="submit" aria-describedby="privacy-note"><span class="btn-label">תאמו הדגמה</span></button>
-        <p class="legal" id="privacy-note">בשליחה אתם מאשרים שנחזור אליכם בטלפון או בדוא״ל. הפרטים מגיעים ישירות לאלון ברגר, ישמשו רק ליצירת קשר, ואפשר לבקש את מחיקתם בכל עת.</p>
+        <!-- marketing consent (the anti-spam law): optional, unchecked by default, never a condition of the demo; sent as marketing_consent: כן / לא -->
+        <label class="consent" for="f-consent"><input id="f-consent" name="marketing_consent" type="checkbox"><span class="box" aria-hidden="true"></span><span>אשמח לקבל מ-<bdi dir="ltr" translate="no">SmartKav</bdi> עדכונים ותוכן שיווקי בדוא״ל ובנייד. אפשר להסיר בכל עת.</span></label>
+        <button class="btn submit" type="submit"><span class="btn-label">תאמו הדגמה</span></button>
       </form>
       <div class="form success" id="success" hidden><strong class="s-text" tabindex="-1">תודה, קיבלנו.</strong><p>נציג מטעמנו יחזור אליכם בהקדם לתיאום הדגמה.</p></div>
     </div>
@@ -1395,7 +1399,8 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
         email: F.email.value.trim(),
         organization: $('#f-org').value.trim(),
         employees: $('#f-size').value,
-        details: $('#f-notes').value.trim()
+        details: $('#f-notes').value.trim(),
+        marketing_consent: $('#f-consent').checked ? 'כן' : 'לא'
       };
       fetch(WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
         .then(function(res){ setBusy(false); if (res.status === 200) done(); else failed(); }, function(){ setBusy(false); failed(); });
