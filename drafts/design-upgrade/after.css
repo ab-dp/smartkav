@@ -1,0 +1,45 @@
+/* ===== PROPOSAL MOCK (not committed) ===== */
+/* 1 · product UI as precise instruments: opaque surfaces, crisp edge, amber top light, spec frame + label */
+.phone{background:#06070A;box-shadow:0 60px 100px -50px rgba(0,0,0,.95),inset 0 0 0 1px rgba(218,226,240,.16),inset 0 1px 0 rgba(255,176,0,.35)}
+.scr,.lscr{background:#12151B}
+.laptop{background:#06070A;box-shadow:0 60px 100px -50px rgba(0,0,0,.95),inset 0 0 0 1px rgba(218,226,240,.14),inset 0 1px 0 rgba(255,176,0,.35)}
+.ntf,.calm,.rides li{background:#12151B;border-color:rgba(218,226,240,.14)}
+.calm{box-shadow:0 40px 80px -40px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,176,0,.35)}
+.spec{position:absolute;inset:-22px;pointer-events:none;z-index:3;
+  --c:rgba(218,226,240,.38);
+  background:
+   linear-gradient(var(--c),var(--c)) 0 0/14px 1px no-repeat, linear-gradient(var(--c),var(--c)) 0 0/1px 14px no-repeat,
+   linear-gradient(var(--c),var(--c)) 100% 0/14px 1px no-repeat, linear-gradient(var(--c),var(--c)) 100% 0/1px 14px no-repeat,
+   linear-gradient(var(--c),var(--c)) 0 100%/14px 1px no-repeat, linear-gradient(var(--c),var(--c)) 0 100%/1px 14px no-repeat,
+   linear-gradient(var(--c),var(--c)) 100% 100%/14px 1px no-repeat, linear-gradient(var(--c),var(--c)) 100% 100%/1px 14px no-repeat}
+.spec-l{position:absolute;top:calc(100% + 10px);inset-inline-start:0;display:flex;align-items:center;gap:10px;white-space:nowrap;font-size:12px;font-weight:500;letter-spacing:.08em;color:var(--fg-3)}
+.spec-l::before{content:"";width:18px;height:1px;background:var(--signal)}
+.spec-l .num{color:var(--fg-2);letter-spacing:.04em}
+@media (min-width:1024px){.phone{zoom:1.12}.desk{width:min(100%,660px)}}
+/* 2 · one "readout" component: the quiet results read like the hero's instrument row, big and thin */
+.results{display:grid;grid-template-columns:1fr 1fr;width:min(100%,720px);border-top:1px solid var(--line-2);border-bottom:1px solid var(--line)}
+.results li,.results li:last-child{display:block;border:0;padding:28px 0 26px;text-align:center}
+.results li + li{border-inline-start:1px solid var(--line)}
+.results b{display:block;font-weight:200;font-size:clamp(34px,3.6vw,54px);letter-spacing:-.035em;line-height:1;margin-bottom:14px}
+.results b::first-letter{color:inherit}
+.results span{display:block;max-width:20em;margin:0 auto;padding:0 20px;font-size:14px;line-height:1.55;color:var(--fg-2);text-wrap:balance}
+.results li::before{content:attr(data-k);display:block;font-size:11.5px;letter-spacing:.16em;color:var(--signal);margin-bottom:14px}
+@media (max-width:640px){.results li{padding:22px 0}.results b{font-size:30px}.results span{padding:0 10px;font-size:13px}}
+.proof ul{color:var(--fg-2);font-size:13px}
+/* 3 · the form as a ride ticket: opaque, a header row, a perforation before the optional part, firmer labels */
+.form{background:#0F1217;border-color:rgba(218,226,240,.16);box-shadow:0 60px 120px -60px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,176,0,.4);position:relative;gap:18px}
+.tk-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;margin-bottom:2px;border-bottom:1px solid var(--line)}
+.tk-head b{font-weight:400;font-size:18px;letter-spacing:-.01em}
+.tk-head span{display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.12em;color:var(--fg-3)}
+.tk-head span i{width:6px;height:6px;border-radius:50%;background:var(--signal)}
+.field label{color:var(--fg);font-size:14px}
+.field input,.field select,.field textarea{height:50px;background:#090B0F;border-color:rgba(218,226,240,.2)}
+.field textarea{height:auto}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--signal);box-shadow:0 0 0 1px var(--signal)}
+.opt-group{position:relative;padding-top:22px;margin-top:8px}
+.opt-group::before{content:"";position:absolute;top:0;inset-inline:calc(-1 * clamp(22px,3vw,36px));height:1px;background:repeating-linear-gradient(90deg,rgba(218,226,240,.28) 0 6px,transparent 6px 12px)}
+.opt-group::after{content:"";position:absolute;top:-11px;inset-inline:calc(-1 * clamp(22px,3vw,36px) - 12px);height:22px;background:radial-gradient(circle at 11px 11px,var(--ink) 10.5px,transparent 11px) 0 0/100% 22px no-repeat,radial-gradient(circle at calc(100% - 11px) 11px,var(--ink) 10.5px,transparent 11px) 0 0/100% 22px no-repeat;pointer-events:none}
+.opt-group legend{position:absolute;top:-30px;inset-inline-start:0;width:auto;background:none}
+.opt-group legend::after{display:none}
+.opt-group{padding-top:30px}
+.opt-group legend{top:12px;position:static;margin-bottom:6px}
