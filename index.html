@@ -617,14 +617,90 @@ html.a11y-still .done,html.a11y-still .done *,html.a11y-still .done *::after{ani
 /* Accessibility widget (v3 style: the dark panel of the page, same high contrast; behaviour unchanged) */
 /* Kobi on a touch screen: his bubble as a plain button (exactly where and how Botpress draws it); the chat itself loads on
    the first tap, or once the visitor is well into the page and pauses, and then takes the button's place */
-.kobi-fab{position:fixed;left:24px;bottom:24px;z-index:2147482998;width:64px;height:64px;padding:0;border:0;border-radius:50%;overflow:hidden;cursor:pointer;background:#1A1F27;box-shadow:0 0 0 1.5px rgba(255,176,0,.7),0 10px 26px -10px rgba(0,0,0,.7);-webkit-tap-highlight-color:transparent}
-.kobi-fab img{display:block;width:100%;height:100%;object-fit:cover}
+/* Kobi, the robot (drafts/kobi/final): the corner button is his porthole, 64px; the drawing is larger than the circle
+   (antenna, arm, Zzz, sparks leave it for the page), so it overflows the button and takes no clicks of its own */
+.kobi-fab{position:fixed;left:24px;bottom:24px;z-index:2147482998;width:64px;height:64px;padding:0;border:0;border-radius:50%;background:transparent;box-shadow:0 10px 26px -10px rgba(0,0,0,.7);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.kobi-fab .kobi-robot{position:absolute;left:-22.2%;top:-44.4%;width:144.4%;height:161.1%;pointer-events:none}
 .kobi-fab:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
-.kobi-fab.is-loading img{animation:kobiwait 1s ease-in-out infinite alternate}
-@keyframes kobiwait{to{opacity:.45}}
-@media (prefers-reduced-motion:reduce){.kobi-fab.is-loading img{animation:none;opacity:.6}}
-html.a11y-still .kobi-fab.is-loading img{animation:none;opacity:.6}
-html.kobi-ready .kobi-fab{display:none}
+/* his first hello: a small ivory bubble beside him, once a visit */
+.kobi-say{position:fixed;left:100px;bottom:58px;z-index:2147482998;max-width:210px;padding:10px 14px;border-radius:16px 16px 16px 4px;background:var(--fg);color:#14120D;font:400 14px/1.35 var(--sans);box-shadow:0 18px 40px -18px rgba(0,0,0,.8);cursor:pointer;
+  transform-origin:0 100%;opacity:0;transform:scale(.6) translateY(8px);transition:opacity .35s var(--ease-out),transform .5s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+.kobi-say b{font-weight:500}
+.kobi-say.on{opacity:1;transform:none;pointer-events:auto}
+@media (max-width:399px){.kobi-say{left:76px;bottom:40px}}
+html.kobi-open .kobi-say{display:none}
+/* Kobi, the final robot: states on the <svg>, transform/opacity only. */
+.kobi-robot{display:block;overflow:visible}
+.kobi-robot *{transform-box:fill-box;transform-origin:center}
+.kobi-robot .char{transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.kobi-robot .face{transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.kobi-robot .joy,.kobi-robot .love,.kobi-robot .zz,.kobi-robot .zzz,.kobi-robot .sparks,.kobi-robot .hand,.kobi-robot .waves,.kobi-robot .cheek{opacity:0;transition:opacity .3s}
+.kobi-robot .eyes{transition:opacity .2s}
+.kobi-robot .hand{transform-box:view-box;transform-origin:134px 172px;transform:rotate(50deg) scale(.6);transition:opacity .3s,transform .5s cubic-bezier(.34,1.56,.64,1)}
+.kobi-robot .mouth{transition:transform .3s}
+/* idle: breathing, a slow signal, and the blink (sometimes twice) */
+.kobi-robot.is-idle .char{animation:kr-breathe 4s ease-in-out infinite}
+.kobi-robot.is-idle .eyes,.kobi-robot.is-wave .eyes{animation:kr-blink 5.2s infinite}
+.kobi-robot .sig{animation:kr-sig 2.4s ease-in-out infinite}
+/* wave: he leans out over the rim, the hand comes up and waves */
+.kobi-robot .arm-lean{transform-box:view-box;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.kobi-robot.is-wave .char,.kobi-robot.is-wave .arm-lean{transform:translateY(-36px)}
+.kobi-robot.is-wave .hand,.kobi-robot.is-happy .hand{opacity:1;transform:rotate(0deg);animation:kr-wave .9s ease-in-out .35s infinite}
+.kobi-robot.is-wave .cheek,.kobi-robot.is-love .cheek,.kobi-robot.is-happy .cheek{opacity:1}
+/* typing: the signal leaves the antenna in rings, the eyes read, the mouth is busy */
+.kobi-robot.is-type .waves{opacity:1}
+.kobi-robot.is-type .w1{animation:kr-ring 1.2s ease-out infinite}.kobi-robot.is-type .w2{animation:kr-ring 1.2s ease-out .6s infinite}
+.kobi-robot.is-type .sig{animation:kr-fast .3s ease-in-out infinite alternate}
+.kobi-robot.is-type .eyes{animation:kr-read 1.3s ease-in-out infinite}
+.kobi-robot.is-type .mouth{animation:kr-chat .5s ease-in-out infinite alternate}
+.kobi-robot.is-type .char{animation:kr-typebob 1.4s ease-in-out infinite}
+/* love: the cursor is on "תאמו הדגמה" */
+.kobi-robot.is-love .eyes{opacity:0}
+.kobi-robot.is-love .love{opacity:1;animation:kr-beat .7s ease-in-out infinite}
+.kobi-robot.is-love .char{animation:kr-bounce .7s ease-in-out infinite}
+/* asleep: eyes shut, he sinks a little, the Zzz float out of the circle into the page */
+.kobi-robot.is-sleep .eyes{opacity:0}.kobi-robot.is-sleep .zz{opacity:1}
+.kobi-robot.is-sleep .char{transform:translateY(8px) rotate(-5deg);animation:none}
+.kobi-robot.is-sleep .zzz{opacity:1}
+.kobi-robot.is-sleep .z1{animation:kr-z 3s ease-in-out infinite}.kobi-robot.is-sleep .z2{animation:kr-z 3s ease-in-out 1s infinite}.kobi-robot.is-sleep .z3{animation:kr-z 3s ease-in-out 2s infinite}
+.kobi-robot.is-sleep .sig{animation:none;opacity:.25}
+/* waking up: a small, sweet startle */
+.kobi-robot.is-wake .char{animation:kr-startle .9s cubic-bezier(.16,1,.3,1)}
+.kobi-robot.is-wake .eyes{animation:kr-wide .9s cubic-bezier(.16,1,.3,1)}
+/* happy: after the form is sent. A jump, smiling eyes, sparks out of the circle, the hand */
+.kobi-robot.is-happy .eyes{opacity:0}.kobi-robot.is-happy .joy{opacity:1}
+.kobi-robot.is-happy .char,.kobi-robot.is-happy .arm-lean{animation:kr-jump .8s cubic-bezier(.16,1,.3,1) infinite}
+.kobi-robot.is-happy .sparks{opacity:1}
+.kobi-robot.is-happy .sparks line{animation:kr-spark .8s ease-out infinite}
+.kobi-robot .s2{animation-delay:.1s!important}.kobi-robot .s3{animation-delay:.2s!important}.kobi-robot .s4{animation-delay:.15s!important}.kobi-robot .s5{animation-delay:.05s!important}
+/* hop: two bounces with squash and stretch, the antenna leaves the frame */
+.kobi-robot.is-hop .char{animation:kr-hop 1.3s cubic-bezier(.3,.7,.4,1) both}
+.kobi-robot.is-hop .eyes{animation:kr-wide 1.3s ease-out}
+.kobi-robot.is-hop .cheek{opacity:1}
+/* duck: he hides down in the circle (only the antenna shows), then pops back up, wide-eyed */
+.kobi-robot.is-duck .char{animation:kr-duck 2.2s cubic-bezier(.3,.7,.4,1) both}
+.kobi-robot.is-duck .eyes{animation:kr-peekeyes 2.2s ease-in-out both}
+@keyframes kr-hop{0%{transform:none}12%{transform:translateY(4px) scale(1.06,.94)}30%{transform:translateY(-30px) scale(.96,1.05)}46%{transform:translateY(2px) scale(1.07,.93)}62%{transform:translateY(-18px) scale(.98,1.03)}78%{transform:translateY(1px) scale(1.03,.97)}100%{transform:none}}
+@keyframes kr-duck{0%{transform:none}22%,48%{transform:translateY(64px)}62%{transform:translateY(-30px) scale(.97,1.04)}76%{transform:translateY(4px) scale(1.04,.96)}100%{transform:none}}
+@keyframes kr-peekeyes{0%,55%{transform:none}64%{transform:scale(1.3)}74%{transform:scaleY(.08)}82%,100%{transform:none}}
+@keyframes kr-typebob{0%,100%{transform:translateY(-12px)}50%{transform:translateY(-16px)}}
+@keyframes kr-breathe{50%{transform:translateY(-3px)}}
+@keyframes kr-blink{0%,40%,44%,100%{transform:none}42%{transform:scaleY(.08)}86%,90%,94%{transform:none}88%,92%{transform:scaleY(.08)}}
+@keyframes kr-sig{50%{opacity:.35}}
+@keyframes kr-wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-16deg)}}
+@keyframes kr-ring{from{transform:scale(1);opacity:.9}to{transform:scale(2.8);opacity:0}}
+@keyframes kr-fast{to{transform:scale(1.6)}}
+@keyframes kr-read{0%,100%{transform:translateX(-5px)}50%{transform:translateX(5px)}}
+@keyframes kr-chat{to{transform:scaleX(.55) scaleY(1.6)}}
+@keyframes kr-beat{0%,100%{transform:scale(1)}30%{transform:scale(1.25)}60%{transform:scale(.95)}}
+@keyframes kr-bounce{50%{transform:translateY(-8px)}}
+@keyframes kr-z{0%{transform:translate(0,0) scale(.6);opacity:0}25%{opacity:1}100%{transform:translate(14px,-26px) scale(1.1);opacity:0}}
+@keyframes kr-startle{0%{transform:translateY(8px)}30%{transform:translateY(-22px) scale(1.04)}60%{transform:translateY(2px)}100%{transform:none}}
+@keyframes kr-wide{0%{transform:scaleY(.08)}30%{transform:scale(1.3)}100%{transform:none}}
+@keyframes kr-jump{0%,100%{transform:translateY(-4px)}45%{transform:translateY(-30px) scale(.96,1.05)}70%{transform:translateY(0) scale(1.06,.94)}}
+@keyframes kr-spark{0%{transform:scale(.2);opacity:0}30%{opacity:1}100%{transform:scale(1.2) translateY(-4px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.kobi-robot *{animation:none!important;transition:none!important}}
+html.a11y-still .kobi-robot *{animation:none!important;transition:none!important}
 .a11y{position:fixed;right:24px;bottom:24px;z-index:2147483000;font:400 16px/1.4 "IBM Plex Sans Hebrew",Heebo,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;direction:rtl;color:#F3F1EC}
 .a11y-fab{display:grid;place-items:center;width:52px;height:52px;padding:0;border:1.5px solid #FFB000;border-radius:50%;background:#0B0D11;color:#FFB000;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.4);transition:transform 160ms ease}
 .a11y-fab:hover{transform:scale(1.06)}
@@ -655,8 +731,8 @@ html.kobi-ready .kobi-fab{display:none}
 /* phone: while the end of the form (consents, the button, the privacy note) passes the bottom of the screen, the two
    corner buttons step down out of its way (transform/opacity only), and come back as soon as it moves on */
 @media (max-width:767px){
-  .a11y,.kobi-fab,.bpChatContainer{transition:transform .35s var(--ease-out),opacity .35s var(--ease-out)}
-  html.corners-away:not(.kobi-open) .kobi-fab,html.corners-away .a11y:not(:focus-within){transform:translateY(calc(100% + 40px));opacity:0;pointer-events:none}
+  .a11y,.kobi-fab,.kobi-say,.bpChatContainer{transition:transform .35s var(--ease-out),opacity .35s var(--ease-out)}
+  html.corners-away:not(.kobi-open) .kobi-fab,html.corners-away .kobi-say,html.corners-away .a11y:not(:focus-within){transform:translateY(calc(100% + 40px));opacity:0;pointer-events:none}
   html.corners-away:not(.kobi-open) .bpChatContainer{opacity:0;pointer-events:none}
 }
 @media (max-width:399px){.a11y{right:12px;bottom:12px}.a11y-fab{width:44px;height:44px}.a11y-fab svg{width:24px;height:24px}
@@ -1403,6 +1479,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
     function closeDone(){
       if (box.hidden) return;
       box.hidden = true; box.classList.remove('is-in'); document.documentElement.classList.remove('done-open');
+      if (window.__skKobi) window.__skKobi.set('happy', 3200);
       if (window.__skLenis) window.__skLenis.start();
       var t = $('.s-text', success); if (t) t.focus({ preventScroll: true });
     }
@@ -1699,6 +1776,130 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
 })();
 </script>
 
+<script>
+/* Kobi the robot (drafts/kobi/final: robot.js, robot.css). The drawing, then his life on the page. */
+// Kobi, the final robot. One SVG, drawn by us: the head lives in the logo's circle like a porthole, and parts of him
+// leave it for the page: the antenna and its signal, a waving hand, the Zzz when he dozes off.
+// States are classes on the <svg>: is-idle, is-wave, is-type, is-love, is-sleep, is-wake, is-happy.
+// Everything moves with transform/opacity only.
+window.kobiRobot = (function () {
+  var n = 0;
+  var INK = '#0B0D11', P = '#12151B', P2 = '#1A1E26', FG = '#F3F1EC', AM = '#FFB000', HL = 'rgba(218,226,240,.24)';
+  return function () {
+    var id = 'kr' + (++n);
+    return '' +
+'<svg class="kobi-robot is-idle" viewBox="-30 -70 260 290" overflow="visible" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+'<defs><clipPath id="' + id + '"><circle cx="100" cy="100" r="86"/><rect x="-80" y="-120" width="360" height="220"/></clipPath></defs>' +
+// the porthole: ink, the amber rim behind him
+'<circle cx="100" cy="100" r="90" fill="#0E1116"/>' +
+'<circle class="rim" cx="100" cy="100" r="90" fill="none" stroke="' + AM + '" stroke-width="5"/>' +
+'<g clip-path="url(#' + id + ')"><g class="char">' +
+  // body, with the logo on the chest
+  '<rect x="58" y="152" width="84" height="74" rx="28" fill="' + P2 + '" stroke="' + HL + '" stroke-width="2"/>' +
+  '<g class="chest"><line x1="82" y1="178" x2="100" y2="178" stroke="' + AM + '" stroke-width="4" stroke-linecap="round"/><circle cx="108" cy="178" r="6" fill="none" stroke="' + AM + '" stroke-width="3.5"/></g>' +
+  // antenna: the logo again, a line rising into a circle; the signal leaves it as rings
+  '<g class="ant"><line x1="100" y1="58" x2="100" y2="42" stroke="rgba(243,241,236,.55)" stroke-width="3"/>' +
+  '<g class="waves"><circle class="w1" cx="100" cy="33" r="12" fill="none" stroke="' + AM + '" stroke-width="2.5"/><circle class="w2" cx="100" cy="33" r="12" fill="none" stroke="' + AM + '" stroke-width="2.5"/></g>' +
+  '<circle cx="100" cy="33" r="9" fill="' + INK + '" stroke="' + AM + '" stroke-width="3.5"/><circle class="sig" cx="100" cy="33" r="3.5" fill="' + AM + '"/></g>' +
+  // ears and head
+  '<rect x="31" y="92" width="12" height="28" rx="6" fill="' + P2 + '" stroke="' + HL + '" stroke-width="2"/><rect x="157" y="92" width="12" height="28" rx="6" fill="' + P2 + '" stroke="' + HL + '" stroke-width="2"/>' +
+  '<rect x="40" y="58" width="120" height="94" rx="36" fill="' + P + '" stroke="rgba(218,226,240,.32)" stroke-width="2.5"/>' +
+  '<rect x="52" y="72" width="96" height="66" rx="26" fill="#07090C"/>' +
+  // the face moves a little with the gaze, inside the screen: a hint of depth
+  '<g class="face">' +
+    '<g class="eyes"><rect x="73" y="90" width="15" height="25" rx="7.5" fill="' + FG + '"/><rect x="112" y="90" width="15" height="25" rx="7.5" fill="' + FG + '"/></g>' +
+    '<g class="joy"><path d="M72 107 q8.5 -12 17 0 M111 107 q8.5 -12 17 0" fill="none" stroke="' + FG + '" stroke-width="4.5" stroke-linecap="round"/></g>' +
+    '<g class="love"><path d="M80.5 113 l-8.5 -8.2 a4.9 4.9 0 0 1 8.5 -5.4 a4.9 4.9 0 0 1 8.5 5.4z M119.5 113 l-8.5 -8.2 a4.9 4.9 0 0 1 8.5 -5.4 a4.9 4.9 0 0 1 8.5 5.4z" fill="' + AM + '"/></g>' +
+    '<g class="zz"><rect x="72" y="103" width="17" height="4.5" rx="2.25" fill="' + FG + '"/><rect x="111" y="103" width="17" height="4.5" rx="2.25" fill="' + FG + '"/></g>' +
+    '<rect class="cheek" x="62" y="118" width="10" height="5" rx="2.5" fill="rgba(255,176,0,.45)"/><rect class="cheek" x="128" y="118" width="10" height="5" rx="2.5" fill="rgba(255,176,0,.45)"/>' +
+    '<rect class="mouth" x="92" y="124" width="16" height="4" rx="2" fill="' + AM + '"/>' +
+  '</g>' +
+'</g></g>' +
+// the front of the rim: the body stays inside, the head may lean out over the top
+'<path d="M10 100 A90 90 0 0 0 190 100" fill="none" stroke="' + AM + '" stroke-width="5"/>' +
+// out in the page: the waving arm (from his shoulder, out past the rim), the Zzz, the sparks of joy
+'<g class="arm-lean"><g class="hand">' +
+  '<path d="M134 172 Q174 170 192 122" fill="none" stroke="rgba(218,226,240,.4)" stroke-width="17" stroke-linecap="round"/>' +
+  '<path d="M134 172 Q174 170 192 122" fill="none" stroke="#2A303B" stroke-width="13" stroke-linecap="round"/>' +
+  '<circle cx="194" cy="110" r="15" fill="' + FG + '"/><rect x="185" y="120" width="18" height="5" rx="2.5" fill="' + AM + '"/></g></g>' +
+'<g class="zzz" fill="' + FG + '" font-family="IBM Plex Sans Hebrew,system-ui,sans-serif" font-weight="500">' +
+  '<text class="z1" x="150" y="40" font-size="20">z</text><text class="z2" x="166" y="18" font-size="26">z</text><text class="z3" x="186" y="-8" font-size="32">Z</text></g>' +
+'<g class="sparks" stroke="' + AM + '" stroke-width="4" stroke-linecap="round">' +
+  '<line class="s1" x1="20" y1="10" x2="8" y2="-2"/><line class="s2" x1="100" y1="-28" x2="100" y2="-44"/><line class="s3" x1="180" y1="10" x2="192" y2="-2"/>' +
+  '<line class="s4" x1="0" y1="80" x2="-16" y2="78"/><line class="s5" x1="200" y1="80" x2="216" y2="78"/></g>' +
+'</svg>';
+  };
+})();
+// His life on the page. No frame loop: the gaze is set on pointer moves (once a frame at most), on scroll and by a slow
+// glance timer, and the face eases there by CSS. Nothing runs under reduced motion or "stop animations".
+window.__skKobiLife = function(btn){
+  var svg = btn.querySelector('svg'); if (!svg) return;
+  var face = svg.querySelector('.face'), state = 'idle', root = document.documentElement, sleepT, back, rect = null, raf = 0, px = 0, py = 0, lastMove = 0;
+  var rm = matchMedia('(prefers-reduced-motion: reduce)');
+  function still(){ return rm.matches || root.classList.contains('a11y-still'); }
+  function set(s, ms){
+    clearTimeout(back); svg.classList.remove('is-' + state); state = s; svg.classList.add('is-' + s);
+    if (ms) back = setTimeout(function(){ if (state === s) set('idle'); }, ms);
+  }
+  var api = window.__skKobi = { set: set, get state(){ return state; } };
+  function look(dx, dy){ face.style.transform = 'translate(' + (dx * 6).toFixed(1) + 'px,' + (dy * 5).toFixed(1) + 'px)'; }
+  function measure(){ var r = btn.getBoundingClientRect(); rect = { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }
+  addEventListener('resize', function(){ rect = null; }, { passive: true });
+  function wake(){
+    clearTimeout(sleepT);
+    if (state === 'sleep') set('wake', 900);
+    sleepT = setTimeout(function(){ if (state === 'idle' && !root.classList.contains('kobi-open')) set('sleep'); }, 20000);
+  }
+  addEventListener('pointermove', function(e){
+    if (e.pointerType !== 'mouse') return;
+    px = e.clientX; py = e.clientY; lastMove = Date.now(); wake();
+    if (raf || still() || state === 'sleep') return;
+    raf = requestAnimationFrame(function(){ raf = 0; if (!rect) measure();
+      var dx = px - rect.x, dy = py - rect.y, m = Math.hypot(dx, dy) || 1, k = Math.min(1, m / 320); look(dx / m * k, dy / m * k); });
+  }, { passive: true });
+  var sy = scrollY, st;
+  addEventListener('scroll', function(){
+    wake(); if (still() || state === 'sleep') return;
+    var v = scrollY - sy; sy = scrollY; if (Math.abs(v) > 1) look(0, v > 0 ? .9 : -.9);
+    clearTimeout(st); st = setTimeout(function(){ look(0, 0); }, 400);
+  }, { passive: true });
+  // a glance now and then, when nobody points (on a phone, always)
+  setInterval(function(){
+    if (document.hidden || still() || state === 'sleep' || Date.now() - lastMove < 3000) return;
+    var a = Math.random() * Math.PI * 2; look(Math.cos(a) * .8, Math.sin(a) * .5);
+  }, 1900);
+  wake();
+  // hearts for the call to action (a mouse on any "תאמו הדגמה")
+  document.querySelectorAll('a.btn[href="#contact"], .nav-cta, .th-go, #lead-form .submit').forEach(function(el){
+    el.addEventListener('pointerenter', function(e){ if (e.pointerType === 'mouse' && (state === 'idle' || state === 'wake')) set('love'); });
+    el.addEventListener('pointerleave', function(){ if (state === 'love') set('idle'); });
+  });
+  // a small show in the corner now and then, while the chat is closed: a wave, a double hop, or hide-and-peek
+  (function next(){
+    setTimeout(function(){
+      if (state === 'idle' && !document.hidden && !still() && !root.classList.contains('kobi-open')){
+        var r = Math.random(); if (r < .4) set('wave', 2600); else if (r < .7) set('hop', 1300); else set('duck', 2200);
+      }
+      next();
+    }, 20000 + Math.random() * 10000);
+  })();
+  // hello, once a visit: two seconds after the page is up and quiet, he leans out, waves, and says so
+  var said = false; try { said = sessionStorage.getItem('sk-kobi-hi') === '1'; } catch (e) {}
+  if (!said){
+    var say = document.createElement('div'); say.className = 'kobi-say'; say.setAttribute('role', 'status');
+    say.innerHTML = '<b>היי, אני קובי</b><br>יש שאלה? אני כאן.'; document.body.appendChild(say);
+    say.addEventListener('click', function(){ say.classList.remove('on'); btn.click(); });
+    var hi = function(){
+      try { sessionStorage.setItem('sk-kobi-hi', '1'); } catch (e) {}
+      if (!still()) set('wave', 3000);
+      say.classList.add('on'); setTimeout(function(){ say.classList.remove('on'); }, 5000);
+    };
+    var arm = function(){ setTimeout(function(){ if ('requestIdleCallback' in window) requestIdleCallback(hi, { timeout: 1500 }); else hi(); }, 2200); };
+    if (document.readyState === 'complete') arm(); else addEventListener('load', arm);
+  }
+};
+</script>
+
 <!-- Botpress webchat: Kobi, the SmartKav assistant -->
 <script>
 /* Kobi loads after the page is up and idle, so the chat never competes with the first screen (it was the largest
@@ -1728,11 +1929,16 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
   // or once the visitor is past the middle of the page and pauses.
   var b = document.createElement('button');
   b.type = 'button'; b.className = 'kobi-fab'; b.setAttribute('aria-label', 'צ׳אט עם קובי, העוזר של SmartKav');
-  b.innerHTML = '<img src="https://files.bpcontent.cloud/2026/10/21/22/20261021221904-F6C2TMHF.png" alt="" width="64" height="64" decoding="async">';
-  // the tap is passed on to the real bubble as soon as it appears (see the style script below), which opens the chat
+  b.innerHTML = window.kobiRobot ? window.kobiRobot() : '';
+  // Kobi's own button stays for good (Botpress's bubble is hidden, see the style script below): before the chat has
+  // loaded, a tap loads it and is passed on as it appears; after that, every tap opens or closes the chat
   b.addEventListener('pointerenter', function(e){ if (e.pointerType === 'mouse') go(); });
-  b.addEventListener('click', function(){ window.__skKobiWant = true; b.classList.add('is-loading'); b.setAttribute('aria-busy', 'true'); go(); });
+  b.addEventListener('click', function(){
+    if (window.__skKobiToggle && window.__skKobiToggle()) return;
+    window.__skKobiWant = true; b.setAttribute('aria-busy', 'true'); if (window.__skKobi) window.__skKobi.set('type'); go();
+  });
   document.body.appendChild(b);
+  if (window.__skKobiLife) window.__skKobiLife(b);
   // the page height is read when the layout changes, not on every scroll event (that forced a layout per event)
   var max = 0, mro = null;
   function remax(){ max = document.documentElement.scrollHeight - innerHeight; }
@@ -1755,6 +1961,8 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
     + '@media (min-width:768px){.bpFABWebchat{left:24px!important;right:auto!important;transform-origin:0 100%!important}}'
     /* the greeting card sat over the copy column and the buttons on every screen; the bubble stays, the card does not */
     + '.bpFABMessagePreview{display:none!important}'
+    /* Kobi the robot is the bubble now: Botpress's own stays in place, unseen and untouchable, and is clicked from code */
+    + '.bpFab{opacity:0!important;pointer-events:none!important}'
     /* Kobi in the site's night: Botpress draws everything from --bpGray-* and --bpPrimary-*, so the gray ramp is turned
        over to the page's ink (dark surfaces, ivory type) and the primary ramp becomes the amber. On top: a see-through
        window with a soft blur and a hairline edge, a transparent header on an amber hairline, amber starter pills from the
@@ -1807,12 +2015,27 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
     var host = document.querySelector('.bpChatContainer #fab-root'), sr = host && host.shadowRoot;
     if(sr){
       var s = document.createElement('style'); s.setAttribute('data-sk', ''); s.textContent = css; sr.appendChild(s);
-      document.documentElement.classList.add('kobi-ready'); // the real bubble is up: the touch stand-in steps aside
+      document.documentElement.classList.add('kobi-ready'); // the chat is up; the robot keeps his place and opens it
+      var fabEl = function(){ return sr.querySelector('.bpFabImage') || sr.querySelector('.bpFab'); };
+      window.__skKobiToggle = function(){
+        var bp = window.botpress; if (bp && typeof bp.toggle === 'function'){ bp.toggle(); return true; }
+        var f = fabEl(); if (f){ f.click(); return true; } return false;
+      };
+      var robotBtn = document.querySelector('.kobi-fab'); if (robotBtn) robotBtn.removeAttribute('aria-busy');
       // the visitor tapped the stand-in: the same tap on the real bubble opens the chat (within a second, as it renders)
       if (window.__skKobiWant){ window.__skKobiWant = false; (function tap(n){ var im = sr.querySelector('.bpFabImage'); if (im) im.click(); else if (n < 60) requestAnimationFrame(function(){ tap(n + 1); }); })(0); }
       // while Kobi is open the page knows it (html.kobi-open): on a phone the chat fills the screen, so the
       // accessibility button steps aside until it closes
-      var mark = function(){ document.documentElement.classList.toggle('kobi-open', !!sr.querySelector('.bpOpen')); };
+      var wasOpen = false;
+      var mark = function(){
+        var open = !!sr.querySelector('.bpOpen'); document.documentElement.classList.toggle('kobi-open', open);
+        var k = window.__skKobi; if (!k) return;
+        if (open && !wasOpen) k.set('wave', 1600);
+        wasOpen = open;
+        // while the bot is writing (Botpress shows its typing dots), the robot types too
+        var typing = open && !!sr.querySelector('.bpTypingIndicatorLoader');
+        if (typing && k.state !== 'type') k.set('type'); else if (!typing && k.state === 'type') k.set('idle');
+      };
       new MutationObserver(mark).observe(sr, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'] }); mark();
       return;
     }
