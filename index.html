@@ -465,6 +465,10 @@ html.a11y-still .reel-frame{transition:none}
 .consent input:checked + .box{background:var(--signal);border-color:var(--signal)}
 .consent input:checked + .box::after{opacity:1}
 .consent input:focus-visible + .box{outline:2px solid var(--signal);outline-offset:3px}
+.consent input[aria-invalid="true"] + .box{border-color:var(--alert)}
+.consent .opt{color:var(--fg-3)}
+.consents{display:grid;gap:12px;margin-top:2px}
+.consents .err{margin:-4px 0 0;padding-inline-start:32px}
 .hp{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .submit{width:100%}
 /* the optional fields: one quiet group under the three required ones, smaller labels and fainter boxes (16px text stays, so iOS does not zoom) */
@@ -869,8 +873,13 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
         </fieldset>
         <div class="hp" aria-hidden="true"><label for="f-website">website</label><input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
         <div class="fail" role="alert" hidden></div>
-        <!-- marketing consent (the anti-spam law): optional, unchecked by default, never a condition of the demo; sent as marketing_consent: כן / לא -->
-        <label class="consent" for="f-consent"><input id="f-consent" name="marketing_consent" type="checkbox"><span class="box" aria-hidden="true"></span><span>אני מאשר/ת קבלת עדכונים ותוכן שיווקי מ-<bdi dir="ltr" translate="no">SmartKav</bdi> בדוא״ל ובנייד. אפשר להסיר בכל עת.</span></label>
+        <!-- two consents: 1) being contacted about the demo, required (validated like the fields above, not sent: every lead has it);
+             2) marketing (the anti-spam law): optional, unchecked by default, never a condition; sent as marketing_consent: כן / לא -->
+        <div class="consents">
+          <label class="consent" for="f-contact"><input id="f-contact" name="contact_consent" type="checkbox" aria-required="true" aria-describedby="err-contact"><span class="box" aria-hidden="true"></span><span>אני מאשר/ת שנציג מטעם <bdi dir="ltr" translate="no">SmartKav</bdi> יחזור אליי בטלפון או בדוא״ל לתיאום הדגמה.</span></label>
+          <p class="err" id="err-contact" aria-live="polite"></p>
+          <label class="consent" for="f-consent"><input id="f-consent" name="marketing_consent" type="checkbox"><span class="box" aria-hidden="true"></span><span>אני מאשר/ת קבלת עדכונים ותוכן שיווקי מ-<bdi dir="ltr" translate="no">SmartKav</bdi> בדוא״ל ובנייד. אפשר להסיר בכל עת. <span class="opt">(רשות)</span></span></label>
+        </div>
         <button class="btn submit" type="submit" aria-describedby="privacy-note"><span class="btn-label">תאמו הדגמה</span></button>
         <p class="legal" id="privacy-note">מסירת הפרטים אינה חובה לפי חוק, אך בלעדיהם לא נוכל לחזור אליכם. הפרטים נמסרים ל-<bdi dir="ltr" translate="no">SmartKav</bdi> (אלון ברגר) ונשמרים בשירותי ענן של צד שלישי. הם ישמשו ליצירת קשר ולתיאום ההדגמה, ולשליחת עדכונים ותוכן שיווקי רק אם סימנתם זאת. אפשר לבקש בכל עת לעיין בפרטים, לתקן אותם או למחוק אותם.</p>
       </form>
@@ -1315,16 +1324,18 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
   /* ---------- form → Make: the live page's rules, messages and payload, unchanged ---------- */
   (function(){
     var form = $('#lead-form'), success = $('#success'), fail = $('.fail', form), btn = $('.submit', form), btnLabel = $('.btn-label', btn), btnText = btnLabel.textContent;
-    // the only required fields: name, phone, email (organisation, size and notes are optional and never block sending)
-    var F = { full_name: $('#f-name'), phone: $('#f-phone'), email: $('#f-email') };
+    // the only required fields: name, phone, email and the contact consent (organisation, size, notes and marketing never block sending)
+    var F = { full_name: $('#f-name'), phone: $('#f-phone'), email: $('#f-email'), contact: $('#f-contact') };
     var MSG = {
       empty: 'יש למלא שדה זה.',
       phone: 'מספר הטלפון אינו תקין. יש להזין 10 ספרות, לדוגמה 0501234567.',
-      email: 'כתובת הדוא״ל אינה תקינה.'
+      email: 'כתובת הדוא״ל אינה תקינה.',
+      contact: 'יש לאשר שנחזור אליכם, אחרת לא נוכל לתאם את ההדגמה.'
     };
     var touched = {}, tried = false, busy = false;
     function digits(v){ return v.replace(/[\s\-]/g, ''); }
     function check(k){
+      if (k === 'contact') return F.contact.checked ? '' : MSG.contact;
       var v = F[k].value.trim();
       if (!v) return MSG.empty;
       if (k === 'phone' && !/^\d{10}$/.test(digits(v))) return MSG.phone;
@@ -1341,6 +1352,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
       var el = F[k];
       el.addEventListener('blur', function(){ touched[k] = true; paint(k); });
       el.addEventListener('input', function(){ if (touched[k] || tried) paint(k); });
+      el.addEventListener('change', function(){ if (el.type === 'checkbox' && (touched[k] || tried)) paint(k); });
     });
     // the success moment (#done): thanks by first name, then back to the page's short note
     var box = $('#done');
