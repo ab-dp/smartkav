@@ -62,7 +62,7 @@ h1{font-weight:200;font-size:clamp(28px,3vw,42px);margin:0 0 6px;letter-spacing:
 @media (prefers-reduced-motion:reduce){.say,.win,.kav{transition:none}}
 </style></head><body>
 <h1>קובי · <b>הגרסה הסופית</b></h1>
-<p class="sub">הרובוט, גדול יותר בחיים. העיניים עוקבות אחרי העכבר, הוא מצמץ (לפעמים פעמיים), ויוצא מהעיגול אל הדף: יד שמנפנפת מעל השפה, אותות מהאנטנה, בועת דיבור ו-Zzz כשהוא נרדם. <b>נסו בחלון שמימין:</b> לרחף על "תאמו הדגמה", ללחוץ עליו, או לא לגעת בכלום 12 שניות.</p>
+<p class="sub">הרובוט, גדול יותר בחיים. העיניים עוקבות אחרי העכבר, הוא מצמץ (לפעמים פעמיים), ויוצא מהעיגול אל הדף: יד שמנפנפת מעל השפה, אותות מהאנטנה, בועת דיבור ו-Zzz כשהוא נרדם. <b>נסו בחלון שמימין:</b> לרחף על "תאמו הדגמה", ללחוץ עליו, או לא לגעת בכלום 16 שניות. כל כמה שניות הוא עושה הצגה קטנה בפינה: מנפנף, קופץ פעמיים או מתחבא ומציץ.</p>
 <div class="grid">
   <div class="card">
     <h2>המצבים</h2><p class="hint">מתחלפים לבד. אפשר ללחוץ על מצב כדי לעצור עליו.</p>
@@ -88,6 +88,7 @@ h1{font-weight:200;font-size:clamp(28px,3vw,42px);margin:0 0 6px;letter-spacing:
 </div>
 <div class="card how"><h2>איך הוא חי בדף</h2><ol>
 <li><b>נכנס לדף.</b> שתי שניות אחרי שהדף עלה ונח, קובי מציץ מעל שפת העיגול, מנפנף, ובועה קטנה אומרת "היי, אני קובי. יש שאלה? אני כאן." היא נעלמת אחרי חמש שניות. פעם אחת בביקור, לא בכל עמוד.</li>
+<li><b>מושך תשומת לב, בעדינות.</b> כשהצ׳אט סגור, כל 20–30 שניות הוא עושה הצגה קטנה בפינה: מנפנף, קופץ פעמיים, או מתחבא בתוך העיגול (רק האנטנה בחוץ) ומציץ בחזרה. לא כשהוא ישן, לא כשהצ׳אט פתוח, ולא בהפחתת תנועה.</li>
 <li><b>מסתכל עליך.</b> העיניים והפה זזים בתוך המסך אחרי העכבר. כשגוללים, הוא מסתכל לכיוון הגלילה. בנייד, בלי עכבר, הוא מעיף מבטים לבד.</li>
 <li><b>מתאהב בכפתור.</b> כשהעכבר על "תאמו הדגמה", העיניים הופכות ללבבות ענבר שפועמים. הקריאה לפעולה מקבלת חיזוק קטן ומתוק.</li>
 <li><b>כותב.</b> כשהצ׳אט פתוח והוא עונה, האנטנה (הלוגו) משדרת טבעות החוצה מהעיגול, העיניים קוראות והפה עסוק. כשהחלון נפתח, הקו הענברי של הלוגו נמתח מהעיגול אל החלון.</li>
@@ -99,11 +100,11 @@ h1{font-weight:200;font-size:clamp(28px,3vw,42px);margin:0 0 6px;letter-spacing:
 (function(){
   var stage=document.getElementById('stage'); stage.innerHTML=kobiRobot();
   var big=stage.querySelector('svg'), lifeBig=kobiLife(big,{manual:true});
-  var S=[['idle','נח'],['wave','מנפנף'],['type','כותב'],['love','מתאהב'],['sleep','ישן'],['happy','שמח']];
+  var S=[['idle','נח'],['wave','מנפנף'],['hop','קופץ'],['duck','מתחבא'],['type','כותב'],['love','מתאהב'],['sleep','ישן'],['happy','שמח']];
   var chips=document.getElementById('chips'), auto=document.getElementById('auto'), i=0, timer;
   S.forEach(function(s){ var b=document.createElement('button'); b.type='button'; b.textContent=s[1]; b.dataset.s=s[0];
     b.onclick=function(){ clearInterval(timer); auto.textContent='לחצו שוב על "נח" כדי לחזור'; show(s[0]); }; chips.appendChild(b); });
-  function show(s){ lifeBig.set(s); chips.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.dataset.s===s); }); }
+  function show(s){ lifeBig.set('idle'); void big.getBoundingClientRect(); lifeBig.set(s); chips.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.dataset.s===s); }); }
   var force=new URLSearchParams(location.search).get('state');
   if(force){ show(force); } else { show('idle'); timer=setInterval(function(){ show(S[++i%S.length][0]); },3000); }
   var sizes=document.getElementById('sizes');
@@ -113,7 +114,7 @@ h1{font-weight:200;font-size:clamp(28px,3vw,42px);margin:0 0 6px;letter-spacing:
   // the page
   var page=document.getElementById('page'), fab=document.getElementById('fab'), say=document.getElementById('say'), msgs=document.getElementById('msgs');
   fab.innerHTML=kobiRobot(); document.getElementById('mini').innerHTML=kobiRobot();
-  var k=kobiLife(fab.querySelector('svg'),{sleepAfter:12000}), mini=kobiLife(document.getElementById('mini').querySelector('svg'),{sleepAfter:1e9});
+  var k=kobiLife(fab.querySelector('svg'),{sleepAfter:16000,attract:6000}), mini=kobiLife(document.getElementById('mini').querySelector('svg'),{sleepAfter:1e9});
   if(!force){ setTimeout(function(){ k.set('wave',3200); say.classList.add('on'); setTimeout(function(){ say.classList.remove('on'); },5000); },1800); }
   else if(force==='wave'){ k.set('wave'); say.classList.add('on'); }
   var cta=document.getElementById('cta');

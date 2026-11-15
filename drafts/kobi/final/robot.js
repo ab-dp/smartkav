@@ -18,9 +18,9 @@ window.kobiRobot = (function () {
   '<rect x="58" y="152" width="84" height="74" rx="28" fill="' + P2 + '" stroke="' + HL + '" stroke-width="2"/>' +
   '<g class="chest"><line x1="82" y1="178" x2="100" y2="178" stroke="' + AM + '" stroke-width="4" stroke-linecap="round"/><circle cx="108" cy="178" r="6" fill="none" stroke="' + AM + '" stroke-width="3.5"/></g>' +
   // antenna: the logo again, a line rising into a circle; the signal leaves it as rings
-  '<g class="ant"><line x1="100" y1="58" x2="100" y2="30" stroke="rgba(243,241,236,.55)" stroke-width="3"/>' +
-  '<g class="waves"><circle class="w1" cx="100" cy="21" r="12" fill="none" stroke="' + AM + '" stroke-width="2.5"/><circle class="w2" cx="100" cy="21" r="12" fill="none" stroke="' + AM + '" stroke-width="2.5"/></g>' +
-  '<circle cx="100" cy="21" r="9" fill="' + INK + '" stroke="' + AM + '" stroke-width="3.5"/><circle class="sig" cx="100" cy="21" r="3.5" fill="' + AM + '"/></g>' +
+  '<g class="ant"><line x1="100" y1="58" x2="100" y2="42" stroke="rgba(243,241,236,.55)" stroke-width="3"/>' +
+  '<g class="waves"><circle class="w1" cx="100" cy="33" r="12" fill="none" stroke="' + AM + '" stroke-width="2.5"/><circle class="w2" cx="100" cy="33" r="12" fill="none" stroke="' + AM + '" stroke-width="2.5"/></g>' +
+  '<circle cx="100" cy="33" r="9" fill="' + INK + '" stroke="' + AM + '" stroke-width="3.5"/><circle class="sig" cx="100" cy="33" r="3.5" fill="' + AM + '"/></g>' +
   // ears and head
   '<rect x="31" y="92" width="12" height="28" rx="6" fill="' + P2 + '" stroke="' + HL + '" stroke-width="2"/><rect x="157" y="92" width="12" height="28" rx="6" fill="' + P2 + '" stroke="' + HL + '" stroke-width="2"/>' +
   '<rect x="40" y="58" width="120" height="94" rx="36" fill="' + P + '" stroke="rgba(218,226,240,.32)" stroke-width="2.5"/>' +
@@ -37,9 +37,11 @@ window.kobiRobot = (function () {
 '</g></g>' +
 // the front of the rim: the body stays inside, the head may lean out over the top
 '<path d="M10 100 A90 90 0 0 0 190 100" fill="none" stroke="' + AM + '" stroke-width="5"/>' +
-// out in the page: the waving hand over the rim, the Zzz, the sparks of joy
-'<g class="hand"><path d="M150 176 Q186 158 194 112" fill="none" stroke="rgba(218,226,240,.45)" stroke-width="16" stroke-linecap="round"/><path d="M150 176 Q186 158 194 112" fill="none" stroke="#2A303B" stroke-width="12" stroke-linecap="round"/>' +
-  '<circle cx="195" cy="102" r="15" fill="' + FG + '"/><rect x="186" y="113" width="18" height="5" rx="2.5" fill="' + AM + '"/></g>' +
+// out in the page: the waving arm (from his shoulder, out past the rim), the Zzz, the sparks of joy
+'<g class="arm-lean"><g class="hand">' +
+  '<path d="M134 172 Q174 170 192 122" fill="none" stroke="rgba(218,226,240,.4)" stroke-width="17" stroke-linecap="round"/>' +
+  '<path d="M134 172 Q174 170 192 122" fill="none" stroke="#2A303B" stroke-width="13" stroke-linecap="round"/>' +
+  '<circle cx="194" cy="110" r="15" fill="' + FG + '"/><rect x="185" y="120" width="18" height="5" rx="2.5" fill="' + AM + '"/></g></g>' +
 '<g class="zzz" fill="' + FG + '" font-family="IBM Plex Sans Hebrew,system-ui,sans-serif" font-weight="500">' +
   '<text class="z1" x="150" y="40" font-size="20">z</text><text class="z2" x="166" y="18" font-size="26">z</text><text class="z3" x="186" y="-8" font-size="32">Z</text></g>' +
 '<g class="sparks" stroke="' + AM + '" stroke-width="4" stroke-linecap="round">' +
@@ -67,6 +69,16 @@ window.kobiLife = function (svg, opts) {
   addEventListener('pointermove', function (e) { px = e.clientX; py = e.clientY; wake(); }, { passive: true });
   addEventListener('scroll', function () { sv = scrollY - sy; sy = scrollY; wake(); }, { passive: true });
   wake();
+  // now and then, while nobody talks to him, a small show in the corner: a wave, a double hop, or hide-and-peek
+  if (opts.attract) (function next() {
+    setTimeout(function () {
+      if (state === 'idle' && !document.hidden && !still) {
+        var r = Math.random(), s = r < .4 ? ['wave', 2600] : r < .7 ? ['hop', 1300] : ['duck', 2200];
+        set(s[0], s[1]);
+      }
+      next();
+    }, opts.attract * (.75 + Math.random() * .5));
+  })();
   // the gaze: toward the pointer, or the way the page scrolls; on its own when nobody moves
   function aim() {
     if (!document.hidden && state !== 'sleep') {

@@ -8,14 +8,15 @@
 .kobi-robot .face{transition:transform .35s cubic-bezier(.16,1,.3,1)}
 .kobi-robot .joy,.kobi-robot .love,.kobi-robot .zz,.kobi-robot .zzz,.kobi-robot .sparks,.kobi-robot .hand,.kobi-robot .waves,.kobi-robot .cheek{opacity:0;transition:opacity .3s}
 .kobi-robot .eyes{transition:opacity .2s}
-.kobi-robot .hand{transform-box:view-box;transform-origin:150px 176px;transform:rotate(40deg);transition:opacity .3s,transform .5s cubic-bezier(.34,1.56,.64,1)}
+.kobi-robot .hand{transform-box:view-box;transform-origin:134px 172px;transform:rotate(50deg) scale(.6);transition:opacity .3s,transform .5s cubic-bezier(.34,1.56,.64,1)}
 .kobi-robot .mouth{transition:transform .3s}
 /* idle: breathing, a slow signal, and the blink (sometimes twice) */
 .kobi-robot.is-idle .char{animation:kr-breathe 4s ease-in-out infinite}
 .kobi-robot.is-idle .eyes,.kobi-robot.is-wave .eyes{animation:kr-blink 5.2s infinite}
 .kobi-robot .sig{animation:kr-sig 2.4s ease-in-out infinite}
 /* wave: he leans out over the rim, the hand comes up and waves */
-.kobi-robot.is-wave .char{transform:translateY(-36px)}
+.kobi-robot .arm-lean{transform-box:view-box;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.kobi-robot.is-wave .char,.kobi-robot.is-wave .arm-lean{transform:translateY(-36px)}
 .kobi-robot.is-wave .hand,.kobi-robot.is-happy .hand{opacity:1;transform:rotate(0deg);animation:kr-wave .9s ease-in-out .35s infinite}
 .kobi-robot.is-wave .cheek,.kobi-robot.is-love .cheek,.kobi-robot.is-happy .cheek{opacity:1}
 /* typing: the signal leaves the antenna in rings, the eyes read, the mouth is busy */
@@ -24,7 +25,7 @@
 .kobi-robot.is-type .sig{animation:kr-fast .3s ease-in-out infinite alternate}
 .kobi-robot.is-type .eyes{animation:kr-read 1.3s ease-in-out infinite}
 .kobi-robot.is-type .mouth{animation:kr-chat .5s ease-in-out infinite alternate}
-.kobi-robot.is-type .char{animation:kr-breathe 1.6s ease-in-out infinite}
+.kobi-robot.is-type .char{animation:kr-typebob 1.4s ease-in-out infinite}
 /* love: the cursor is on "תאמו הדגמה" */
 .kobi-robot.is-love .eyes{opacity:0}
 .kobi-robot.is-love .love{opacity:1;animation:kr-beat .7s ease-in-out infinite}
@@ -40,10 +41,21 @@
 .kobi-robot.is-wake .eyes{animation:kr-wide .9s cubic-bezier(.16,1,.3,1)}
 /* happy: after the form is sent. A jump, smiling eyes, sparks out of the circle, the hand */
 .kobi-robot.is-happy .eyes{opacity:0}.kobi-robot.is-happy .joy{opacity:1}
-.kobi-robot.is-happy .char{animation:kr-jump .8s cubic-bezier(.16,1,.3,1) infinite}
+.kobi-robot.is-happy .char,.kobi-robot.is-happy .arm-lean{animation:kr-jump .8s cubic-bezier(.16,1,.3,1) infinite}
 .kobi-robot.is-happy .sparks{opacity:1}
 .kobi-robot.is-happy .sparks line{animation:kr-spark .8s ease-out infinite}
 .kobi-robot .s2{animation-delay:.1s!important}.kobi-robot .s3{animation-delay:.2s!important}.kobi-robot .s4{animation-delay:.15s!important}.kobi-robot .s5{animation-delay:.05s!important}
+/* hop: two bounces with squash and stretch, the antenna leaves the frame */
+.kobi-robot.is-hop .char{animation:kr-hop 1.3s cubic-bezier(.3,.7,.4,1) both}
+.kobi-robot.is-hop .eyes{animation:kr-wide 1.3s ease-out}
+.kobi-robot.is-hop .cheek{opacity:1}
+/* duck: he hides down in the circle (only the antenna shows), then pops back up, wide-eyed */
+.kobi-robot.is-duck .char{animation:kr-duck 2.2s cubic-bezier(.3,.7,.4,1) both}
+.kobi-robot.is-duck .eyes{animation:kr-peekeyes 2.2s ease-in-out both}
+@keyframes kr-hop{0%{transform:none}12%{transform:translateY(4px) scale(1.06,.94)}30%{transform:translateY(-30px) scale(.96,1.05)}46%{transform:translateY(2px) scale(1.07,.93)}62%{transform:translateY(-18px) scale(.98,1.03)}78%{transform:translateY(1px) scale(1.03,.97)}100%{transform:none}}
+@keyframes kr-duck{0%{transform:none}22%,48%{transform:translateY(64px)}62%{transform:translateY(-30px) scale(.97,1.04)}76%{transform:translateY(4px) scale(1.04,.96)}100%{transform:none}}
+@keyframes kr-peekeyes{0%,55%{transform:none}64%{transform:scale(1.3)}74%{transform:scaleY(.08)}82%,100%{transform:none}}
+@keyframes kr-typebob{0%,100%{transform:translateY(-12px)}50%{transform:translateY(-16px)}}
 @keyframes kr-breathe{50%{transform:translateY(-3px)}}
 @keyframes kr-blink{0%,40%,44%,100%{transform:none}42%{transform:scaleY(.08)}86%,90%,94%{transform:none}88%,92%{transform:scaleY(.08)}}
 @keyframes kr-sig{50%{opacity:.35}}
@@ -121,7 +133,7 @@ h1{font-weight:200;font-size:clamp(28px,3vw,42px);margin:0 0 6px;letter-spacing:
 @media (prefers-reduced-motion:reduce){.say,.win,.kav{transition:none}}
 </style></head><body>
 <h1>קובי · <b>הגרסה הסופית</b></h1>
-<p class="sub">הרובוט, גדול יותר בחיים. העיניים עוקבות אחרי העכבר, הוא מצמץ (לפעמים פעמיים), ויוצא מהעיגול אל הדף: יד שמנפנפת מעל השפה, אותות מהאנטנה, בועת דיבור ו-Zzz כשהוא נרדם. <b>נסו בחלון שמימין:</b> לרחף על "תאמו הדגמה", ללחוץ עליו, או לא לגעת בכלום 12 שניות.</p>
+<p class="sub">הרובוט, גדול יותר בחיים. העיניים עוקבות אחרי העכבר, הוא מצמץ (לפעמים פעמיים), ויוצא מהעיגול אל הדף: יד שמנפנפת מעל השפה, אותות מהאנטנה, בועת דיבור ו-Zzz כשהוא נרדם. <b>נסו בחלון שמימין:</b> לרחף על "תאמו הדגמה", ללחוץ עליו, או לא לגעת בכלום 16 שניות. כל כמה שניות הוא עושה הצגה קטנה בפינה: מנפנף, קופץ פעמיים או מתחבא ומציץ.</p>
 <div class="grid">
   <div class="card">
     <h2>המצבים</h2><p class="hint">מתחלפים לבד. אפשר ללחוץ על מצב כדי לעצור עליו.</p>
@@ -147,6 +159,7 @@ h1{font-weight:200;font-size:clamp(28px,3vw,42px);margin:0 0 6px;letter-spacing:
 </div>
 <div class="card how"><h2>איך הוא חי בדף</h2><ol>
 <li><b>נכנס לדף.</b> שתי שניות אחרי שהדף עלה ונח, קובי מציץ מעל שפת העיגול, מנפנף, ובועה קטנה אומרת "היי, אני קובי. יש שאלה? אני כאן." היא נעלמת אחרי חמש שניות. פעם אחת בביקור, לא בכל עמוד.</li>
+<li><b>מושך תשומת לב, בעדינות.</b> כשהצ׳אט סגור, כל 20–30 שניות הוא עושה הצגה קטנה בפינה: מנפנף, קופץ פעמיים, או מתחבא בתוך העיגול (רק האנטנה בחוץ) ומציץ בחזרה. לא כשהוא ישן, לא כשהצ׳אט פתוח, ולא בהפחתת תנועה.</li>
 <li><b>מסתכל עליך.</b> העיניים והפה זזים בתוך המסך אחרי העכבר. כשגוללים, הוא מסתכל לכיוון הגלילה. בנייד, בלי עכבר, הוא מעיף מבטים לבד.</li>
 <li><b>מתאהב בכפתור.</b> כשהעכבר על "תאמו הדגמה", העיניים הופכות ללבבות ענבר שפועמים. הקריאה לפעולה מקבלת חיזוק קטן ומתוק.</li>
 <li><b>כותב.</b> כשהצ׳אט פתוח והוא עונה, האנטנה (הלוגו) משדרת טבעות החוצה מהעיגול, העיניים קוראות והפה עסוק. כשהחלון נפתח, הקו הענברי של הלוגו נמתח מהעיגול אל החלון.</li>
@@ -173,9 +186,9 @@ window.kobiRobot = (function () {
   '<rect x="58" y="152" width="84" height="74" rx="28" fill="' + P2 + '" stroke="' + HL + '" stroke-width="2"/>' +
   '<g class="chest"><line x1="82" y1="178" x2="100" y2="178" stroke="' + AM + '" stroke-width="4" stroke-linecap="round"/><circle cx="108" cy="178" r="6" fill="none" stroke="' + AM + '" stroke-width="3.5"/></g>' +
   // antenna: the logo again, a line rising into a circle; the signal leaves it as rings
-  '<g class="ant"><line x1="100" y1="58" x2="100" y2="30" stroke="rgba(243,241,236,.55)" stroke-width="3"/>' +
-  '<g class="waves"><circle class="w1" cx="100" cy="21" r="12" fill="none" stroke="' + AM + '" stroke-width="2.5"/><circle class="w2" cx="100" cy="21" r="12" fill="none" stroke="' + AM + '" stroke-width="2.5"/></g>' +
-  '<circle cx="100" cy="21" r="9" fill="' + INK + '" stroke="' + AM + '" stroke-width="3.5"/><circle class="sig" cx="100" cy="21" r="3.5" fill="' + AM + '"/></g>' +
+  '<g class="ant"><line x1="100" y1="58" x2="100" y2="42" stroke="rgba(243,241,236,.55)" stroke-width="3"/>' +
+  '<g class="waves"><circle class="w1" cx="100" cy="33" r="12" fill="none" stroke="' + AM + '" stroke-width="2.5"/><circle class="w2" cx="100" cy="33" r="12" fill="none" stroke="' + AM + '" stroke-width="2.5"/></g>' +
+  '<circle cx="100" cy="33" r="9" fill="' + INK + '" stroke="' + AM + '" stroke-width="3.5"/><circle class="sig" cx="100" cy="33" r="3.5" fill="' + AM + '"/></g>' +
   // ears and head
   '<rect x="31" y="92" width="12" height="28" rx="6" fill="' + P2 + '" stroke="' + HL + '" stroke-width="2"/><rect x="157" y="92" width="12" height="28" rx="6" fill="' + P2 + '" stroke="' + HL + '" stroke-width="2"/>' +
   '<rect x="40" y="58" width="120" height="94" rx="36" fill="' + P + '" stroke="rgba(218,226,240,.32)" stroke-width="2.5"/>' +
@@ -192,9 +205,11 @@ window.kobiRobot = (function () {
 '</g></g>' +
 // the front of the rim: the body stays inside, the head may lean out over the top
 '<path d="M10 100 A90 90 0 0 0 190 100" fill="none" stroke="' + AM + '" stroke-width="5"/>' +
-// out in the page: the waving hand over the rim, the Zzz, the sparks of joy
-'<g class="hand"><path d="M150 176 Q186 158 194 112" fill="none" stroke="rgba(218,226,240,.45)" stroke-width="16" stroke-linecap="round"/><path d="M150 176 Q186 158 194 112" fill="none" stroke="#2A303B" stroke-width="12" stroke-linecap="round"/>' +
-  '<circle cx="195" cy="102" r="15" fill="' + FG + '"/><rect x="186" y="113" width="18" height="5" rx="2.5" fill="' + AM + '"/></g>' +
+// out in the page: the waving arm (from his shoulder, out past the rim), the Zzz, the sparks of joy
+'<g class="arm-lean"><g class="hand">' +
+  '<path d="M134 172 Q174 170 192 122" fill="none" stroke="rgba(218,226,240,.4)" stroke-width="17" stroke-linecap="round"/>' +
+  '<path d="M134 172 Q174 170 192 122" fill="none" stroke="#2A303B" stroke-width="13" stroke-linecap="round"/>' +
+  '<circle cx="194" cy="110" r="15" fill="' + FG + '"/><rect x="185" y="120" width="18" height="5" rx="2.5" fill="' + AM + '"/></g></g>' +
 '<g class="zzz" fill="' + FG + '" font-family="IBM Plex Sans Hebrew,system-ui,sans-serif" font-weight="500">' +
   '<text class="z1" x="150" y="40" font-size="20">z</text><text class="z2" x="166" y="18" font-size="26">z</text><text class="z3" x="186" y="-8" font-size="32">Z</text></g>' +
 '<g class="sparks" stroke="' + AM + '" stroke-width="4" stroke-linecap="round">' +
@@ -222,6 +237,16 @@ window.kobiLife = function (svg, opts) {
   addEventListener('pointermove', function (e) { px = e.clientX; py = e.clientY; wake(); }, { passive: true });
   addEventListener('scroll', function () { sv = scrollY - sy; sy = scrollY; wake(); }, { passive: true });
   wake();
+  // now and then, while nobody talks to him, a small show in the corner: a wave, a double hop, or hide-and-peek
+  if (opts.attract) (function next() {
+    setTimeout(function () {
+      if (state === 'idle' && !document.hidden && !still) {
+        var r = Math.random(), s = r < .4 ? ['wave', 2600] : r < .7 ? ['hop', 1300] : ['duck', 2200];
+        set(s[0], s[1]);
+      }
+      next();
+    }, opts.attract * (.75 + Math.random() * .5));
+  })();
   // the gaze: toward the pointer, or the way the page scrolls; on its own when nobody moves
   function aim() {
     if (!document.hidden && state !== 'sleep') {
@@ -241,11 +266,11 @@ window.kobiLife = function (svg, opts) {
 (function(){
   var stage=document.getElementById('stage'); stage.innerHTML=kobiRobot();
   var big=stage.querySelector('svg'), lifeBig=kobiLife(big,{manual:true});
-  var S=[['idle','נח'],['wave','מנפנף'],['type','כותב'],['love','מתאהב'],['sleep','ישן'],['happy','שמח']];
+  var S=[['idle','נח'],['wave','מנפנף'],['hop','קופץ'],['duck','מתחבא'],['type','כותב'],['love','מתאהב'],['sleep','ישן'],['happy','שמח']];
   var chips=document.getElementById('chips'), auto=document.getElementById('auto'), i=0, timer;
   S.forEach(function(s){ var b=document.createElement('button'); b.type='button'; b.textContent=s[1]; b.dataset.s=s[0];
     b.onclick=function(){ clearInterval(timer); auto.textContent='לחצו שוב על "נח" כדי לחזור'; show(s[0]); }; chips.appendChild(b); });
-  function show(s){ lifeBig.set(s); chips.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.dataset.s===s); }); }
+  function show(s){ lifeBig.set('idle'); void big.getBoundingClientRect(); lifeBig.set(s); chips.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.dataset.s===s); }); }
   var force=new URLSearchParams(location.search).get('state');
   if(force){ show(force); } else { show('idle'); timer=setInterval(function(){ show(S[++i%S.length][0]); },3000); }
   var sizes=document.getElementById('sizes');
@@ -255,7 +280,7 @@ window.kobiLife = function (svg, opts) {
   // the page
   var page=document.getElementById('page'), fab=document.getElementById('fab'), say=document.getElementById('say'), msgs=document.getElementById('msgs');
   fab.innerHTML=kobiRobot(); document.getElementById('mini').innerHTML=kobiRobot();
-  var k=kobiLife(fab.querySelector('svg'),{sleepAfter:12000}), mini=kobiLife(document.getElementById('mini').querySelector('svg'),{sleepAfter:1e9});
+  var k=kobiLife(fab.querySelector('svg'),{sleepAfter:16000,attract:6000}), mini=kobiLife(document.getElementById('mini').querySelector('svg'),{sleepAfter:1e9});
   if(!force){ setTimeout(function(){ k.set('wave',3200); say.classList.add('on'); setTimeout(function(){ say.classList.remove('on'); },5000); },1800); }
   else if(force==='wave'){ k.set('wave'); say.classList.add('on'); }
   var cta=document.getElementById('cta');
