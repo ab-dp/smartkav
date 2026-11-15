@@ -1,0 +1,135 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>קובי · הגרסה הסופית</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="robot.css">
+<style>
+:root{--ink:#0B0D11;--fg:#F3F1EC;--fg2:rgba(243,241,236,.86);--fg3:rgba(243,241,236,.62);--line:rgba(218,226,240,.14);--am:#FFB000;--e:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box}
+body{margin:0;background:#07090C;color:var(--fg);font:300 15px/1.55 "IBM Plex Sans Hebrew",system-ui,sans-serif;padding:32px clamp(16px,3vw,40px) 60px}
+h1{font-weight:200;font-size:clamp(28px,3vw,42px);margin:0 0 6px;letter-spacing:-.02em}h1 b{font-weight:500}
+.sub{color:var(--fg3);margin:0 0 26px;max-width:62em}
+.grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px}
+@media (max-width:980px){.grid{grid-template-columns:1fr}}
+.card{background:#0F1217;border:1px solid rgba(218,226,240,.16);border-radius:20px;padding:22px;box-shadow:inset 0 1px 0 rgba(255,176,0,.35);min-width:0}
+.card h2{font-weight:400;font-size:17px;margin:0 0 4px}.card p.hint{margin:0 0 8px;color:var(--fg3);font-size:13px}
+.stage{display:grid;place-items:center;height:400px}
+.stage .kobi-robot{width:300px;height:335px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chips button{font:400 14px/1 "IBM Plex Sans Hebrew",sans-serif;color:var(--fg);background:rgba(243,241,236,.06);border:1px solid var(--line);border-radius:999px;padding:10px 14px;cursor:pointer;transition:background .3s,color .3s,border-color .3s}
+.chips button:hover{border-color:rgba(255,176,0,.5)}
+.chips button.on{background:var(--am);color:#14120D;border-color:var(--am)}
+.auto{display:block;text-align:center;margin-top:10px;font-size:12px;color:var(--fg3)}
+/* the page, in miniature: the film, the hero, the corner */
+.page{position:relative;height:620px;border-radius:16px;overflow:hidden;background:#0B0D11 url(../../../film/poster.jpg) 30% 50%/cover}
+.page::before{content:"";position:absolute;inset:0;background:linear-gradient(270deg,rgba(11,13,17,.85),rgba(11,13,17,.45))}
+.hero{position:absolute;right:28px;top:96px;left:28px;z-index:1}
+.stamp{font-size:12px;letter-spacing:.14em;color:var(--am);display:flex;align-items:center;gap:10px}.stamp::before{content:"";width:24px;height:1px;background:var(--am)}
+.hero h3{font-weight:200;font-size:clamp(30px,3.4vw,46px);line-height:1.05;margin:16px 0 14px;letter-spacing:-.03em}.hero h3 b{font-weight:500}
+.hero p{color:var(--fg2);max-width:26em;margin:0 0 22px}
+.cta{display:inline-flex;align-items:center;height:48px;padding:0 24px;border-radius:999px;background:var(--am);color:#14120D;font:500 15px/1 "IBM Plex Sans Hebrew",sans-serif;border:0;cursor:pointer;transition:background .3s,transform .25s}
+.cta:hover{background:#FFC23D;transform:translateY(-1px)}
+.a11y{position:absolute;right:20px;bottom:20px;width:52px;height:52px;border-radius:50%;box-shadow:inset 0 0 0 1.5px rgba(255,176,0,.8);display:grid;place-items:center;color:var(--am);z-index:2}
+.a11y svg{width:24px;height:24px}
+/* Kobi in the corner: a 64px circle; the drawing is larger than the circle, so he can leave it */
+.fab{position:absolute;left:10px;bottom:12px;width:92px;height:103px;z-index:3;pointer-events:none}
+.fab .kobi-robot{width:100%;height:100%;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55))}
+.fab-hit{position:absolute;left:24px;bottom:22px;width:66px;height:66px;border-radius:50%;border:0;background:transparent;cursor:pointer;z-index:4}
+.fab-hit:focus-visible{outline:2px solid var(--am);outline-offset:3px}
+/* his words leave the circle too: a small bubble beside him */
+.say{position:absolute;left:104px;bottom:58px;z-index:3;background:var(--fg);color:#14120D;border-radius:16px 16px 16px 4px;padding:10px 14px;font:400 14px/1.35 "IBM Plex Sans Hebrew",sans-serif;box-shadow:0 18px 40px -18px rgba(0,0,0,.8);transform-origin:0 100%;opacity:0;transform:scale(.6) translateY(8px);transition:opacity .35s var(--e),transform .5s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:220px}
+.say.on{opacity:1;transform:none}
+.say b{font-weight:500}
+/* the chat opens from him: the logo's line leaves the circle and runs up into the window */
+.kav{position:absolute;left:56px;bottom:104px;width:2px;height:34px;background:var(--am);transform-origin:50% 100%;transform:scaleY(0);transition:transform .45s var(--e);z-index:2}
+.win{position:absolute;left:18px;bottom:138px;width:min(340px,calc(100% - 36px));border-radius:16px;background:rgba(11,13,17,.96);border:1px solid var(--line);overflow:hidden;z-index:2;transform-origin:15% 100%;opacity:0;transform:translateY(12px) scale(.96);transition:opacity .35s var(--e),transform .5s var(--e);pointer-events:none}
+.page.open .kav{transform:none}.page.open .win{opacity:1;transform:none;pointer-events:auto}
+.ch{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--am)}
+.ch .mini{width:42px;height:47px;flex:none;margin:-4px 0 -6px}.ch .mini .kobi-robot{width:100%;height:100%}
+.ch b{display:block;font-weight:500;font-size:14.5px}.ch small{color:var(--fg3);font-size:12px}
+.msgs{padding:12px;display:grid;gap:8px;font-size:13.5px;font-weight:400;min-height:150px;align-content:start}
+.bub{background:#1A1E26;border-radius:14px 14px 14px 4px;padding:8px 11px;max-width:88%;animation:pop .4s var(--e)}
+.out{justify-self:end;background:var(--am);color:#14120D;border-radius:14px 14px 4px 14px;padding:8px 11px;animation:pop .4s var(--e)}
+.dots{display:inline-flex;gap:4px;padding:10px 12px;background:#1A1E26;border-radius:14px 14px 14px 4px;width:max-content}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--fg3);animation:dot 1s infinite}.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes dot{50%{transform:translateY(-3px);opacity:.5}}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}}
+.how{margin-top:24px}
+.how ol{margin:8px 0 0;padding-inline-start:20px;display:grid;gap:9px;color:var(--fg2);max-width:72em}
+.how li b{color:var(--fg);font-weight:500}
+.how .note{color:var(--fg3);font-size:13px;margin-top:14px}
+.sizes{display:flex;align-items:flex-end;gap:22px;margin-top:18px;padding:14px;border-radius:14px;background:#0B0D11;border:1px solid var(--line);justify-content:center}
+.sizes span{display:block;text-align:center;font-size:11px;color:var(--fg3);margin-top:4px}
+@media (prefers-reduced-motion:reduce){.say,.win,.kav{transition:none}}
+</style></head><body>
+<h1>קובי · <b>הגרסה הסופית</b></h1>
+<p class="sub">הרובוט, גדול יותר בחיים. העיניים עוקבות אחרי העכבר, הוא מצמץ (לפעמים פעמיים), ויוצא מהעיגול אל הדף: יד שמנפנפת מעל השפה, אותות מהאנטנה, בועת דיבור ו-Zzz כשהוא נרדם. <b>נסו בחלון שמימין:</b> לרחף על "תאמו הדגמה", ללחוץ עליו, או לא לגעת בכלום 12 שניות.</p>
+<div class="grid">
+  <div class="card">
+    <h2>המצבים</h2><p class="hint">מתחלפים לבד. אפשר ללחוץ על מצב כדי לעצור עליו.</p>
+    <div class="stage" id="stage"></div>
+    <div class="chips" id="chips"></div>
+    <span class="auto" id="auto">מתחלף אוטומטית</span>
+    <div class="sizes" id="sizes"></div>
+  </div>
+  <div class="card">
+    <h2>בדף</h2><p class="hint">הפינה כמו באתר: 64px, מעל הסרט, לצד כפתור הנגישות.</p>
+    <div class="page" id="page">
+      <div class="hero"><span class="stamp">חמישי · 22:40</span><h3>כל ההסעות של השבוע.<br><b>בחמש דקות.</b></h3>
+        <p>העובדים נרשמים באפליקציה, המערכת מקבצת לנסיעות משותפות, ואתם מאשרים ושולחים לחברת ההסעות שלכם.</p>
+        <button class="cta" id="cta" type="button">תאמו הדגמה</button></div>
+      <span class="kav"></span>
+      <div class="win" id="win"><div class="ch"><span class="mini" id="mini"></span><span><b>קובי</b><small>העוזר הדיגיטלי של SmartKav</small></span></div><div class="msgs" id="msgs"></div></div>
+      <div class="say" id="say"><b>היי, אני קובי</b><br>יש שאלה? אני כאן.</div>
+      <div class="fab" id="fab"></div>
+      <button class="fab-hit" id="hit" type="button" aria-label="צ׳אט עם קובי"></button>
+      <span class="a11y" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="4.5" r="1.6" fill="currentColor"/><path d="M5 8.5l7 1.5 7-1.5M12 10v5M9 21l3-6 3 6"/></svg></span>
+    </div>
+  </div>
+</div>
+<div class="card how"><h2>איך הוא חי בדף</h2><ol>
+<li><b>נכנס לדף.</b> שתי שניות אחרי שהדף עלה ונח, קובי מציץ מעל שפת העיגול, מנפנף, ובועה קטנה אומרת "היי, אני קובי. יש שאלה? אני כאן." היא נעלמת אחרי חמש שניות. פעם אחת בביקור, לא בכל עמוד.</li>
+<li><b>מסתכל עליך.</b> העיניים והפה זזים בתוך המסך אחרי העכבר. כשגוללים, הוא מסתכל לכיוון הגלילה. בנייד, בלי עכבר, הוא מעיף מבטים לבד.</li>
+<li><b>מתאהב בכפתור.</b> כשהעכבר על "תאמו הדגמה", העיניים הופכות ללבבות ענבר שפועמים. הקריאה לפעולה מקבלת חיזוק קטן ומתוק.</li>
+<li><b>כותב.</b> כשהצ׳אט פתוח והוא עונה, האנטנה (הלוגו) משדרת טבעות החוצה מהעיגול, העיניים קוראות והפה עסוק. כשהחלון נפתח, הקו הענברי של הלוגו נמתח מהעיגול אל החלון.</li>
+<li><b>נרדם במשמרת הלילה.</b> אחרי 20 שניות בלי תזוזה הוא נרדם, ו-Zzz יוצאים מהעיגול. תזוזה של העכבר או גלילה מעירות אותו בבהלה קטנה וחמודה.</li>
+<li><b>שמח.</b> אחרי שליחת הטופס הוא קופץ, מחייך, מנפנף וניצוצות יוצאים מהעיגול, יחד עם כרטיס התודה.</li></ol>
+<p class="note">הכול ב-SVG שאנחנו מציירים (כ-5KB), ואנימציה רק של transform/opacity. כשהגולש מבקש להפחית תנועה או לוחץ על "עצירת אנימציות", קובי עומד בשקט. כשהלשונית מוסתרת, המעקב נעצר.</p></div>
+<script src="robot.js"></script>
+<script>
+(function(){
+  var stage=document.getElementById('stage'); stage.innerHTML=kobiRobot();
+  var big=stage.querySelector('svg'), lifeBig=kobiLife(big,{manual:true});
+  var S=[['idle','נח'],['wave','מנפנף'],['type','כותב'],['love','מתאהב'],['sleep','ישן'],['happy','שמח']];
+  var chips=document.getElementById('chips'), auto=document.getElementById('auto'), i=0, timer;
+  S.forEach(function(s){ var b=document.createElement('button'); b.type='button'; b.textContent=s[1]; b.dataset.s=s[0];
+    b.onclick=function(){ clearInterval(timer); auto.textContent='לחצו שוב על "נח" כדי לחזור'; show(s[0]); }; chips.appendChild(b); });
+  function show(s){ lifeBig.set(s); chips.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.dataset.s===s); }); }
+  var force=new URLSearchParams(location.search).get('state');
+  if(force){ show(force); } else { show('idle'); timer=setInterval(function(){ show(S[++i%S.length][0]); },3000); }
+  var sizes=document.getElementById('sizes');
+  [[64,'64'],[52,'52'],[36,'36']].forEach(function(z){ var w=Math.round(z[0]*260/180), h=Math.round(w*290/260);
+    var d=document.createElement('div'); d.innerHTML=kobiRobot().replace('<svg','<svg width="'+w+'" height="'+h+'"')+'<span>'+z[1]+'</span>'; sizes.appendChild(d); kobiLife(d.querySelector('svg'),{sleepAfter:1e9}); });
+
+  // the page
+  var page=document.getElementById('page'), fab=document.getElementById('fab'), say=document.getElementById('say'), msgs=document.getElementById('msgs');
+  fab.innerHTML=kobiRobot(); document.getElementById('mini').innerHTML=kobiRobot();
+  var k=kobiLife(fab.querySelector('svg'),{sleepAfter:12000}), mini=kobiLife(document.getElementById('mini').querySelector('svg'),{sleepAfter:1e9});
+  if(!force){ setTimeout(function(){ k.set('wave',3200); say.classList.add('on'); setTimeout(function(){ say.classList.remove('on'); },5000); },1800); }
+  else if(force==='wave'){ k.set('wave'); say.classList.add('on'); }
+  var cta=document.getElementById('cta');
+  cta.addEventListener('pointerenter',function(){ if(k.state!=='type') k.set('love'); });
+  cta.addEventListener('pointerleave',function(){ if(k.state==='love') k.set('idle'); });
+  cta.addEventListener('click',function(){ k.set('happy',2600); });
+  var open=false;
+  document.getElementById('hit').addEventListener('click',function(){
+    open=!open; page.classList.toggle('open',open); say.classList.remove('on');
+    if(!open){ k.set('idle'); return; }
+    msgs.innerHTML='<div class="bub">היי, אני קובי. אפשר לשאול אותי על ההרשמה, הקיבוץ או ההטמעה.</div>';
+    setTimeout(function(){ msgs.insertAdjacentHTML('beforeend','<div class="out">צריך להחליף חברת הסעות?</div><span class="dots"><i></i><i></i><i></i></span>'); k.set('type'); mini.set('type');
+      setTimeout(function(){ var d=msgs.querySelector('.dots'); if(d) d.remove(); msgs.insertAdjacentHTML('beforeend','<div class="bub">לא. SmartKav מכינה את ההזמנה, ואתם שולחים אותה לחברה הקיימת.</div>'); k.set('happy',1400); mini.set('idle'); },2200);
+    },700);
+  });
+  if(force==='open'){ document.getElementById('hit').click(); }
+})();
+</script>
+</body></html>
