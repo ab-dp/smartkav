@@ -1887,7 +1887,7 @@ window.__skKobiLife = function(btn){
   var said = false; try { said = sessionStorage.getItem('sk-kobi-hi') === '1'; } catch (e) {}
   if (!said){
     var say = document.createElement('div'); say.className = 'kobi-say'; say.setAttribute('role', 'status');
-    say.innerHTML = '<b>היי, אני קובי</b><br>יש שאלה? אני כאן.'; document.body.appendChild(say);
+    say.innerHTML = '<b>היי, אני מוני</b><br>יש שאלה? אני כאן.'; document.body.appendChild(say);
     say.addEventListener('click', function(){ say.classList.remove('on'); btn.click(); });
     var hi = function(){
       try { sessionStorage.setItem('sk-kobi-hi', '1'); } catch (e) {}
@@ -1928,7 +1928,7 @@ window.__skKobiLife = function(btn){
   // On every device a stand-in bubble takes his place; the chat loads when the pointer reaches it or on its first tap,
   // or once the visitor is past the middle of the page and pauses.
   var b = document.createElement('button');
-  b.type = 'button'; b.className = 'kobi-fab'; b.setAttribute('aria-label', 'צ׳אט עם קובי, העוזר של SmartKav');
+  b.type = 'button'; b.className = 'kobi-fab'; b.setAttribute('aria-label', 'צ׳אט עם מוני, העוזר הדיגיטלי של SmartKav');
   b.innerHTML = window.kobiRobot ? window.kobiRobot() : '';
   // Kobi's own button stays for good (Botpress's bubble is hidden, see the style script below): before the chat has
   // loaded, a tap loads it and is passed on as it appears; after that, every tap opens or closes the chat
