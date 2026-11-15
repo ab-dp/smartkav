@@ -78,7 +78,7 @@ b,strong{font-weight:500}
 [hidden]{display:none!important}
 
 /* type: one family (IBM Plex Sans Hebrew), precise and engineered. Headings are light with one medium step for emphasis;
-   the peaks of the night (the opening line, the two centred moments, the calculator's answer) go thinner and larger,
+   the peaks of the night (the opening line, the two centred moments) go thinner and larger,
    and the big clocks are hairline numerals, so the contrast of weight carries them, not a second face. */
 h1,h2,h3{margin:0;text-wrap:balance;font-weight:300}
 h1{font-size:clamp(40px,5.4vw,82px);line-height:1;letter-spacing:-.03em;font-weight:200}
@@ -86,15 +86,15 @@ h2{font-size:clamp(30px,3.1vw,46px);line-height:1.12;letter-spacing:-.02em}
 h1 b,h2 b,h2 em{font-weight:500;font-style:normal;color:var(--fg)}
 h1 .dot{font-style:normal;color:var(--signal)} /* the one touch of amber in the headline, like the colon of the 22:45 clock */
 .moment h2,.coda{font-weight:200;letter-spacing:-.025em}
-.calc-big,.qclock{font-weight:100;letter-spacing:-.04em}
-.qclock b,.calc-big b{font-weight:100}
+.qclock{font-weight:100;letter-spacing:-.04em}
+.qclock b{font-weight:100}
 h1 b,.moment h2 b{font-weight:500}
 /* the centred moments: the copy leaves its column and stands in the middle of the picture */
 .moment{text-align:center;margin-inline:auto}
 .moment h2{font-size:clamp(42px,5.6vw,84px);line-height:1.04}
 /* small text over the film reads at 400; the display sizes stay light */
 .ntf,.scr,.lscr,.reqs li,.rides small,.chips li,.calm p,.push p,.toast{font-weight:400} /* the app mockups read like the app */
-.proof ul,.facts,.results span,.quote figcaption,.story,.sig small,.wa,.legal,.foot,.faq p,.nclock,.unread,.calc-note,.calc-sub,.calc-money,.field label{font-weight:500} /* small text over the film, firm and clear */
+.proof ul,.facts,.results span,.quote figcaption,.story,.sig small,.wa,.legal,.foot,.faq p,.nclock,.unread,.field label{font-weight:500} /* small text over the film, firm and clear */
 .lede{font-size:17px;line-height:1.7;font-weight:400;color:var(--fg-2);max-width:31em;margin:20px 0 0}
 .stamp{display:flex;align-items:center;gap:12px;margin:0 0 22px;font-size:13px;font-weight:400;letter-spacing:.14em;color:var(--signal)}
 .stamp::before{content:"";flex:none;width:28px;height:1px;background:var(--signal);opacity:.9} /* the logo's line, leading into the hour */
@@ -219,6 +219,82 @@ h1 span{display:block}
 .proof li + li{padding-inline-start:40px;border-inline-start:1px solid var(--line)}
 .proof b{display:block;font-weight:200;font-size:30px;letter-spacing:-.03em;color:var(--fg);margin-bottom:6px;font-variant-numeric:tabular-nums}
 
+/* ===== 1b. the ad: a portrait reel beside the headline (desktop), a "watch" pill (phone), and the theater =====
+   The reel is a tall frame in the picture, captions burned into the video, so it reads silently; its caption sits
+   under it, never over the film's own subtitles. One click opens the theater with sound. */
+.reel,.watch,.watch-link{font:inherit;color:inherit;cursor:pointer}
+.reel{display:none;flex:none;margin:0;padding:0;border:0;background:none;text-align:start;-webkit-tap-highlight-color:transparent}
+.reel-frame{position:relative;display:block;height:clamp(380px,58vh,560px);aspect-ratio:9/16;border-radius:22px;overflow:hidden;background:var(--ink-2) url(video/ad-poster.jpg) center/cover;
+  box-shadow:inset 0 0 0 1px var(--line-2),0 50px 90px -40px rgba(0,0,0,.9);transition:transform .7s var(--ease-out),box-shadow .7s var(--ease-out)}
+.reel-frame::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(218,226,240,.14),inset 0 1px 0 rgba(255,176,0,.35);pointer-events:none}
+.reel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.reel-play{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(11,13,17,.5);box-shadow:inset 0 0 0 1px rgba(255,176,0,.7);color:#FFD27A;opacity:0;transform:scale(.9);transition:opacity .45s var(--ease-out),transform .45s var(--ease-out),background .45s var(--ease-out)}
+.reel-play svg{width:26px;height:26px;fill:currentColor;margin-left:3px}
+.reel:hover .reel-frame,.reel:focus-visible .reel-frame{transform:translateY(-4px);box-shadow:inset 0 0 0 1px rgba(255,176,0,.45),0 60px 100px -40px rgba(0,0,0,.95)}
+.reel:hover .reel-play,.reel:focus-visible .reel-play,.reel.is-still .reel-play{opacity:1;transform:none}
+.reel:hover .reel-play{background:var(--signal);color:#14120D}
+.reel:focus-visible{outline:none}.reel:focus-visible .reel-frame{outline:2px solid var(--signal);outline-offset:4px}
+.reel-cap{display:flex;flex-direction:column;gap:3px;margin-top:16px;font-size:13px;line-height:1.35;color:var(--fg-3);font-weight:500}
+.reel-cap b{font-weight:400;font-size:15px;color:var(--fg)}
+.reel-cap span{color:#FFD27A;letter-spacing:.02em}
+@media (min-width:1024px) and (min-height:700px){
+  .hero-in{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;column-gap:clamp(40px,6vw,110px)}
+  .reel{display:block;align-self:end}
+  .hero .watch{display:none}
+}
+@media (max-width:1023px),(max-height:699px){.hero .how{display:none}}
+/* the phone's way in: the ghost pill with a small round still of the ad, ringed in amber */
+.watch{gap:12px;padding-inline:7px 22px}
+.wthumb{position:relative;flex:none;width:38px;height:38px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 1.5px rgba(255,176,0,.75)}
+.wthumb img{width:100%;height:100%;object-fit:cover}
+.wthumb::after{content:"";position:absolute;inset:0;background:rgba(11,13,17,.35) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M16 12 9.5 16V8z' fill='%23FFD27A'/%3E%3C/svg%3E") center/18px no-repeat}
+.wdur{margin-inline-start:auto;font-size:13px;color:var(--fg-3);letter-spacing:.04em}
+.watch:hover .wdur{color:inherit}
+.watch-link{display:flex;width:max-content;align-items:center;gap:10px;margin:22px 0 0;padding:0 0 4px;border:0;background-color:transparent;font-size:15px}
+.watch-link svg{width:20px;height:20px;fill:none;stroke:var(--signal);stroke-width:1.5}
+.watch-link svg path{fill:var(--signal);stroke:none}
+.watch-link + .wa{margin-top:14px}
+
+.theater{position:fixed;inset:0;z-index:2147483002;display:grid;place-items:center;padding:clamp(16px,3vh,32px);background:rgba(7,9,12,.94);overscroll-behavior:contain}
+.theater[hidden]{display:none}
+html.th-open{overflow:hidden}
+.th-stage{position:relative;height:min(100%,980px);max-width:100%;aspect-ratio:9/16;border-radius:20px;overflow:hidden;background:#000;box-shadow:inset 0 0 0 1px var(--line-2),0 60px 120px -40px rgba(0,0,0,.9)}
+.th-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.th-hit{position:absolute;inset:0;border:0;padding:0;background:transparent;cursor:pointer;display:grid;place-items:center}
+.th-big{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:rgba(11,13,17,.55);box-shadow:inset 0 0 0 1px rgba(255,176,0,.7);color:#FFD27A;opacity:0;transform:scale(.92);transition:opacity .35s var(--ease-out),transform .35s var(--ease-out)}
+.th-big svg{width:30px;height:30px;fill:currentColor;margin-left:4px}
+.theater.is-paused .th-big{opacity:1;transform:none}
+.th-ctrl{position:absolute;top:14px;left:14px;display:flex;gap:8px;z-index:2}
+.th-btn{width:44px;height:44px;border:0;border-radius:50%;display:grid;place-items:center;background:rgba(11,13,17,.58);color:var(--fg);box-shadow:inset 0 0 0 1px var(--line-2);cursor:pointer;transition:background .3s,color .3s}
+.th-btn:hover{background:rgba(243,241,236,.94);color:#14120D}
+.th-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.th-btn .spk{fill:currentColor;stroke:none}
+.th-mute .off,.th-mute[aria-pressed="true"] .on{display:none}.th-mute[aria-pressed="true"] .off{display:inline}
+.th-btn:focus-visible,.th-hit:focus-visible,.th-bar:focus-visible{outline:2px solid var(--signal);outline-offset:-4px}
+/* progress: the logo's line, filling right to left with the dot at its head */
+.th-bar{position:absolute;inset:auto 0 0;height:18px;z-index:2;cursor:pointer;touch-action:none}
+.th-bar::before{content:"";position:absolute;inset:auto 0 0;height:3px;background:rgba(243,241,236,.16)}
+.th-bar i{position:absolute;right:0;bottom:0;height:3px;width:100%;background:var(--signal);transform-origin:100% 50%;transform:scaleX(var(--p,0))}
+.th-end{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;background:var(--ink)}
+.th-end .brandmark{width:64px;height:28px;margin-bottom:22px}.th-end .brandmark line{stroke:var(--signal);stroke-width:5;stroke-linecap:round}.th-end .brandmark circle{fill:none;stroke:var(--signal);stroke-width:5}
+.th-end[hidden]{display:none}
+.th-end-h{margin:0 0 18px;font-size:clamp(28px,4.4vh,40px);line-height:1.12;font-weight:200;letter-spacing:-.02em}
+.th-end-h b{font-weight:500}
+.th-end .btn{width:min(100%,300px)}
+.theater.is-in{animation:donefade .3s ease-out both}
+.theater.is-in .th-stage{animation:thpop .55s var(--ease-out) both}
+@keyframes thpop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+@media (max-width:640px),(max-height:520px){
+  .theater{padding:0;background:#000}
+  .th-stage{height:100%;width:100%;max-height:none;aspect-ratio:auto;border-radius:0;box-shadow:none}
+  .th-stage video{object-fit:contain}
+  .th-ctrl{top:max(12px,env(safe-area-inset-top));left:12px}
+  .th-bar{bottom:env(safe-area-inset-bottom)}
+}
+@media (prefers-reduced-motion:reduce){.theater.is-in,.theater.is-in .th-stage{animation:none}}
+html.a11y-still .reel-frame{transition:none}
+
 /* ===== 2. flood: small, quiet notifications ===== */
 .flood-stage{position:relative;height:520px;width:min(100%,360px)}
 .ntf{position:absolute;left:0;top:0;width:min(320px,92%);background:var(--panel);border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px;display:grid;grid-template-columns:30px 1fr;gap:1px 10px;font-size:12.5px;line-height:1.4;box-shadow:0 14px 30px -18px rgba(0,0,0,.6)}
@@ -335,31 +411,8 @@ h1 span{display:block}
 .gate .beat + .beat{margin-top:var(--s6)}
 .say{margin:10px 0 0;font-weight:300;font-size:clamp(24px,2.4vw,34px);line-height:1.2;letter-spacing:-.02em;color:var(--fg)}
 
-/* ===== 6b. calculator: the question in the reading column, the answer standing large in the picture ===== */
-.calc .split{align-items:center}
-.calc .split > :last-child{justify-self:center}
-.calc-line{margin:28px 0 0;font-size:clamp(21px,2vw,28px);line-height:1.75;font-weight:300;color:var(--fg);max-width:21em}
-.calc-opt{margin-top:14px;font-size:clamp(17px,1.4vw,20px);color:var(--fg-2)}
-.calc-opt .opt{color:var(--fg-3);font-size:.8em}
-.ci{display:inline-block;position:relative;margin:0 .15em}
-.ci input{width:3.2ch;padding:0 .1em 2px;border:0;border-bottom:1px solid rgba(255,176,0,.6);border-radius:0;background:transparent;
-  color:#FFD27A;font:inherit;font-weight:400;text-align:center;-moz-appearance:textfield;appearance:textfield;
-  transition:border-color .3s var(--ease-out),background .3s var(--ease-out)}
-.ci input::-webkit-outer-spin-button,.ci input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-.ci input::placeholder{color:rgba(255,210,122,.75)}
-.ci input:hover{border-bottom-color:var(--signal);background:rgba(255,176,0,.06)}
-.ci input:focus{outline:none;border-bottom-color:var(--signal);background:rgba(255,176,0,.1)}
-.ci input:focus-visible{outline:2px solid var(--signal);outline-offset:4px;border-radius:4px}
+/* screen-reader-only text */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.calc-note{margin:32px auto 0;padding-top:18px;border-top:1px solid var(--line);max-width:34em;font-size:13px;line-height:1.75;font-weight:500;color:var(--fg-3);text-align:center}
-.calc-out{text-align:center}
-.calc-big{margin:0;font-size:clamp(104px,12vw,188px);line-height:.92;color:var(--fg)}
-.calc-big b{font-weight:100;color:var(--signal)}
-.calc-sub{margin:14px 0 0;font-size:17px;font-weight:500;color:var(--fg-2)}
-.calc-sub b{font-weight:500;color:var(--fg)}
-.calc-money{margin:6px 0 0;font-size:17px;font-weight:500;color:var(--fg-2)}
-.calc-money b{font-weight:500;color:#FFD27A}
-.calc-out .acts{justify-content:center;margin-top:30px}
 /* the last line: the night closes where the form begins */
 .coda{margin:0 0 22px;font-size:clamp(20px,1.8vw,26px);line-height:1.3;color:var(--fg-2)}
 .coda .num{font-family:var(--sans);font-size:max(12px,.62em);font-weight:400;letter-spacing:.16em;color:var(--signal);margin-left:.6em;vertical-align:.2em}
@@ -608,9 +661,16 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
       <p class="lede">העובדים נרשמים באפליקציה, המערכת מקבצת לנסיעות משותפות, ואתם מאשרים ושולחים לחברת ההסעות שלכם.</p>
       <div class="acts">
         <a class="btn has-ic" href="#contact">לתיאום הדגמה<span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></span></a>
-        <a class="btn ghost" href="#night">איך זה עובד</a>
+        <a class="btn ghost how" href="#night">איך זה עובד</a>
+        <button class="btn ghost watch" type="button" data-play aria-label="צפו בסרטון, 22 שניות, עם סאונד"><span class="wthumb" aria-hidden="true"><img src="video/ad-thumb.jpg" alt="" width="48" height="48"></span>צפו בסרטון<span class="wdur num" aria-hidden="true">0:22</span></button>
       </div>
     </div>
+    <!-- the ad (video/ad.mp4, 9:16, 22s, captions burned in): on a desktop it plays silently beside the headline and opens
+         with sound in the theater; on a phone the "watch" button above opens the same theater, full screen -->
+    <button class="reel" type="button" data-play aria-label="צפו בסרטון, 22 שניות, עם סאונד">
+      <span class="reel-frame"><video muted playsinline loop preload="none" poster="video/ad-poster.jpg" tabindex="-1" aria-hidden="true"></video><span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16.5 12 9 16.5v-9z"/></svg></span></span>
+      <span class="reel-cap" aria-hidden="true"><b>כל הסיפור ב-22 שניות</b><span class="num">צפו עם סאונד · 0:22</span></span>
+    </button>
   </div>
   <div class="proof"><div class="wrap"><ul>
     <li><b>5 דקות</b>במקום שעתיים בשבוע</li>
@@ -738,24 +798,6 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
   </div>
 </section>
 
-<!-- 6b · THE CALCULATOR: an estimate of the manager's time, its assumptions in plain sight (no promised savings) -->
-<section class="scene calc" id="calc" aria-labelledby="h2-calc">
-  <div class="wrap split">
-    <div class="calc-q">
-      <h2 id="h2-calc">כמה מהשבוע<br><b>חוזר אליכם?</b></h2>
-      <p class="calc-line">יש לנו <label class="ci"><span class="sr">מספר עובדי המשמרות</span><input id="c-emp" class="num" type="number" inputmode="numeric" min="1" max="5000" step="1" value="45"></label> עובדי משמרות, ומי שמסדר את ההסעות משקיע בזה <label class="ci"><span class="sr">שעות בשבוע על סידור ההסעות</span><input id="c-hrs" class="num" type="number" inputmode="decimal" min="0" max="40" step="0.5" value="2"></label> שעות בשבוע.</p>
-      <p class="calc-line calc-opt">שעת עבודה שלו עולה <label class="ci"><span class="sr">עלות שעת עבודה בשקלים, לא חובה</span><input id="c-cost" class="num" type="number" inputmode="numeric" min="0" max="2000" step="5" placeholder="–"></label> ₪ <span class="opt">(לא חובה)</span></p>
-    </div>
-    <div class="calc-out" aria-live="polite" aria-atomic="true">
-      <p class="calc-big num" dir="ltr"><span id="c-h">1</span><b>:</b><span id="c-m">55</span></p>
-      <p class="calc-sub" id="c-sub">שעות בשבוע חוזרות אליכם · כ-<b class="num" id="c-year">92</b> שעות בשנה</p>
-      <p class="calc-money" id="c-money" hidden>כ-<b class="num" id="c-money-v"></b> ₪ בשנה של זמן עבודה</p>
-      <div class="acts"><a class="btn" href="#contact" id="c-go">לתיאום הדגמה עם החישוב<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div>
-      <p class="calc-note">הערכה בלבד, לא התחייבות. מה הנחנו: אחרי ההטמעה נשארים רק אישור ושליחה של ההזמנה. בפיילוט, מוקד עם 45 עובדי משמרות, זה ירד משעתיים ויותר ל-5 דקות בשבוע, ולכן הערכנו כ-5 דקות לכל 45 עובדים, ו-48 שבועות עבודה בשנה. הסכום בשקלים הוא רק זמן העבודה לפי העלות שהזנתם. לא כללנו חיסכון בעלות המוניות עצמן, שתלוי בארגון.</p>
-    </div>
-  </div>
-</section>
-
 <!-- 7 · 01:00 THE GATE -->
 <section class="gate dark" id="gate" data-film="S7" data-time="01:00" aria-labelledby="h2-gate">
   <div class="wrap beats">
@@ -791,6 +833,7 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
       <p class="lede">השאירו פרטים, ונציג מטעמנו יחזור אליכם לתיאום הדגמה קצרה.</p>
       <p class="story">ניהלתי מוקד משמרות, וסידור ההסעות היה עליי: וואטסאפ, אקסל ובדיקה אחרונה בעשר בלילה. לא מצאתי מערכת שעושה את זה, אז בניתי.</p>
       <p class="sig">אלון ברגר<small>מייסד <bdi dir="ltr" translate="no">SmartKav</bdi></small></p>
+      <button class="tlink watch-link" type="button" data-play><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 12l-4.5 2.8V9.2z"/></svg>הסיפור ב-22 שניות: צפו בסרטון</button>
       <a class="wa tlink" id="wa-link" href="#contact" hidden target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5l1.2-3.6A8 8 0 1 1 8.6 18.6z"/><path d="M9 10.5h6M9 13.5h4"/></svg>מעדיפים WhatsApp? כתבו לנו ישירות</a>
     </div>
     <div>
@@ -828,6 +871,26 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
     <span>© <bdi dir="ltr" translate="no">SmartKav</bdi> · אלון ברגר</span>
   </div>
 </footer>
+
+<!-- The theater: the ad with sound. Opens from any [data-play]; on a phone it is the whole screen, like a story.
+     The progress line is the logo's line, running right to left like the one under the header; at the end, the call. -->
+<div class="theater" id="theater" role="dialog" aria-modal="true" aria-label="הסרטון של SmartKav" hidden>
+  <div class="th-stage">
+    <video id="th-video" playsinline preload="none" poster="video/ad-poster.jpg"></video>
+    <button class="th-hit" type="button" aria-label="השהיה"><span class="th-big" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16.5 12 9 16.5v-9z"/></svg></span></button>
+    <div class="th-ctrl">
+      <button class="th-btn th-x" type="button" aria-label="סגירה"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <button class="th-btn th-mute" type="button" aria-label="השתקה" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/><path class="on" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/><path class="off" d="M16 9.5l5 5M21 9.5l-5 5"/></svg></button>
+    </div>
+    <div class="th-bar" role="slider" tabindex="0" aria-label="מיקום בסרטון" aria-valuemin="0" aria-valuemax="22" aria-valuenow="0" aria-valuetext="0 שניות"><i></i></div>
+    <div class="th-end" hidden>
+      <svg class="brandmark" viewBox="0 0 92 40" aria-hidden="true"><line x1="6" y1="20" x2="62" y2="20"/><circle cx="74" cy="20" r="12"/></svg>
+      <p class="th-end-h">כל ההסעות של השבוע.<br><b>בחמש דקות.</b></p>
+      <a class="btn has-ic th-go" href="#contact">לתיאום הדגמה<span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></span></a>
+      <button class="btn ghost th-again" type="button">צפייה חוזרת</button>
+    </div>
+  </div>
+</div>
 
 <!-- After the form is sent: a short, happy moment. The SmartKav line draws, a ride runs along it into the circle,
      the circle fills, a check pops and sparks fly. Then one line of thanks and the three facts. -->
@@ -1199,45 +1262,6 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
     if (t) setClock(t); }
   addEventListener('scroll', function(){ if (!clockRaf) clockRaf = requestAnimationFrame(syncClock); }, { passive: true }); syncClock();
 
-  /* ---------- the calculator: an estimate from the pilot, its assumptions printed beside it ----------
-     After: about 5 minutes a week per 45 employees (the pilot: 45 employees, 2h+ down to 5 min), never less than 5.
-     Saved: what they spend now minus that, 48 working weeks a year; money only from the hourly cost they enter. */
-  (function calc(){
-    var emp = $('#c-emp'), hrs = $('#c-hrs'), cost = $('#c-cost'); if (!emp) return;
-    var H = $('#c-h'), Mi = $('#c-m'), yr = $('#c-year'), sub = $('#c-sub'), money = $('#c-money'), mv = $('#c-money-v'), shown = 115, tw = 0;
-    var fmt = new Intl.NumberFormat('he-IL', { maximumFractionDigits: 0 });
-    function val(el, lo, hi){ var v = parseFloat(el.value); return isFinite(v) ? Math.min(hi, Math.max(lo, v)) : NaN; }
-    function fit(el){ el.style.width = Math.max(2.2, String(el.value || el.placeholder).length + 1.2) + 'ch'; }
-    function paint(min){ var m = Math.round(min); H.textContent = Math.floor(m / 60); Mi.textContent = ('0' + m % 60).slice(-2); }
-    function run(){
-      var e = val(emp, 1, 5000), h = val(hrs, 0, 40), c = val(cost, 0, 2000);
-      if (!(e > 0)) e = 45; if (!(h >= 0)) h = 0;
-      var after = Math.max(5, 5 * e / 45), saved = Math.max(0, h * 60 - after), year = saved * 48 / 60;
-      yr.textContent = fmt.format(year);
-      sub.innerHTML = saved > 0 ? 'שעות בשבוע חוזרות אליכם · כ-<b class="num" id="c-year">' + fmt.format(year) + '</b> שעות בשנה'
-                                : 'לפי מה שהזנתם, הסידור אצלכם כבר קצר. נשמח להראות מה עוד המערכת עושה.';
-      yr = $('#c-year') || yr;
-      money.hidden = !(c > 0 && saved > 0); if (!money.hidden) mv.textContent = fmt.format(Math.round(year * c / 10) * 10);
-      // the answer turns over to its new value (a short count; immediate under reduced motion)
-      var from = shown, to = saved, t0 = 0; shown = to; cancelAnimationFrame(tw);
-      if (REDUCE){ paint(to); return; }
-      (function step(t){ if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 420), k = 1 - Math.pow(1 - p, 3); paint(from + (to - from) * k); if (p < 1) tw = requestAnimationFrame(step); })(performance.now());
-    }
-    [emp, hrs, cost].forEach(function(el){
-      fit(el);
-      el.addEventListener('input', function(){ fit(el); run(); });
-      el.addEventListener('blur', function(){ var lo = +el.min, hi = +el.max, v = parseFloat(el.value); if (isFinite(v)) el.value = Math.min(hi, Math.max(lo, v)); else if (el !== cost) el.value = el.defaultValue; fit(el); run(); });
-      el.addEventListener('keydown', function(ev){ if (ev.key === 'Enter') el.blur(); });
-    });
-    run();
-    // the call to action carries the numbers into the form (the same fields Make already receives)
-    $('#c-go').addEventListener('click', function(){
-      var e = val(emp, 1, 5000), h = val(hrs, 0, 40), c = val(cost, 0, 2000), size = $('#f-size'), notes = $('#f-notes');
-      if (size && e > 0) size.value = e <= 50 ? 'עד 50' : e <= 200 ? '50-200' : e <= 500 ? '200-500' : '500+';
-      if (notes && !notes.value.trim()) notes.value = 'מהמחשבון: ' + e + ' עובדי משמרות, ' + h + ' שעות בשבוע על סידור ההסעות' + (c > 0 ? ', שעת עבודה ' + c + ' ₪' : '') + '.';
-    });
-  })();
-
   /* ---------- grouping board (built for every mode) ---------- */
   var REQ = [['דנה','רמת גן',0],['מיכל','חולון',1],['יוסי','תל אביב',2],['אבי','רמת גן',0],['שירן','בת ים',3],['עומר','חולון',1],['נועה','רמת גן',0],
              ['ליאור','תל אביב',2],['תמר','בת ים',3],['רון','רמת גן',0],['גל','חולון',1],['עדי','תל אביב',2],['מאיה','בת ים',3],['איתי','תל אביב',2]];
@@ -1387,7 +1411,7 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
 
   // hero entrance: words rise, then the city starts moving
   G.from('.hero h1 span', { yPercent: 30, autoAlpha: 0, duration: 1.4, stagger: .14, ease: 'expo.out', delay: .15 });
-  G.from(['.hero .stamp', '.hero .lede', '.hero .acts', '.proof'], { autoAlpha: 0, y: 16, duration: 1.2, stagger: .08, ease: 'expo.out', delay: .45 });
+  G.from(['.hero .stamp', '.hero .lede', '.hero .acts', '.reel', '.proof'], { autoAlpha: 0, y: 16, duration: 1.2, stagger: .08, ease: 'expo.out', delay: .45 });
 
 
   // 22:40 · the flood
@@ -1506,6 +1530,91 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
   run();
   var t = null, w = window.innerWidth;
   window.addEventListener('resize', function(){ if (window.innerWidth === w) return; w = window.innerWidth; run(); });
+})();
+</script>
+
+<script>
+/* The ad. The reel beside the headline (desktop only) plays silently once the page is up and resting, and only while it
+   is on screen; never under reduced motion, "stop animations" or Save-Data, and never on a phone (data). Any [data-play]
+   opens the theater: the same file from the start, with sound, and the call to action when it ends. */
+(function(){
+  var SRC = 'video/ad.mp4', H = document.documentElement;
+  var th = document.getElementById('theater'); if (!th) return;
+  var tv = th.querySelector('video'), hit = th.querySelector('.th-hit'), bar = th.querySelector('.th-bar'), fill = bar.querySelector('i');
+  var mute = th.querySelector('.th-mute'), end = th.querySelector('.th-end'), go = th.querySelector('.th-go');
+  var reel = document.querySelector('.reel'), rv = reel && reel.querySelector('video');
+  var opener = null, onScreen = true;
+  function still(){ return matchMedia('(prefers-reduced-motion: reduce)').matches || H.classList.contains('a11y-still'); }
+  function lean(){ var c = navigator.connection; return !!(c && (c.saveData || /2g/.test(c.effectiveType || ''))); }
+  function desk(){ return matchMedia('(min-width:1024px) and (min-height:700px)').matches; }
+  function track(name){ if (window.gtag) window.gtag('event', name, { video_title: 'SmartKav ad' }); }
+
+  // ---- the reel: a silent loop beside the headline ----
+  function reelOk(){ return rv && desk() && !still() && !lean() && onScreen && th.hidden && !document.hidden; }
+  function reelSync(){
+    if (!rv) return;
+    if (reelOk()){ if (!rv.src) rv.src = SRC; var p = rv.play(); if (p && p.catch) p.catch(function(){}); }
+    else if (!rv.paused) rv.pause();
+    reel.classList.toggle('is-still', !reelOk());
+  }
+  if (rv){
+    if ('IntersectionObserver' in window) new IntersectionObserver(function(e){ onScreen = e[0].isIntersecting; reelSync(); }, { threshold: .15 }).observe(reel);
+    document.addEventListener('visibilitychange', reelSync);
+    new MutationObserver(reelSync).observe(H, { attributes: true, attributeFilter: ['class'] });
+    var start = function(){ setTimeout(function(){ (window.requestIdleCallback || setTimeout)(reelSync, { timeout: 2000 }); }, 900); };
+    if (document.readyState === 'complete') start(); else addEventListener('load', start);
+    reel.classList.add('is-still');
+  }
+
+  // ---- the theater ----
+  function paint(){ var d = tv.duration || 22, t = tv.currentTime || 0; fill.style.setProperty('--p', Math.min(1, t / d).toFixed(4)); bar.setAttribute('aria-valuenow', Math.round(t)); bar.setAttribute('aria-valuetext', Math.round(t) + ' שניות מתוך ' + Math.round(d)); }
+  function state(){ var p = tv.paused && end.hidden; th.classList.toggle('is-paused', p); hit.setAttribute('aria-label', tv.paused ? 'ניגון' : 'השהיה'); }
+  function play(){ var p = tv.play(); if (p && p.catch) p.catch(function(){ tv.muted = true; mute.setAttribute('aria-pressed', 'true'); tv.play().catch(function(){ state(); }); }); }
+  function open(from){
+    opener = from || document.activeElement;
+    if (!tv.src) tv.src = SRC;
+    end.hidden = true; th.hidden = false; th.classList.remove('is-in'); void th.offsetWidth; if (!still()) th.classList.add('is-in');
+    H.classList.add('th-open'); if (window.__skLenis) window.__skLenis.stop();
+    reelSync();
+    try { tv.currentTime = 0; } catch(e) {}
+    tv.muted = false; mute.setAttribute('aria-pressed', 'false');
+    play(); paint(); state();
+    th.querySelector('.th-x').focus({ preventScroll: true });
+    track('video_start');
+  }
+  function close(){
+    if (th.hidden) return;
+    tv.pause(); th.hidden = true; H.classList.remove('th-open');
+    if (window.__skLenis) window.__skLenis.start();
+    if (opener && opener.focus && document.contains(opener)) opener.focus({ preventScroll: true });
+    reelSync();
+  }
+  document.addEventListener('click', function(e){ var b = e.target.closest && e.target.closest('[data-play]'); if (b){ e.preventDefault(); open(b); } });
+  hit.addEventListener('click', function(){ if (tv.paused) play(); else tv.pause(); });
+  mute.addEventListener('click', function(){ tv.muted = !tv.muted; mute.setAttribute('aria-pressed', String(tv.muted)); mute.setAttribute('aria-label', tv.muted ? 'הפעלת סאונד' : 'השתקה'); });
+  th.querySelector('.th-x').addEventListener('click', close);
+  th.querySelector('.th-again').addEventListener('click', function(){ end.hidden = true; tv.currentTime = 0; play(); hit.focus({ preventScroll: true }); });
+  // the call: close first (the page's own anchor scrolling then takes it to the form), then the first field is ready
+  go.addEventListener('click', function(){ track('video_cta'); close(); setTimeout(function(){ var f = document.getElementById('f-name'); if (f) f.focus({ preventScroll: true }); }, 1500); });
+  tv.addEventListener('timeupdate', paint);
+  tv.addEventListener('play', state); tv.addEventListener('pause', state);
+  tv.addEventListener('ended', function(){ end.hidden = false; state(); go.focus({ preventScroll: true }); track('video_complete'); });
+  // seeking on the line (right to left)
+  function seek(x){ var r = bar.getBoundingClientRect(), f = Math.min(1, Math.max(0, (r.right - x) / r.width)); if (tv.duration){ tv.currentTime = f * tv.duration; end.hidden = true; paint(); } }
+  bar.addEventListener('pointerdown', function(e){ seek(e.clientX); bar.setPointerCapture && bar.setPointerCapture(e.pointerId); var mv = function(ev){ seek(ev.clientX); }, up = function(){ bar.removeEventListener('pointermove', mv); bar.removeEventListener('pointerup', up); }; bar.addEventListener('pointermove', mv); bar.addEventListener('pointerup', up); });
+  bar.addEventListener('keydown', function(e){ var k = e.key, d = k === 'ArrowLeft' ? 2 : k === 'ArrowRight' ? -2 : 0; if (d){ e.preventDefault(); tv.currentTime = Math.max(0, Math.min(tv.duration || 22, tv.currentTime + d)); paint(); } });
+  th.addEventListener('click', function(e){ if (e.target === th) close(); });
+  document.addEventListener('keydown', function(e){
+    if (th.hidden) return;
+    if (e.key === 'Escape'){ e.preventDefault(); close(); return; }
+    if ((e.key === ' ' || e.key === 'k') && e.target !== mute && !(e.target.closest && e.target.closest('.th-end'))){ e.preventDefault(); hit.click(); return; }
+    if (e.key === 'm'){ mute.click(); return; }
+    if (e.key === 'Tab'){ // keep the focus inside
+      var f = Array.prototype.filter.call(th.querySelectorAll('button,a[href],[tabindex="0"]'), function(el){ return el.offsetParent !== null; });
+      var i = f.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0){ e.preventDefault(); f[f.length - 1].focus(); } else if (!e.shiftKey && i === f.length - 1){ e.preventDefault(); f[0].focus(); }
+    }
+  });
 })();
 </script>
 
