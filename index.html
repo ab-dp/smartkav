@@ -96,23 +96,23 @@ h1 b,.moment h2 b{font-weight:500}
 .ntf,.scr,.lscr,.reqs li,.rides small,.chips li,.calm p,.push p,.toast{font-weight:400} /* the app mockups read like the app */
 .proof ul,.facts,.results span,.quote figcaption,.story,.sig small,.wa,.legal,.foot,.faq p,.nclock,.unread,.field label{font-weight:500} /* small text over the film, firm and clear */
 .lede{font-size:17px;line-height:1.7;font-weight:400;color:var(--fg-2);max-width:31em;margin:20px 0 0}
+@media (min-width:1024px){.lede{font-size:19px;line-height:1.62}.facts{font-size:16px}.results span{font-size:16px}}
 .stamp{display:flex;align-items:center;gap:12px;margin:0 0 22px;font-size:13px;font-weight:400;letter-spacing:.14em;color:var(--signal)}
 .stamp::before{content:"";flex:none;width:28px;height:1px;background:var(--signal);opacity:.9} /* the logo's line, leading into the hour */
 
 /* buttons and links */
-/* one family for every call to action: amber light held in a dark, see-through pill with a fine amber edge; on hover it
-   fills with the amber it was holding. The form's send button is the family's filled state from the start. */
+/* one primary for every call to action: a solid amber pill with ink type, the same in the hero, at the gate, at the end
+   of the ad and in the form (a see-through amber read as muddy brown over the film, and less clickable than the form's).
+   Amber is kept for action and time: this button, the clocks, the logo's line. */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:52px;padding:0 26px;border-radius:999px;
-  background:linear-gradient(180deg,rgba(255,176,0,.2),rgba(255,176,0,.1)),rgba(11,13,17,.42);color:#FFD27A;
-  box-shadow:inset 0 0 0 1px rgba(255,176,0,.55),inset 0 1px 0 rgba(255,226,163,.22),0 12px 32px -16px rgba(0,0,0,.7);
+  background:var(--signal);color:#14120D;
+  box-shadow:0 18px 40px -18px rgba(255,176,0,.5),0 10px 24px -14px rgba(0,0,0,.7);
   font:500 15.5px/1 var(--sans);letter-spacing:.01em;text-decoration:none;border:0;cursor:pointer;
   transition:background .45s var(--ease-out),color .45s var(--ease-out),box-shadow .45s var(--ease-out),transform .25s var(--ease-out)}
-.btn:hover{background:var(--signal);color:#14120D;box-shadow:inset 0 0 0 1px var(--signal),0 14px 30px -14px rgba(0,0,0,.75);transform:translateY(-1px)}
+.btn:hover{background:#FFC23D;color:#14120D;box-shadow:0 20px 44px -16px rgba(255,176,0,.6),0 12px 26px -14px rgba(0,0,0,.75);transform:translateY(-1px)}
 .btn:active{transform:translateY(0) scale(.985)}
 .btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:transform .45s var(--ease-out)}
 .btn:hover svg{transform:translateX(-4px)}
-.form .btn{background:var(--signal);color:#14120D;box-shadow:0 14px 30px -16px rgba(0,0,0,.7)}
-.form .btn:hover{background:#FFC23D}
 /* the quiet member of the family: the same pill in ivory light, for the way in rather than the call */
 .btn.ghost{color:var(--fg);font-weight:400;background:linear-gradient(180deg,rgba(243,241,236,.08),rgba(243,241,236,.02)),rgba(11,13,17,.36);
   box-shadow:inset 0 0 0 1px var(--line-2),inset 0 1px 0 rgba(243,241,236,.1),0 12px 32px -16px rgba(0,0,0,.7)}
@@ -122,7 +122,7 @@ h1 b,.moment h2 b{font-weight:500}
 .acts{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:38px}
 /* the hero's call: the arrow sits in its own small amber ring inside the pill */
 .btn.has-ic{padding-inline:26px 7px;gap:16px}
-.btn .ic{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:rgba(255,176,0,.14);box-shadow:inset 0 0 0 1px rgba(255,176,0,.35);transition:transform .45s var(--ease-out),background .3s,box-shadow .3s}
+.btn .ic{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:rgba(20,18,13,.1);box-shadow:inset 0 0 0 1px rgba(20,18,13,.22);transition:transform .45s var(--ease-out),background .3s,box-shadow .3s}
 .btn:hover .ic{background:rgba(20,18,13,.12);box-shadow:inset 0 0 0 1px rgba(20,18,13,.2);transform:translateX(-3px)}
 .btn .ic svg,.btn:hover .ic svg{transform:none}
 
@@ -297,6 +297,7 @@ html.a11y-still .reel-frame{transition:none}
 
 /* ===== 2. flood: small, quiet notifications ===== */
 .flood-stage{position:relative;height:520px;width:min(100%,360px)}
+@media (min-width:1024px){.flood-stage{height:590px;width:min(100%,410px)}.flood-stage .ntf{width:min(368px,92%);font-size:14px;padding:12px 14px;grid-template-columns:34px 1fr}.flood-stage .ntf .av{width:34px;height:34px;font-size:13px}.unread{font-size:14px}}
 .ntf{position:absolute;left:0;top:0;width:min(320px,92%);background:var(--panel);border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px;display:grid;grid-template-columns:30px 1fr;gap:1px 10px;font-size:12.5px;line-height:1.4;box-shadow:0 14px 30px -18px rgba(0,0,0,.6)}
 .ntf .av{grid-row:span 2;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:500;font-size:12px;color:#fff;background:var(--c,#2B3442);align-self:center}
 .ntf .av svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
@@ -396,9 +397,11 @@ html.a11y-still .reel-frame{transition:none}
 .results li:last-child{border-bottom:1px solid var(--line)}
 .results b{font-weight:300;font-size:clamp(24px,2.2vw,32px);line-height:1.1;letter-spacing:-.02em}
 .results span{color:var(--fg-2);font-size:15px}
-.quote{margin:var(--s4) auto 0;padding:0;max-width:560px;text-align:center}
-.quote blockquote{margin:0;font-weight:300;font-size:clamp(19px,1.6vw,23px);line-height:1.55;letter-spacing:-.01em}
-.quote figcaption{margin-top:12px;color:var(--fg-3);font-size:14px}
+.quote{margin:clamp(64px,9vh,96px) 0 0;padding:0;text-align:center}
+/* the only voice from the pilot gets its own moment: large, thin, a short amber line above it */
+.quote::before{content:"";display:block;width:28px;height:1px;background:var(--signal);margin:0 auto 28px}
+.quote blockquote{margin:0 auto;max-width:17em;font-weight:200;font-size:clamp(26px,2.7vw,40px);line-height:1.3;letter-spacing:-.02em;color:var(--fg);text-wrap:balance}
+.quote figcaption{margin-top:20px;color:var(--fg-3);font-size:14px;letter-spacing:.02em}
 
 /* ===== 7. gate ===== */
 /* taller than a screen: the camera comes down to the gate and the taxi pulls up, while the beats scroll past */
@@ -409,7 +412,9 @@ html.a11y-still .reel-frame{transition:none}
 .gate .beat{max-width:none;align-self:center;text-align:center} /* the night ends in the middle of the picture */
 .gate .beat .acts{justify-content:center}
 .gate .beat + .beat{margin-top:var(--s6)}
-.say{margin:10px 0 0;font-weight:300;font-size:clamp(24px,2.4vw,34px);line-height:1.2;letter-spacing:-.02em;color:var(--fg)}
+.gate .stamp{justify-content:center;margin-bottom:10px} /* the bookend of the hero's stamp: the night closes on the same line */
+.gate .moment .acts{margin-top:44px}
+.say{text-wrap:balance;margin:10px 0 0;font-weight:200;font-size:clamp(28px,3vw,44px);line-height:1.2;letter-spacing:-.02em;color:var(--fg)}
 
 /* screen-reader-only text */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
@@ -422,12 +427,12 @@ html.a11y-still .reel-frame{transition:none}
 #faq h2{text-align:center}
 .faq details{border-top:1px solid var(--line)}
 .faq details:last-child{border-bottom:1px solid var(--line)}
-.faq summary{list-style:none;cursor:pointer;padding:20px 0;display:flex;justify-content:space-between;gap:20px;font-weight:400;font-size:17px;line-height:1.45}
+.faq summary{list-style:none;cursor:pointer;padding:20px 0;display:flex;justify-content:center;text-align:center;gap:14px;font-weight:400;font-size:17px;line-height:1.45}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"";width:9px;height:9px;flex:none;margin-top:7px;border-left:1.5px solid var(--fg-2);border-bottom:1.5px solid var(--fg-2);transform:rotate(-45deg);transition:transform var(--t-mid) var(--ease-out)}
+.faq summary::after{content:"";width:9px;height:9px;flex:none;margin-top:6px;border-left:1.5px solid var(--fg-2);border-bottom:1.5px solid var(--fg-2);transform:rotate(-45deg);transition:transform var(--t-mid) var(--ease-out)}
 .faq details[open] summary::after{transform:rotate(135deg)}
 .faq summary:hover::after{border-color:var(--signal)}
-.faq p{margin:0 0 20px;color:var(--fg-2);max-width:40em;font-size:15.5px}
+.faq p{margin:0 auto 20px;color:var(--fg-2);max-width:40em;font-size:15.5px;text-align:center;text-wrap:balance} /* the questions stand in the middle, like the gate above them */
 
 /* ===== 9. contact ===== */
 .contact .split{align-items:start}
@@ -549,7 +554,7 @@ html.a11y-still .done,html.a11y-still .done *,html.a11y-still .done *::after{ani
   .nav .wrap{height:60px;grid-template-columns:auto 1fr auto}
   .nclock{justify-self:center;font-size:13px}
   .nav-cta{height:34px;padding:0 14px;font-size:13px}
-  h1{font-size:38px}
+  h1{font-size:min(44px,calc((100vw - 40px) / 8.9))} /* the opening line fills the width on one line, at 360px too */
   h2{font-size:30px}
   .lede{font-size:16px}
   .acts .btn{flex:1 1 100%}
@@ -557,7 +562,7 @@ html.a11y-still .done,html.a11y-still .done *,html.a11y-still .done *::after{ani
   .proof ul{gap:14px 28px;font-size:13px;padding-bottom:22px}
   .proof b{font-size:22px}
   .proof ul{padding-bottom:84px} /* clear of the accessibility and Kobi buttons in the bottom corners */
-  .hero-in{padding-bottom:28px}
+  .hero-in{padding-bottom:28px;justify-content:center} /* tall phones: the copy sits in the middle, not under an empty band */
   .flood-stage{height:520px;margin-top:48px}
   .phone{transform:scale(.94);transform-origin:top center;margin-bottom:-36px}
   .laptop{padding:7px 7px 9px;border-radius:12px 12px 4px 4px}
@@ -786,7 +791,6 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
     </div></div>
     <div class="hold-b"><div class="hb">
       <ul class="results">
-        <li><b>5 דקות</b><span>בשבוע במקום שעתיים ויותר. פיילוט במוקד עם 45 עובדי משמרות.</span></li>
         <li><b>פחות מוניות</b><span>מי שנסע לבד באותה שעה ובאותו כיוון נוסע בנסיעה משותפת.</span></li>
         <li><b>0 כפולות</b><span>הרשמה כפולה נחסמת לפני שהיא מגיעה לחשבונית.</span></li>
       </ul>
@@ -801,11 +805,10 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 <!-- 7 · 01:00 THE GATE -->
 <section class="gate dark" id="gate" data-film="S7" data-time="01:00" aria-labelledby="h2-gate">
   <div class="wrap beats">
-    <div class="beat hold-b" data-film="S7@.1"><div class="hb"><p class="say">נועה סיימה משמרת.</p></div></div>
-    <div class="beat hold-b" data-film="BR@.5"><div class="hb"><p class="say">המונית שלה הוזמנה ביום חמישי, ב-22:43.</p></div></div>
-    <div class="beat hold-b moment" data-film="S8@.5"><div class="hb"><h2 id="h2-gate">המונית<br><b>כבר בשער.</b></h2></div></div>
-    <div class="beat hold-b" data-film="S8@.72"><div class="hb"><p class="lede">ולא שלחה אף הודעה.</p>
-      <div class="acts"><a class="btn" href="#contact">לתיאום הדגמה<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div></div></div>
+    <div class="beat hold-b" data-film="S7@.1"><div class="hb"><span class="stamp num">שישי · 01:00</span><p class="say">נועה סיימה את המשמרת של 16:00.</p></div></div>
+    <div class="beat hold-b" data-film="BR@.5"><div class="hb"><p class="say">את המונית שלה הזמנתם ביום חמישי, ב-22:43.</p></div></div>
+    <div class="beat hold-b moment" data-film="S8@.6"><div class="hb"><h2 id="h2-gate">המונית כבר בשער.<br><b>בלי אף הודעה.</b></h2>
+      <div class="acts"><a class="btn has-ic" href="#contact">לתיאום הדגמה<span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></span></a></div></div></div>
   </div>
 </section>
 
