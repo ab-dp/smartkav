@@ -265,6 +265,14 @@ html.th-open{overflow:hidden}
 .th-big{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:rgba(11,13,17,.55);box-shadow:inset 0 0 0 1px rgba(255,176,0,.7);color:#FFD27A;opacity:0;transform:scale(.92);transition:opacity .35s var(--ease-out),transform .35s var(--ease-out)}
 .th-big svg{width:30px;height:30px;fill:currentColor;margin-left:4px}
 .theater.is-paused .th-big{opacity:1;transform:none}
+/* loading, like a story: a thin amber ring on the still, only if the start takes longer than a quarter second */
+.th-load{position:absolute;left:50%;top:50%;z-index:1;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;background:rgba(11,13,17,.6);opacity:0;pointer-events:none;transition:opacity .25s}
+.th-load::before{content:"";position:absolute;inset:16px;border-radius:50%;border:2px solid rgba(255,176,0,.22);border-top-color:var(--signal)}
+.theater.is-loading .th-load{opacity:1}
+.theater.is-loading .th-load::before{animation:thspin .9s linear infinite}
+.theater.is-loading .th-big{opacity:0}
+@keyframes thspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.theater.is-loading .th-load::before{animation:none}}
 .th-ctrl{position:absolute;top:14px;left:14px;display:flex;gap:8px;z-index:2}
 .th-btn{width:44px;height:44px;border:0;border-radius:50%;display:grid;place-items:center;background:rgba(11,13,17,.58);color:var(--fg);box-shadow:inset 0 0 0 1px var(--line-2);cursor:pointer;transition:background .3s,color .3s}
 .th-btn:hover{background:rgba(243,241,236,.94);color:#14120D}
@@ -880,6 +888,7 @@ html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns=
 <div class="theater" id="theater" role="dialog" aria-modal="true" aria-label="הסרטון של SmartKav" hidden>
   <div class="th-stage">
     <video id="th-video" playsinline preload="none" poster="video/ad-poster.jpg"></video>
+    <span class="th-load" aria-hidden="true"></span>
     <button class="th-hit" type="button" aria-label="השהיה"><span class="th-big" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16.5 12 9 16.5v-9z"/></svg></span></button>
     <div class="th-ctrl">
       <button class="th-btn th-x" type="button" aria-label="סגירה"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
@@ -1546,7 +1555,9 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
   var tv = th.querySelector('video'), hit = th.querySelector('.th-hit'), bar = th.querySelector('.th-bar'), fill = bar.querySelector('i');
   var mute = th.querySelector('.th-mute'), end = th.querySelector('.th-end'), go = th.querySelector('.th-go');
   var reel = document.querySelector('.reel'), rv = reel && reel.querySelector('video');
-  var opener = null, onScreen = true;
+  var opener = null, onScreen = true, lt = 0;
+  // the ring shows only when the start (or a stall) takes longer than a quarter second: fast connections never see it
+  function loading(on){ clearTimeout(lt); if (!on){ th.classList.remove('is-loading'); return; } lt = setTimeout(function(){ if (!th.hidden) th.classList.add('is-loading'); }, 250); }
   function still(){ return matchMedia('(prefers-reduced-motion: reduce)').matches || H.classList.contains('a11y-still'); }
   function lean(){ var c = navigator.connection; return !!(c && (c.saveData || /2g/.test(c.effectiveType || ''))); }
   function desk(){ return matchMedia('(min-width:1024px) and (min-height:700px)').matches; }
@@ -1581,26 +1592,30 @@ var WHATSAPP_TEXT = 'היי, אשמח לשמוע עוד על SmartKav';
     reelSync();
     try { tv.currentTime = 0; } catch(e) {}
     tv.muted = false; mute.setAttribute('aria-pressed', 'false');
-    play(); paint(); state();
+    loading(true); play(); paint(); state();
     th.querySelector('.th-x').focus({ preventScroll: true });
     track('video_start');
   }
   function close(){
     if (th.hidden) return;
-    tv.pause(); th.hidden = true; H.classList.remove('th-open');
+    tv.pause(); loading(false); th.hidden = true; H.classList.remove('th-open');
     if (window.__skLenis) window.__skLenis.start();
     if (opener && opener.focus && document.contains(opener)) opener.focus({ preventScroll: true });
     reelSync();
   }
   document.addEventListener('click', function(e){ var b = e.target.closest && e.target.closest('[data-play]'); if (b){ e.preventDefault(); open(b); } });
+  // the download starts the moment a finger (or the mouse) goes down on a play button, before the tap is over
+  document.addEventListener('pointerdown', function(e){ var b = e.target.closest && e.target.closest('[data-play]'); if (b && !tv.src){ tv.preload = 'auto'; tv.src = SRC; } }, { passive: true });
   hit.addEventListener('click', function(){ if (tv.paused) play(); else tv.pause(); });
   mute.addEventListener('click', function(){ tv.muted = !tv.muted; mute.setAttribute('aria-pressed', String(tv.muted)); mute.setAttribute('aria-label', tv.muted ? 'הפעלת סאונד' : 'השתקה'); });
   th.querySelector('.th-x').addEventListener('click', close);
-  th.querySelector('.th-again').addEventListener('click', function(){ end.hidden = true; tv.currentTime = 0; play(); hit.focus({ preventScroll: true }); });
+  th.querySelector('.th-again').addEventListener('click', function(){ end.hidden = true; tv.currentTime = 0; loading(true); play(); hit.focus({ preventScroll: true }); });
   // the call: close first (the page's own anchor scrolling then takes it to the form), then the first field is ready
   go.addEventListener('click', function(){ track('video_cta'); close(); setTimeout(function(){ var f = document.getElementById('f-name'); if (f) f.focus({ preventScroll: true }); }, 1500); });
   tv.addEventListener('timeupdate', paint);
-  tv.addEventListener('play', state); tv.addEventListener('pause', state);
+  tv.addEventListener('play', state); tv.addEventListener('pause', function(){ loading(false); state(); });
+  tv.addEventListener('playing', function(){ loading(false); });
+  tv.addEventListener('waiting', function(){ if (!tv.paused) loading(true); });
   tv.addEventListener('ended', function(){ end.hidden = false; state(); go.focus({ preventScroll: true }); track('video_complete'); });
   // seeking on the line (right to left)
   function seek(x){ var r = bar.getBoundingClientRect(), f = Math.min(1, Math.max(0, (r.right - x) / r.width)); if (tv.duration){ tv.currentTime = f * tv.duration; end.hidden = true; paint(); } }
