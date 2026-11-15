@@ -1,5 +1,5 @@
 <!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>קובי · שלוש דמויות</title>
+<title>קובי · שש דמויות</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#0B0D11;--fg:#F3F1EC;--fg2:rgba(243,241,236,.86);--fg3:rgba(243,241,236,.62);--line:rgba(218,226,240,.14);--am:#FFB000}
@@ -58,11 +58,61 @@ li::before{content:"+ ";color:#7FD3A2}li.c::before{content:"– ";color:#E5544E}
 @keyframes dot{50%{transform:translateY(-3px);opacity:.5}}
 @keyframes win{0%,8%{opacity:0;transform:translateY(10px) scale(.96)}18%,92%{opacity:1;transform:none}100%{opacity:0}}
 @keyframes kav{0%,6%{transform:scaleY(0)}16%,92%{transform:scaleY(1)}100%{transform:scaleY(0)}}
+
+/* ---- D · the dot ---- */
+.k-d .road{transform-origin:0 50%}
+.k-d .bob{transform-box:fill-box;transform-origin:50% 75%}
+.s-idle .k-d .road{animation:road 3.4s var(--e) infinite}
+.s-idle .k-d .bob{animation:ride 3.4s var(--e) infinite}
+.s-peek .k-d .bob{animation:hop 1.3s ease-in-out infinite}
+.s-type .k-d .bob{animation:jig .38s ease-in-out infinite}
+.s-type .k-d .road{animation:flow .38s ease-in-out infinite alternate}
+.s-happy .k-d .bob{animation:flip 1.8s var(--e) infinite}
+@keyframes road{0%{transform:scaleX(0)}22%,100%{transform:scaleX(1)}}
+@keyframes ride{0%{transform:translateX(-80px) scale(.5);opacity:0}24%{transform:translateX(0) scale(1);opacity:1}31%{transform:scale(1.16,.82)}41%{transform:translateY(-18px) scale(.92,1.08)}50%{transform:scale(1.07,.93)}58%,100%{transform:none}}
+@keyframes hop{0%,100%{transform:scale(1.1,.9)}50%{transform:translateY(-60px) scale(.9,1.12)}}
+@keyframes jig{50%{transform:translateY(-9px) scale(.96,1.05)}}
+@keyframes flow{to{transform:scaleX(.7)}}
+@keyframes flip{0%{transform:none}35%{transform:translateY(-46px) rotate(180deg)}70%{transform:rotate(360deg) scale(1.1,.9)}85%,100%{transform:rotate(360deg)}}
+/* ---- E · the eyes ---- */
+.k-e .brow,.k-e .scan,.k-e .look{transform-box:fill-box;transform-origin:center}
+.k-e .brow{transition:transform .4s var(--e)}
+.s-idle .k-e .brow{animation:brows 4.2s var(--e) infinite}
+.s-peek .k-e .brow{transform:translateY(-10px)}
+.s-type .k-e .bl{transform:translateY(6px) rotate(12deg)}.s-type .k-e .br{transform:translateY(6px) rotate(-12deg)}
+.s-type .k-e .scan{animation:scan 1.1s ease-in-out infinite}
+.s-happy .k-e .brow{transform:translateY(-14px)}
+@keyframes brows{0%,60%,100%{transform:none}66%,74%{transform:translateY(-9px)}}
+@keyframes scan{0%,100%{transform:translateX(-8px)}50%{transform:translateX(8px)}}
+/* ---- F · the dispatcher ---- */
+.k-f .talk,.k-f .mic{transform-box:fill-box;transform-origin:center}
+.s-idle .k-f .char{animation:tilt 3.6s ease-in-out infinite;transform-origin:100px 200px}
+.s-type .k-f .talk{animation:talk .22s ease-in-out infinite alternate}
+.s-type .k-f .mic{animation:pulse .44s ease-in-out infinite alternate}
+.s-happy .k-f .char{animation:jump .9s var(--e) infinite}
+@keyframes tilt{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg) translateY(-3px)}}
+@keyframes talk{from{transform:scaleY(.6) scaleX(1.1)}to{transform:scaleY(2.2) scaleX(.85)}}
+@keyframes jump{0%,100%{transform:translateY(-6px)}50%{transform:translateY(-22px)}}
+.look{transition:transform .25s ease-out}
+.research{margin-top:28px;background:#0F1217;border:1px solid rgba(218,226,240,.16);border-radius:20px;padding:24px}
+.research h2{font-weight:300;font-size:24px;margin:0 0 12px}.research h2 b{font-weight:500}
+.research ol{margin:0;padding-inline-start:20px;color:var(--fg2);display:grid;gap:8px;max-width:70em}
+.research li{border:0;padding:0}.research li::before{content:none}
+.research a{color:#FFD27A}
+.research .src{font-size:12.5px;color:var(--fg3);margin-top:12px}
+body.strip{padding:10px}body.strip h1,body.strip .sub,body.strip .research,body.strip .big{display:none}body.strip .row{grid-template-columns:repeat(6,1fr);gap:8px}body.strip .col{padding:8px}body.strip .col>:not(.stage):not(.tag){display:none}body.strip .stage{height:250px}
+.new{font-size:11px;letter-spacing:.14em;color:#7FD3A2;margin-inline-start:8px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
-<h1>קובי · <b>שלוש דמויות</b></h1>
-<p class="sub">כל דמות גרה בתוך העיגול של הלוגו כמו בחלון עגול: החלק התחתון נשאר בתוך המסגרת, והראש יכול להציץ החוצה מעל השפה. מצבים מתחלפים כל כמה שניות: <b>נח</b> (נושם וממצמץ) · <b>מציץ</b> (יוצא מהעיגול) · <b>כותב</b> · <b>שמח</b>. בכל העמודות, כשהחלון נפתח, הקו של הלוגו יוצא מהעיגול ומוביל אל החלון.</p>
+<h1>קובי · <b>שש דמויות</b></h1>
+<p class="sub">כל דמות גרה בתוך העיגול של הלוגו כמו בחלון עגול: החלק התחתון נשאר בתוך המסגרת, והראש יכול להציץ החוצה מעל השפה. מצבים מתחלפים כל כמה שניות: <b>נח</b> (נושם וממצמץ) · <b>מציץ</b> (יוצא מהעיגול) · <b>כותב</b> · <b>שמח</b>. <b>בדמויות ד–ו העיניים עוקבות אחרי העכבר</b> (בנייד הן מסתכלות סביב לבד). בכל העמודות, כשהחלון נפתח, הקו של הלוגו יוצא מהעיגול ומוביל אל החלון.</p>
 <div class="row" id="row"></div>
+<div class="research"><h2>מה חזק עכשיו, <b>ומה לקחתי מזה</b></h2><ol>
+<li><b>דמויות לסוכני AI הן הטרנד של 2026.</b> Meta נתנה לסוכן Muse דמות בשם Jolly, ו-OpenAI השיקה את דמויות ה-Dots. הסיבה המוצהרת: להראות לגולש <b>מה הסוכן עושה ברגע זה</b>. מכאן המצבים: נח, מציץ, כותב, שמח.</li>
+<li><b>אבל כולם עושים את זה עכשיו.</b> לפי Fast Company, כשלכולם יש קמע חמוד, אף אחד לא נזכר. לכן כל הדמויות כאן בנויות מהלוגו שלנו (קו ועיגול) ולא מסגנון גנרי.</li>
+<li><b>עיניים שעוקבות אחרי העכבר</b> (state machines ב-Rive, הסגנון של Duolingo) הן מה שהופך דמות ל"חיה". הוספתי את זה לדמויות ד–ו.</li>
+<li><b>דמות פשוטה, צורה אחת עם עיניים</b> (כמו Dots), מחזיקה מעמד בגודל קטן ומונפשת חזק: מתיחה וכיווץ, קפיצות. זו דמות ד.</li></ol>
+<p class="src">מקורות: <a href="https://www.fastcompany.com/91620091/big-tech-is-cutewashing-its-ai-agents">Fast Company</a> · <a href="https://fortune.com/2026/10/02/meta-openai-ai-agent-mascots-jolly-dots-trust/">Fortune</a> · <a href="https://www.axios.com/2026/09/25/ai-doom-meta-muse-mascot">Axios</a> · <a href="https://dev.to/uianimation/your-ai-assistant-has-a-voice-should-it-have-a-mascot-2g68">DEV</a> · <a href="https://rive.app/blog/animated-login-screen-design">Rive</a></p></div>
 <div class="big"><h2>איך זה מתחבר לדף, <b>בגדול</b></h2>
 <p><b>החלון העגול.</b> העיגול בפינה הוא אותו עיגול כמו בלוגו, ובתוכו גר קובי. במצב רגיל רואים רק את הראש בתוך המסגרת.</p>
 <p><b>יוצא מהעיגול.</b> כשהגולש מגיע לשאלות הנפוצות או לטופס, וכשמרחפים עליו, קובי מציץ מעל שפת העיגול. זה קורה פעם אחת לכל מקום ולא מציק.</p>
@@ -114,7 +164,39 @@ window.KOBI = (function(){
     + '<g class="joy" opacity="0"><path d="M77 108 q7.5 -11.25 15 0" fill="none" stroke="#14120D" stroke-width="4.5" stroke-linecap="round"/><path d="M108 108 q7.5 -11.25 15 0" fill="none" stroke="#14120D" stroke-width="4.5" stroke-linecap="round"/></g>'
     + '<path class="mouth" d="M87 128 Q100 139 113 128" fill="none" stroke="#14120D" stroke-width="4" stroke-linecap="round"/>'
     + '<circle cx="70" cy="122" r="5" fill="#E89A00"/><circle cx="130" cy="122" r="5" fill="#E89A00"/>'); };
-  return { a: robot, b: owl, c: taxi };
+
+  // D · the dot: the logo comes alive. The circle has a face and rides in along its own line, bouncing.
+  var dot = function(){ return wrap('d',
+      '<line x1="10" y1="168" x2="190" y2="168" stroke="rgba(218,226,240,.16)" stroke-width="2" stroke-dasharray="6 8"/>'
+    + '<line class="road" x1="24" y1="112" x2="66" y2="112" stroke="'+AM+'" stroke-width="10" stroke-linecap="round"/>'
+    + '<g class="bob"><circle cx="114" cy="112" r="40" fill="#0E1116" stroke="'+AM+'" stroke-width="10"/>'
+    + '<g class="eyes"><g class="look"><rect x="101" y="98" width="10" height="17" rx="5" fill="'+FG+'"/><rect x="119" y="98" width="10" height="17" rx="5" fill="'+FG+'"/></g></g>'
+    + '<g class="joy" opacity="0"><path d="M100 108 q6 -8 12 0 M118 108 q6 -8 12 0" fill="none" stroke="'+FG+'" stroke-width="4" stroke-linecap="round"/></g>'
+    + '<path d="M107 124 Q115 130 123 124" fill="none" stroke="'+FG+'" stroke-width="3.5" stroke-linecap="round"/></g>'); };
+  // E · the eyes: nothing but a gaze. Two eyes that follow the visitor across the page; the logo's line is the brows.
+  var eyes = function(){ return wrap('e',
+      '<g class="eyes"><ellipse cx="72" cy="112" rx="24" ry="32" fill="'+FG+'"/><ellipse cx="128" cy="112" rx="24" ry="32" fill="'+FG+'"/>'
+    + '<g class="look"><g class="scan"><circle cx="72" cy="116" r="12" fill="'+INK+'"/><circle cx="128" cy="116" r="12" fill="'+INK+'"/>'
+    + '<circle cx="76" cy="111" r="3.5" fill="'+FG+'"/><circle cx="132" cy="111" r="3.5" fill="'+FG+'"/></g></g></g>'
+    + '<g class="joy" opacity="0"><path d="M52 116 q20 -26 40 0 M108 116 q20 -26 40 0" fill="none" stroke="'+FG+'" stroke-width="7" stroke-linecap="round"/></g>'
+    + '<line class="brow bl" x1="52" y1="66" x2="90" y2="66" stroke="'+AM+'" stroke-width="7" stroke-linecap="round"/>'
+    + '<line class="brow br" x1="110" y1="66" x2="148" y2="66" stroke="'+AM+'" stroke-width="7" stroke-linecap="round"/>'); };
+  // F · the dispatcher: a small round creature on the night shift, with a headset; the mic boom is the logo.
+  var disp = function(){ return wrap('f',
+      '<path d="M36 230 Q36 176 100 172 Q164 176 164 230Z" fill="'+P2+'" stroke="'+HL+'" stroke-width="2"/>'
+    + '<line x1="88" y1="196" x2="104" y2="196" stroke="'+AM+'" stroke-width="4" stroke-linecap="round"/><circle cx="111" cy="196" r="5" fill="none" stroke="'+AM+'" stroke-width="3"/>'
+    + '<circle cx="44" cy="96" r="13" fill="#2A303B"/><circle cx="156" cy="96" r="13" fill="#2A303B"/>'
+    + '<circle cx="100" cy="112" r="60" fill="#2A303B" stroke="'+HL+'" stroke-width="2"/>'
+    + '<path d="M44 108 A57 57 0 0 1 156 108" fill="none" stroke="rgba(243,241,236,.6)" stroke-width="7" stroke-linecap="round"/>'
+    + '<rect x="32" y="96" width="20" height="34" rx="10" fill="'+P+'" stroke="'+AM+'" stroke-width="3"/><rect x="148" y="96" width="20" height="34" rx="10" fill="'+P+'" stroke="'+AM+'" stroke-width="3"/>'
+    + '<g class="eyes"><circle cx="80" cy="108" r="14" fill="'+FG+'"/><circle cx="120" cy="108" r="14" fill="'+FG+'"/>'
+    + '<g class="look"><circle cx="80" cy="110" r="6.5" fill="'+INK+'"/><circle cx="120" cy="110" r="6.5" fill="'+INK+'"/></g></g>'
+    + '<g class="joy" opacity="0"><path d="M68 110 q12 -14 24 0 M108 110 q12 -14 24 0" fill="none" stroke="'+FG+'" stroke-width="5" stroke-linecap="round"/></g>'
+    + '<circle cx="66" cy="130" r="6" fill="rgba(255,176,0,.35)"/><circle cx="134" cy="130" r="6" fill="rgba(255,176,0,.35)"/>'
+    + '<ellipse class="talk" cx="100" cy="138" rx="9" ry="4.5" fill="'+INK+'"/>'
+    + '<path d="M42 130 Q46 152 74 150" fill="none" stroke="'+AM+'" stroke-width="5" stroke-linecap="round"/>'
+    + '<circle class="mic" cx="82" cy="150" r="6.5" fill="'+INK+'" stroke="'+AM+'" stroke-width="3.5"/>'); };
+  return { a: robot, b: owl, c: taxi, d: dot, e: eyes, f: disp };
 })();
 </script>
 <script>
@@ -127,13 +209,22 @@ var D=[
   ['הכי מחובר לסיפור של הדף: לילה, משמרות, מישהו שער בשבילך','הלוגו הוא הפנים, אז אי אפשר לטעות במותג','חמוד ומקצועי, יועץ ולא צעצוע'],['בגודל 36px הפרטים של הבטן נעלמים (הפנים נשארות)']],
  ['c','ג · שלט המונית','',
   'השלט שעל גג המונית, עם פנים. הוא יושב על הגג בתחתית העיגול, ומעליו סימן הלוגו. כשהוא כותב, השלט נדלק ונכבה כמו מונית שמחפשת נוסע. מתחבר למונית שמחכה לנועה בשער.',
-  ['הכי שובב ובלתי נשכח','ענבר מלא, בולט מאוד בפינה'],['נראה "מונית" יותר מ"מערכת הסעות לארגונים"','הענבר המלא מתחרה בכפתור "תאמו הדגמה"']]
+  ['הכי שובב ובלתי נשכח','ענבר מלא, בולט מאוד בפינה'],['נראה "מונית" יותר מ"מערכת הסעות לארגונים"','הענבר המלא מתחרה בכפתור "תאמו הדגמה"']],
+ ['d','ד · הנקודה','חדש',
+  'הלוגו עצמו מתעורר: העיגול מקבל פנים ונוסע פנימה על הקו שלו, נוחת, מתכווץ וקופץ, כמו הנסיעה שרצה לעיגול בכרטיס התודה. כשהוא כותב הוא קופץ במקום, וכשהוא שמח הוא עושה סלטה.',
+  ['הלוגו הוא הדמות, אז אין חיבור חזק מזה למותג','התנועה הכי בולטת והכי "חיה"','פשוט, ולכן חד גם ב-36px'],['פחות "יועץ", יותר קמע שובב']],
+ ['e','ה · העיניים','חדש',
+  'רק מבט. שתי עיניים גדולות בתוך העיגול, והגבות הן הקו של הלוגו. העיניים עוקבות אחרי הגולש בכל הדף, הגבות מראות רגש (מורמות בהצצה, מרוכזות כשהוא כותב), וכשהוא כותב הן קוראות משמאל לימין.',
+  ['הכי "פרימיום" ומינימלי, מתאים לשפה הנקייה של הדף','המעקב אחרי העכבר מרגיש חי מאוד','שקט, לא מתחרה בתוכן'],['בלי גוף ובלי פה, פחות אופי']],
+ ['f','ו · המוקדן','חדש',
+  'יצור עגול וחמוד במשמרת לילה, עם אוזניות. המיקרופון הוא הלוגו (קו שמסתיים בעיגול). הוא מטה את הראש כשהוא נח, הפה זז והמיקרופון מהבהב כשהוא עונה. הפיילוט היה במוקד שירות, והקהל הם מנהלי משמרות, אז הוא "אחד משלהם".',
+  ['הכי מחובר לקהל היעד (מוקדים ומשמרות)','"נציג" שמדבר איתך, בדיוק מה שקובי עושה','הפה הזז הכי מסביר "אני עונה לך"'],['יותר פרטים, צריך לבדוק ב-36px']]
 ];
 var row=document.getElementById('row'), STATES=['idle','peek','type','happy'], NAMES={idle:'נח',peek:'מציץ',type:'כותב',happy:'שמח'};
-var force=new URLSearchParams(location.search).get('state');
+var force=new URLSearchParams(location.search).get('state'); if(new URLSearchParams(location.search).get('strip')) document.body.classList.add('strip');
 D.forEach(function(d){
   var k=d[0], c=document.createElement('div'); c.className='col';
-  c.innerHTML='<div class="tag"><b>'+d[1]+'</b><span>'+d[2]+'</span></div><p class="idea">'+d[3]+'</p>'
+  c.innerHTML='<div class="tag"><b>'+d[1]+'</b><span'+(d[2]==='חדש'?' class="new"':'')+'>'+d[2]+'</span></div><p class="idea">'+d[3]+'</p>'
    +'<div class="stage s-idle">'+KOBI[k]()+'<span class="state">נח</span></div>'
    +'<div class="scene"><div class="win"><div class="ch"><span class="av s-idle">'+KOBI[k]()+'</span><span><b>קובי</b><small>העוזר הדיגיטלי של SmartKav</small></span></div>'
    +'<div class="msgs"><div class="bub">היי, אני קובי. אפשר לשאול אותי על ההרשמה, הקיבוץ או ההטמעה.</div><div class="out">צריך להחליף חברת הסעות?</div><span class="dots"><i></i><i></i><i></i></span></div></div>'
@@ -146,4 +237,21 @@ var i=0;
 function step(){ var s=force||STATES[i++%STATES.length];
   document.querySelectorAll('.stage').forEach(function(st){ st.className='stage s-'+s; st.querySelector('.state').textContent=NAMES[s]; }); }
 step(); if(!force) setInterval(step,2600);
+
+// the gaze: eyes follow the pointer over the whole page; with no pointer (a phone), they look around on their own
+var px=null, py=null, last=0;
+addEventListener('pointermove',function(e){px=e.clientX;py=e.clientY;last=Date.now();},{passive:true});
+function aim(){
+  var auto = Date.now()-last>2500, t=Date.now()/1000;
+  document.querySelectorAll('svg.kobi').forEach(function(svg,i){
+    var g=svg.querySelector('.look'); if(!g) return;
+    var r=svg.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height*0.55, dx, dy;
+    if(auto||px===null){ var a=Math.floor(t/1.6+i*0.7); dx=Math.cos(a*2.4); dy=Math.sin(a*1.7)*.6; }
+    else { dx=px-cx; dy=py-cy; var m=Math.hypot(dx,dy)||1, k=Math.min(1,m/300); dx=dx/m*k; dy=dy/m*k; }
+    var s=svg.classList.contains('k-e')?9:4.5;
+    g.style.transform='translate('+(dx*s).toFixed(1)+'px,'+(dy*s).toFixed(1)+'px)';
+  });
+  requestAnimationFrame(aim);
+}
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches && !force) requestAnimationFrame(aim);
 </script></body></html>

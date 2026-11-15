@@ -43,5 +43,37 @@ window.KOBI = (function(){
     + '<g class="joy" opacity="0"><path d="M77 108 q7.5 -11.25 15 0" fill="none" stroke="#14120D" stroke-width="4.5" stroke-linecap="round"/><path d="M108 108 q7.5 -11.25 15 0" fill="none" stroke="#14120D" stroke-width="4.5" stroke-linecap="round"/></g>'
     + '<path class="mouth" d="M87 128 Q100 139 113 128" fill="none" stroke="#14120D" stroke-width="4" stroke-linecap="round"/>'
     + '<circle cx="70" cy="122" r="5" fill="#E89A00"/><circle cx="130" cy="122" r="5" fill="#E89A00"/>'); };
-  return { a: robot, b: owl, c: taxi };
+
+  // D · the dot: the logo comes alive. The circle has a face and rides in along its own line, bouncing.
+  var dot = function(){ return wrap('d',
+      '<line x1="10" y1="168" x2="190" y2="168" stroke="rgba(218,226,240,.16)" stroke-width="2" stroke-dasharray="6 8"/>'
+    + '<line class="road" x1="24" y1="112" x2="66" y2="112" stroke="'+AM+'" stroke-width="10" stroke-linecap="round"/>'
+    + '<g class="bob"><circle cx="114" cy="112" r="40" fill="#0E1116" stroke="'+AM+'" stroke-width="10"/>'
+    + '<g class="eyes"><g class="look"><rect x="101" y="98" width="10" height="17" rx="5" fill="'+FG+'"/><rect x="119" y="98" width="10" height="17" rx="5" fill="'+FG+'"/></g></g>'
+    + '<g class="joy" opacity="0"><path d="M100 108 q6 -8 12 0 M118 108 q6 -8 12 0" fill="none" stroke="'+FG+'" stroke-width="4" stroke-linecap="round"/></g>'
+    + '<path d="M107 124 Q115 130 123 124" fill="none" stroke="'+FG+'" stroke-width="3.5" stroke-linecap="round"/></g>'); };
+  // E · the eyes: nothing but a gaze. Two eyes that follow the visitor across the page; the logo's line is the brows.
+  var eyes = function(){ return wrap('e',
+      '<g class="eyes"><ellipse cx="72" cy="112" rx="24" ry="32" fill="'+FG+'"/><ellipse cx="128" cy="112" rx="24" ry="32" fill="'+FG+'"/>'
+    + '<g class="look"><g class="scan"><circle cx="72" cy="116" r="12" fill="'+INK+'"/><circle cx="128" cy="116" r="12" fill="'+INK+'"/>'
+    + '<circle cx="76" cy="111" r="3.5" fill="'+FG+'"/><circle cx="132" cy="111" r="3.5" fill="'+FG+'"/></g></g></g>'
+    + '<g class="joy" opacity="0"><path d="M52 116 q20 -26 40 0 M108 116 q20 -26 40 0" fill="none" stroke="'+FG+'" stroke-width="7" stroke-linecap="round"/></g>'
+    + '<line class="brow bl" x1="52" y1="66" x2="90" y2="66" stroke="'+AM+'" stroke-width="7" stroke-linecap="round"/>'
+    + '<line class="brow br" x1="110" y1="66" x2="148" y2="66" stroke="'+AM+'" stroke-width="7" stroke-linecap="round"/>'); };
+  // F · the dispatcher: a small round creature on the night shift, with a headset; the mic boom is the logo.
+  var disp = function(){ return wrap('f',
+      '<path d="M36 230 Q36 176 100 172 Q164 176 164 230Z" fill="'+P2+'" stroke="'+HL+'" stroke-width="2"/>'
+    + '<line x1="88" y1="196" x2="104" y2="196" stroke="'+AM+'" stroke-width="4" stroke-linecap="round"/><circle cx="111" cy="196" r="5" fill="none" stroke="'+AM+'" stroke-width="3"/>'
+    + '<circle cx="44" cy="96" r="13" fill="#2A303B"/><circle cx="156" cy="96" r="13" fill="#2A303B"/>'
+    + '<circle cx="100" cy="112" r="60" fill="#2A303B" stroke="'+HL+'" stroke-width="2"/>'
+    + '<path d="M44 108 A57 57 0 0 1 156 108" fill="none" stroke="rgba(243,241,236,.6)" stroke-width="7" stroke-linecap="round"/>'
+    + '<rect x="32" y="96" width="20" height="34" rx="10" fill="'+P+'" stroke="'+AM+'" stroke-width="3"/><rect x="148" y="96" width="20" height="34" rx="10" fill="'+P+'" stroke="'+AM+'" stroke-width="3"/>'
+    + '<g class="eyes"><circle cx="80" cy="108" r="14" fill="'+FG+'"/><circle cx="120" cy="108" r="14" fill="'+FG+'"/>'
+    + '<g class="look"><circle cx="80" cy="110" r="6.5" fill="'+INK+'"/><circle cx="120" cy="110" r="6.5" fill="'+INK+'"/></g></g>'
+    + '<g class="joy" opacity="0"><path d="M68 110 q12 -14 24 0 M108 110 q12 -14 24 0" fill="none" stroke="'+FG+'" stroke-width="5" stroke-linecap="round"/></g>'
+    + '<circle cx="66" cy="130" r="6" fill="rgba(255,176,0,.35)"/><circle cx="134" cy="130" r="6" fill="rgba(255,176,0,.35)"/>'
+    + '<ellipse class="talk" cx="100" cy="138" rx="9" ry="4.5" fill="'+INK+'"/>'
+    + '<path d="M42 130 Q46 152 74 150" fill="none" stroke="'+AM+'" stroke-width="5" stroke-linecap="round"/>'
+    + '<circle class="mic" cx="82" cy="150" r="6.5" fill="'+INK+'" stroke="'+AM+'" stroke-width="3.5"/>'); };
+  return { a: robot, b: owl, c: taxi, d: dot, e: eyes, f: disp };
 })();
