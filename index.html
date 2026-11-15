@@ -622,6 +622,10 @@ html.a11y-still .done,html.a11y-still .done *,html.a11y-still .done *::after{ani
 .kobi-fab{position:fixed;left:24px;bottom:24px;z-index:2147482998;width:64px;height:64px;padding:0;border:0;border-radius:50%;background:transparent;box-shadow:0 10px 26px -10px rgba(0,0,0,.7);cursor:pointer;-webkit-tap-highlight-color:transparent}
 .kobi-fab .kobi-robot{position:absolute;left:-22.2%;top:-44.4%;width:144.4%;height:161.1%;pointer-events:none}
 .kobi-fab:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
+/* while the chat is open, the window is his: he shrinks out of its corner (it has its own close button) and comes back
+   with a wave when it closes */
+.kobi-fab{transition:opacity .3s var(--ease-out),transform .45s var(--ease-out)}
+html.kobi-open .kobi-fab{opacity:0;transform:scale(.5) translateY(20px);pointer-events:none}
 /* his first hello: a small ivory bubble beside him, once a visit */
 .kobi-say{position:fixed;left:100px;bottom:58px;z-index:2147482998;max-width:210px;padding:10px 14px;border-radius:16px 16px 16px 4px;background:var(--fg);color:#14120D;font:400 14px/1.35 var(--sans);box-shadow:0 18px 40px -18px rgba(0,0,0,.8);cursor:pointer;
   transform-origin:0 100%;opacity:0;transform:scale(.6) translateY(8px);transition:opacity .35s var(--ease-out),transform .5s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
@@ -2030,7 +2034,7 @@ window.__skKobiLife = function(btn){
       var mark = function(){
         var open = !!sr.querySelector('.bpOpen'); document.documentElement.classList.toggle('kobi-open', open);
         var k = window.__skKobi; if (!k) return;
-        if (open && !wasOpen) k.set('wave', 1600);
+        if (!open && wasOpen) k.set('wave', 1800);
         wasOpen = open;
         // while the bot is writing (Botpress shows its typing dots), the robot types too
         var typing = open && !!sr.querySelector('.bpTypingIndicatorLoader');
